@@ -10,5 +10,5 @@ https://apps.apple.com/us/app/ぶんたん-for-英検/id6739174811
 
 ### ライブラリ
 
-1. Realm Swift
-1. Firebase Analytics
+- Realm Swift
+- Firebase Analytics
