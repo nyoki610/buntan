@@ -121,7 +121,8 @@ extension LearnSelectView {
     
     func resetAction() {
         
-        guard cardsContainer[LearnRange.notLearned.rawValue].count != cardsContainer[LearnRange.all.rawValue].count else { return }
+        /// 「未学習の単語数」!=「全単語数」の場合のみ rest を行う
+        guard bookSharedData.cardsContainer[LearnRange.notLearned.rawValue].count != bookSharedData.cardsContainer[LearnRange.all.rawValue].count else { return }
 
         alertSharedData.showSelectiveAlert("現在の進捗を\nリセットしますか？", "", "リセット", .destructive) {
             loadingSharedData.startLoading(.process)

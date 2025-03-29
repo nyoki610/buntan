@@ -2,6 +2,7 @@ import SwiftUI
 
 extension MainView {
     
+    /// アプリ起動時に表示されるタイトル画面
     var logoView: some View {
         
         VStack {

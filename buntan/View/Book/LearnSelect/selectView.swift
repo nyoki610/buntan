@@ -55,7 +55,7 @@ extension LearnSelectView {
         
         HStack {
             
-            selectButton(labelTop: cardsContainer[LearnRange.notLearned.rawValue].count.string,
+            selectButton(labelTop: bookSharedData.cardsContainer[LearnRange.notLearned.rawValue].count.string,
                          labelTopColor: .gray,
                          labelBottom: "未学習",
                          image: .textBookClosedFill,
@@ -64,7 +64,7 @@ extension LearnSelectView {
             
             Spacer()
             
-            selectButton(labelTop: cardsContainer[LearnRange.learning.rawValue].count.string,
+            selectButton(labelTop: bookSharedData.cardsContainer[LearnRange.learning.rawValue].count.string,
                          labelTopColor: RoyalBlue.semiOpaque,
                          labelBottom: "学習中",
                          image: .bookmarkFill,
@@ -73,7 +73,7 @@ extension LearnSelectView {
             
             Spacer()
             
-            selectButton(labelTop: cardsContainer[LearnRange.all.rawValue].count.string,
+            selectButton(labelTop: bookSharedData.cardsContainer[LearnRange.all.rawValue].count.string,
                          labelTopColor: .black,
                          labelBottom: "すべて",
                          image: .booksVerticalFill,
@@ -93,9 +93,6 @@ extension LearnSelectView {
         .frame(width: responsiveSize(280, 360))
         .overlay(Rectangle().frame(height: 1).padding(.top, 30).foregroundColor(.gray), alignment: .top)
     }
-}
-
-extension LearnSelectView {
     
     @ViewBuilder
     func selectButton(

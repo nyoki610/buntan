@@ -4,15 +4,19 @@ struct MainView: ResponsiveView {
     
     @Environment(\.deviceType) var deviceType
     
+    
+    /// ObservedObjects
     @ObservedObject private var loadingSharedData = LoadingSharedData()
     @ObservedObject private var alertSharedData = AlertSharedData()
     @ObservedObject private var realmService = RealmService()
-    @ObservedObject var bookSharedData = BookSharedData()
-    
-    @ObservedObject var checkSharedData = CheckSharedData()
     @ObservedObject private var learnManager = LearnManager()
+    @ObservedObject var bookSharedData = BookSharedData()
+    @ObservedObject var checkSharedData = CheckSharedData()
     
+    /// 起動時の LogoView の表示を管理
     @State private var showLogoView: Bool = true
+    
+    /// tabView を管理
     @State var selectedTab: TabType = .book
     
     var body: some View {
@@ -27,15 +31,10 @@ struct MainView: ResponsiveView {
                     tabView
                 }
             }
-            
-            // if loadingSharedData.animationController || loadingSharedData.isLoading {
+
+            /// loadingView  を表示
             if loadingSharedData.isLoading {
-                
                 Background()
-            }
-            
-            if loadingSharedData.isLoading {
-                
                 loadingSharedData.loadingView()
             }
         }
@@ -49,10 +48,12 @@ struct MainView: ResponsiveView {
             alertSharedData.createAlert()
         }
         .onAppear {
+            /// bookSharedata.bookList を初期化
             guard let updatedBooksList = realmService.setupBooksList() else { return }
             bookSharedData.setupBooksList(updatedBooksList)
             checkSharedData.booksList = updatedBooksList
             
+            /// LogoView を 3 秒間表示した後, 画面遷移
             Task {
                 do {
                     try await Task.sleep(nanoseconds: 3_000_000_000)

@@ -77,10 +77,4 @@ struct SectionListView: ResponsiveView {
         .padding(.horizontal, responsiveSize(30, 70))
         .padding(.vertical, 4)
     }
-    
-    private func progressPercentage(_ cardList: [Card]) -> Int {
-        
-        let completedCount = cardList.filter { $0.status(bookSharedData.selectedBook.bookType) == .completed }.count
-        return cardList.isEmpty ? 0 : Int(Double(completedCount) / Double(cardList.count) * 100.0)
-    }
 }

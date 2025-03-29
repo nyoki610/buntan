@@ -33,7 +33,8 @@ enum Img: String {
     case xmark = "xmark"
     
     static func img(_ name: Img, variableValue: Double = 1.0, size: CGFloat = 17, color: Color, resizable: Bool = false) -> some View {
-        Image(systemName: name.rawValue, variableValue: variableValue)
+        Image(systemName: name.rawValue,
+              variableValue: variableValue)
             .font(.system(size: size))
             .foregroundColor(color)
             .bold()

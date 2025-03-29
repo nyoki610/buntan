@@ -10,8 +10,6 @@ struct LearnSelectView: ResponsiveView {
     @EnvironmentObject var loadingSharedData: LoadingSharedData
     @EnvironmentObject var learnManager: LearnManager
 
-    var cardsContainer: [[Card]] { bookSharedData.cardsContainer }
-
     var body: some View {
             
             ZStack {
