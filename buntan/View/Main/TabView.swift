@@ -3,6 +3,11 @@ import SwiftUI
 
 extension MainView {
     
+    
+    /// BookView() or CheckView or RecordView() 表示時のみtabViewを表示
+    ///     - BookView() -> bookSharedData.path が空かどうかを監視
+    ///     - CheckView() -> checkSharedData.path が空かどうかを監視
+    ///     - RecordView() -> 常に tabView を表示
     var showTabView: Bool { bookSharedData.path.isEmpty && checkSharedData.path.isEmpty }
     
     var tabView: some View {
@@ -63,6 +68,7 @@ extension MainView {
         .contentShape(Rectangle())
     }
     
+    /// 表示する View をコントロールする enum
     enum TabType {
         case book, check, record
         

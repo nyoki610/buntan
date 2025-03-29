@@ -15,10 +15,9 @@ struct PhantomHStack<Content: View>: View {
     var body: some View {
         HStack {
             Spacer()
-            /// ガイドは常に表示したほうがよさそう?
-            ///if targetBool {
+            if targetBool {
                 content
-            ///}
+            }
             Spacer()
         }
         .frame(height: height)

@@ -7,20 +7,21 @@ struct SelectView: ResponsiveView, LearnViewProtocol {
     @EnvironmentObject var realmService: RealmService
     @EnvironmentObject var loadingSharedData: LoadingSharedData
     @EnvironmentObject var alertSharedData: AlertSharedData
-    
     @EnvironmentObject var bookSharedData: BookSharedData
     @EnvironmentObject var checkSharedData: CheckSharedData
     @EnvironmentObject var learnManager: LearnManager
     
+    /// BookView と CheckView で処理を分けるための変数
+    /// init 時に外部から受け取る
     let isBookView: Bool
 
-    init(_ isBookView: Bool) {
-        self.isBookView = isBookView
-    }
-    
+    /// ユーザーの解答入力を受付中かを示す Bool 値
     @State var isAnswering: Bool = true
+    /// ユーザーが解答した選択肢の index
     @State var selectedIndex: Int = 0
+    /// 解答の index
     private var answerIndex: Int { learnManager.options[topCardIndex].firstIndex { topCard.word == $0.word } ?? 0 }
+    /// 正解かどうかを判断する Bool 値
     var isCorrect: Bool { selectedIndex == answerIndex}
     
     var body: some View {
@@ -36,12 +37,15 @@ struct SelectView: ResponsiveView, LearnViewProtocol {
                 
                 Spacer()
                 
+                /// BookView かつ showSentence = true の場合
                 if learnManager.showSentence && isBookView {
-                    
                     FlipSentenceCardView(card: topCard,
                                          isSelectView: true)
+                    
+                /// 以下のいずれかの場合
+                ///     - BookView かつ showSentence = false
+                ///     - CheckView
                 } else {
-                 
                     FlipWordCardView(card: topCard,
                                      showPhrase: true)
                     .disabled(true)
@@ -49,6 +53,8 @@ struct SelectView: ResponsiveView, LearnViewProtocol {
                 
                 Spacer()
                 
+                /// BookView -> 選択肢４つ
+                /// CheckView -> 選択肢４つ＋「正解なし」ボタン
                 ForEach(0...(isBookView ? 3 : 4), id: \.self) { i in
                     optionView(i)
                         .disabled(!isAnswering)
@@ -126,6 +132,8 @@ struct SelectView: ResponsiveView, LearnViewProtocol {
         }
     }
     
+    /// 選択肢ボタンの装飾用
+    /// 正解 or 不正解とユーザーの解答を基に色や図形を決定
     @ViewBuilder
     private func buttonOverlay(_ index: Int) -> some View {
         

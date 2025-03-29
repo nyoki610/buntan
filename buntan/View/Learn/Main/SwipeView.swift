@@ -4,7 +4,7 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
     
     @Environment(\.deviceType) var deviceType: DeviceType
 
-    // Recordクラス内から直接保存できるように修正したい
+    // Recordクラス内から直接保存できるように修正したい？
     @EnvironmentObject var realmService: RealmService
     @EnvironmentObject var loadingSharedData: LoadingSharedData
     @EnvironmentObject var alertSharedData: AlertSharedData
@@ -16,7 +16,6 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
     @State var offset = CGSize.zero
     @State var isFlipped: Bool = false
 
-    private func card(_ index: Int) -> Card { cards[index] }
     private var animationController: Int { learnManager.animationController }
     private var nonAnimationCard: Card { animationController < cards.count ? cards[animationController] : EmptyModel.card }
 
@@ -64,7 +63,8 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
             .font(.system(size: 20))
             .opacity(animationController == cards.count ? 0.0 : 1.0)
             
-            PhantomHStack(targetBool: topCardIndex == 0, {
+            /// 操作ガイドは常に表示した方が良さそうなので targetBool = true に設定（2025/03/20 時点）
+            PhantomHStack(targetBool: true, {
                 Img.img(.handTapFill, color: .gray)
                 Text("タップして訳を表示")
             }, height: 20)
@@ -79,6 +79,8 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
         
         VStack {
             
+            /// 操作に関するガイド
+            /// ------------------------------
             HStack(alignment: .bottom) {
                 
                 swipeGuide(alignment: .leading,
@@ -89,14 +91,10 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
                 
                 Spacer()
                 
-                /// ガイドは常に表示したほうがよさそう?
-                ///if topCardIndex == 0 {
-                    
-                    Text("左右にスワイプして次の単語へ")
-                    .fontSize(responsiveSize(16, 24))
-                        .fontWeight(.bold)
-                        .foregroundColor(.gray)
-                ///}
+                Text("左右にスワイプして次の単語へ")
+                .fontSize(responsiveSize(16, 24))
+                    .fontWeight(.bold)
+                    .foregroundColor(.gray)
                 
                 Spacer()
                 
@@ -110,11 +108,13 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
             .padding(.horizontal, responsiveSize(20, 60))
             .padding(.bottom, 20)
             .opacity(0.8)
+            /// ------------------------------
             
+            /// 単語カードを表示
             ZStack {
                 ForEach(max(0, topCardIndex - 1)..<min(topCardIndex + 1, cards.count), id: \.self) { i in
 
-                    FlipWordCardView(card: card(i),
+                    FlipWordCardView(card: cards[i],
                                      showPhrase: false)
                     .offset(x:  i == topCardIndex ? self.offset.width :
                                 rightCardsIndexList.contains(i) ? 600 :
@@ -125,7 +125,8 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
                 }
             }
             
-            PhantomHStack(targetBool: topCardIndex == 0, {
+            /// 操作ガイドは常に表示した方が良さそうなので targetBool = true に設定（2025/03/20 時点）
+            PhantomHStack(targetBool: true, {
                 Img.img(.handTapFill,
                         size: responsiveSize(16, 24),
                         color: .gray)

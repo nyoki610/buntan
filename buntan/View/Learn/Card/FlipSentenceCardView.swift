@@ -36,6 +36,8 @@ struct FlipSentenceCardView: ResponsiveView {
                                                      size: size,
                                                      isUnderlined: true))
                         .fontSize(size)
+                    
+                    /// 単語に例文が追加されていない場合
                     } else {
                         
                         VStack {

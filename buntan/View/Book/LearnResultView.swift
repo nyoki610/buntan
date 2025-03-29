@@ -17,6 +17,7 @@ struct LearnResultView: ResponsiveView {
     private var learningCount: Int { bookSharedData.cardsContainer[LearnRange.learning.rawValue].count }
     private var completedCount: Int { bookSharedData.cardsContainer[LearnRange.all.rawValue].count - notLearnedCount - learningCount }
     
+    /// 「学習中」の単語が存在するかどうかを示す bool 値
     private var reviewAll: Bool { learningCount == 0 }
     
     var body: some View {
@@ -37,7 +38,7 @@ struct LearnResultView: ResponsiveView {
             TLButton(title: reviewAll ? "すべての単語を復習　→" : "学習中の単語を復習　→",
                      textColor: .white,
                      background: reviewAll ? Orange.defaultOrange : RoyalBlue.defaultRoyal) {
-                buttonAction(isNotLearned: false)
+                buttonAction(isNotLearnedButtonAction: false)
             }
             
             if notLearnedCount != 0 {
@@ -45,7 +46,7 @@ struct LearnResultView: ResponsiveView {
                 TLButton(title: "未学習の単語を学習　→",
                          textColor: .white,
                          background: .gray) {
-                    buttonAction(isNotLearned: true)
+                    buttonAction(isNotLearnedButtonAction: true)
                 }
                          .padding(.top, responsiveSize(20, 40))
             }
@@ -113,6 +114,8 @@ struct LearnResultView: ResponsiveView {
             .frame(width: responsiveSize(160, 200))
             .foregroundColor(RoyalBlue.defaultRoyal)
             
+            
+            /// 未学習の単語が存在する場合のみ「未学習の単語を学習」ボタンを表示
             if notLearnedCount != 0 {
                 
                 HStack {
@@ -138,14 +141,21 @@ struct LearnResultView: ResponsiveView {
         }
     }
     
-    private func buttonAction(isNotLearned: Bool) -> Void {
+    private func buttonAction(isNotLearnedButtonAction: Bool) -> Void {
         
-        bookSharedData.selectedRange = isNotLearned ? .notLearned : reviewAll ? .all : .learning
+        /// 次に学習する範囲を設定
+        bookSharedData.selectedRange = isNotLearnedButtonAction ? .notLearned : reviewAll ? .all : .learning
+        
+        /// options を初期化
         guard let options = bookSharedData.selectedGrade.setupOptions(booksList: bookSharedData.booksList,
                                                                       cards: bookSharedData.cards,
                                                                       isBookView: true) else { return }
         bookSharedData.options = options
+        
+        /// 学習モードを初期化
         learnManager.setupLearn(bookSharedData.cards, bookSharedData.options)
+        
+        /// 画面遷移
         bookSharedData.path.removeLast()
     }
 }

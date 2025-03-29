@@ -3,25 +3,9 @@ import SwiftUI
 struct BookView: ResponsiveView {
     
     @Environment(\.deviceType) var deviceType
+    
     @EnvironmentObject var realmService: RealmService
     @EnvironmentObject var bookSharedData: BookSharedData
-    
-    var todayLearnCount: Int {
-        
-        guard let lastRecord = realmService.combinedRecords.last else { return 0 }
-       
-        let lastRecordDate = Calendar.current.dateComponents([.year, .month, .day], from: lastRecord.date)
-        let today = Calendar.current.dateComponents([.year, .month, .day], from: Date())
-
-        return lastRecordDate == today ? lastRecord.learnedCardCount : 0
-   }
-    
-    var variableValue: Double {
-        if todayLearnCount >= 1000 { return 1.0 }
-        if todayLearnCount >= 100 { return 0.5 }
-        if todayLearnCount >= 10 { return 0.3 }
-        return 0.0
-    }
     
     var body: some View {
         
@@ -49,8 +33,29 @@ struct BookView: ResponsiveView {
         }
     }
     
+    
+    /// headerView で使用する property
+    /// ------------------------------
+    private var todayLearnCount: Int {
+        
+        guard let lastRecord = realmService.combinedRecords.last else { return 0 }
+       
+        let lastRecordDate = Calendar.current.dateComponents([.year, .month, .day], from: lastRecord.date)
+        let today = Calendar.current.dateComponents([.year, .month, .day], from: Date())
+
+        return lastRecordDate == today ? lastRecord.learnedCardCount : 0
+   }
+    private var variableValue: Double {
+        if todayLearnCount >= 1000 { return 1.0 }
+        if todayLearnCount >= 100 { return 0.5 }
+        if todayLearnCount >= 10 { return 0.3 }
+        return 0.0
+    }
+    /// ------------------------------
+    
     @ViewBuilder
     private var headerView: some View {
+        
         HStack {
             VStack {
                 Text("今日の")
@@ -73,25 +78,12 @@ struct BookView: ResponsiveView {
         .padding(.vertical, 10)
         .padding(.horizontal, 40)
     }
-    
-    @ViewBuilder
-    private func sectionHeader(_ sectionTitle: String) -> some View {
-        
-        HStack {
-            Text(sectionTitle)
-                .fontWeight(.bold)
-                .font(.system(size: 20))
-                .opacity(0.7)
-            Spacer()
-        }
-        .padding(.leading, 40)
-        .padding(.top, 40)
-        .padding(.bottom, 20)
-    }
-    
+
     @ViewBuilder
     private var selectButtonView: some View {
         
+        
+        /// 「〇〇級」のボタンを横方向に ２個ずつ配置する
         ForEach(Array(stride(from: 0, to: Eiken.allCases.count, by: 2)), id: \.self) { index in
 
                 if index + 1 < Eiken.allCases.count {
@@ -104,7 +96,7 @@ struct BookView: ResponsiveView {
                     }
                     .padding(.bottom, responsiveSize(20, 40))
                 } else {
-                    /// 要素数が奇数の場合
+                    /// 要素数が奇数の場合は最後の１個は中央寄せ
                     selectButton(Eiken.allCases[index])
                 }
             }

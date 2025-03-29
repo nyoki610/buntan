@@ -7,7 +7,6 @@ struct TypeView: ResponsiveView, LearnViewProtocol {
     @EnvironmentObject var realmService: RealmService
     @EnvironmentObject var loadingSharedData: LoadingSharedData
     @EnvironmentObject var alertSharedData: AlertSharedData
-
     @EnvironmentObject var bookSharedData: BookSharedData
     @EnvironmentObject var checkSharedData: CheckSharedData
     @EnvironmentObject var learnManager: LearnManager
@@ -16,7 +15,6 @@ struct TypeView: ResponsiveView, LearnViewProtocol {
     @FocusState var isKeyboardActive: Bool
 
     @State var userInput: String = ""
-    
     @State var isAnswering: Bool = true
     @State var isCorrect: Bool = true
     
@@ -49,7 +47,7 @@ struct TypeView: ResponsiveView, LearnViewProtocol {
                 }
                             .padding(.top, 4)
                 
-                ///  View 調整用
+                ///  View 調整用？
                 VStack {
                     Spacer()
                 }
@@ -78,6 +76,7 @@ struct TypeView: ResponsiveView, LearnViewProtocol {
                 .fixedSize(horizontal: false, vertical: true)
                 .lineLimit(3)
             
+            /// iPhone or iPad で View を調整
             if deviceType == .iPhone {
                 Spacer()
                 Spacer()
@@ -154,46 +153,3 @@ struct TypeView: ResponsiveView, LearnViewProtocol {
         }
     }
 }
-
-/*
- HStack {
-     
-     Button {
-         backButtonAction()
-     } label: {
-         CustomImage(image: .arrowshapeTurnUpLeft,
-                     size: 24,
-                     color: .black, label: "ひとつ",
-                     subLabel: "戻る")
-     }
-     /// 正解時はボタンを無効化
-     .disabled(!isAnswering && isCorrect)
-     
-     Spacer()
-
-     Button {
-         learnManager.readOutTopCard(isButton: true)
-     } label: {
-         
-         CustomImage(image: .speakerWave2Fill,
-                     size: 24,
-                     color: learnManager.buttonDisabled ? .gray : .black,
-                     label: "音声を", subLabel: "再生")
-     }
-     .disabled(learnManager.buttonDisabled || isAnswering || isCorrect)
-     .opacity(isAnswering || isCorrect ? 0.0 : 1.0)
-     
-     Button {
-         isAnswering ? passButtonAction() : nextCardExist ? nextButtonAction() : completeButtonAction()
-     } label: {
-         CustomImage(
-             image: isAnswering ? .arrowshapeTurnUpRight : .arrowshapeTurnUpRightFill,
-             size: 24,
-             color: isAnswering ? .black : RoyalBlue.defaultRoyal,
-             label: isAnswering ? "パス" : (nextCardExist ? "次へ" : "完了"),
-             subLabel: ""
-         )
-     }
-     .padding(.leading, 16)
- }
- */
