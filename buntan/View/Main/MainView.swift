@@ -2,9 +2,6 @@ import SwiftUI
 
 struct MainView: ResponsiveView {
     
-    /// This comment is added for git test
-    /// plase delete this comment later
-    
     @Environment(\.deviceType) var deviceType
     
     @ObservedObject private var loadingSharedData = LoadingSharedData()
