@@ -40,6 +40,7 @@ class LearnManager: ObservableObject {
         }
     }
     
+    /// カードの音声読み上げ
     func readOutTopCard(isButton: Bool = false) {
         
         guard (shouldReadOut || isButton) else { return }
@@ -54,6 +55,7 @@ class LearnManager: ObservableObject {
                                withDelay: withDelay)
     }
     
+    /// 一つ前のカードに戻る処理
     func backButtonAction() -> Void {
         
         guard topCardIndex > 0 else { return }
@@ -71,6 +73,7 @@ class LearnManager: ObservableObject {
         }
     }
     
+    /// 表示中のカードを「完了 or 学習中」に振り分け
     func addIndexToList(_ isCorrect: Bool) -> Void {
         withAnimation(.easeOut(duration: 0.6)) {
             if isCorrect {

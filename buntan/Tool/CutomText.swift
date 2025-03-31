@@ -2,6 +2,7 @@ import Foundation
 
 enum CustomText {
     
+    /// card.sentence の card.startPosition から card.endPosition までを太字にする関数
     static func boldSentence(card: Card, size: CGFloat, isUnderlined: Bool) -> AttributedString {
         
         let sentence = card.sentence
@@ -31,6 +32,7 @@ enum CustomText {
         return attributedString
     }
     
+    /// card.sentence の card.startPosition から card.endPosition までをアンダースコアに置き換える関数
     static func replaceAnswer(card: Card, showInitial: Bool) -> String {
         
         let sentence = card.sentence

@@ -183,9 +183,11 @@ extension LearnHeader {
         title += "しますか？"
         
         let secondaryButtonLabel = learnManager.shouldShuffle ? "元に戻す" : "シャッフル"
-
-        alertSharedData.showSelectiveAlert(title, "", secondaryButtonLabel, .defaultButton) {
-            
+        
+        alertSharedData.showSelectiveAlert(title: title,
+                                           message: "",
+                                           seconddaryButtonLabel: secondaryButtonLabel,
+                                           secondaryButtonType: .defaultButton) {
             learnManager.shouldShuffle.toggle()
             guard let options = options else { return }
             learnManager.setupLearn(cards, options)

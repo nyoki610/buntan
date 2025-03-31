@@ -26,7 +26,7 @@ class AlertSharedData: ObservableObject {
         case destructive
     }
     
-    ///  just to be sure
+    ///  just to be sure?
     private func initializeProperties() -> Void {
         
         self.title = ""
@@ -36,12 +36,12 @@ class AlertSharedData: ObservableObject {
         self.secondaryButtonLabel = ""
     }
     
-    private func showAlert(_ title: String,
-                           _ message: String,
-                           _ action: @escaping () -> Void,
-                           _ alertType: AlertType,
-                           _ seconddaryButtonLabel: String = "",
-                           _ secondaryButtonType: SecondaryButtonType = .defaultButton) {
+    private func showAlert(title: String,
+                           message: String,
+                           action: @escaping () -> Void,
+                           alertType: AlertType,
+                           seconddaryButtonLabel: String = "",
+                           secondaryButtonType: SecondaryButtonType = .defaultButton) {
         
         DispatchQueue.main.async {
             self.title = title
@@ -54,14 +54,28 @@ class AlertSharedData: ObservableObject {
     }
     
     
-    func showSingleAlert(_ title: String, _ message: String, _ action: @escaping () -> Void) {
+    func showSingleAlert(title: String,
+                         message: String,
+                         action: @escaping () -> Void) {
         
-        showAlert(title, message, action, .single)
+        showAlert(title: title,
+                  message: message,
+                  action: action,
+                  alertType: .single)
     }
     
-    func showSelectiveAlert(_ title: String, _ message: String, _ seconddaryButtonLabel: String, _ secondaryButtonType: SecondaryButtonType, _ action: @escaping () -> Void) {
+    func showSelectiveAlert(title: String,
+                            message: String,
+                            seconddaryButtonLabel: String,
+                            secondaryButtonType: SecondaryButtonType,
+                            action: @escaping () -> Void) {
         
-        showAlert(title, message, action, .selective, seconddaryButtonLabel, secondaryButtonType)
+        showAlert(title: title,
+                  message: message,
+                  action: action,
+                  alertType: .single,
+                  seconddaryButtonLabel: secondaryButtonLabel,
+                  secondaryButtonType: secondaryButtonType)
     }
     
     
@@ -121,17 +135,4 @@ class AlertSharedData: ObservableObject {
             }
         }
     }
-    
-    //static func processError(_ error: Error?, _ appError: AppError) -> AppError? {
-    //    return (error == nil) ? nil : appError
-    //}
-       
-    //func showError(_ error: AppError?, _ action: @escaping () -> Void) {
-        
-    //    let appError: AppError = error ?? .unexpectedError
-
-    //    showSingleAlert(appError.errorTitle, appError.errorDescription) {
-    //        action()
-    //    }
-    //}
 }
