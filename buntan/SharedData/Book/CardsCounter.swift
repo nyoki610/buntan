@@ -1,5 +1,7 @@
 import Foundation
 
+
+/// card に関する値を計算する extension
 extension BookSharedData {
 
     var notLearnedCount: Int {

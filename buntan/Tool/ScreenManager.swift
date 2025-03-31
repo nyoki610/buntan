@@ -1,5 +1,7 @@
 import SwiftUI
 
+
+/// 画面遷移を管理する enum
 enum ViewName {
     
     /// Book

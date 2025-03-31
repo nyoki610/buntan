@@ -14,6 +14,7 @@ class CheckSharedData: ObservableObject {
         cards = extractedCards
     }
 
+    /// テストの結果に基づいて予想得点を算出
     func estimatedScore(_ learningManager: LearnManager) -> Int {
         
         var fullScore: Double = 0

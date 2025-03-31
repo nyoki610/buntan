@@ -34,6 +34,7 @@ class BookSharedData: ObservableObject {
         arrangeContainer()
     }
     
+    /// selectedSection.cards を　未学習の単語・学習中の単語・すべての単語　に分類して cardsContainer に格納
     func arrangeContainer() {
 
         cardsContainer[LearnRange.all.rawValue] = selectedSection.cards
@@ -47,6 +48,8 @@ class BookSharedData: ObservableObject {
         adjustSelectedRange()
     }
     
+    
+    /// ユーザーの学習状況に応じて selectedRange の初期値を設定
     func adjustSelectedRange() {
         
         selectedRange = .notLearned

@@ -89,15 +89,14 @@ extension LearnViewProtocol {
         
         /// CheckView の場合の処理
         } else {
-            
+    
             if !isFinished {
-                
-                alertSharedData.showSelectiveAlert("テストを中断しますか？",
-                                                   "",
-                                                   "終了",
-                                                   .defaultButton) {
-                                                       checkSharedData.path.removeLast()
-                                                   }
+                alertSharedData.showSelectiveAlert(title: "テストを中断しますか？",
+                                                   message: "",
+                                                   seconddaryButtonLabel: "終了",
+                                                   secondaryButtonType: .defaultButton) {
+                    checkSharedData.path.removeLast()
+                }
                 
             } else {
                 

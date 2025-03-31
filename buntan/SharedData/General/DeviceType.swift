@@ -28,23 +28,3 @@ extension EnvironmentValues {
     @Entry var deviceType: DeviceType = DeviceType.model
 }
 
-protocol ResponsiveView: View {
-    var deviceType: DeviceType { get }
-}
-
-extension ResponsiveView {
-    func responsiveSize(_ iPhoneFloat: CGFloat, _ iPadFloat: CGFloat) -> CGFloat {
-        (deviceType == .iPhone) ? iPhoneFloat : iPadFloat
-    }
-    
-    func responsiveScaled(_ iPhoneFloat: CGFloat, _ scale: CGFloat) -> CGFloat {
-        (deviceType == .iPhone) ? iPhoneFloat : iPhoneFloat * scale
-    }
-}
-
-extension View {
-    func fontSize(_ size: CGFloat) -> some View {
-        self.font(.system(size: size))
-    }
-}
-

@@ -47,7 +47,10 @@ struct LearnButton: ResponsiveView {
                 
                 Button {
                     if learnManager.topCardIndex > 0 {
-                        alertSharedData.showSelectiveAlert("最初に戻りますか？", "", "最初から", .defaultButton) {
+                        alertSharedData.showSelectiveAlert(title: "最初に戻りますか？",
+                                                           message: "",
+                                                           seconddaryButtonLabel: "最初から",
+                                                           secondaryButtonType: .defaultButton) {
                             while learnManager.topCardIndex > 0 {
                                 learnManager.backButtonAction()
                             }
