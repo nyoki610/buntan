@@ -1,4 +1,4 @@
-# ぶんたん for 英検
+# ぶんたん for 英検®
 
 ## App Store URL
 https://apps.apple.com/us/app/ぶんたん-for-英検/id6739174811
@@ -12,3 +12,7 @@ https://apps.apple.com/us/app/ぶんたん-for-英検/id6739174811
 
 - Realm Swift
 - Firebase Analytics
+
+### 注意事項
+GitHubにアップロードされているソースコードには.realmファイルは含まれておりません。
+アプリの動作をご確認いただくには、AppStoreからインストールしていただけますようお願いいたします。
