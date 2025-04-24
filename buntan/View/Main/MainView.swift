@@ -8,8 +8,10 @@ struct MainView: ResponsiveView {
     /// ObservedObjects
     @ObservedObject private var loadingSharedData = LoadingSharedData()
     @ObservedObject private var alertSharedData = AlertSharedData()
+    
     @ObservedObject private var realmService = RealmService()
     @ObservedObject private var learnManager = LearnManager()
+    
     @ObservedObject var bookSharedData = BookSharedData()
     @ObservedObject var checkSharedData = CheckSharedData()
     

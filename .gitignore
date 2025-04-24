@@ -1,0 +1,5 @@
+*.realm
+*.realm.lock
+*.realm.management/
+
+GoogleService-Info.plist
