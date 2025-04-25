@@ -186,7 +186,7 @@ extension LearnHeader {
         
         alertSharedData.showSelectiveAlert(title: title,
                                            message: "",
-                                           seconddaryButtonLabel: secondaryButtonLabel,
+                                           secondaryButtonLabel: secondaryButtonLabel,
                                            secondaryButtonType: .defaultButton) {
             learnManager.shouldShuffle.toggle()
             guard let options = options else { return }

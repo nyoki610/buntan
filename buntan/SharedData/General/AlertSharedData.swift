@@ -40,7 +40,7 @@ class AlertSharedData: ObservableObject {
                            message: String,
                            action: @escaping () -> Void,
                            alertType: AlertType,
-                           seconddaryButtonLabel: String = "",
+                           secondaryButtonLabel: String = "",
                            secondaryButtonType: SecondaryButtonType = .defaultButton) {
         
         DispatchQueue.main.async {
@@ -48,7 +48,7 @@ class AlertSharedData: ObservableObject {
             self.message = message
             self.action = action
             self.alertType = alertType
-            self.secondaryButtonLabel = seconddaryButtonLabel
+            self.secondaryButtonLabel = secondaryButtonLabel
             self.secondaryButtonType = secondaryButtonType
         }
     }
@@ -66,15 +66,15 @@ class AlertSharedData: ObservableObject {
     
     func showSelectiveAlert(title: String,
                             message: String,
-                            seconddaryButtonLabel: String,
+                            secondaryButtonLabel: String,
                             secondaryButtonType: SecondaryButtonType,
                             action: @escaping () -> Void) {
         
         showAlert(title: title,
                   message: message,
                   action: action,
-                  alertType: .single,
-                  seconddaryButtonLabel: secondaryButtonLabel,
+                  alertType: .selective,
+                  secondaryButtonLabel: secondaryButtonLabel,
                   secondaryButtonType: secondaryButtonType)
     }
     

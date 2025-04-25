@@ -126,7 +126,7 @@ extension LearnSelectView {
         
         alertSharedData.showSelectiveAlert(title: "現在の進捗を\nリセットしますか？",
                                            message: "",
-                                           seconddaryButtonLabel: "リセット",
+                                           secondaryButtonLabel: "リセット",
                                            secondaryButtonType: .destructive) {
             loadingSharedData.startLoading(.process)
             

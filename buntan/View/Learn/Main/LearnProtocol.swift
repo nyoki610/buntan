@@ -93,7 +93,7 @@ extension LearnViewProtocol {
             if !isFinished {
                 alertSharedData.showSelectiveAlert(title: "テストを中断しますか？",
                                                    message: "",
-                                                   seconddaryButtonLabel: "終了",
+                                                   secondaryButtonLabel: "終了",
                                                    secondaryButtonType: .defaultButton) {
                     checkSharedData.path.removeLast()
                 }
