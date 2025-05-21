@@ -55,7 +55,7 @@ enum BookDesign: CaseIterable {
         }
     }
     
-    func getSections(_ cards: [Card], _ pos: Pos, _ isFreq: Bool) -> [Section] {
+    private func getSections(_ cards: [Card], _ pos: Pos, _ isFreq: Bool) -> [Section] {
         
         let filteredCards = filteredCards(cards, pos)
         
@@ -71,7 +71,7 @@ enum BookDesign: CaseIterable {
         return sections
     }
     
-    func filteredCards(_ cards: [Card], _ pos: Pos) -> [Card] {
+    private func filteredCards(_ cards: [Card], _ pos: Pos) -> [Card] {
         let cards = cards.filter { $0.meaning != "" && $0.pos == pos}
         switch self {
         case .freqA: return cards.filter { $0.priority >= 10 }
@@ -81,7 +81,7 @@ enum BookDesign: CaseIterable {
         }
     }
     
-    var convertToPos: Pos? {
+    private var convertToPos: Pos? {
         switch self {
         case .freqA, .freqB, .freqC: return nil
         case .noun: return .noun

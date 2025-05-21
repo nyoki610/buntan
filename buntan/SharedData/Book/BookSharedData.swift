@@ -14,6 +14,8 @@ class BookSharedData: ObservableObject {
         booksList.indices.contains(selectedGrade.index) ? booksList[selectedGrade.index] : []
     }
     
+    var selectedBookType: BookType = .freq
+    
     var selectedBook: Book {
         selectedBooks.first(where: { $0.id == selectedBookDesign }) ?? EmptyModel.book
     }

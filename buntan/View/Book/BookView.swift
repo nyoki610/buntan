@@ -13,14 +13,18 @@ struct BookView: ResponsiveView {
         
             ZStack {
             
-                VStack {
+                VStack(spacing: 0) {
                     
                     headerView
                         .padding(.top, 40)
                     
                     Spacer()
                     
-                    selectButtonView
+                    _selectButtonView(grade: .first)
+                        .padding(.bottom, 40)
+                    
+                    _selectButtonView(grade: .preFirst)
+
 
                     Spacer()
                     Spacer()
@@ -78,6 +82,54 @@ struct BookView: ResponsiveView {
         .padding(.vertical, 10)
         .padding(.horizontal, 40)
     }
+    
+    @ViewBuilder
+    private func _selectButtonView(grade: Eiken) -> some View {
+        
+        VStack(spacing: 0) {
+            Text(grade.title)
+                .foregroundColor(.white)
+                .fontWeight(.heavy)
+                .font(.system(size: responsiveSize(20, 28)))
+                .padding(.top, 20)
+                
+            HStack {
+                Spacer()
+                customButton(grade: grade, bookType: .freq)
+                Spacer()
+                customButton(grade: grade, bookType: .pos)
+                Spacer()
+            }
+            .padding(.vertical, 20)
+        }
+        .foregroundColor(.black)
+        .background(grade.color)
+        .cornerRadius(10)
+        .padding(.horizontal, 10)
+    }
+    
+    @ViewBuilder
+    private func customButton(grade: Eiken, bookType: BookType) -> some View {
+                
+        Button {
+            guard let sheet = realmService.sheets.first(where: { $0.grade == grade }) else { return }
+            bookSharedData.selectedGrade = sheet.grade
+            bookSharedData.selectedBookType = bookType
+            bookSharedData.path.append(.bookList)
+        } label: {
+            HStack {
+                Text(bookType.buttonLabel)
+                    .fontWeight(.heavy)
+                    .padding(.trailing, 10)
+                Image(systemName: "chevron.right.2")
+            }
+            .font(.system(size: responsiveSize(18, 24)))
+            .frame(width: responsiveSize(160, 240), height: responsiveSize(50, 70))
+            .background(.white)
+            .cornerRadius(10)
+        }
+    }
+
 
     @ViewBuilder
     private var selectButtonView: some View {
