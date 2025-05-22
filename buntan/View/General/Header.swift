@@ -4,20 +4,22 @@ struct Header: ResponsiveView {
     
     @Environment(\.deviceType) var deviceType: DeviceType
     
-    let title: String
+    let title: String?
     @Binding var path: [ViewName]
     
-    init(_ title: String, _ path: Binding<[ViewName]>) {
-        self.title = title
+    init(path: Binding<[ViewName]>, title: String? = nil) {
         _path = path
+        self.title = title
     }
     
     var body: some View {
         
         ZStack {
-            Text(title)
-                .bold()
-                .font(.system(size: responsiveSize(18, 24)))
+            if let title = title {
+                Text(title)
+                    .bold()
+                    .font(.system(size: responsiveSize(18, 24)))
+            }
             
             HStack {
                 Button {

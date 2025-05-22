@@ -16,8 +16,8 @@ struct WordListView: ResponsiveView {
             
             VStack {
              
-                Header("単語一覧",
-                       $bookSharedData.path)
+                Header(path: $bookSharedData.path,
+                       title: "単語一覧")
                 
                 HStack {
                     Spacer()

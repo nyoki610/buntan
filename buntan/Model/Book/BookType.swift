@@ -4,10 +4,12 @@ enum BookType {
     case freq
     case pos
     
-    var headerTitle: String {
+    var buttonLabel: String {
         switch self {
-        case .freq: return "頻出度順に学習"
-        case .pos: return "品詞別に学習"
+        case .freq: return "でる順"
+        case .pos: return "品詞別"
         }
     }
+    
+    var headerTitle: String { "\(buttonLabel)に学習" }
 }

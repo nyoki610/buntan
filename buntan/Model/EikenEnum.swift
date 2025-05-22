@@ -38,7 +38,7 @@ enum Eiken: Double, CaseIterable {
     var color: Color {
         switch self {
         case .first: return .green
-        case .preFirst: return .green.opacity(0.7)
+        case .preFirst: return Color(red: 178 / 255, green: 210 / 255, blue: 53 / 255)
         case .second: return .blue
         case .preSecond: return .cyan
         case .third: return .orange

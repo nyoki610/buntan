@@ -9,15 +9,35 @@ struct SectionListView: ResponsiveView {
 
     var body: some View {
         
-        ZStack {
+        VStack {
+            Header(path: $bookSharedData.path)
             
-            VStack {
-                Header("\(bookSharedData.selectedGrade.title)  \(bookSharedData.selectedBook.title)",
-                       $bookSharedData.path)
+            HStack {
                 Spacer()
-                
-                listView
+                Img.img(.flagFill, color: Orange.defaultOrange)
+                Text(bookSharedData.selectedBookType.headerTitle)
+                Spacer()
             }
+            .font(.system(size: responsiveSize(16, 20)))
+            .fontWeight(.bold)
+            
+            HStack {
+                Spacer()
+                Text(bookSharedData.selectedGrade.title)
+                    .bold()
+                    .font(.system(size: responsiveSize(18, 24)))
+                    .foregroundColor(.white)
+                Spacer()
+            }
+            .padding(.vertical, 10)
+            .background(bookSharedData.selectedGrade.color)
+            .cornerRadius(10)
+            .padding(.horizontal, 40)
+            .padding(.top, 4)
+            
+            Spacer()
+            
+            listView
         }
         .background(CustomColor.background)
         .navigationBarBackButtonHidden(true)

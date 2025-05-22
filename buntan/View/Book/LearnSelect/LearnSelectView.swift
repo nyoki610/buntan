@@ -16,8 +16,8 @@ struct LearnSelectView: ResponsiveView {
                 
                 VStack {
                     
-                    Header("\(bookSharedData.selectedGrade.title)  \(bookSharedData.selectedBook.title)",
-                           $bookSharedData.path)
+                    Header(path: $bookSharedData.path,
+                           title: "\(bookSharedData.selectedGrade.title)  \(bookSharedData.selectedBook.title)")
                     
                     Spacer()
                     
