@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B3453B922D40B6D7004B6891 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = B3453B912D40B6D7004B6891 /* FirebaseAnalytics */; };
+		B36DF3802DDE2EAB00DF12EA /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = B36DF37F2DDE2EAB00DF12EA /* FirebaseAnalytics */; };
 		B3C8061E2D08025100BFC383 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B3C8061D2D08025100BFC383 /* RealmSwift */; };
 		B3C8061F2D08025D00BFC383 /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = B3C8061D2D08025100BFC383 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -73,7 +73,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B3453B922D40B6D7004B6891 /* FirebaseAnalytics in Frameworks */,
+				B36DF3802DDE2EAB00DF12EA /* FirebaseAnalytics in Frameworks */,
 				B3C8061E2D08025100BFC383 /* RealmSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -95,6 +95,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B36DF37E2DDE2EAB00DF12EA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		B3C803772D04CA3500BFC383 = {
 			isa = PBXGroup;
 			children = (
@@ -105,6 +112,7 @@
 				B3C806132D05B7F400BFC383 /* buntan.app */,
 				B3BE0E6C2D0BE618003C6F8E /* buntanTests.xctest */,
 				B3BE0E6D2D0BE618003C6F8E /* buntanUITests.xctest */,
+				B36DF37E2DDE2EAB00DF12EA /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -130,7 +138,7 @@
 			name = buntan;
 			packageProductDependencies = (
 				B3C8061D2D08025100BFC383 /* RealmSwift */,
-				B3453B912D40B6D7004B6891 /* FirebaseAnalytics */,
+				B36DF37F2DDE2EAB00DF12EA /* FirebaseAnalytics */,
 			);
 			productName = buntan;
 			productReference = B3C806132D05B7F400BFC383 /* buntan.app */;
@@ -618,7 +626,7 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		B3453B912D40B6D7004B6891 /* FirebaseAnalytics */ = {
+		B36DF37F2DDE2EAB00DF12EA /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = B3453B902D40B6D7004B6891 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAnalytics;
