@@ -20,10 +20,10 @@ struct BookView: ResponsiveView {
                     
                     Spacer()
                     
-                    _selectButtonView(grade: .first)
+                    selectButtonView(grade: .first)
                         .padding(.bottom, 40)
                     
-                    _selectButtonView(grade: .preFirst)
+                    selectButtonView(grade: .preFirst)
 
 
                     Spacer()
@@ -66,7 +66,6 @@ struct BookView: ResponsiveView {
                 Text("学習単語")
             }
             .font(.system(size: responsiveSize(14, 20)))
-            .fontWeight(.medium)
             
             Img.img(.chartBarFill,
                     variableValue: variableValue,
@@ -75,16 +74,16 @@ struct BookView: ResponsiveView {
             
             Text("\(todayLearnCount) words")
                 .padding(.top, 10)
-                .fontWeight(.medium)
-            
+
             Spacer()
         }
+        .fontWeight(.bold)
         .padding(.vertical, 10)
         .padding(.horizontal, 40)
     }
     
     @ViewBuilder
-    private func _selectButtonView(grade: Eiken) -> some View {
+    private func selectButtonView(grade: Eiken) -> some View {
         
         VStack(spacing: 0) {
             Text(grade.title)

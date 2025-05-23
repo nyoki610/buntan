@@ -71,7 +71,6 @@ struct LearnResultView: ResponsiveView {
                              size: responsiveSize(150, 200),
                              maxValue: 100,
                              color: Orange.defaultOrange)
-
                 .padding(.top, 20)
             
             HStack {

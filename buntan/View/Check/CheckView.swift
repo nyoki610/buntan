@@ -140,9 +140,7 @@ struct CheckView: ResponsiveView {
         .padding(.bottom, 20)
         .font(.system(size: responsiveSize(16, 20)))
         
-        TLButton(title: "テストを開始　→",
-                 textColor: .white,
-                 background: Orange.defaultOrange) {
+        StartButton(title: "テストを開始　→") {
             setupCheck()
         }
     }
@@ -154,7 +152,9 @@ struct CheckView: ResponsiveView {
             
             HStack {
                 Spacer()
+                
                 Text("過去のテストの記録は")
+                
                 VStack {
                     
                     ZStack {

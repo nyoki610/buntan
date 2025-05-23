@@ -18,7 +18,7 @@ struct BookListView: ResponsiveView {
                 Text(bookSharedData.selectedBookType.headerTitle)
                 Spacer()
             }
-            .font(.system(size: responsiveSize(16, 20)))
+            .font(.system(size: responsiveSize(18, 24)))
             .fontWeight(.bold)
             
             HStack {
@@ -86,7 +86,7 @@ struct BookListView: ResponsiveView {
                         .padding(.trailing, 10)
                     
                     Img.img(.chevronRight2,
-                            color: .black)
+                            color: .black.opacity(disabled ? 0.5 : 1.0))
                 }
                 .foregroundColor(.black.opacity(disabled ? 0.5 : 1.0))
                 .fontWeight(.bold)
