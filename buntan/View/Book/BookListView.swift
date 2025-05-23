@@ -38,10 +38,7 @@ struct BookListView: ResponsiveView {
             
             CustomScroll {
                 
-                _listView
-//                
-//                listView(.pos)
-//                    .padding(.top, 20)
+                listView
             }
             
             Spacer()
@@ -51,7 +48,7 @@ struct BookListView: ResponsiveView {
     }
     
     @ViewBuilder
-    private var _listView: some View {
+    private var listView: some View {
         
         let bookList = bookSharedData.selectedBooks.filter { $0.bookType == bookSharedData.selectedBookType }
         
@@ -59,72 +56,14 @@ struct BookListView: ResponsiveView {
             
             ForEach(bookList, id: \.self) { book in
                 VStack {
-//                    if let description = book.description {
-//                        Text(description)
-//                            .font(.system(size: responsiveSize(14, 20)))
-//                            .fontWeight(.medium)
-//                            .padding(.top, 4)
-//                    }
+
                     selectBookButton(book)
                     
-                    
-//                    VStack {
-//                        VStack(alignment: .leading) {
-//                            Text("【頻出度A】")
-//                            Text("過去に正解の選択肢として出題されたことのある単語を収録")
-//                        }
-//                        .font(.system(size: responsiveSize(14, 20)))
-//                        .padding(4)
-//                        .foregroundColor(.black)
-//                        .background(.white)
-//                        .cornerRadius(4)
-//                        .overlay(
-//                            RoundedRectangle(cornerRadius: 4)
-//                                .stroke(.black.opacity(0.3), lineWidth: 2)
-//                        )
-//                        .padding(.top, 4)
-//                        
-//                        HStack {
-//                            Spacer()
-//                            Image(systemName: "chevron.up")
-//                            Text("詳細を閉じる")
-//                        }
-//                    }
-//                    .padding(.horizontal, 40)
                 }
                 .padding(.vertical, 8)
             }
         }
     }
-    
-//    @ViewBuilder
-//    private func listView(_ bookType: BookType) -> some View {
-//        
-//        VStack {
-//         
-//            HStack {
-//                Spacer()
-//                Img.img(.flagFill, color: Orange.defaultOrange)
-//                Text(bookType.headerTitle)
-//                Spacer()
-//            }
-//            .font(.system(size: responsiveSize(16, 20)))
-//            .fontWeight(.bold)
-//            
-//            ForEach(bookSharedData.selectedBooks.filter { $0.bookType == bookType }, id: \.self) { book in
-//                VStack {
-//                    if let description = book.description {
-//                        Text(description)
-//                            .font(.system(size: responsiveSize(14, 20)))
-//                            .fontWeight(.medium)
-//                            .padding(.top, 4)
-//                    }
-//                    selectBookButton(bookType, book)
-//                }
-//                .padding(.vertical, 4)
-//            }
-//        }
-//    }
     
     @ViewBuilder
     private func selectBookButton(_ book: Book) -> some View {
@@ -146,10 +85,11 @@ struct BookListView: ResponsiveView {
                         .font(.system(size: responsiveSize(14, 20)))
                         .padding(.trailing, 10)
                     
-                    Image(systemName: "chevron.right.2")
+                    Img.img(.chevronRight2,
+                            color: .black)
                 }
                 .foregroundColor(.black.opacity(disabled ? 0.5 : 1.0))
-                .fontWeight(.medium)
+                .fontWeight(.bold)
                 
                 if disabled {
                     

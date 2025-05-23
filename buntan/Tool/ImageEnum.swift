@@ -14,6 +14,7 @@ enum Img: String {
     case bookmarkFill = "bookmark.fill"
     case booksVerticalFill = "books.vertical.fill"
     case character = "character"
+    case chevronRight2 = "chevron.right.2"
     case chartBarFill = "chart.bar.fill"
     case checklistChecked = "checklist.checked"
     case checkmarkCircle = "checkmark.circle"

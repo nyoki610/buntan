@@ -10,30 +10,8 @@ struct SectionListView: ResponsiveView {
     var body: some View {
         
         VStack {
-            Header(path: $bookSharedData.path)
-            
-            HStack {
-                Spacer()
-                Img.img(.flagFill, color: Orange.defaultOrange)
-                Text(bookSharedData.selectedBookType.headerTitle)
-                Spacer()
-            }
-            .font(.system(size: responsiveSize(16, 20)))
-            .fontWeight(.bold)
-            
-            HStack {
-                Spacer()
-                Text(bookSharedData.selectedGrade.title)
-                    .bold()
-                    .font(.system(size: responsiveSize(18, 24)))
-                    .foregroundColor(.white)
-                Spacer()
-            }
-            .padding(.vertical, 10)
-            .background(bookSharedData.selectedGrade.color)
-            .cornerRadius(10)
-            .padding(.horizontal, 40)
-            .padding(.top, 4)
+            Header(path: $bookSharedData.path,
+                   title: "\(bookSharedData.selectedGrade.title) \(bookSharedData.selectedBook.title)")
             
             Spacer()
             
@@ -80,9 +58,12 @@ struct SectionListView: ResponsiveView {
                 Text("\(section.cards.count) words")
                     .font(.system(size: responsiveSize(14, 18)))
                     .frame(width: responsiveSize(80, 92))
+                
+                Img.img(.chevronRight2,
+                        color: .black)
             }
             .foregroundColor(.black)
-            .fontWeight(.medium)
+            .fontWeight(.bold)
             .padding(.horizontal, 20)
             .padding(.vertical, responsiveSize(16, 24))
             .background(.white)

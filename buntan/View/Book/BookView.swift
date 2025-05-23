@@ -119,10 +119,11 @@ struct BookView: ResponsiveView {
         } label: {
             HStack {
                 Text(bookType.buttonLabel)
-                    .fontWeight(.heavy)
                     .padding(.trailing, 10)
-                Image(systemName: "chevron.right.2")
+                Img.img(.chevronRight2,
+                        color: .black)
             }
+            .fontWeight(.heavy)
             .font(.system(size: responsiveSize(18, 24)))
             .frame(width: responsiveSize(160, 240), height: responsiveSize(50, 70))
             .background(.white)
