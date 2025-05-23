@@ -86,20 +86,15 @@ struct LearnSelectView: ResponsiveView {
         Button {
             bookSharedData.path.append(.wordList)
         } label: {
-            VStack {
-                Spacer()
-                HStack {
-                    Spacer()
-                    Image(systemName: "info.circle.fill")
-                    Text("単語一覧")
-                        .fontWeight(.medium)
-                    Spacer()
-                }
-                Spacer()
+            HStack {
+                Image(systemName: "info.circle.fill")
+                Text("単語一覧")
+                    .fontWeight(.medium)
             }
             .foregroundStyle(.blue)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 2)
             .background(.white)
-            .frame(width: responsiveSize(120, 180), height: responsiveSize(24, 30))
             .cornerRadius(responsiveSize(12, 15))
             .shadow(color: .gray.opacity(0.8), radius: 1, x: 0, y: 1)
         }
