@@ -32,26 +32,23 @@ struct LearnSelectCircle: View {
     
     var body: some View {
         
-        VStack {
+        ZStack {
             
-            ZStack {
-                
-                /// background circle
-                Circle()
-                    .stroke(lineWidth: circleWidth)
-                    .foregroundColor(.white)
-                    .shadow(color: Color.black.opacity(0.2), radius: 4, x: 0, y: 2)
+            /// background circle
+            Circle()
+                .stroke(lineWidth: circleWidth)
+                .foregroundColor(.white)
+                .shadow(color: Color.black.opacity(0.2), radius: 4, x: 0, y: 2)
 
-                /// circle which shows the progress
-                firstCircle.circle(maxValue: maxValue, circleWidth: circleWidth)
-                secondCircle.circle(maxValue: maxValue, circleWidth: circleWidth)
+            /// circle which shows the progress
+            firstCircle.circle(maxValue: maxValue, circleWidth: circleWidth)
+            secondCircle.circle(maxValue: maxValue, circleWidth: circleWidth)
 
-                Text(String(format: "%.0f%%", CGFloat(progressPercentage)))
-                    .font(.largeTitle)
-                    .bold()
-            }
-            .frame(width: size, height: size)
-            .padding(.top, 30)
+            Text(String(format: "%.0f%%", CGFloat(progressPercentage)))
+                .font(.largeTitle)
+                .bold()
         }
+        .frame(width: size, height: size)
+        .padding(.top, 30)
     }
 }

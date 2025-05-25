@@ -11,7 +11,7 @@ struct SectionListView: ResponsiveView {
         
         VStack {
             Header(path: $bookSharedData.path,
-                   title: "\(bookSharedData.selectedGrade.title) \(bookSharedData.selectedBook.title)")
+                   title: bookSharedData.selectedGrade.title + "   " + bookSharedData.selectedBook.title)
             
             Spacer()
             

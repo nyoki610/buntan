@@ -49,6 +49,7 @@ struct BookListView: ResponsiveView {
                         detailbutton
                     }
                     .padding(.horizontal, responsiveSize(30, 70))
+                    .padding(.top, 20)
                 }
                 
                 
@@ -135,6 +136,7 @@ struct BookListView: ResponsiveView {
         } label: {
             HStack {
                 Image(systemName: "info.circle.fill")
+                    .font(.system(size: responsiveSize(18, 22)))
                 Text("詳細")
                     .fontWeight(.medium)
             }
@@ -143,7 +145,7 @@ struct BookListView: ResponsiveView {
             .padding(.vertical, 2)
             .background(.white)
             .cornerRadius(responsiveSize(12, 15))
-            .shadow(color: .gray.opacity(0.8), radius: 1, x: 0, y: 1)
+            .shadow(color: .gray.opacity(0.8), radius: 2, x: 0, y: 2)
         }
     }
     

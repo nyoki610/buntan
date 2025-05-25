@@ -16,18 +16,11 @@ struct LearnSelectView: ResponsiveView {
                 
                 VStack {
                     
-                    let title = bookSharedData.selectedGrade.title + " " + bookSharedData.selectedBook.title + " " +  bookSharedData.selectedSectionId
+                    let title = bookSharedData.selectedGrade.title + "   " + bookSharedData.selectedBook.title + "   " +  bookSharedData.selectedSectionId
 
                     Header(path: $bookSharedData.path, title: title)
                     
-                    HStack {
-                        resetButton
-                        Spacer()
-                        wordListButton
-                    }
-                    .padding(.horizontal, 40)
-                    .font(.system(size: responsiveSize(14, 20)))
-                    .fontWeight(.bold)
+                    subButtonView
                     
                     progressView
                     
@@ -59,44 +52,88 @@ struct LearnSelectView: ResponsiveView {
     @ViewBuilder
     var progressView: some View {
         
-        LearnSelectCircle(
-            firstCircle: .init(value: bookSharedData.allCount - bookSharedData.notLearnedCount, color: RoyalBlue.semiOpaque),
-            secondCircle: .init(value: bookSharedData.learnedCount, color: Orange.defaultOrange),
-            size: 140,
-            maxValue: bookSharedData.allCount
-        )
-    }
-    
-    @ViewBuilder
-    private var resetButton: some View {
-        
-        Button {
-            resetAction()
-        } label: {
-            Img.img(.arrowClockwise,
-                    color: .red)
-            Text("進捗をリセット")
+        HStack {
+         
+            Spacer()
+            
+            LearnSelectCircle(
+                firstCircle: .init(value: bookSharedData.allCount - bookSharedData.notLearnedCount, color: RoyalBlue.semiOpaque),
+                secondCircle: .init(value: bookSharedData.learnedCount, color: Orange.defaultOrange),
+                size: 140,
+                maxValue: bookSharedData.allCount
+            )
+            
+            Spacer()
+            
+            VStack(alignment: .leading) {
+                Spacer()
+                Spacer()
+                Spacer()
+                circleAnnotation(label: "完了", color: Orange.defaultOrange)
+                circleAnnotation(label: "学習中", color: RoyalBlue.semiOpaque)
+                Spacer()
+            }
+            .frame(height: 140)
+            
+            Spacer()
         }
-        .foregroundStyle(.red)
     }
     
     @ViewBuilder
-    private var wordListButton: some View {
+    private func circleAnnotation(label: String, color: Color) -> some View {
+        HStack {
+            Circle()
+                .fill(color)
+                .frame(width: responsiveSize(16, 20), height: responsiveSize(16, 20))
+            Text(label)
+                .fontWeight(.medium)
+                .font(.system(size: responsiveSize(16, 20)))
+        }
+    }
+    
+    @ViewBuilder
+    private var subButtonView: some View {
+        
+        HStack {
+            /// 「未学習の単語数」!=「全単語数」の場合のみ表示
+            if bookSharedData.cardsContainer[LearnRange.notLearned.rawValue].count != bookSharedData.cardsContainer[LearnRange.all.rawValue].count {
+                subButton(label: "リセット",
+                          systemName: "arrow.clockwise",
+                          color: .red) {
+                    resetAction()
+                }
+            }
+            Spacer()
+            subButton(label: "単語一覧",
+                      systemName: "info.circle.fill",
+                      color: .blue) {
+                bookSharedData.path.append(.wordList)
+            }
+        }
+        .padding(.horizontal, 40)
+        .font(.system(size: responsiveSize(14, 20)))
+        .fontWeight(.bold)
+    }
+
+    
+    @ViewBuilder
+    private func subButton(label: String, systemName: String, color: Color, action: @escaping () -> Void) -> some View {
         
         Button {
-            bookSharedData.path.append(.wordList)
+            action()
         } label: {
             HStack {
-                Image(systemName: "info.circle.fill")
-                Text("単語一覧")
+                Image(systemName: systemName)
+                    .font(.system(size: responsiveSize(18, 22)))
+                Text(label)
                     .fontWeight(.medium)
             }
-            .foregroundStyle(.blue)
+            .foregroundStyle(color)
             .padding(.horizontal, 16)
             .padding(.vertical, 2)
             .background(.white)
             .cornerRadius(responsiveSize(12, 15))
-            .shadow(color: .gray.opacity(0.8), radius: 1, x: 0, y: 1)
+            .shadow(color: .gray.opacity(0.8), radius: 2, x: 0, y: 2)
         }
     }
 }
@@ -104,9 +141,6 @@ struct LearnSelectView: ResponsiveView {
 extension LearnSelectView {
     
     func resetAction() {
-        
-        /// 「未学習の単語数」!=「全単語数」の場合のみ rest を行う
-        guard bookSharedData.cardsContainer[LearnRange.notLearned.rawValue].count != bookSharedData.cardsContainer[LearnRange.all.rawValue].count else { return }
         
         alertSharedData.showSelectiveAlert(title: "現在の進捗を\nリセットしますか？",
                                            message: "",
