@@ -42,6 +42,7 @@ extension SwipeView {
         /// 次の単語カードに移る関数
         func goNext() async {
             try? await Task.sleep(nanoseconds: 0_200_000_000)
+            learnManager.hideSettings()
             self.isFlipped = false
             self.offset.width = 0
             learnManager.topCardIndex += 1

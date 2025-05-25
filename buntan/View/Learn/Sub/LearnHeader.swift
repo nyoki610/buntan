@@ -22,8 +22,6 @@ struct LearnHeader: ResponsiveView, LearnViewProtocol {
     var isBookView: Bool { learnMode != nil }
     private var isTypeView: Bool { learnMode == .type }
     
-    @State var sampleBool: Bool = false
-    
     init(geometry: GeometryProxy,
          learnMode: LearnMode?,
          cards: [Card],
@@ -69,33 +67,54 @@ struct LearnHeader: ResponsiveView, LearnViewProtocol {
                 alignment: .bottom
             )
             
-            HStack {
-                if isBookView {
+            if learnManager.showSettings {
+                
+                HStack {
+                    if isBookView {
+                        Spacer()
+                        settingToggle(image: .shuffle,
+                                      label: "シャッフル",
+                                      subLabel: nil,
+                                      targetBool: $learnManager.shouldShuffle) {
+                            shuffleAction()
+                        }
+                    }
+                    
                     Spacer()
-                    settingToggle(image: .shuffle,
-                                  label: "シャッフル",
-                                  subLabel: nil,
-                                  targetBool: $learnManager.shouldShuffle) {
-                        shuffleAction()
+                    settingToggle(image: .speakerWave2Fill,
+                                  label: "音声を",
+                                  subLabel: "自動再生",
+                                  targetBool: $learnManager.shouldReadOut)
+                    Spacer()
+
+                    if isBookView {
+                        settingToggle(image: isTypeView ? .character : .textformatAbc,
+                                      label: isTypeView ? "イニシャルを" : "例文を",
+                                      subLabel: "表示",
+                                      targetBool: isTypeView ? $learnManager.showInitial :  $learnManager.showSentence)
+                        Spacer()
                     }
                 }
-                
-                Spacer()
-                settingToggle(image: .speakerWave2Fill,
-                              label: "音声を",
-                              subLabel: "自動再生",
-                              targetBool: $learnManager.shouldReadOut)
-                Spacer()
-
-                if isBookView {
-                    settingToggle(image: isTypeView ? .character : .textformatAbc,
-                                  label: isTypeView ? "イニシャルを" : "例文を",
-                                  subLabel: "表示",
-                                  targetBool: isTypeView ? $learnManager.showInitial :  $learnManager.showSentence)
+                .padding(.top, 10)
+            } else {
+                HStack {
                     Spacer()
+                    Button {
+                        withAnimation(.easeOut(duration: 0.2)) {
+                            learnManager.showSettings = true
+                        }
+                    } label: {
+                        HStack {
+                            Image(systemName: "chevron.down")
+                            Text("設定を表示")
+                        }
+                        
+                        .foregroundStyle(.black.opacity(0.8))
+                    }
                 }
+                .padding(.top, 10)
+                .padding(.horizontal, 20)
             }
-            .padding(.top, 10)
             
         }
     }

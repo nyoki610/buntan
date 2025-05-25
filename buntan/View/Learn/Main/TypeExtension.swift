@@ -37,7 +37,7 @@ extension TypeView {
             
             /// 最終以外の処理
             if nextCardExist {
-                
+                learnManager.hideSettings()
                 learnManager.topCardIndex += 1
                 userInput = ""
                 isAnswering = true
@@ -61,7 +61,7 @@ extension TypeView {
     }
     
     func nextButtonAction() {
-        
+        learnManager.hideSettings()
         learnManager.addIndexToList(false)
         isAnswering = true
         learnManager.isKeyboardActive = true

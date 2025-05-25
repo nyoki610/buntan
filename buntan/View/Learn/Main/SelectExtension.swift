@@ -24,6 +24,7 @@ extension SelectView {
         learnManager.addIndexToList(isCorrect)
         
         if nextCardExist {
+            learnManager.hideSettings()
             learnManager.topCardIndex += 1
             learnManager.readOutTopCard()
         } else {
