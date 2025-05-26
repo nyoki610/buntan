@@ -84,7 +84,7 @@ struct TypeView: ResponsiveView, LearnViewProtocol {
             }
             
             Text(topCard.translation)
-                .fontSize(responsiveSize(15, 28))
+                .fontSize(responsiveSize(18, 28))
                 .padding(.top, responsiveSize(0, 12))
                 .fixedSize(horizontal: false, vertical: true)
                 .lineLimit(2)

@@ -34,7 +34,7 @@ struct LearnButton: ResponsiveView {
 
         HStack {
             
-            if learnMode != nil {
+            if learnMode != nil && learnManager.topCardIndex > 0 {
                 
                 customButton(label: "ひとつ",
                              subLabel: "戻る",

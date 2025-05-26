@@ -63,14 +63,16 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
             .font(.system(size: 20))
             .opacity(animationController == cards.count ? 0.0 : 1.0)
             
-            HStack {
-                Image(systemName: "hand.tap.fill")
-                Text("タップして訳を表示")
+            if learnManager.showSettings {
+                HStack {
+                    Image(systemName: "hand.tap.fill")
+                    Text("タップして訳を表示")
+                }
+                .padding(.top, 10)
+                .fontWeight(.bold)
+                .fontSize(responsiveSize(16, 24))
+                .foregroundColor(.black.opacity(0.8))
             }
-            .padding(.top, 10)
-            .fontWeight(.bold)
-            .fontSize(responsiveSize(16, 24))
-            .foregroundColor(.gray)
         }
     }
     
@@ -90,10 +92,12 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
                 
                 Spacer()
                 
-                Text("左右にスワイプして次の単語へ")
-                .fontSize(responsiveSize(16, 24))
-                    .fontWeight(.bold)
-                    .foregroundColor(.gray)
+                if learnManager.showSettings {
+                    Text("左右にスワイプして次の単語へ")
+                        .fontSize(responsiveSize(16, 24))
+                        .fontWeight(.bold)
+                        .foregroundColor(.black.opacity(0.8))
+                }
                 
                 Spacer()
                 
@@ -102,7 +106,6 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
                            systemName: "arrowshape.turn.up.right.fill",
                            color: Orange.defaultOrange)
             }
-            .fontSize(responsiveSize(20, 30))
             .padding(.horizontal, responsiveSize(20, 60))
             .padding(.bottom, 20)
             .opacity(0.8)
@@ -123,14 +126,16 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
                 }
             }
             
-            HStack {
-                Image(systemName: "hand.tap.fill")
-                Text("タップして意味を表示")
+            if learnManager.showSettings {
+                HStack {
+                    Image(systemName: "hand.tap.fill")
+                    Text("タップして意味を表示")
+                }
+                .padding(.top, 10)
+                .fontWeight(.bold)
+                .fontSize(responsiveSize(16, 24))
+                .foregroundColor(.black.opacity(0.8))
             }
-            .padding(.top, 10)
-            .fontWeight(.bold)
-            .fontSize(responsiveSize(16, 24))
-            .foregroundColor(.gray)
         }
     }
     
@@ -145,10 +150,11 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
         VStack(alignment: alignment) {
             Text(label)
                 .padding(.bottom, 4)
+                .font(.system(size: responsiveSize(18, 28)))
 
             Image(systemName: systemName)
+                .font(.system(size: responsiveSize(24, 28)))
         }
-        .font(.system(size: responsiveSize(16, 28)))
         .fontWeight(.bold)
         .foregroundStyle(color)
     }
