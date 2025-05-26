@@ -63,12 +63,12 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
             .font(.system(size: 20))
             .opacity(animationController == cards.count ? 0.0 : 1.0)
             
-            /// 操作ガイドは常に表示した方が良さそうなので targetBool = true に設定（2025/03/20 時点）
-            PhantomHStack(targetBool: true, {
-                Img.img(.handTapFill, color: .gray)
+            HStack {
+                Image(systemName: "hand.tap.fill")
                 Text("タップして訳を表示")
-            }, height: 20)
+            }
             .padding(.top, 10)
+            .fontWeight(.bold)
             .fontSize(responsiveSize(16, 24))
             .foregroundColor(.gray)
         }
@@ -85,9 +85,8 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
                 
                 swipeGuide(alignment: .leading,
                            label: "学習中",
-                           img: .arrowshapeTurnUpLeftFill,
-                           color: RoyalBlue.defaultRoyal,
-                           size: responsiveSize(16, 28))
+                           systemName: "arrowshape.turn.up.left.fill",
+                           color: RoyalBlue.defaultRoyal)
                 
                 Spacer()
                 
@@ -100,9 +99,8 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
                 
                 swipeGuide(alignment: .trailing,
                            label: "覚えた！",
-                           img: .arrowshapeTurnUpRightFill,
-                           color: Orange.defaultOrange,
-                           size: responsiveSize(16, 28))
+                           systemName: "arrowshape.turn.up.right.fill",
+                           color: Orange.defaultOrange)
             }
             .fontSize(responsiveSize(20, 30))
             .padding(.horizontal, responsiveSize(20, 60))
@@ -125,31 +123,33 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
                 }
             }
             
-            /// 操作ガイドは常に表示した方が良さそうなので targetBool = true に設定（2025/03/20 時点）
-            PhantomHStack(targetBool: true, {
-                Img.img(.handTapFill,
-                        size: responsiveSize(16, 24),
-                        color: .gray)
+            HStack {
+                Image(systemName: "hand.tap.fill")
                 Text("タップして意味を表示")
-                    .fontSize(responsiveSize(16, 24))
-            }, height: 20)
-            .padding(.top, 20)
+            }
+            .padding(.top, 10)
+            .fontWeight(.bold)
+            .fontSize(responsiveSize(16, 24))
             .foregroundColor(.gray)
         }
     }
     
     @ViewBuilder
-    private func swipeGuide(alignment: HorizontalAlignment, label: String, img: Img, color: Color, size: CGFloat) -> some View {
+    private func swipeGuide(
+        alignment: HorizontalAlignment,
+        label: String,
+        systemName: String,
+        color: Color
+    ) -> some View {
         
         VStack(alignment: alignment) {
             Text(label)
                 .padding(.bottom, 4)
-                .bold()
-                .fontSize(size)
 
-            Img.img(img, size: size, color: color)
-               
+            Image(systemName: systemName)
         }
-        .foregroundColor(color)
+        .font(.system(size: responsiveSize(16, 28)))
+        .fontWeight(.bold)
+        .foregroundStyle(color)
     }
 }

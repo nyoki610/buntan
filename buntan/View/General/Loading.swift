@@ -27,9 +27,10 @@ struct Loading: ResponsiveView {
                 
                 Spacer()
 
-                Img.img(.checkmarkCircle,
-                        size: responsiveSize(60, 100),
-                        color: .green.opacity(0.5))
+                Image(systemName: "checkmark.circle")
+                    .font(.system(size: responsiveSize(60, 100)))
+                    .foregroundColor(.green.opacity(0.5))
+                    
                 .frame(maxWidth: .infinity)
                 
                 Spacer()

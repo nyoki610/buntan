@@ -59,8 +59,8 @@ struct SectionListView: ResponsiveView {
                     .font(.system(size: responsiveSize(14, 18)))
                     .frame(width: responsiveSize(80, 92))
                 
-                Img.img(.chevronRight2,
-                        color: .black)
+                Image(systemName: "chevron.right.2")
+                    
             }
             .foregroundColor(.black)
             .fontWeight(.bold)

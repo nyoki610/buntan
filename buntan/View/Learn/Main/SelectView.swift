@@ -109,10 +109,11 @@ struct SelectView: ResponsiveView, LearnViewProtocol {
                         
                         HStack {
                             
-                            Img.img(isCorrect ? .circle : .xmark,
-                                    size: (index != 4) ? responsiveSize(30, 40) : 24,
-                                    color: isCorrect ? Orange.defaultOrange : RoyalBlue.defaultRoyal)
-                            .padding(.leading, responsiveSize(6, 12))
+                            Image(systemName: isCorrect ? "circle" : "xmark")
+                                .font(.system(size: (index != 4) ? responsiveSize(30, 40) : 24))
+                                .foregroundColor(isCorrect ? Orange.defaultOrange : RoyalBlue.defaultRoyal)
+                                .fontWeight(.bold)
+                                .padding(.leading, responsiveSize(6, 12))
                             
                             Spacer()
                         }

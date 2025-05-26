@@ -24,7 +24,7 @@ extension LearnSelectView {
             selectButton(labelTop: "英→日",
                          labelTopColor: .black,
                          labelBottom: "カード",
-                         image: .rectangleOnRectangleAngled,
+                         systemName: "rectangle.on.rectangle.angled",
                          targetRange: nil,
                          targetMode: .swipe)
             
@@ -33,7 +33,7 @@ extension LearnSelectView {
             selectButton(labelTop: "英→日",
                          labelTopColor: .black,
                          labelBottom: "4択",
-                         image: .listBullet,
+                         systemName: "list.bullet",
                          targetRange: nil,
                          targetMode: .select)
             
@@ -42,7 +42,7 @@ extension LearnSelectView {
             selectButton(labelTop: "日→英",
                          labelTopColor: .black,
                          labelBottom: "タイピング",
-                         image: .keyboardFill,
+                         systemName: "keyboard.fill",
                          targetRange: nil,
                          targetMode: .type)
         }
@@ -58,7 +58,7 @@ extension LearnSelectView {
             selectButton(labelTop: bookSharedData.cardsContainer[LearnRange.notLearned.rawValue].count.string,
                          labelTopColor: .gray,
                          labelBottom: "未学習",
-                         image: .textBookClosedFill,
+                         systemName: "text.book.closed.fill",
                          targetRange: .notLearned,
                          targetMode: nil)
             
@@ -67,7 +67,7 @@ extension LearnSelectView {
             selectButton(labelTop: bookSharedData.cardsContainer[LearnRange.learning.rawValue].count.string,
                          labelTopColor: RoyalBlue.semiOpaque,
                          labelBottom: "学習中",
-                         image: .bookmarkFill,
+                         systemName: "bookmark.fill",
                          targetRange: .learning,
                          targetMode: nil)
             
@@ -76,7 +76,7 @@ extension LearnSelectView {
             selectButton(labelTop: bookSharedData.cardsContainer[LearnRange.all.rawValue].count.string,
                          labelTopColor: .black,
                          labelBottom: "すべて",
-                         image: .booksVerticalFill,
+                         systemName: "books.vertical.fill",
                          targetRange: .all,
                          targetMode: nil)
         }
@@ -99,7 +99,7 @@ extension LearnSelectView {
         labelTop: String,
         labelTopColor: Color,
         labelBottom: String,
-        image: Img,
+        systemName: String,
         targetRange: LearnRange?,
         targetMode: LearnMode?
     ) -> some View {
@@ -129,7 +129,7 @@ extension LearnSelectView {
                     .fontSize(responsiveSize(14, 18))
                     .foregroundColor(labelTopColor)
                     .fontWeight(.bold)
-                Image(systemName: image.rawValue)
+                Image(systemName: systemName)
                     .resizable()
                     .fontSize(responsiveSize(16, 24))
                     .aspectRatio(contentMode: .fit)

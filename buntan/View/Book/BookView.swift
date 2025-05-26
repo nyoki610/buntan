@@ -67,11 +67,11 @@ struct BookView: ResponsiveView {
             }
             .font(.system(size: responsiveSize(14, 20)))
             
-            Img.img(.chartBarFill,
-                    variableValue: variableValue,
-                    size: responsiveSize(30, 40),
-                    color: Orange.defaultOrange)
-            
+            Image(systemName: "chart.bar.fill",
+                  variableValue: variableValue)
+            .font(.system(size: responsiveSize(30, 40)))
+            .foregroundStyle(Orange.defaultOrange)
+                
             Text("\(todayLearnCount) words")
                 .padding(.top, 10)
 
@@ -119,8 +119,7 @@ struct BookView: ResponsiveView {
             HStack {
                 Text(bookType.buttonLabel)
                     .padding(.trailing, 10)
-                Img.img(.chevronRight2,
-                        color: .black)
+                Image(systemName: "chevron.right.2")
             }
             .fontWeight(.heavy)
             .font(.system(size: responsiveSize(18, 24)))

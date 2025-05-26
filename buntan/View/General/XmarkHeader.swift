@@ -12,9 +12,9 @@ struct XmarkHeader: ResponsiveView {
             Button {
                 action()
             } label: {
-                Img.img(.xmark,
-                        size: responsiveSize(18, 24),
-                        color: .black)
+                Image(systemName: "xmark")
+                    .font(.system(size: responsiveSize(18, 24)))
+                    .foregroundColor(.black)
             }
             
             Spacer()

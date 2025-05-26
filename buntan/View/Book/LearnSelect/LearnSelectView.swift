@@ -30,7 +30,8 @@ struct LearnSelectView: ResponsiveView {
                     
                     Spacer()
                     
-                    StartButton(title: "学習を開始 →") {
+                    StartButton(label: "学習を開始 →",
+                                color: Orange.defaultOrange) {
                         guard let options = bookSharedData.selectedGrade.setupOptions(
                             booksList: bookSharedData.booksList,
                             cards: bookSharedData.cards,

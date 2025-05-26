@@ -21,11 +21,11 @@ extension MainView {
                 HStack {
                     Spacer()
 
-                    tabButton(.bookFill, "単語帳", .book)
+                    tabButton("book.fill", "単語帳", .book)
 
-                    tabButton(.checklistChecked, "テスト", .check)
+                    tabButton("checklist.checked", "テスト", .check)
                         .padding(.horizontal, responsiveSize(20, 60))
-                    tabButton(.shoeprintsFill, "記録", .record)
+                    tabButton("shoeprints.fill", "記録", .record)
                         .padding(.bottom, responsiveSize(0, 20))
                     
                     Spacer()
@@ -36,7 +36,7 @@ extension MainView {
     }
     
     @ViewBuilder
-    private func tabButton(_ image: Img, _ title: String, _ targetTab: TabType) -> some View {
+    private func tabButton(_ systemName: String, _ title: String, _ targetTab: TabType) -> some View {
         
         let isSelected = self.selectedTab == targetTab
         
@@ -52,9 +52,13 @@ extension MainView {
                         .foregroundColor(isSelected ? .orange.opacity(0.3) : .gray.opacity(0.1))
                         .frame(height: responsiveSize(60, 90))
                     
-                    Img.img(image,
-                            size: responsiveSize(26, 39),
-                            color: isSelected ? Orange.defaultOrange : .gray)
+
+                    Image(systemName: systemName)
+                        .font(.system(size: responsiveSize(26, 39)))
+                        .fontWeight(.bold)
+                        .foregroundStyle(isSelected ? Orange.defaultOrange : .gray)
+                        
+                        
                 }
 
                 Text(title)

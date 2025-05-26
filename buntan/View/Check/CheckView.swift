@@ -140,7 +140,8 @@ struct CheckView: ResponsiveView {
         .padding(.bottom, 20)
         .font(.system(size: responsiveSize(16, 20)))
         
-        StartButton(title: "テストを開始　→") {
+        StartButton(label: "テストを開始　→",
+                    color: Orange.defaultOrange) {
             setupCheck()
         }
     }
@@ -163,9 +164,10 @@ struct CheckView: ResponsiveView {
                             .foregroundColor(.gray.opacity(0.1))
                             .frame(height: 40)
                         
-                        Img.img(.shoeprintsFill,
-                                size: responsiveSize(18, 20),
-                                color: .gray)
+                        Image(systemName: "shoeprints.fill")
+                            .font(.system(size: responsiveSize(18, 20)))
+                            .foregroundColor(.gray)
+                            
                     }
 
                     Text("記録")

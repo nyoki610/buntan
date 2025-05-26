@@ -26,9 +26,10 @@ struct Header: ResponsiveView {
                     guard path.count != 0 else { return }
                     path.removeLast()
                 } label: {
-                    Img.img(.arrowshapeTurnUpLeft,
-                            size: responsiveSize(18, 24),
-                            color: .black)
+                    Image(systemName: "arrowshape.turn.up.left")
+                        .font(.system(size: responsiveSize(18, 24)))
+                        .foregroundColor(.black)
+                        .fontWeight(.bold)
                 }
                 Spacer()
             }

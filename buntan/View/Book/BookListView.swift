@@ -18,7 +18,10 @@ struct BookListView: ResponsiveView {
 
                 HStack {
                     Spacer()
-                    Img.img(.flagFill, color: Orange.defaultOrange)
+
+                    Image(systemName: "flag.fill")
+                        .foregroundStyle(Orange.defaultOrange)
+                    
                     Text(bookSharedData.selectedBookType.headerTitle)
                     Spacer()
                 }
@@ -102,9 +105,8 @@ struct BookListView: ResponsiveView {
                     Text("\(book.cardsCount) words")
                         .font(.system(size: responsiveSize(14, 20)))
                         .padding(.trailing, 10)
-                    
-                    Img.img(.chevronRight2,
-                            color: .black.opacity(disabled ? 0.5 : 1.0))
+
+                    Image(systemName: "chevron.right.2")
                 }
                 .foregroundColor(.black.opacity(disabled ? 0.5 : 1.0))
                 .fontWeight(.bold)

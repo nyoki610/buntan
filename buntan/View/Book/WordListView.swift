@@ -35,10 +35,20 @@ struct WordListView: ResponsiveView {
                     HStack {
                         Spacer()
                         Text("正解として出題・・・")
-                        Img.img(.circle, color: Orange.defaultOrange)
+
+                        Image(systemName: "circle")
+                            .foregroundStyle(Orange.defaultOrange)
+                            .font(.system(size: 17))
+                            .fontWeight(.bold)
+                            
                         Spacer()
                         Text("選択肢として出題・・・")
-                        Img.img(.xmark, color: RoyalBlue.defaultRoyal)
+
+                        Image(systemName: "xmark")
+                            .foregroundStyle(RoyalBlue.defaultRoyal)
+                            .font(.system(size: 17))
+                            .fontWeight(.bold)
+                        
                         Spacer()
                     }
                     .font(.system(size: responsiveSize(13, 20)))

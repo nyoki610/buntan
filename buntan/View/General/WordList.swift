@@ -107,13 +107,15 @@ struct WordList<Content: View>: ResponsiveView {
                 .fontWeight(info.isAnswer ? .bold : .regular)
                 .foregroundColor(info.isAnswer ? .black.opacity(0.6) : .gray)
             
-            Img.img(info.isAnswer ? .circle : .xmark,
-                       color: info.isAnswer ? Orange.defaultOrange : RoyalBlue.semiOpaque)
+            Image(systemName: info.isAnswer ? "circle" : "xmark")
+                .foregroundColor(info.isAnswer ? Orange.defaultOrange : RoyalBlue.semiOpaque)
+                .fontWeight(.heavy)
+                
         }
         .frame(width: responsiveSize(110, 120))
         .fontSize(responsiveSize(12, 16))
     }
-    
+
     @ViewBuilder
     private func wordCardView(_ index: Int, _ card: Card) -> some View {
 
@@ -127,8 +129,9 @@ struct WordList<Content: View>: ResponsiveView {
                     if correctIndexList == nil {
                         Text((index + 1).string)
                     } else {
-                        Img.img(isCorrect ? .circle : .xmark,
-                                color: isCorrect ? Orange.defaultOrange : RoyalBlue.defaultRoyal)
+                        Image(systemName: isCorrect ? "circle" : "xmark")
+                            .foregroundColor(isCorrect ? Orange.defaultOrange : RoyalBlue.semiOpaque)
+                            .fontWeight(.heavy)
                     }
                 }
                 .frame(width: 30)

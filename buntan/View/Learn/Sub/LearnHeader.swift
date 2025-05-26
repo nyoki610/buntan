@@ -45,7 +45,9 @@ struct LearnHeader: ResponsiveView, LearnViewProtocol {
                     Button {
                         saveAction(isBookView: isBookView)
                     } label: {
-                        Img.img(.xmark, size: responsiveSize(18, 24), color: .black)
+                        Image(systemName: "xmark")
+                            .font(.system(size: responsiveSize(18, 24)))
+                            .foregroundColor(.black)
                     }
                     
                     Spacer()
@@ -72,25 +74,25 @@ struct LearnHeader: ResponsiveView, LearnViewProtocol {
                 HStack {
                     if isBookView {
                         Spacer()
-                        settingToggle(image: .shuffle,
-                                      label: "シャッフル",
+                        settingToggle(label: "シャッフル",
                                       subLabel: nil,
+                                      systemName: "shuffle",
                                       targetBool: $learnManager.shouldShuffle) {
                             shuffleAction()
                         }
                     }
                     
                     Spacer()
-                    settingToggle(image: .speakerWave2Fill,
-                                  label: "音声を",
+                    settingToggle(label: "音声を",
                                   subLabel: "自動再生",
+                                  systemName: "speaker.wave.2.fill",
                                   targetBool: $learnManager.shouldReadOut)
                     Spacer()
 
                     if isBookView {
-                        settingToggle(image: isTypeView ? .character : .textformatAbc,
-                                      label: isTypeView ? "イニシャルを" : "例文を",
+                        settingToggle(label: isTypeView ? "イニシャルを" : "例文を",
                                       subLabel: "表示",
+                                      systemName: isTypeView ? "character" : "textformat.abc",
                                       targetBool: isTypeView ? $learnManager.showInitial :  $learnManager.showSentence)
                         Spacer()
                     }
@@ -140,7 +142,6 @@ struct LearnHeader: ResponsiveView, LearnViewProtocol {
                     .cornerRadius(3)
                     .foregroundColor(RoyalBlue.defaultRoyal)
 
-                
                 Spacer()
                 
                 Rectangle()
@@ -150,16 +151,38 @@ struct LearnHeader: ResponsiveView, LearnViewProtocol {
             }
         }
     }
-    
+
     @ViewBuilder
-    private func settingToggle(image: Img, label: String, subLabel: String?, targetBool: Binding<Bool>, action: (() -> Void)? = nil) -> some View {
+    private func settingToggle(
+        label: String,
+        subLabel: String?,
+        systemName: String,
+        targetBool: Binding<Bool>,
+        action: (() -> Void)? = nil
+    ) -> some View {
+        
+        let size = responsiveSize(20, 24)
+        let labelSize = size / 1.6
+        
         HStack {
-            CustomImage(image: image,
-                        size: responsiveSize(18, 24),
-                        color: targetBool.wrappedValue ? .black : .gray,
-                        label: label,
-                        subLabel: subLabel)
-                .padding(.trailing, 4)
+            
+            VStack {
+
+                Image(systemName: systemName)
+                    .font(.system(size: size))
+                    
+                VStack {
+                    Text(label)
+                    if let subLabel = subLabel {
+                        Text(subLabel)
+                    }
+                }
+                .font(.system(size: labelSize))
+                .padding(.top, 4)
+            }
+            .foregroundStyle(.black)
+            .fontWeight(.bold)
+            .padding(.trailing, 4)
             
             CustomToggle(isOn: targetBool, color: Orange.egg, scale: responsiveSize(1.0, 1.3), action: action)
         }
