@@ -127,8 +127,10 @@ struct LearnHeader: ResponsiveView, LearnViewProtocol {
         let blueWidth = geometry.size.width *
         (learnManager.cards.count > 0 ? CGFloat(learnManager.leftCardsIndexList.count) / CGFloat(learnManager.cards.count) : 0)
         
-        let pinkWidth = geometry.size.width *
+        let orangeWidth = geometry.size.width *
         (learnManager.cards.count > 0 ? CGFloat(learnManager.rightCardsIndexList.count) / CGFloat(learnManager.cards.count) : 0)
+        
+        let progressRectangleHeight: CGFloat = 8.0
         
         ZStack {
             
@@ -138,14 +140,14 @@ struct LearnHeader: ResponsiveView, LearnViewProtocol {
             
             HStack(spacing: 0) {
                 Rectangle()
-                    .frame(width: blueWidth, height: 5.0)
+                    .frame(width: blueWidth, height: progressRectangleHeight)
                     .cornerRadius(3)
                     .foregroundColor(RoyalBlue.defaultRoyal)
 
                 Spacer()
                 
                 Rectangle()
-                    .frame(width: pinkWidth,height: 5.0)
+                    .frame(width: orangeWidth, height: progressRectangleHeight)
                     .cornerRadius(3)
                     .foregroundColor(Orange.defaultOrange)
             }

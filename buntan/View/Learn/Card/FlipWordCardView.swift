@@ -5,6 +5,8 @@ struct FlipWordCardView: ResponsiveView {
     @Environment(\.deviceType) var deviceType: DeviceType
     
     @State private var isFlipped = false
+    @State private var isFlippedWithNoAnimation = false
+
     let card: Card
     let showPhrase: Bool
 
@@ -17,7 +19,7 @@ struct FlipWordCardView: ResponsiveView {
             VStack {
                 
                 Spacer()
-                if !isFlipped {
+                if !isFlippedWithNoAnimation {
                     VStack {
                      
                         Text(card.word)
@@ -70,8 +72,11 @@ struct FlipWordCardView: ResponsiveView {
             axis: (x: 0, y: 1, z: 0)
         )
         .onTapGesture {
-            withAnimation {
+            withAnimation(.easeInOut(duration: 0.4)) {
                 isFlipped.toggle()
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                isFlippedWithNoAnimation.toggle()
             }
         }
     }

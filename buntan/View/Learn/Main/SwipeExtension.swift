@@ -44,6 +44,7 @@ extension SwipeView {
             try? await Task.sleep(nanoseconds: 0_200_000_000)
             learnManager.hideSettings()
             self.isFlipped = false
+            self.isFlippedWithNoAnimation = false
             self.offset.width = 0
             learnManager.topCardIndex += 1
             learnManager.animationController += 1

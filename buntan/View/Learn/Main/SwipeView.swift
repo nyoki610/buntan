@@ -15,6 +15,7 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
 
     @State var offset = CGSize.zero
     @State var isFlipped: Bool = false
+    @State var isFlippedWithNoAnimation: Bool = false
 
     private var animationController: Int { learnManager.animationController }
     private var nonAnimationCard: Card { animationController < cards.count ? cards[animationController] : EmptyModel.card }
@@ -59,7 +60,8 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
             
             FlipSentenceCardView(card: nonAnimationCard,
                                  isSelectView: false,
-                                 isFlipped: $isFlipped)
+                                 isFlipped: $isFlipped,
+                                 isFlippedWithNoAnimation: $isFlippedWithNoAnimation)
             .font(.system(size: 20))
             .opacity(animationController == cards.count ? 0.0 : 1.0)
             
@@ -106,7 +108,7 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
                            systemName: "arrowshape.turn.up.right.fill",
                            color: Orange.defaultOrange)
             }
-            .padding(.horizontal, responsiveSize(20, 60))
+            .padding(.horizontal, responsiveSize(24, 60))
             .padding(.bottom, 20)
             .opacity(0.8)
             /// ------------------------------

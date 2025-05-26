@@ -7,11 +7,18 @@ struct FlipSentenceCardView: ResponsiveView {
     let card: Card
     let isSelectView: Bool
     @Binding var isFlipped: Bool
+    @Binding var isFlippedWithNoAnimation: Bool
     
-    init(card: Card, isSelectView: Bool, isFlipped: Binding<Bool> = .constant(false)) {
+    init(
+        card: Card,
+        isSelectView: Bool,
+        isFlipped: Binding<Bool> = .constant(false),
+        isFlippedWithNoAnimation: Binding<Bool> = .constant(false)
+    ) {
         self.card = card
         self.isSelectView = isSelectView
         self._isFlipped = isFlipped
+        self._isFlippedWithNoAnimation = isFlippedWithNoAnimation
     }
 
     var body: some View {
@@ -24,7 +31,7 @@ struct FlipSentenceCardView: ResponsiveView {
                 
                 Spacer()
 
-                if !isFlipped {
+                if !isFlippedWithNoAnimation {
                     
                     if card.isSentenceExist {
                         
@@ -87,8 +94,11 @@ struct FlipSentenceCardView: ResponsiveView {
         )
         .onTapGesture {
             guard card.isSentenceExist else { return }
-            withAnimation {
+            withAnimation(.easeInOut(duration: 0.4)) {
                 isFlipped.toggle()
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                isFlippedWithNoAnimation.toggle()
             }
         }
     }
