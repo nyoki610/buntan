@@ -15,7 +15,7 @@ class Card: Hashable {
     let infoList: [Info]
     var statusFreq: CardStatus
     var statusPos: CardStatus
-    
+
 
     init(id: String,
          index: Int,

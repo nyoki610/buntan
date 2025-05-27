@@ -76,6 +76,7 @@ struct BookView: ResponsiveView {
                 
             Text("\(todayLearnCount) words")
                 .padding(.top, 10)
+                .font(.system(size: responsiveSize(17, 24)))
 
             Spacer()
         }
