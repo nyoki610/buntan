@@ -45,8 +45,8 @@ struct LearnSelectCircle: View {
             secondCircle.circle(maxValue: maxValue, circleWidth: circleWidth)
 
             Text(String(format: "%.0f%%", CGFloat(progressPercentage)))
-                .font(.largeTitle)
-                .bold()
+                .font(.system(size: size * 0.2))
+                .fontWeight(.bold)
         }
         .frame(width: size, height: size)
         .padding(.top, 30)

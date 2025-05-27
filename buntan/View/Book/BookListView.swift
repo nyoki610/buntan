@@ -39,19 +39,19 @@ struct BookListView: ResponsiveView {
                 .padding(.vertical, 10)
                 .background(bookSharedData.selectedGrade.color)
                 .cornerRadius(10)
-                .padding(.horizontal, 40)
+                .padding(.horizontal, responsiveSize(40, 120))
                 .padding(.top, 4)
                 .padding(.bottom, 10)
                 
                 listView
-                    .padding(.horizontal, responsiveSize(30, 70))
+                    .padding(.horizontal, responsiveSize(30, 100))
                 
                 if bookSharedData.selectedBookType == .freq {
                     HStack {
                         Spacer()
                         detailbutton
                     }
-                    .padding(.horizontal, responsiveSize(30, 70))
+                    .padding(.horizontal, responsiveSize(30, 100))
                     .padding(.top, 20)
                 }
                 

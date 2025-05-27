@@ -30,14 +30,13 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
                             learnMode: .swipe,
                             cards: bookSharedData.cards,
                             options: bookSharedData.options)
-                .padding(.bottom, 20)
+                Spacer()
                 
                 if learnManager.showSentence {
                     sentenceCardView
-                        .padding(.top, 20)
+                    
+                    Spacer()
                 }
-                
-                Spacer()
 
                 wordCardView
 
@@ -108,7 +107,7 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
                            systemName: "arrowshape.turn.up.right.fill",
                            color: Orange.defaultOrange)
             }
-            .padding(.horizontal, responsiveSize(24, 60))
+            .padding(.horizontal, responsiveSize(24, 72))
             .padding(.bottom, 20)
             .opacity(0.8)
             /// ------------------------------

@@ -19,13 +19,15 @@ struct BookView: ResponsiveView {
                         .padding(.top, 40)
                     
                     Spacer()
+                    Spacer()
                     
-                    selectButtonView(grade: .first)
-                        .padding(.bottom, 40)
+                    eachGradeView(grade: .first)
+
+                    Spacer()
                     
-                    selectButtonView(grade: .preFirst)
+                    eachGradeView(grade: .preFirst)
 
-
+                    Spacer()
                     Spacer()
                     Spacer()
                 }
@@ -83,7 +85,7 @@ struct BookView: ResponsiveView {
     }
     
     @ViewBuilder
-    private func selectButtonView(grade: Eiken) -> some View {
+    private func eachGradeView(grade: Eiken) -> some View {
         
         VStack(spacing: 0) {
             Text(grade.title)
@@ -94,9 +96,9 @@ struct BookView: ResponsiveView {
                 
             HStack {
                 Spacer()
-                customButton(grade: grade, bookType: .freq)
+                selectBookTypeButton(grade: grade, bookType: .freq)
                 Spacer()
-                customButton(grade: grade, bookType: .pos)
+                selectBookTypeButton(grade: grade, bookType: .pos)
                 Spacer()
             }
             .padding(.vertical, 20)
@@ -104,11 +106,11 @@ struct BookView: ResponsiveView {
         .foregroundColor(.black)
         .background(grade.color)
         .cornerRadius(10)
-        .padding(.horizontal, 10)
+        .padding(.horizontal, responsiveSize(10, 60))
     }
     
     @ViewBuilder
-    private func customButton(grade: Eiken, bookType: BookType) -> some View {
+    private func selectBookTypeButton(grade: Eiken, bookType: BookType) -> some View {
                 
         Button {
             guard let sheet = realmService.sheets.first(where: { $0.grade == grade }) else { return }
@@ -127,64 +129,5 @@ struct BookView: ResponsiveView {
             .background(.white)
             .cornerRadius(10)
         }
-    }
-
-
-    @ViewBuilder
-    private var selectButtonView: some View {
-        
-        
-        /// 「〇〇級」のボタンを横方向に ２個ずつ配置する
-        ForEach(Array(stride(from: 0, to: Eiken.allCases.count, by: 2)), id: \.self) { index in
-
-                if index + 1 < Eiken.allCases.count {
-                    HStack {
-                        Spacer()
-                        selectButton(Eiken.allCases[index])
-                        Spacer()
-                        selectButton(Eiken.allCases[index + 1])
-                        Spacer()
-                    }
-                    .padding(.bottom, responsiveSize(20, 40))
-                } else {
-                    /// 要素数が奇数の場合は最後の１個は中央寄せ
-                    selectButton(Eiken.allCases[index])
-                }
-            }
-    }
-    
-    @ViewBuilder
-    private func selectButton(_ grade: Eiken) -> some View {
-        
-        let sheet = realmService.sheets.first(where: { $0.grade == grade })
-        let buttonDisabled = (sheet == nil)
-        
-        Button {
-            guard let sheet = sheet else { return }
-            bookSharedData.selectedGrade = sheet.grade
-            bookSharedData.path.append(.bookList)
-        } label: {
-            
-            ZStack {
-
-                VStack {
-                    Text(grade.title)
-                        .foregroundColor(.white)
-                        .fontWeight(.heavy)
-                }
-                
-                 if buttonDisabled {
-                     
-                     Text("準備中")
-                         .foregroundColor(.gray)
-                         .bold()
-                 }
-            }
-            .font(.system(size: responsiveSize(18, 24)))
-            .frame(width: responsiveSize(160, 240), height: responsiveSize(50, 70))
-            .background(grade.color.opacity(buttonDisabled ? 0.2 : 0.8))
-            .cornerRadius(10)
-        }
-        .disabled(buttonDisabled)
     }
 }

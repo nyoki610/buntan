@@ -110,12 +110,13 @@ struct LearnHeader: ResponsiveView, LearnViewProtocol {
                             Image(systemName: "chevron.down")
                             Text("設定を表示")
                         }
+                        .font(.system(size: responsiveSize(16, 24)))
                         .fontWeight(.bold)
                         .foregroundStyle(.black.opacity(0.8))
                     }
                 }
                 .padding(.top, 10)
-                .padding(.horizontal, 20)
+                .padding(.horizontal, responsiveSize(20, 40))
             }
             
         }
@@ -163,7 +164,7 @@ struct LearnHeader: ResponsiveView, LearnViewProtocol {
         action: (() -> Void)? = nil
     ) -> some View {
         
-        let size = responsiveSize(20, 24)
+        let size = responsiveSize(20, 28)
         let labelSize = size / 1.8
         
         HStack {

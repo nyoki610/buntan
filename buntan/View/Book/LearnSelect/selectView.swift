@@ -11,7 +11,6 @@ extension LearnSelectView {
             selectModeView
                 .padding(.top, 30)
         }
-        .frame(width: responsiveSize(280, 360))
     }
     
     @ViewBuilder

@@ -22,11 +22,14 @@ struct LearnSelectView: ResponsiveView {
                     
                     subButtonView
                     
+                    Spacer()
+                    
                     progressView
                     
                     Spacer()
                     
                     selectView
+                        .frame(width: responsiveSize(280, 360))
                     
                     Spacer()
                     
@@ -54,13 +57,11 @@ struct LearnSelectView: ResponsiveView {
     var progressView: some View {
         
         HStack {
-         
-            Spacer()
             
             LearnSelectCircle(
                 firstCircle: .init(value: bookSharedData.allCount - bookSharedData.notLearnedCount, color: RoyalBlue.semiOpaque),
                 secondCircle: .init(value: bookSharedData.learnedCount, color: Orange.defaultOrange),
-                size: 140,
+                size: responsiveSize(140, 200),
                 maxValue: bookSharedData.allCount
             )
             
@@ -75,9 +76,8 @@ struct LearnSelectView: ResponsiveView {
                 Spacer()
             }
             .frame(height: 140)
-            
-            Spacer()
         }
+        .frame(width: responsiveSize(300, 400))
     }
     
     @ViewBuilder
@@ -111,7 +111,7 @@ struct LearnSelectView: ResponsiveView {
                 bookSharedData.path.append(.wordList)
             }
         }
-        .padding(.horizontal, 40)
+        .frame(width: responsiveSize(300, 420))
         .font(.system(size: responsiveSize(14, 20)))
         .fontWeight(.bold)
     }

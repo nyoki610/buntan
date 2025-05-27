@@ -75,7 +75,7 @@ struct SectionListView: ResponsiveView {
         }
         // 場合分けしたい？
         .buttonStyle(.plain)
-        .padding(.horizontal, responsiveSize(30, 70))
+        .padding(.horizontal, responsiveSize(30, 100))
         .padding(.vertical, 4)
     }
 }
