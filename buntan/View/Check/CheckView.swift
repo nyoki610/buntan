@@ -140,9 +140,8 @@ struct CheckView: ResponsiveView {
         .padding(.bottom, 20)
         .font(.system(size: responsiveSize(16, 20)))
         
-        TLButton(title: "テストを開始　→",
-                 textColor: .white,
-                 background: Orange.defaultOrange) {
+        StartButton(label: "テストを開始　→",
+                    color: Orange.defaultOrange) {
             setupCheck()
         }
     }
@@ -154,7 +153,9 @@ struct CheckView: ResponsiveView {
             
             HStack {
                 Spacer()
+                
                 Text("過去のテストの記録は")
+                
                 VStack {
                     
                     ZStack {
@@ -163,9 +164,10 @@ struct CheckView: ResponsiveView {
                             .foregroundColor(.gray.opacity(0.1))
                             .frame(height: 40)
                         
-                        Img.img(.shoeprintsFill,
-                                size: responsiveSize(18, 20),
-                                color: .gray)
+                        Image(systemName: "shoeprints.fill")
+                            .font(.system(size: responsiveSize(18, 20)))
+                            .foregroundColor(.gray)
+                            
                     }
 
                     Text("記録")

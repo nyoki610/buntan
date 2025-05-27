@@ -11,7 +11,7 @@ struct SectionListView: ResponsiveView {
         
         VStack {
             Header(path: $bookSharedData.path,
-                   title: "\(bookSharedData.selectedGrade.title) \(bookSharedData.selectedBook.title)")
+                   title: bookSharedData.selectedGrade.title + "   " + bookSharedData.selectedBook.title)
             
             Spacer()
             
@@ -59,8 +59,8 @@ struct SectionListView: ResponsiveView {
                     .font(.system(size: responsiveSize(14, 18)))
                     .frame(width: responsiveSize(80, 92))
                 
-                Img.img(.chevronRight2,
-                        color: .black)
+                Image(systemName: "chevron.right.2")
+                    
             }
             .foregroundColor(.black)
             .fontWeight(.bold)
@@ -75,7 +75,7 @@ struct SectionListView: ResponsiveView {
         }
         // 場合分けしたい？
         .buttonStyle(.plain)
-        .padding(.horizontal, responsiveSize(30, 70))
+        .padding(.horizontal, responsiveSize(30, 100))
         .padding(.vertical, 4)
     }
 }

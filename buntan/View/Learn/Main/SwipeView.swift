@@ -15,6 +15,7 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
 
     @State var offset = CGSize.zero
     @State var isFlipped: Bool = false
+    @State var isFlippedWithNoAnimation: Bool = false
 
     private var animationController: Int { learnManager.animationController }
     private var nonAnimationCard: Card { animationController < cards.count ? cards[animationController] : EmptyModel.card }
@@ -29,14 +30,13 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
                             learnMode: .swipe,
                             cards: bookSharedData.cards,
                             options: bookSharedData.options)
-                .padding(.bottom, 20)
+                Spacer()
                 
                 if learnManager.showSentence {
                     sentenceCardView
-                        .padding(.top, 20)
+                    
+                    Spacer()
                 }
-                
-                Spacer()
 
                 wordCardView
 
@@ -59,18 +59,21 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
             
             FlipSentenceCardView(card: nonAnimationCard,
                                  isSelectView: false,
-                                 isFlipped: $isFlipped)
+                                 isFlipped: $isFlipped,
+                                 isFlippedWithNoAnimation: $isFlippedWithNoAnimation)
             .font(.system(size: 20))
             .opacity(animationController == cards.count ? 0.0 : 1.0)
             
-            /// 操作ガイドは常に表示した方が良さそうなので targetBool = true に設定（2025/03/20 時点）
-            PhantomHStack(targetBool: true, {
-                Img.img(.handTapFill, color: .gray)
-                Text("タップして訳を表示")
-            }, height: 20)
-            .padding(.top, 10)
-            .fontSize(responsiveSize(16, 24))
-            .foregroundColor(.gray)
+            if learnManager.showSettings {
+                HStack {
+                    Image(systemName: "hand.tap.fill")
+                    Text("タップして訳を表示")
+                }
+                .padding(.top, 10)
+                .fontWeight(.bold)
+                .fontSize(responsiveSize(16, 24))
+                .foregroundColor(.black.opacity(0.8))
+            }
         }
     }
     
@@ -85,27 +88,26 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
                 
                 swipeGuide(alignment: .leading,
                            label: "学習中",
-                           img: .arrowshapeTurnUpLeftFill,
-                           color: RoyalBlue.defaultRoyal,
-                           size: responsiveSize(16, 28))
+                           systemName: "arrowshape.turn.up.left.fill",
+                           color: RoyalBlue.defaultRoyal)
                 
                 Spacer()
                 
-                Text("左右にスワイプして次の単語へ")
-                .fontSize(responsiveSize(16, 24))
-                    .fontWeight(.bold)
-                    .foregroundColor(.gray)
+                if learnManager.showSettings {
+                    Text("左右にスワイプして次の単語へ")
+                        .fontSize(responsiveSize(16, 24))
+                        .fontWeight(.bold)
+                        .foregroundColor(.black.opacity(0.8))
+                }
                 
                 Spacer()
                 
                 swipeGuide(alignment: .trailing,
                            label: "覚えた！",
-                           img: .arrowshapeTurnUpRightFill,
-                           color: Orange.defaultOrange,
-                           size: responsiveSize(16, 28))
+                           systemName: "arrowshape.turn.up.right.fill",
+                           color: Orange.defaultOrange)
             }
-            .fontSize(responsiveSize(20, 30))
-            .padding(.horizontal, responsiveSize(20, 60))
+            .padding(.horizontal, responsiveSize(24, 72))
             .padding(.bottom, 20)
             .opacity(0.8)
             /// ------------------------------
@@ -125,31 +127,36 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
                 }
             }
             
-            /// 操作ガイドは常に表示した方が良さそうなので targetBool = true に設定（2025/03/20 時点）
-            PhantomHStack(targetBool: true, {
-                Img.img(.handTapFill,
-                        size: responsiveSize(16, 24),
-                        color: .gray)
-                Text("タップして意味を表示")
-                    .fontSize(responsiveSize(16, 24))
-            }, height: 20)
-            .padding(.top, 20)
-            .foregroundColor(.gray)
+            if learnManager.showSettings {
+                HStack {
+                    Image(systemName: "hand.tap.fill")
+                    Text("タップして意味を表示")
+                }
+                .padding(.top, 10)
+                .fontWeight(.bold)
+                .fontSize(responsiveSize(16, 24))
+                .foregroundColor(.black.opacity(0.8))
+            }
         }
     }
     
     @ViewBuilder
-    private func swipeGuide(alignment: HorizontalAlignment, label: String, img: Img, color: Color, size: CGFloat) -> some View {
+    private func swipeGuide(
+        alignment: HorizontalAlignment,
+        label: String,
+        systemName: String,
+        color: Color
+    ) -> some View {
         
         VStack(alignment: alignment) {
             Text(label)
                 .padding(.bottom, 4)
-                .bold()
-                .fontSize(size)
+                .font(.system(size: responsiveSize(18, 28)))
 
-            Img.img(img, size: size, color: color)
-               
+            Image(systemName: systemName)
+                .font(.system(size: responsiveSize(24, 28)))
         }
-        .foregroundColor(color)
+        .fontWeight(.bold)
+        .foregroundStyle(color)
     }
 }

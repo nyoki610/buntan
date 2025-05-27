@@ -35,17 +35,15 @@ struct LearnResultView: ResponsiveView {
             Spacer()
             Spacer()
             
-            TLButton(title: reviewAll ? "すべての単語を復習　→" : "学習中の単語を復習　→",
-                     textColor: .white,
-                     background: reviewAll ? Orange.defaultOrange : RoyalBlue.defaultRoyal) {
+            StartButton(label: reviewAll ? "すべての単語を復習　→" : "学習中の単語を復習　→",
+                        color: reviewAll ? Orange.defaultOrange : RoyalBlue.defaultRoyal) {
                 buttonAction(isNotLearnedButtonAction: false)
             }
+                         
             
             if notLearnedCount != 0 {
-                
-                TLButton(title: "未学習の単語を学習　→",
-                         textColor: .white,
-                         background: .gray) {
+                StartButton(label: "未学習の単語を学習　→",
+                            color: .gray) {
                     buttonAction(isNotLearnedButtonAction: true)
                 }
                          .padding(.top, responsiveSize(20, 40))
@@ -71,7 +69,6 @@ struct LearnResultView: ResponsiveView {
                              size: responsiveSize(150, 200),
                              maxValue: 100,
                              color: Orange.defaultOrange)
-
                 .padding(.top, 20)
             
             HStack {
@@ -140,6 +137,7 @@ struct LearnResultView: ResponsiveView {
             }
         }
     }
+
     
     private func buttonAction(isNotLearnedButtonAction: Bool) -> Void {
         

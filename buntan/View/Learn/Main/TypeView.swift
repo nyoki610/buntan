@@ -43,7 +43,8 @@ struct TypeView: ResponsiveView, LearnViewProtocol {
                             hideSpeaker: isAnswering || isCorrect,
                             isAnswering: isAnswering,
                             nextCardExist: nextCardExist) {
-                    isAnswering ? passButtonAction() : nextCardExist ? nextButtonAction() : completeButtonAction()
+                    isAnswering ? passButtonAction() :
+                    nextCardExist ? nextButtonAction() : completeButtonAction()
                 }
                             .padding(.top, 4)
                 
@@ -83,7 +84,7 @@ struct TypeView: ResponsiveView, LearnViewProtocol {
             }
             
             Text(topCard.translation)
-                .fontSize(responsiveSize(15, 28))
+                .fontSize(responsiveSize(18, 28))
                 .padding(.top, responsiveSize(0, 12))
                 .fixedSize(horizontal: false, vertical: true)
                 .lineLimit(2)
@@ -146,10 +147,11 @@ struct TypeView: ResponsiveView, LearnViewProtocol {
             
             Spacer()
                 
-            Img.img(.circle,
-                    size: responsiveSize(20, 28),
-                    color: Orange.defaultOrange.opacity(isCorrect ? 1.0 : 0.0))
-            .padding(.trailing, 10)
+            Image(systemName: "circle")
+                .font(.system(size: responsiveSize(20, 28)))
+                .fontWeight(.bold)
+                .foregroundStyle(Orange.defaultOrange.opacity(isCorrect ? 1.0 : 0.0))
+                .padding(.trailing, 10)
         }
     }
 }

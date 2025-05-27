@@ -9,6 +9,7 @@ class LearnManager: ObservableObject {
     var cards: [Card] = []
     var options: [[Option]] = []
     
+    @Published var showSettings: Bool = true
     @Published var shouldShuffle: Bool = false
     @Published var showInitial: Bool = false
     @Published var showSentence: Bool = true
@@ -31,12 +32,20 @@ class LearnManager: ObservableObject {
         self.cards = cards
         self.options = options
         
+        self.showSettings = true
+        
+        /// cards, optionsを連動させてシャッフル
         if shouldShuffle {
             
             let indices = Array(0..<cards.count).shuffled()
             
             self.cards = indices.map { cards[$0] }
             self.options = indices.map { options[$0] }
+        }
+        
+        /// 先頭のカードに例文が登録されていない場合、例文を非表示にする
+        if self.cards[topCardIndex].sentence != "" {
+            self.showSentence = false
         }
     }
     
@@ -81,6 +90,13 @@ class LearnManager: ObservableObject {
             } else {
                 leftCardsIndexList.append(topCardIndex)
             }
+        }
+    }
+    
+    /// settingsを非表示にする(Swipe, Select, TypeでAnimationを共通にするため関数化)
+    func hideSettings() -> Void {
+        withAnimation(.easeOut(duration: 0.2)) {
+            self.showSettings = false
         }
     }
 }
