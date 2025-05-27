@@ -44,7 +44,7 @@ class LearnManager: ObservableObject {
         }
         
         /// 先頭のカードに例文が登録されていない場合、例文を非表示にする
-        if self.cards[topCardIndex].sentence != "" {
+        if !self.cards[topCardIndex].isSentenceExist {
             self.showSentence = false
         }
     }
