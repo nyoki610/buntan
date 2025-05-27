@@ -48,6 +48,7 @@ struct LearnHeader: ResponsiveView, LearnViewProtocol {
                         Image(systemName: "xmark")
                             .font(.system(size: responsiveSize(18, 24)))
                             .foregroundColor(.black)
+                            .fontWeight(.bold)
                     }
                     
                     Spacer()

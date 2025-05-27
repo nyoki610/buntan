@@ -94,10 +94,13 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
                 Spacer()
                 
                 if learnManager.showSettings {
-                    Text("左右にスワイプして次の単語へ")
-                        .fontSize(responsiveSize(16, 24))
-                        .fontWeight(.bold)
-                        .foregroundColor(.black.opacity(0.8))
+                    VStack {
+                        Text("左右にスワイプして")
+                        Text("次の単語へ")
+                    }
+                    .fontSize(responsiveSize(16, 24))
+                    .fontWeight(.bold)
+                    .foregroundColor(.black.opacity(0.8))
                 }
                 
                 Spacer()
