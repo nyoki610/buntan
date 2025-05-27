@@ -34,12 +34,18 @@ class LearnManager: ObservableObject {
         
         self.showSettings = true
         
+        /// cards, optionsを連動させてシャッフル
         if shouldShuffle {
             
             let indices = Array(0..<cards.count).shuffled()
             
             self.cards = indices.map { cards[$0] }
             self.options = indices.map { options[$0] }
+        }
+        
+        /// 先頭のカードに例文が登録されていない場合、例文を非表示にする
+        if self.cards[topCardIndex].sentence != "" {
+            self.showSentence = false
         }
     }
     
