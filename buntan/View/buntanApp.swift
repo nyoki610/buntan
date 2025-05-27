@@ -28,6 +28,8 @@ struct buntanApp: App {
     var body: some Scene {
         WindowGroup {
             MainView()
+                /// default font size
+                .font(.system(size: 17))
                 .environment(\.deviceType, DeviceType.model)
         }
     }
