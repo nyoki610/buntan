@@ -3,7 +3,7 @@ import RealmSwift
 
 class Card: Hashable {
     let id: String
-    let index: Int
+    let index: Int /// saveProgress, resetProgress 内で id として使用される
     let word: String
     let pos: Pos
     let phrase: String
@@ -15,7 +15,6 @@ class Card: Hashable {
     let infoList: [Info]
     var statusFreq: CardStatus
     var statusPos: CardStatus
-
 
     init(id: String,
          index: Int,
