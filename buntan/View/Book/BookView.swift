@@ -114,8 +114,7 @@ struct BookView: ResponsiveView {
     private func selectBookTypeButton(grade: Eiken, bookType: BookType) -> some View {
                 
         Button {
-            guard let sheet = realmService.sheets.first(where: { $0.grade == grade }) else { return }
-            bookSharedData.selectedGrade = sheet.grade
+            bookSharedData.selectedGrade = grade
             bookSharedData.selectedBookType = bookType
             bookSharedData.path.append(.bookList)
         } label: {

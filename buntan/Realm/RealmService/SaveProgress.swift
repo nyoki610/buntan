@@ -5,8 +5,7 @@ extension RealmService {
     
     func saveProgress(_ learnManager: LearnManager, _ grade: Eiken, _ bookType: BookType) -> [Eiken: [BookDesign: Book]]? {
         
-        guard let index = sheets.firstIndex(where: { $0.grade == grade }) else { return nil }
-        let savedSheet = sheets[index]
+        guard let savedSheet = sheetDict[grade] else { return nil }
         
         for (i, card) in learnManager.cards.enumerated() {
             
@@ -22,16 +21,14 @@ extension RealmService {
         }
         
         guard synchronizeSheet(savedSheet) else { return nil }
-        sheets[index] = savedSheet
+        sheetDict[grade] = savedSheet
         
         return booksDict
     }
     
     func resetProgress(_ cards: [Card], _ grade: Eiken, _ bookType: BookType) -> [Eiken: [BookDesign: Book]]? {
             
-        guard let index = sheets.firstIndex(where: { $0.grade == grade }) else { return nil }
-        
-        let savedSheet = sheets[index]
+        guard let savedSheet = sheetDict[grade] else { return nil }
         
         for card in cards {
             
@@ -40,7 +37,7 @@ extension RealmService {
         }
         
         guard synchronizeSheet(savedSheet) else { return nil }
-        sheets[index] = savedSheet
+        sheetDict[grade] = savedSheet
         
         return booksDict
     }

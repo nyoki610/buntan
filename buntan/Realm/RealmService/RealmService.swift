@@ -2,7 +2,7 @@ import Foundation
 
 class RealmService: ObservableObject {
     
-    @Published var sheets: [Sheet] = []
+    @Published var sheetDict: [Eiken: Sheet] = [:]
 
     var booksDict: [Eiken: [BookDesign: Book]]? {
 
@@ -10,7 +10,7 @@ class RealmService: ObservableObject {
 
         /// Eiken.allCasesに要修正
         for grade in [Eiken.first]  {
-            if let sheet = self.sheets.first(where: { $0.grade == grade }) {
+            if let sheet = self.sheetDict[grade] {
                 var innerDict: [BookDesign: Book] = [:]
                 for design in BookDesign.allCases {
                     innerDict[design] = design.book(sheet.cardList)
@@ -20,9 +20,9 @@ class RealmService: ObservableObject {
         }
         return dict
     }
-    
+
     func convertGradeToSheet(_ grade: Eiken) -> Sheet? {
-        sheets.first(where: { $0.grade == grade })
+        sheetDict[grade]
     }
     
     @Published var learnRecords: [LearnRecord] = []

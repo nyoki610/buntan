@@ -35,7 +35,7 @@ extension RealmService {
         let learnRecords = Array(realm.objects(RealmLearnRecord.self).map { $0.convertToNonRealm() })
         let checkRecords = Array(realm.objects(RealmCheckRecord.self).map { $0.convertToNonRealm() })
         
-        self.sheets = sheets
+        self.sheetDict = Dictionary(uniqueKeysWithValues: sheets.map { ($0.grade, $0) })
         self.learnRecords = learnRecords
         self.checkRecords = checkRecords.compactMap { $0 }
         
