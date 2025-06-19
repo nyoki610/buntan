@@ -42,6 +42,7 @@ extension MainView {
         
         Button {
             self.selectedTab = targetTab
+            targetTab.viewName.logScreenView()
         } label: {
             
             VStack {
@@ -82,6 +83,14 @@ extension MainView {
             case .book: BookView()
             case .check: CheckView()
             case .record: RecordView()
+            }
+        }
+
+        var viewName: ViewName {
+            switch self {
+            case .book: return .book
+            case .check: return .check
+            case .record: return .record
             }
         }
     }

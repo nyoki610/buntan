@@ -65,5 +65,8 @@ extension MainView {
         .fontWeight(.bold)
         .frame(maxWidth: .infinity)
         .background(Orange.defaultOrange)
+        .onAppear {
+            ViewName.logo.logScreenView()
+        }
     }
 }
