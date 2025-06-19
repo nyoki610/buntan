@@ -1,8 +1,11 @@
 import SwiftUI
-
+import FirebaseAnalytics
 
 /// 画面遷移を管理する enum
 enum ViewName: String {
+    
+    /// Logo
+    case logo
     
     /// Book
     case book
@@ -23,10 +26,13 @@ enum ViewName: String {
     case checkSelect
     case checkResult
 
+
+    /// Record
     case record
 
     var screenClassName: String {
         switch self {
+        case .logo: return "LogoView"
         case .book: return "BookView"
         case .bookList: return "BookListView"
         case .sectionList: return "SectionListView"
@@ -44,11 +50,20 @@ enum ViewName: String {
         case .record: return "RecordView"
         }
     }
+
+    func logScreenView() {
+        Analytics.logEvent(AnalyticsEventScreenView, parameters: [
+            AnalyticsParameterScreenName: self.rawValue,
+            AnalyticsParameterScreenClass: self.screenClassName
+        ])
+    }
     
     func viewForName(_ viewName: ViewName) -> some View {
+
+        logScreenView()
         
         switch viewName {
-            
+        // case .logo: return AnyView(LogoView())
         // case .book: return AnyView(BookView())
         case .bookList: return AnyView(BookListView())
         case .sectionList: return AnyView(SectionListView())

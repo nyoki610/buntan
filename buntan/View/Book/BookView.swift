@@ -37,7 +37,6 @@ struct BookView: ResponsiveView {
                 viewName.viewForName(viewName)
             }
         }
-        .trackScreenView(viewName: .book)
     }
     
     
