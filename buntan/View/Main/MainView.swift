@@ -51,7 +51,7 @@ struct MainView: ResponsiveView {
         }
         .onAppear {
             /// bookSharedata.bookList を初期化
-            guard let updatedBooksList = realmService.setupBooksList() else { return }
+            guard let updatedBooksList = realmService.booksByGradeAndType else { return }
             bookSharedData.setupBooksList(updatedBooksList)
             checkSharedData.booksList = updatedBooksList
             

@@ -24,7 +24,7 @@ extension RealmService {
         guard synchronizeSheet(savedSheet) else { return nil }
         sheets[index] = savedSheet
         
-        return setupBooksList()
+        return booksByGradeAndType
     }
     
     func resetProgress(_ cards: [Card], _ grade: Eiken, _ bookType: BookType) -> [[Book]]? {
@@ -42,6 +42,6 @@ extension RealmService {
         guard synchronizeSheet(savedSheet) else { return nil }
         sheets[index] = savedSheet
         
-        return setupBooksList()
+        return booksByGradeAndType
     }
 }

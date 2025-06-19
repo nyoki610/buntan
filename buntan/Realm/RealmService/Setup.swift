@@ -3,13 +3,6 @@ import RealmSwift
 
 extension RealmService {
     
-    func setupBooksList() -> [[Book]]? {
-        return Eiken.allCases.compactMap { grade in
-            guard let sheet = sheets.first(where: { $0.grade == grade }) else { return nil }
-            return BookDesign.allCases.map { $0.book(sheet.cardList) }
-        }
-    }
-
     func setupRealmFile() {
         do {
             
