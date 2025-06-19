@@ -42,7 +42,7 @@ extension MainView {
             
             Spacer()
             
-            Text("ver 1.0.1")
+            Text("ver 1.0.2")
                 .font(.system(size: responsiveScaled(20, 1.5)))
                 .fontWeight(.semibold)
             
