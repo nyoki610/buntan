@@ -5,21 +5,21 @@ enum Eiken: Double, CaseIterable {
     
     case first = 1.0
     case preFirst = 1.5
-    case second = 2.0
-    case preSecond = 2.5
-    case third = 3.0
-    case fourth = 4.0
-    case fifth = 5.0
+//    case second = 2.0
+//    case preSecond = 2.5
+//    case third = 3.0
+//    case fourth = 4.0
+//    case fifth = 5.0
     
     var index: Int {
         switch self {
         case .first: return 0
         case .preFirst: return 1
-        case .second: return 2
-        case .preSecond: return 3
-        case .third: return 4
-        case .fourth: return 5
-        case .fifth: return 6
+        // case .second: return 2
+        // case .preSecond: return 3
+        // case .third: return 4
+        // case .fourth: return 5
+        // case .fifth: return 6
         }
     }
     
@@ -27,11 +27,11 @@ enum Eiken: Double, CaseIterable {
         switch self {
         case .first: return "1級"
         case .preFirst: return "準1級"
-        case .second: return "2級"
-        case .preSecond: return "準2級"
-        case .third: return "3級"
-        case .fourth: return "4級"
-        case .fifth: return "5級"
+        // case .second: return "2級"
+        // case .preSecond: return "準2級"
+        // case .third: return "3級"
+        // case .fourth: return "4級"
+        // case .fifth: return "5級"
         }
     }
     
@@ -39,11 +39,11 @@ enum Eiken: Double, CaseIterable {
         switch self {
         case .first: return .green
         case .preFirst: return Color(red: 178 / 255, green: 210 / 255, blue: 53 / 255)
-        case .second: return .blue
-        case .preSecond: return .cyan
-        case .third: return .orange
-        case .fourth: return .red
-        case .fifth: return .pink
+        // case .second: return .blue
+        // case .preSecond: return .cyan
+        // case .third: return .orange
+        // case .fourth: return .red
+        // case .fifth: return .pink
         }
     }
     
@@ -51,11 +51,11 @@ enum Eiken: Double, CaseIterable {
         switch self {
         case .first: return 22
         case .preFirst: return 22
-        case .second: return 22
-        case .preSecond: return 22
-        case .third: return 22
-        case .fourth: return 22
-        case .fifth: return 22
+        // case .second: return 22
+        // case .preSecond: return 22
+        // case .third: return 22
+        // case .fourth: return 22
+        // case .fifth: return 22
         }
     }
     
@@ -76,11 +76,11 @@ enum Eiken: Double, CaseIterable {
         switch self {
         case .first: return getIntTupel(9, 7)
         case .preFirst: return getIntTupel(0, 0)
-        case .second: return getIntTupel(0, 0)
-        case .preSecond: return getIntTupel(0, 0)
-        case .third: return getIntTupel(0, 0)
-        case .fourth: return getIntTupel(0, 0)
-        case .fifth: return getIntTupel(0, 0)
+        // case .second: return getIntTupel(0, 0)
+        // case .preSecond: return getIntTupel(0, 0)
+        // case .third: return getIntTupel(0, 0)
+        // case .fourth: return getIntTupel(0, 0)
+        // case .fifth: return getIntTupel(0, 0)
         }
     }
     
