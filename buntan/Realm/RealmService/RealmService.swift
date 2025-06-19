@@ -4,11 +4,21 @@ class RealmService: ObservableObject {
     
     @Published var sheets: [Sheet] = []
 
-    var booksByGradeAndType: [[Book]]? {
-        Eiken.allCases.compactMap { grade in
-            guard let sheet = self.sheets.first(where: { $0.grade == grade }) else { return nil }
-            return BookDesign.allCases.map { $0.book(sheet.cardList) }
+    var booksDict: [Eiken: [BookDesign: Book]]? {
+
+        var dict: [Eiken: [BookDesign: Book]] = [:]
+
+        /// Eiken.allCasesに要修正
+        for grade in [Eiken.first]  {
+            if let sheet = self.sheets.first(where: { $0.grade == grade }) {
+                var innerDict: [BookDesign: Book] = [:]
+                for design in BookDesign.allCases {
+                    innerDict[design] = design.book(sheet.cardList)
+                }
+                dict[grade] = innerDict
+            }
         }
+        return dict
     }
     
     func convertGradeToSheet(_ grade: Eiken) -> Sheet? {

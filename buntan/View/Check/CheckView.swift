@@ -47,7 +47,7 @@ struct CheckView: ResponsiveView {
         
         guard
             !checkSharedData.cards.isEmpty,
-            let options = checkSharedData.selectedGrade.setupOptions(booksList: checkSharedData.booksList,
+            let options = checkSharedData.selectedGrade.setupOptions(booksDict: checkSharedData.booksDict,
                                                                      cards: checkSharedData.cards,
                                                                      isBookView: false) else { loadingSharedData.finishLoading {}; return }
 

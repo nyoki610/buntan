@@ -4,20 +4,20 @@ class BookSharedData: ObservableObject {
     
     @Published var path: [ViewName] = []
     
-    @Published var booksList: [[Book]] = []
+    @Published var booksDict: [Eiken: [BookDesign: Book]] = [:]
 
     var selectedGrade: Eiken = .first
     var selectedBookDesign: BookDesign = .freqA
     var selectedSectionId: String = ""
     
-    var selectedBooks: [Book] {
-        booksList.indices.contains(selectedGrade.index) ? booksList[selectedGrade.index] : []
+    var selectedGradeBookDict: [BookDesign: Book] {
+        booksDict[selectedGrade] ?? [:]
     }
     
     var selectedBookType: BookType = .freq
     
     var selectedBook: Book {
-        selectedBooks.first(where: { $0.id == selectedBookDesign }) ?? EmptyModel.book
+        selectedGradeBookDict[selectedBookDesign] ?? EmptyModel.book
     }
     
     var selectedSection: Section {
@@ -31,8 +31,8 @@ class BookSharedData: ObservableObject {
     var cards: [Card] { cardsContainer[selectedRange.rawValue] }
     var options: [[Option]] = []
     
-    func setupBooksList(_ booksList: [[Book]]) {
-        self.booksList = booksList
+    func setupBooksDict(_ booksDict: [Eiken: [BookDesign: Book]]) {
+        self.booksDict = booksDict
         arrangeContainer()
     }
     

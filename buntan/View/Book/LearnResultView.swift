@@ -145,7 +145,7 @@ struct LearnResultView: ResponsiveView {
         bookSharedData.selectedRange = isNotLearnedButtonAction ? .notLearned : reviewAll ? .all : .learning
         
         /// options を初期化
-        guard let options = bookSharedData.selectedGrade.setupOptions(booksList: bookSharedData.booksList,
+        guard let options = bookSharedData.selectedGrade.setupOptions(booksDict: bookSharedData.booksDict,
                                                                       cards: bookSharedData.cards,
                                                                       isBookView: true) else { return }
         bookSharedData.options = options

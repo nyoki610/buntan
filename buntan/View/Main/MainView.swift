@@ -51,9 +51,9 @@ struct MainView: ResponsiveView {
         }
         .onAppear {
             /// bookSharedata.bookList を初期化
-            guard let updatedBooksList = realmService.booksByGradeAndType else { return }
-            bookSharedData.setupBooksList(updatedBooksList)
-            checkSharedData.booksList = updatedBooksList
+            guard let updatedBooksDict = realmService.booksDict else { return }
+            bookSharedData.setupBooksDict(updatedBooksDict)
+            checkSharedData.booksDict = updatedBooksDict
             
             /// LogoView を 3 秒間表示した後, 画面遷移
             Task {

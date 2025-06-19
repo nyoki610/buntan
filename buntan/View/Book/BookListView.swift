@@ -71,7 +71,9 @@ struct BookListView: ResponsiveView {
     @ViewBuilder
     private var listView: some View {
         
-        let bookList = bookSharedData.selectedBooks.filter { $0.bookType == bookSharedData.selectedBookType }
+        let bookList = BookDesign.allCases
+            .filter { bookSharedData.selectedBookType == $0.bookType }
+            .compactMap { bookSharedData.selectedGradeBookDict[$0] }
         
         VStack {
             

@@ -84,42 +84,36 @@ enum Eiken: Double, CaseIterable {
         }
     }
     
-    func extractForCheck(_ booksList: [[Book]]) -> [Card]? {
+    func extractForCheck(_ booksDict: [Eiken: [BookDesign: Book]]) -> [Card]? {
 
         func extractFromBook(_ book: Book, _ count: Int) -> [Card] {
             book.sections.flatMap { $0.cards }.randomElements(count)
         }
         
-        guard booksList.indices.contains(index) else { return nil }
-        
-        let books = booksList[index]
-        
         guard
-            let bookFreqA = books.filter({ $0.id == .freqA }).first,
-            let bookFreqB = books.filter({ $0.id == .freqB }).first,
-            let bookFreqC = books.filter({ $0.id == .freqC }).first else { return nil }
+            let targetDict = booksDict[self],
+            let bookFreqA = targetDict[.freqA],
+            let bookFreqB = targetDict[.freqB],
+            let bookFreqC = targetDict[.freqC] else {return nil }
         
         let (countFreqA, countFreqB, countFreqC) = checkConfig
         
         return (extractFromBook(bookFreqA, countFreqA) + extractFromBook(bookFreqB, countFreqB) + extractFromBook(bookFreqC, countFreqC)).shuffled()
     }
     
-    func setupOptions(booksList: [[Book]], cards: [Card], isBookView: Bool) -> [[Option]]? {
+    func setupOptions(booksDict: [Eiken: [BookDesign: Book]], cards: [Card], isBookView: Bool) -> [[Option]]? {
         
         func convertBookToOptions(_ book: Book) -> [Option] {
             book.sections.flatMap { $0.cards.compactMap {$0.convertToOption()} }
         }
         
-        guard booksList.indices.contains(index) else { return nil }
-        
-        let books = booksList[index]
-        
         guard
-            let bookNoun = books.filter({ $0.id == .noun }).first,
-            let bookVerb = books.filter({ $0.id == .verb }).first,
-            let bookAdjective = books.filter({ $0.id == .adjective }).first,
-            let bookAdverb = books.filter({ $0.id == .adverb }).first,
-            let bookIdiom = books.filter({ $0.id == .idiom }).first else { return nil }
+            let targetDict = booksDict[self],
+            let bookNoun = targetDict[.noun],
+            let bookVerb = targetDict[.verb],
+            let bookAdjective = targetDict[.adjective],
+            let bookAdverb = targetDict[.adverb],
+            let bookIdiom = targetDict[.idiom] else { return nil }
         
         let optionsRef = [
             convertBookToOptions(bookNoun),

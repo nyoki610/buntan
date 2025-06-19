@@ -36,7 +36,7 @@ struct LearnSelectView: ResponsiveView {
                     StartButton(label: "学習を開始 →",
                                 color: Orange.defaultOrange) {
                         guard let options = bookSharedData.selectedGrade.setupOptions(
-                            booksList: bookSharedData.booksList,
+                            booksDict: bookSharedData.booksDict,
                             cards: bookSharedData.cards,
                             isBookView: true
                         ) else { return }
@@ -152,10 +152,10 @@ extension LearnSelectView {
             /// ensure loading screen rendering by delaying the next process
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 
-                guard let updatedBooksList = realmService.resetProgress(bookSharedData.cardsContainer[LearnRange.all.rawValue],
+                guard let updatedBooksDict = realmService.resetProgress(bookSharedData.cardsContainer[LearnRange.all.rawValue],
                                                                         bookSharedData.selectedGrade,
                                                                         bookSharedData.selectedBook.bookType) else { return }
-                bookSharedData.setupBooksList(updatedBooksList)
+                bookSharedData.setupBooksDict(updatedBooksDict)
 
                 loadingSharedData.finishLoading {}
             }

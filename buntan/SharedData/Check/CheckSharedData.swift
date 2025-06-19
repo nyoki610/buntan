@@ -4,13 +4,13 @@ class CheckSharedData: ObservableObject {
     
     @Published var path: [ViewName] = []
     
-    @Published var booksList: [[Book]] = []
+    @Published var booksDict: [Eiken: [BookDesign: Book]] = [:]
     @Published var selectedGrade: Eiken = .first
 
     var cards: [Card] = []
     
     func extractCards() {
-        guard let extractedCards = selectedGrade.extractForCheck(booksList) else { return }
+        guard let extractedCards = selectedGrade.extractForCheck(booksDict) else { return }
         cards = extractedCards
     }
 

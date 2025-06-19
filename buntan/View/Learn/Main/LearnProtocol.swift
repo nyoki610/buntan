@@ -61,7 +61,7 @@ extension LearnViewProtocol {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 
                 /// 学習内容を realm に保存
-                guard let updatedBooksList = realmService.saveProgress(learnManager,
+                guard let updatedBooksDict = realmService.saveProgress(learnManager,
                                                                        bookSharedData.selectedGrade,
                                                                        bookSharedData.selectedBook.bookType) else {
                     loadingSharedData.finishLoading {
@@ -70,7 +70,7 @@ extension LearnViewProtocol {
                     return
                 }
                 /// bookSharedData.bookList を再初期化
-                bookSharedData.setupBooksList(updatedBooksList)
+                bookSharedData.setupBooksDict(updatedBooksDict)
                 
                 /// 学習量の記録を保存
                 let learnRecord = LearnRecord(UUID().uuidString, Date(),
