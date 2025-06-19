@@ -10,8 +10,9 @@ import Firebase
 class AppDelegate: NSObject, UIApplicationDelegate {
   func application(_ application: UIApplication,
                    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-    FirebaseApp.configure()
-    Analytics.setAnalyticsCollectionEnabled(true)
+      FirebaseConfiguration.shared.setLoggerLevel(.error)
+      FirebaseApp.configure()
+      Analytics.setAnalyticsCollectionEnabled(true)
     return true
   }
 }
@@ -20,7 +21,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
 @main
 struct buntanApp: App {
-    
+
     /// added at 2025/01/22 for Firebase Analytics
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     ///
