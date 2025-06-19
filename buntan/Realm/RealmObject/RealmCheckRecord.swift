@@ -8,8 +8,8 @@ class RealmCheckRecord: Object, ObjectKeyIdentifiable {
     @Persisted var correctCount: Int
     @Persisted var estimatedCount: Int
     
-    var grade: Eiken? {
-        Eiken(rawValue: gradeRawValue)
+    var grade: EikenGrade? {
+        EikenGrade(rawValue: gradeRawValue)
     }
 }
 

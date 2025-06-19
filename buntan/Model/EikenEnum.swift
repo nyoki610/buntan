@@ -1,7 +1,7 @@
 import SwiftUI
 import RealmSwift
 
-enum Eiken: Double, CaseIterable {
+enum EikenGrade: Double, CaseIterable {
     
     case first = 1.0
     case preFirst = 1.5
@@ -84,7 +84,7 @@ enum Eiken: Double, CaseIterable {
         }
     }
     
-    func extractForCheck(_ booksDict: [Eiken: [BookDesign: Book]]) -> [Card]? {
+    func extractForCheck(_ booksDict: [EikenGrade: [BookDesign: Book]]) -> [Card]? {
 
         func extractFromBook(_ book: Book, _ count: Int) -> [Card] {
             book.sections.flatMap { $0.cards }.randomElements(count)
@@ -101,7 +101,7 @@ enum Eiken: Double, CaseIterable {
         return (extractFromBook(bookFreqA, countFreqA) + extractFromBook(bookFreqB, countFreqB) + extractFromBook(bookFreqC, countFreqC)).shuffled()
     }
     
-    func setupOptions(booksDict: [Eiken: [BookDesign: Book]], cards: [Card], isBookView: Bool) -> [[Option]]? {
+    func setupOptions(booksDict: [EikenGrade: [BookDesign: Book]], cards: [Card], isBookView: Bool) -> [[Option]]? {
         
         func convertBookToOptions(_ book: Book) -> [Option] {
             book.sections.flatMap { $0.cards.compactMap {$0.convertToOption()} }

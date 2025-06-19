@@ -4,8 +4,8 @@ class CheckSharedData: ObservableObject {
     
     @Published var path: [ViewName] = []
     
-    @Published var booksDict: [Eiken: [BookDesign: Book]] = [:]
-    @Published var selectedGrade: Eiken = .first
+    @Published var booksDict: [EikenGrade: [BookDesign: Book]] = [:]
+    @Published var selectedGrade: EikenGrade = .first
 
     var cards: [Card] = []
     
@@ -30,6 +30,6 @@ class CheckSharedData: ObservableObject {
                 score += cardScore
             }
         }
-        return Int((score / fullScore) * Eiken.first.questionCount.double)
+        return Int((score / fullScore) * EikenGrade.first.questionCount.double)
     }
 }

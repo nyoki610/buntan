@@ -7,7 +7,7 @@ struct CheckRecordView: ResponsiveView {
 
     @State var chartController: Int = 0
     @State var selectedLearnMode: LearnMode = .swipe
-    @State var selectedGrade: Eiken = .first
+    @State var selectedGrade: EikenGrade = .first
 
     init() {
         let appearance = UISegmentedControl.appearance()
@@ -20,8 +20,8 @@ struct CheckRecordView: ResponsiveView {
             
             if !extractedRecords.isEmpty {
                 
-                let gradeList: Set<Eiken> = Set(realmService.checkRecords.map { $0.grade })
-                let extractedGrades = Eiken.allCases.filter { gradeList.contains($0) }
+                let gradeList: Set<EikenGrade> = Set(realmService.checkRecords.map { $0.grade })
+                let extractedGrades = EikenGrade.allCases.filter { gradeList.contains($0) }
                 
                 Picker("grade", selection: $selectedGrade) {
                     ForEach(extractedGrades, id: \.self) { grade in

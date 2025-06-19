@@ -4,9 +4,9 @@ class BookSharedData: ObservableObject {
     
     @Published var path: [ViewName] = []
     
-    @Published var booksDict: [Eiken: [BookDesign: Book]] = [:]
+    @Published var booksDict: [EikenGrade: [BookDesign: Book]] = [:]
 
-    var selectedGrade: Eiken = .first
+    var selectedGrade: EikenGrade = .first
     var selectedBookDesign: BookDesign = .freqA
     var selectedSectionId: String = ""
     
@@ -31,7 +31,7 @@ class BookSharedData: ObservableObject {
     var cards: [Card] { cardsContainer[selectedRange.rawValue] }
     var options: [[Option]] = []
     
-    func setupBooksDict(_ booksDict: [Eiken: [BookDesign: Book]]) {
+    func setupBooksDict(_ booksDict: [EikenGrade: [BookDesign: Book]]) {
         self.booksDict = booksDict
         arrangeContainer()
     }

@@ -86,7 +86,7 @@ struct BookView: ResponsiveView {
     }
     
     @ViewBuilder
-    private func eachGradeView(grade: Eiken) -> some View {
+    private func eachGradeView(grade: EikenGrade) -> some View {
         
         VStack(spacing: 0) {
             Text(grade.title)
@@ -111,7 +111,7 @@ struct BookView: ResponsiveView {
     }
     
     @ViewBuilder
-    private func selectBookTypeButton(grade: Eiken, bookType: BookType) -> some View {
+    private func selectBookTypeButton(grade: EikenGrade, bookType: BookType) -> some View {
                 
         Button {
             bookSharedData.selectedGrade = grade

@@ -126,7 +126,7 @@ struct CheckView: ResponsiveView {
             Spacer()
             
             Picker("grade", selection: $checkSharedData.selectedGrade) {
-                ForEach(Eiken.allCases.filter { realmService.convertGradeToSheet($0) != nil }, id: \.self) { grade in
+                ForEach(EikenGrade.allCases.filter { realmService.convertGradeToSheet($0) != nil }, id: \.self) { grade in
                     Text(grade.title)
                         .bold()
                 }
