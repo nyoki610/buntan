@@ -19,13 +19,51 @@ class RealmService: ObservableObject {
             if let sheet = self.sheetDict[grade] {
                 var innerDict: [BookConfiguration: Book] = [:]
                 for config in BookConfiguration.allCases {
-                    innerDict[config] = config.book(sheet.cardList)
+                    innerDict[config] = book(cards: sheet.cardList, bookConfig: config)
                 }
                 dict[grade] = innerDict
             }
         }
         return dict
     }
+    
+    ///------------------------------------------------------
+    func book(cards: [Card], bookConfig: BookConfiguration) -> Book {
+        switch bookConfig {
+        case .frequency(let freqConfig):
+            let filteredCards = freqConfig.filterCardsByFreq(cards: cards)
+            var sections: [Section] = []
+            for pos in Pos.allCases {
+                sections += getSections(cards: filteredCards, pos: pos, isFreq: true)
+            }
+            return Book(config: bookConfig, sections: sections)
+        case .pos(let posConfig):
+            
+            return Book(config: bookConfig, sections: getSections(cards: cards, pos: posConfig.posValue, isFreq: false))
+        }
+    }
+    
+    private func getSections(cards: [Card], pos: Pos, isFreq: Bool) -> [Section] {
+        
+        let filteredCards = filterCardsByPos(cards: cards, pos: pos)
+        
+        var sections: [Section] = []
+        let sectionCount = (filteredCards.count + 99) / 100
+
+        for i in 0..<sectionCount {
+            let start = i * 100
+            let end = min((i + 1) * 100, filteredCards.count)
+            sections.append(Section(isFreq ? "\(pos.jaTitle) \(i + 1)" : "Section \(i + 1)",
+                                    Array(filteredCards[start..<end])))
+        }
+        return sections
+    }
+    
+    private func filterCardsByPos(cards: [Card], pos: Pos) -> [Card] {
+        let filteredCards = cards.filter { $0.meaning != "" && $0.pos == pos}
+        return filteredCards
+    }
+    ///------------------------------------------------------
 
     func convertGradeToSheet(_ grade: EikenGrade) -> Sheet? {
         sheetDict[grade]
