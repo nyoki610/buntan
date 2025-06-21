@@ -3,7 +3,7 @@ import Foundation
 
 extension RealmService {
     
-    func saveProgress(_ learnManager: LearnManager, _ grade: EikenGrade, _ bookCategory: BookCategory) -> [EikenGrade: [BookDesign: Book]]? {
+    func saveProgress(_ learnManager: LearnManager, _ grade: EikenGrade, _ bookCategory: BookCategory) -> [EikenGrade: [BookConfiguration: Book]]? {
         
         guard let savedSheet = sheetDict[grade] else { return nil }
         
@@ -26,7 +26,7 @@ extension RealmService {
         return booksDict
     }
     
-    func resetProgress(_ cards: [Card], _ grade: EikenGrade, _ bookCategory: BookCategory) -> [EikenGrade: [BookDesign: Book]]? {
+    func resetProgress(_ cards: [Card], _ grade: EikenGrade, _ bookCategory: BookCategory) -> [EikenGrade: [BookConfiguration: Book]]? {
             
         guard let savedSheet = sheetDict[grade] else { return nil }
         

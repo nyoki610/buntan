@@ -10,16 +10,16 @@ class RealmService: ObservableObject {
         return realmCards.count
     }
 
-    var booksDict: [EikenGrade: [BookDesign: Book]]? {
+    var booksDict: [EikenGrade: [BookConfiguration: Book]]? {
 
-        var dict: [EikenGrade: [BookDesign: Book]] = [:]
+        var dict: [EikenGrade: [BookConfiguration: Book]] = [:]
 
         /// EikenGrade.allCasesに要修正
         for grade in [EikenGrade.first]  {
             if let sheet = self.sheetDict[grade] {
-                var innerDict: [BookDesign: Book] = [:]
-                for design in BookDesign.allCases {
-                    innerDict[design] = design.book(sheet.cardList)
+                var innerDict: [BookConfiguration: Book] = [:]
+                for config in BookConfiguration.allCases {
+                    innerDict[config] = config.book(sheet.cardList)
                 }
                 dict[grade] = innerDict
             }

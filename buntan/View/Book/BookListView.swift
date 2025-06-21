@@ -71,7 +71,7 @@ struct BookListView: ResponsiveView {
     @ViewBuilder
     private var listView: some View {
         
-        let bookList = BookDesign.allCases
+        let bookList = BookConfiguration.allCases
             .filter { bookSharedData.selectedBookCategory == $0.bookCategory }
             .compactMap { bookSharedData.selectedGradeBookDict[$0] }
         
@@ -94,7 +94,7 @@ struct BookListView: ResponsiveView {
         let disabled = (book.cardsCount == 0)
         
         Button {
-            bookSharedData.selectedBookDesign = book.id
+            bookSharedData.selectedBookConfiguration = book.config
             bookSharedData.path.append(.sectionList)
         } label: {
             
@@ -170,22 +170,10 @@ struct BookListView: ResponsiveView {
             Spacer()
             
             VStack(alignment: .leading) {
-                detailContent(
-                    title: "頻出度A",
-                    description: "「正解」として出題された単語を収録"
-                )
-                
-                detailContent(
-                    title: "頻出度B",
-                    description: "「複数回」出題された単語を収録"
-                )
-                .padding(.top, 8)
-                
-                detailContent(
-                    title: "頻出度C",
-                    description: "出題回数の少ない単語を収録"
-                )
-                .padding(.top, 8)
+                ForEach(FrequencyBookConfiguration.allCases, id: \.self) { freqConfig in
+                    detailContent(title: freqConfig.title, description: freqConfig.description)
+                        .padding(.bottom, 8)
+                }
             }
             
             Spacer()

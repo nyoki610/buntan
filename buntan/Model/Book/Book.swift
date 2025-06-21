@@ -1,22 +1,20 @@
 import Foundation
 
-protocol BookBaseProtocol {
-    var id: BookDesign { get }
-}
 
-
-struct Book: Hashable, BookBaseProtocol {
-    let id: BookDesign
+struct Book: Hashable {
+    
+    let id = UUID().uuidString
+    let config: BookConfiguration
     var sections: [Section]
     
-    init(_ id: BookDesign, _ sections: [Section]) {
-        self.id = id
+    init(config: BookConfiguration, sections: [Section]) {
+        self.config = config
         self.sections = sections
     }
     
-    var bookCategory: BookCategory { id.bookCategory }
-    var title: String { id.title }
-    var description: String? { id.description }
+    var bookCategory: BookCategory { config.bookCategory }
+    var title: String { config.title }
+//    var description: String? { id.description }
     
     var cardsCount: Int {
         sections.map(\.cards.count).reduce(0, +)

@@ -1,7 +1,6 @@
 import Foundation
 
 
-// 品詞に基づくブックの分類 (既存のPos Enumと連携)
 enum PosBookConfiguration: CaseIterable {
     
     case noun
@@ -10,7 +9,6 @@ enum PosBookConfiguration: CaseIterable {
     case adverb
     case idiom
     
-    // この品詞タイプに対応するPos値
     var posValue: Pos {
         switch self {
         case .noun: return .noun
@@ -33,10 +31,5 @@ extension PosBookConfiguration: BookConfigurationProtocol {
         case .adverb: return "副詞"
         case .idiom: return "熟語"
         }
-    }
-    
-    // このタイプに対応するカードのフィルタリングロジック
-    func filterCards(_ cards: [Card]) -> [Card] {
-        return cards.filter { $0.meaning != "" && $0.pos == self.posValue }
     }
 }

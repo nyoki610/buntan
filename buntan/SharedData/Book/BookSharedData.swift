@@ -4,20 +4,20 @@ class BookSharedData: ObservableObject {
     
     @Published var path: [ViewName] = []
     
-    @Published var booksDict: [EikenGrade: [BookDesign: Book]] = [:]
+    @Published var booksDict: [EikenGrade: [BookConfiguration: Book]] = [:]
 
     var selectedGrade: EikenGrade = .first
-    var selectedBookDesign: BookDesign = .freqA
+    var selectedBookConfiguration: BookConfiguration = .frequency(.freqA)
     var selectedSectionId: String = ""
     
-    var selectedGradeBookDict: [BookDesign: Book] {
+    var selectedGradeBookDict: [BookConfiguration: Book] {
         booksDict[selectedGrade] ?? [:]
     }
     
     var selectedBookCategory: BookCategory = .freq
     
     var selectedBook: Book {
-        selectedGradeBookDict[selectedBookDesign] ?? EmptyModel.book
+        selectedGradeBookDict[selectedBookConfiguration] ?? EmptyModel.book
     }
     
     var selectedSection: Section {
@@ -31,7 +31,7 @@ class BookSharedData: ObservableObject {
     var cards: [Card] { cardsContainer[selectedRange.rawValue] }
     var options: [[Option]] = []
     
-    func setupBooksDict(_ booksDict: [EikenGrade: [BookDesign: Book]]) {
+    func setupBooksDict(_ booksDict: [EikenGrade: [BookConfiguration: Book]]) {
         self.booksDict = booksDict
         arrangeContainer()
     }

@@ -23,7 +23,7 @@ enum EmptyModel {
         statusPos: .notLearned
     )
     
-    static let book = Book(.freqA, [])
+    static let book = Book(config: BookConfiguration.frequency(.freqA), sections: [])
     static let section = Section("", [])
     
     static let checkRecord = CheckRecord("", .first, Date(), 0, 0)

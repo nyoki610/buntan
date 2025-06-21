@@ -84,7 +84,7 @@ enum EikenGrade: Double, CaseIterable {
         }
     }
     
-    func extractForCheck(_ booksDict: [EikenGrade: [BookDesign: Book]]) -> [Card]? {
+    func extractForCheck(_ booksDict: [EikenGrade: [BookConfiguration: Book]]) -> [Card]? {
 
         func extractFromBook(_ book: Book, _ count: Int) -> [Card] {
             book.sections.flatMap { $0.cards }.randomElements(count)
@@ -92,16 +92,16 @@ enum EikenGrade: Double, CaseIterable {
         
         guard
             let targetDict = booksDict[self],
-            let bookFreqA = targetDict[.freqA],
-            let bookFreqB = targetDict[.freqB],
-            let bookFreqC = targetDict[.freqC] else {return nil }
+            let bookFreqA = targetDict[.frequency(.freqA)],
+            let bookFreqB = targetDict[.frequency(.freqB)],
+            let bookFreqC = targetDict[.frequency(.freqC)] else {return nil }
         
         let (countFreqA, countFreqB, countFreqC) = checkConfig
         
         return (extractFromBook(bookFreqA, countFreqA) + extractFromBook(bookFreqB, countFreqB) + extractFromBook(bookFreqC, countFreqC)).shuffled()
     }
     
-    func setupOptions(booksDict: [EikenGrade: [BookDesign: Book]], cards: [Card], isBookView: Bool) -> [[Option]]? {
+    func setupOptions(booksDict: [EikenGrade: [BookConfiguration: Book]], cards: [Card], isBookView: Bool) -> [[Option]]? {
         
         func convertBookToOptions(_ book: Book) -> [Option] {
             book.sections.flatMap { $0.cards.compactMap {$0.convertToOption()} }
@@ -109,11 +109,11 @@ enum EikenGrade: Double, CaseIterable {
         
         guard
             let targetDict = booksDict[self],
-            let bookNoun = targetDict[.noun],
-            let bookVerb = targetDict[.verb],
-            let bookAdjective = targetDict[.adjective],
-            let bookAdverb = targetDict[.adverb],
-            let bookIdiom = targetDict[.idiom] else { return nil }
+            let bookNoun = targetDict[.pos(.noun)],
+            let bookVerb = targetDict[.pos(.verb)],
+            let bookAdjective = targetDict[.pos(.adjective)],
+            let bookAdverb = targetDict[.pos(.adverb)],
+            let bookIdiom = targetDict[.pos(.idiom)] else { return nil }
         
         let optionsRef = [
             convertBookToOptions(bookNoun),
