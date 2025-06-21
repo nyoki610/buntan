@@ -25,7 +25,7 @@ enum BookDesign: CaseIterable {
         }
     }
 
-    var bookType: BookType {
+    var bookCategory: BookCategory {
         switch self {
         case .freqA, .freqB, .freqC: return .freq
         case .noun, .verb, .adjective, .adverb, .idiom: return .pos

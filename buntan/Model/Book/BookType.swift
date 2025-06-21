@@ -1,6 +1,6 @@
 import Foundation
 
-enum BookType {
+enum BookCategory {
     case freq
     case pos
     

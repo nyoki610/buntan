@@ -28,8 +28,8 @@ protocol RealmServiceProtocol {
 //        return false
 //    }
     
-    func saveProgress(_ learnManager: LearnManager, _ grade: EikenGrade, _ bookType: BookType) -> [EikenGrade: [BookDesign: Book]]?
-    func resetProgress(_ cards: [Card], _ grade: EikenGrade, _ bookType: BookType) -> [EikenGrade: [BookDesign: Book]]?
+    func saveProgress(_ learnManager: LearnManager, _ grade: EikenGrade, _ bookCategory: BookCategory) -> [EikenGrade: [BookDesign: Book]]?
+    func resetProgress(_ cards: [Card], _ grade: EikenGrade, _ bookCategory: BookCategory) -> [EikenGrade: [BookDesign: Book]]?
     
     
     /// RecordHandler

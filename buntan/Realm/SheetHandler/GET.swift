@@ -16,7 +16,7 @@ extension SheetHandler {
         }
         
         var sections: [Section] = []
-        let isFrequencyBasedBook = bookDesign.bookType == .freq
+        let isFrequencyBasedBook = bookDesign.bookCategory == .freq
 
         if isFrequencyBasedBook {
             /// 頻度ベースのブックの場合、すべての品詞 (Pos) に対してセクションを作成

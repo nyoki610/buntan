@@ -22,7 +22,7 @@ struct BookListView: ResponsiveView {
                     Image(systemName: "flag.fill")
                         .foregroundStyle(Orange.defaultOrange)
                     
-                    Text(bookSharedData.selectedBookType.headerTitle)
+                    Text(bookSharedData.selectedBookCategory.headerTitle)
                     Spacer()
                 }
                 .font(.system(size: responsiveSize(18, 24)))
@@ -46,7 +46,7 @@ struct BookListView: ResponsiveView {
                 listView
                     .padding(.horizontal, responsiveSize(30, 100))
                 
-                if bookSharedData.selectedBookType == .freq {
+                if bookSharedData.selectedBookCategory == .freq {
                     HStack {
                         Spacer()
                         detailbutton
@@ -72,7 +72,7 @@ struct BookListView: ResponsiveView {
     private var listView: some View {
         
         let bookList = BookDesign.allCases
-            .filter { bookSharedData.selectedBookType == $0.bookType }
+            .filter { bookSharedData.selectedBookCategory == $0.bookCategory }
             .compactMap { bookSharedData.selectedGradeBookDict[$0] }
         
         VStack {

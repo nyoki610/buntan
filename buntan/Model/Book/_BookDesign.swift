@@ -6,8 +6,8 @@
 ////
 //
 //enum _BookDesign {
-//    case frequency(FrequencyBookType)
-//    case partOfSpeech(PosBookType)
+//    case frequency(FrequencyBookCategory)
+//    case partOfSpeech(PosBookCategory)
 //
 //    var title: String {
 //        switch self {
@@ -32,14 +32,14 @@
 //            // 頻度ブックの場合、全ての品詞に対してセクションを作成
 //            for pos in Pos.allCases { // Posは別途定義されているものとします
 //                let cardsForPos = allGradeCards.filter { $0.pos == pos }
-//                let filteredCards = freqType.filterCards(cardsForPos) // FrequencyBookTypeでフィルタリング
+//                let filteredCards = freqType.filterCards(cardsForPos) // FrequencyBookCategoryでフィルタリング
 //                sections += generateSections(from: filteredCards, titlePrefix: pos.jaTitle, startIndex: 1)
 //            }
 //            return Book(self, sections) // Bookイニシャライザの調整が必要かもしれません
 //
 //        case .partOfSpeech(let posType):
 //            // 品詞ブックの場合、その品詞のみでセクションを作成
-//            let filteredCards = posType.filterCards(allGradeCards) // PosBookTypeでフィルタリング
+//            let filteredCards = posType.filterCards(allGradeCards) // PosBookCategoryでフィルタリング
 //            sections = generateSections(from: filteredCards, titlePrefix: "Section", startIndex: 1)
 //            return Book(self, sections) // Bookイニシャライザの調整が必要かもしれません
 //        }
@@ -65,7 +65,7 @@
 //
 //
 //// 頻度に基づくブックの分類
-//enum FrequencyBookType: CaseIterable {
+//enum FrequencyBookCategory: CaseIterable {
 //    case freqA
 //    case freqB
 //    case freqC
@@ -98,7 +98,7 @@
 //}
 //
 //// 品詞に基づくブックの分類 (既存のPos Enumと連携)
-//enum PosBookType: CaseIterable { // Pos EnumがCaseIterableと仮定
+//enum PosBookCategory: CaseIterable { // Pos EnumがCaseIterableと仮定
 //    case noun
 //    case verb
 //    case adjective

@@ -154,7 +154,7 @@ extension LearnSelectView {
                 
                 guard let updatedBooksDict = realmService.resetProgress(bookSharedData.cardsContainer[LearnRange.all.rawValue],
                                                                         bookSharedData.selectedGrade,
-                                                                        bookSharedData.selectedBook.bookType) else { return }
+                                                                        bookSharedData.selectedBook.bookCategory) else { return }
                 bookSharedData.setupBooksDict(updatedBooksDict)
 
                 loadingSharedData.finishLoading {}

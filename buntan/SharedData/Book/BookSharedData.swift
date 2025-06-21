@@ -14,7 +14,7 @@ class BookSharedData: ObservableObject {
         booksDict[selectedGrade] ?? [:]
     }
     
-    var selectedBookType: BookType = .freq
+    var selectedBookCategory: BookCategory = .freq
     
     var selectedBook: Book {
         selectedGradeBookDict[selectedBookDesign] ?? EmptyModel.book
@@ -40,8 +40,8 @@ class BookSharedData: ObservableObject {
     func arrangeContainer() {
 
         cardsContainer[LearnRange.all.rawValue] = selectedSection.cards
-        cardsContainer[LearnRange.notLearned.rawValue] = selectedSection.cards.filter { $0.status(selectedBook.bookType) == .notLearned}
-        cardsContainer[LearnRange.learning.rawValue] = selectedSection.cards.filter { $0.status(selectedBook.bookType) == .learning }
+        cardsContainer[LearnRange.notLearned.rawValue] = selectedSection.cards.filter { $0.status(selectedBook.bookCategory) == .notLearned}
+        cardsContainer[LearnRange.learning.rawValue] = selectedSection.cards.filter { $0.status(selectedBook.bookCategory) == .learning }
         
         for (index, _) in cardsContainer.enumerated() {
             cardsContainer[index].sort { $0.word < $1.word }

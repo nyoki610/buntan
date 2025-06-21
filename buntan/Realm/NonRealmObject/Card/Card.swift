@@ -45,12 +45,12 @@ class Card: Hashable {
         self.statusPos = statusPos
     }
     
-    func status(_ bookType: BookType) -> CardStatus {
-        bookType == .freq ? statusFreq : statusPos
+    func status(_ bookCategory: BookCategory) -> CardStatus {
+        bookCategory == .freq ? statusFreq : statusPos
     }
     
-    func toggleStatus(_ bookType: BookType, _ cardStatus: CardStatus) {
-        switch bookType {
+    func toggleStatus(_ bookCategory: BookCategory, _ cardStatus: CardStatus) {
+        switch bookCategory {
         case .freq: statusFreq = cardStatus
         case .pos: statusPos = cardStatus
         }

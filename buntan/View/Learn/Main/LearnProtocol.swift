@@ -63,7 +63,7 @@ extension LearnViewProtocol {
                 /// 学習内容を realm に保存
                 guard let updatedBooksDict = realmService.saveProgress(learnManager,
                                                                        bookSharedData.selectedGrade,
-                                                                       bookSharedData.selectedBook.bookType) else {
+                                                                       bookSharedData.selectedBook.bookCategory) else {
                     loadingSharedData.finishLoading {
                         bookSharedData.path.removeLast()
                     }

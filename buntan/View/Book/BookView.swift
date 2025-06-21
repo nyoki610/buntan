@@ -99,9 +99,9 @@ struct BookView: ResponsiveView {
                 
             HStack {
                 Spacer()
-                selectBookTypeButton(grade: grade, bookType: .freq)
+                selectBookCategoryButton(grade: grade, bookCategory: .freq)
                 Spacer()
-                selectBookTypeButton(grade: grade, bookType: .pos)
+                selectBookCategoryButton(grade: grade, bookCategory: .pos)
                 Spacer()
             }
             .padding(.vertical, 20)
@@ -113,15 +113,15 @@ struct BookView: ResponsiveView {
     }
     
     @ViewBuilder
-    private func selectBookTypeButton(grade: EikenGrade, bookType: BookType) -> some View {
+    private func selectBookCategoryButton(grade: EikenGrade, bookCategory: BookCategory) -> some View {
                 
         Button {
             bookSharedData.selectedGrade = grade
-            bookSharedData.selectedBookType = bookType
+            bookSharedData.selectedBookCategory = bookCategory
             bookSharedData.path.append(.bookList)
         } label: {
             HStack {
-                Text(bookType.buttonLabel)
+                Text(bookCategory.buttonLabel)
                     .padding(.trailing, 10)
                 Image(systemName: "chevron.right.2")
             }

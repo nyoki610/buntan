@@ -14,7 +14,7 @@ struct Book: Hashable, BookBaseProtocol {
         self.sections = sections
     }
     
-    var bookType: BookType { id.bookType }
+    var bookCategory: BookCategory { id.bookCategory }
     var title: String { id.title }
     var description: String? { id.description }
     
@@ -38,9 +38,9 @@ struct Section: Hashable {
         self.cards = cards
     }
 
-    func progressPercentage(_ bookType: BookType) -> Int {
+    func progressPercentage(_ bookCategory: BookCategory) -> Int {
         
-        let completedCount = cards.filter { $0.status(bookType) == .completed }.count
+        let completedCount = cards.filter { $0.status(bookCategory) == .completed }.count
         return cards.isEmpty ? 0 : Int(Double(completedCount) / Double(cards.count) * 100.0)
     }
 }

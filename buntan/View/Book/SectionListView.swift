@@ -51,7 +51,7 @@ struct SectionListView: ResponsiveView {
                     .font(.system(size: responsiveSize(16, 20)))
                 Spacer()
 
-                Text("\(section.progressPercentage(bookSharedData.selectedBook.bookType)) %")
+                Text("\(section.progressPercentage(bookSharedData.selectedBook.bookCategory)) %")
                     .font(.system(size: responsiveSize(14, 18)))
                     .padding(.trailing, 30)
                 
