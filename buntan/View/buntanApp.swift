@@ -10,9 +10,9 @@ import Firebase
 class AppDelegate: NSObject, UIApplicationDelegate {
   func application(_ application: UIApplication,
                    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-      FirebaseConfiguration.shared.setLoggerLevel(.error)
-      FirebaseApp.configure()
-      Analytics.setAnalyticsCollectionEnabled(true)
+//      FirebaseConfiguration.shared.setLoggerLevel(.error)
+//      FirebaseApp.configure()
+//      Analytics.setAnalyticsCollectionEnabled(true)
     return true
   }
 }

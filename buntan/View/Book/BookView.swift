@@ -12,6 +12,8 @@ struct BookView: ResponsiveView {
         NavigationStack(path: $bookSharedData.path) {
         
             ZStack {
+
+                Text("総カード数: \(realmService.allCardsCount)")
             
                 VStack(spacing: 0) {
                     

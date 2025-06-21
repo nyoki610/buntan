@@ -1,7 +1,11 @@
 import Foundation
 
+protocol BookBaseProtocol {
+    var id: BookDesign { get }
+}
 
-struct Book: Hashable {
+
+struct Book: Hashable, BookBaseProtocol {
     let id: BookDesign
     var sections: [Section]
     

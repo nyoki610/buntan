@@ -81,7 +81,7 @@ enum BookDesign: CaseIterable {
         }
     }
     
-    private var convertToPos: Pos? {
+    var convertToPos: Pos? {
         switch self {
         case .freqA, .freqB, .freqC: return nil
         case .noun: return .noun
