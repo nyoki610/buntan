@@ -1,5 +1,23 @@
 import SwiftUI
 
+
+extension LearnSelectView {
+    
+    var cardsContainer: [[Card]] {
+        var cardsContainer: [[Card]] = [[], [], []]
+        cardsContainer[LearnRange.all.rawValue] = section.cards
+        cardsContainer[LearnRange.notLearned.rawValue] = section.cards.filter { $0.status(bookSharedData.selectedBookCategory) == .notLearned}
+        cardsContainer[LearnRange.learning.rawValue] = section.cards.filter { $0.status(bookSharedData.selectedBookCategory) == .learning }
+        
+        for (index, _) in cardsContainer.enumerated() {
+            cardsContainer[index].sort { $0.word < $1.word }
+        }
+        return cardsContainer
+    }
+    
+    var selectedCards: [Card] { cardsContainer[bookSharedData.selectedRange.rawValue] }
+}
+
 struct LearnSelectView: ResponsiveView {
     
     @Environment(\.deviceType) var deviceType: DeviceType
@@ -9,6 +27,12 @@ struct LearnSelectView: ResponsiveView {
     @EnvironmentObject var alertSharedData: AlertSharedData
     @EnvironmentObject var loadingSharedData: LoadingSharedData
     @EnvironmentObject var learnManager: LearnManager
+    
+    private let section: Section
+    
+    init(section: Section) {
+        self.section = section
+    }
 
     var body: some View {
             
@@ -16,7 +40,7 @@ struct LearnSelectView: ResponsiveView {
                 
                 VStack {
                     
-                    let title = bookSharedData.selectedGrade.title + "   " + bookSharedData.selectedBook.title + "   " +  bookSharedData.selectedSectionId
+                    let title = bookSharedData.selectedGrade.title + "   " + bookSharedData.selectedBookConfig.title + "   " +  bookSharedData.selectedSectionTitle
 
                     Header(path: $bookSharedData.path, title: title)
                     
@@ -154,7 +178,7 @@ extension LearnSelectView {
                 
                 guard let updatedBooksDict = realmService.resetProgress(bookSharedData.cardsContainer[LearnRange.all.rawValue],
                                                                         bookSharedData.selectedGrade,
-                                                                        bookSharedData.selectedBook.bookCategory) else { return }
+                                                                        bookSharedData.selectedBookConfig.bookCategory) else { return }
                 bookSharedData.setupBooksDict(updatedBooksDict)
 
                 loadingSharedData.finishLoading {}

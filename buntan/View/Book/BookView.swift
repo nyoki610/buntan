@@ -118,7 +118,13 @@ struct BookView: ResponsiveView {
         Button {
             bookSharedData.selectedGrade = grade
             bookSharedData.selectedBookCategory = bookCategory
-            bookSharedData.path.append(.bookList)
+            
+            let bookList = BookConfiguration.allCases
+                .filter { bookCategory == $0.bookCategory }
+                .compactMap { bookSharedData.selectedGradeBookDict[$0] }
+            print(bookList.count)
+            
+            bookSharedData.path.append(.bookList(bookList))
         } label: {
             HStack {
                 Text(bookCategory.buttonLabel)

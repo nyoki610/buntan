@@ -14,25 +14,19 @@ struct Book: Hashable {
     
     var bookCategory: BookCategory { config.bookCategory }
     var title: String { config.title }
-//    var description: String? { id.description }
     
     var cardsCount: Int {
         sections.map(\.cards.count).reduce(0, +)
     }
-
-    /// for developer
-    var customCount: Int {
-        sections.reduce(0) { $0 + $1.cards.reduce(0) { $0 + $1.infoList.count } }
-    }
-    ///
 }
 
 struct Section: Hashable {
-    let id: String
-    var cards: [Card] = []
+    let id: String = UUID().uuidString
+    let title: String
+    var cards: [Card]
     
-    init(_ id: String, _ cards: [Card]) {
-        self.id = id
+    init(title: String, cards: [Card]) {
+        self.title = title
         self.cards = cards
     }
 

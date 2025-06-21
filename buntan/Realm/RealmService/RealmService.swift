@@ -53,8 +53,8 @@ class RealmService: ObservableObject {
         for i in 0..<sectionCount {
             let start = i * 100
             let end = min((i + 1) * 100, filteredCards.count)
-            sections.append(Section(isFreq ? "\(pos.jaTitle) \(i + 1)" : "Section \(i + 1)",
-                                    Array(filteredCards[start..<end])))
+            sections.append(Section(title: isFreq ? "\(pos.jaTitle) \(i + 1)" : "Section \(i + 1)",
+                                    cards: Array(filteredCards[start..<end])))
         }
         return sections
     }

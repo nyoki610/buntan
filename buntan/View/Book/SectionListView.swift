@@ -6,12 +6,18 @@ struct SectionListView: ResponsiveView {
     
     @EnvironmentObject var realmService: RealmService
     @EnvironmentObject var bookSharedData: BookSharedData
+    
+    private let book: Book
+    
+    init(book: Book) {
+        self.book = book
+    }
 
     var body: some View {
         
         VStack {
             Header(path: $bookSharedData.path,
-                   title: bookSharedData.selectedGrade.title + "   " + bookSharedData.selectedBook.title)
+                   title: bookSharedData.selectedGrade.title + "   " + book.title)
             
             Spacer()
             
@@ -29,8 +35,8 @@ struct SectionListView: ResponsiveView {
             CustomScroll({
                 VStack {
                     
-                    ForEach(bookSharedData.selectedBook.sections, id: \.self) { section in
-                        selectSectionButton(section)
+                    ForEach(book.sections, id: \.self) { section in
+                        selectSectionButton(section: section)
                     }
                 }
             }, paddingBottom: 100)
@@ -38,20 +44,20 @@ struct SectionListView: ResponsiveView {
     }
     
     @ViewBuilder
-    private func selectSectionButton(_ section: Section) -> some View {
+    private func selectSectionButton(section: Section) -> some View {
         
         Button {
-            bookSharedData.selectedSectionId = section.id
+            bookSharedData.selectedSectionTitle = section.title
             bookSharedData.arrangeContainer()
-            bookSharedData.path.append(.learnSelect)
+            bookSharedData.path.append(.learnSelect(section))
         } label: {
             HStack {
                 
-                Text(section.id)
+                Text(section.title)
                     .font(.system(size: responsiveSize(16, 20)))
                 Spacer()
 
-                Text("\(section.progressPercentage(bookSharedData.selectedBook.bookCategory)) %")
+                Text("\(section.progressPercentage(book.bookCategory)) %")
                     .font(.system(size: responsiveSize(14, 18)))
                     .padding(.trailing, 30)
                 

@@ -2,16 +2,16 @@ import SwiftUI
 import FirebaseAnalytics
 
 /// 画面遷移を管理する enum
-enum ViewName: String {
+enum ViewName: Hashable {
     
     /// Logo
     case logo
     
     /// Book
     case book
-    case bookList
-    case sectionList
-    case learnSelect
+    case bookList([Book])
+    case sectionList(Book)
+    case learnSelect(Section)
     case wordList
     case swipe
     case select
@@ -29,6 +29,29 @@ enum ViewName: String {
 
     /// Record
     case record
+
+
+    var screenName: String {
+        switch self {
+        case .logo: return "logo"
+        case .book: return "book"
+        case .bookList: return "bookList"
+        case .sectionList: return "sectionList"
+        case .learnSelect: return "learnSelect"
+        case .wordList: return "wordList"
+        case .swipe: return "swipe"
+        case .select: return "select"
+        case .type: return "type"
+        case .learnResult: return "learnResult"
+        case .check: return "check"
+        case .checkSwipe: return "checkSwipe"
+        case .checkType: return "checkType"
+        case .checkSelect: return "checkSelect"
+        case .checkResult: return "checkResult"
+        case .record: return "record"
+        }
+    }
+    
 
     var screenClassName: String {
         switch self {
@@ -53,7 +76,7 @@ enum ViewName: String {
 
     func logScreenView() {
         Analytics.logEvent(AnalyticsEventScreenView, parameters: [
-            AnalyticsParameterScreenName: self.rawValue,
+            AnalyticsParameterScreenName: self.screenName,
             AnalyticsParameterScreenClass: self.screenClassName
         ])
     }
@@ -65,9 +88,9 @@ enum ViewName: String {
         switch viewName {
         // case .logo: return AnyView(LogoView())
         // case .book: return AnyView(BookView())
-        case .bookList: return AnyView(BookListView())
-        case .sectionList: return AnyView(SectionListView())
-        case .learnSelect: return AnyView(LearnSelectView())
+        case .bookList(let bookList): return AnyView(BookListView(bookList: bookList))
+        case .sectionList(let book): return AnyView(SectionListView(book: book))
+        case .learnSelect(let section): return AnyView(LearnSelectView(section: section))
         case .wordList: return AnyView(WordListView())
         case .swipe: return AnyView(SwipeView())
         case .select: return AnyView(SelectView(isBookView: true))

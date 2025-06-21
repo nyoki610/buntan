@@ -9,6 +9,12 @@ struct BookListView: ResponsiveView {
     
     @State private var showDetail: Bool = false
     
+    private let bookList: [Book]
+    
+    init(bookList: [Book]) {
+        self.bookList = bookList
+    }
+    
     var body: some View {
         ZStack {
             
@@ -71,10 +77,6 @@ struct BookListView: ResponsiveView {
     @ViewBuilder
     private var listView: some View {
         
-        let bookList = BookConfiguration.allCases
-            .filter { bookSharedData.selectedBookCategory == $0.bookCategory }
-            .compactMap { bookSharedData.selectedGradeBookDict[$0] }
-        
         VStack {
             
             ForEach(bookList, id: \.self) { book in
@@ -94,8 +96,8 @@ struct BookListView: ResponsiveView {
         let disabled = (book.cardsCount == 0)
         
         Button {
-            bookSharedData.selectedBookConfiguration = book.config
-            bookSharedData.path.append(.sectionList)
+            bookSharedData.selectedBookConfig = book.config
+            bookSharedData.path.append(.sectionList(book))
         } label: {
             
             ZStack {

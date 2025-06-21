@@ -7,8 +7,8 @@ class BookSharedData: ObservableObject {
     @Published var booksDict: [EikenGrade: [BookConfiguration: Book]] = [:]
 
     var selectedGrade: EikenGrade = .first
-    var selectedBookConfiguration: BookConfiguration = .frequency(.freqA)
-    var selectedSectionId: String = ""
+    var selectedBookConfig: BookConfiguration = .frequency(.freqA)
+    var selectedSectionTitle: String = ""
     
     var selectedGradeBookDict: [BookConfiguration: Book] {
         booksDict[selectedGrade] ?? [:]
@@ -17,11 +17,11 @@ class BookSharedData: ObservableObject {
     var selectedBookCategory: BookCategory = .freq
     
     var selectedBook: Book {
-        selectedGradeBookDict[selectedBookConfiguration] ?? EmptyModel.book
+        selectedGradeBookDict[selectedBookConfig] ?? EmptyModel.book
     }
     
     var selectedSection: Section {
-        selectedBook.sections.filter { $0.id == selectedSectionId }.first ?? EmptyModel.section
+        selectedBook.sections.filter { $0.title == selectedSectionTitle }.first ?? EmptyModel.section
     }
     
     @Published var selectedMode: LearnMode = .swipe
