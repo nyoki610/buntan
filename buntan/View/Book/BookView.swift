@@ -131,7 +131,7 @@ struct BookView: ResponsiveView {
             
             let bookList: [Book] = BookConfiguration.allCases
                 .filter { bookCategory == $0.bookCategory }
-                .compactMap { bookSharedData.booksDict[bookSharedData.selectedGrade]?[$0] }
+                .compactMap { realmService.booksDict[bookSharedData.selectedGrade]?[$0] }
             pathHandler.transitionScreen(to: .book(.bookList(bookList)))
         } label: {
             HStack {

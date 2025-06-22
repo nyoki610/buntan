@@ -72,7 +72,7 @@ extension LearnViewProtocol {
                     return
                 }
                 /// bookSharedData.bookList を再初期化
-                bookSharedData.setupBooksDict(updatedBooksDict)
+                realmService.booksDict = updatedBooksDict
                 
                 /// 学習量の記録を保存
                 let learnRecord = LearnRecord(UUID().uuidString, Date(),
@@ -81,7 +81,7 @@ extension LearnViewProtocol {
                 
                 let bookList = BookConfiguration.allCases
                     .filter { bookSharedData.selectedBookCategory == $0.bookCategory }
-                    .compactMap { bookSharedData.booksDict[bookSharedData.selectedGrade]?[$0] }
+                    .compactMap { realmService.booksDict[bookSharedData.selectedGrade]?[$0] }
                 let book = bookList.first { $0.config == bookSharedData.selectedBookConfig }
                 let section = book?.sections.first { $0.title == bookSharedData.selectedSectionTitle }
                 

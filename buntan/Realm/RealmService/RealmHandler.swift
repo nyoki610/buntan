@@ -39,6 +39,9 @@ extension RealmService {
         self.learnRecords = learnRecords
         self.checkRecords = checkRecords.compactMap { $0 }
         
+        // booksDictの初期値を設定
+        setupBooksDict()
+        
         print("Log: Realm objects were successfully fetched.")
     }
     

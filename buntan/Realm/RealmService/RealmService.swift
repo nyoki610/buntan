@@ -4,14 +4,16 @@ class RealmService: ObservableObject {
     
     @Published var sheetDict: [EikenGrade: Sheet] = [:]
     
+    @Published var booksDict: [EikenGrade: [BookConfiguration: Book]] = [:]
+    
 //    var allCardsCount: Int {
 //        guard let realm = tryRealm() else { return 0 }
 //        let realmCards = realm.objects(RealmCard.self)
 //        return realmCards.count
 //    }
 
-    var booksDict: [EikenGrade: [BookConfiguration: Book]]? {
-
+    /// booksDictの初期値を設定するメソッド
+    func setupBooksDict() {
         var dict: [EikenGrade: [BookConfiguration: Book]] = [:]
 
         /// EikenGrade.allCasesに要修正
@@ -24,7 +26,7 @@ class RealmService: ObservableObject {
                 dict[grade] = innerDict
             }
         }
-        return dict
+        self.booksDict = dict
     }
     
     ///------------------------------------------------------

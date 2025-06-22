@@ -47,7 +47,7 @@ struct LearnSelectView: ResponsiveView {
                                 color: Orange.defaultOrange) {
                         
                         guard let options = bookSharedData.selectedGrade.setupOptions(
-                            booksDict: bookSharedData.booksDict,
+                            booksDict: realmService.booksDict,
                             cards: cardsContainer.getCardsByLearnRange(learnRange: bookSharedData.selectedRange),
                             isBookView: true
                         ) else { return }
@@ -188,7 +188,7 @@ extension LearnSelectView {
                     return
                 }
                 
-                bookSharedData.setupBooksDict(updatedBooksDict)
+                realmService.booksDict = updatedBooksDict
 
                 loadingSharedData.finishLoading {}
             }

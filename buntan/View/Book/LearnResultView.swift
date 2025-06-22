@@ -148,7 +148,7 @@ struct LearnResultView: ResponsiveView {
         
         /// options を初期化
         guard let options = bookSharedData.selectedGrade.setupOptions(
-            booksDict: bookSharedData.booksDict,
+            booksDict: realmService.booksDict,
             cards: cardsContainer.getCardsByLearnRange(learnRange: bookSharedData.selectedRange),
             isBookView: true
         ) else { return }
