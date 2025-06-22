@@ -6,11 +6,11 @@ struct WordListView: ResponsiveView {
     
     @State var showInfo: Bool = true
     
-    @Binding private var path: [ViewName]
+    @ObservedObject private var pathHandler: PathHandler
     private let cards: [Card]
     
-    init(path: Binding<[ViewName]>, cards: [Card]) {
-        _path = path
+    init(pathHandler: PathHandler, cards: [Card]) {
+        self.pathHandler = pathHandler
         self.cards = cards
     }
 
@@ -21,7 +21,7 @@ struct WordListView: ResponsiveView {
             
             VStack {
              
-                Header(path: $path,
+                Header(pathHandler: pathHandler,
                        title: "単語一覧")
                 
                 HStack {

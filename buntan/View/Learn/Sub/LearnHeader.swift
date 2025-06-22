@@ -12,7 +12,7 @@ struct LearnHeader: ResponsiveView, LearnViewProtocol {
     @EnvironmentObject var checkSharedData: CheckSharedData
     @EnvironmentObject var learnManager: LearnManager
     
-    internal var path: Binding<[ViewName]>
+    @ObservedObject var pathHandler: PathHandler
     
     let geometry: GeometryProxy
     let learnMode: LearnMode?
@@ -24,12 +24,12 @@ struct LearnHeader: ResponsiveView, LearnViewProtocol {
     var isBookView: Bool { learnMode != nil }
     private var isTypeView: Bool { learnMode == .type }
     
-    init(path: Binding<[ViewName]>,
+    init(pathHandler: PathHandler,
          geometry: GeometryProxy,
          learnMode: LearnMode?,
          cards: [Card],
          options: [[Option]]?) {
-        self.path = path
+        self.pathHandler = pathHandler
         self.geometry = geometry
         self.learnMode = learnMode
         self.cards = cards

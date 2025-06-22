@@ -14,10 +14,10 @@ struct CheckResultView: ResponsiveView {
         Int((Double(learnManager.rightCardsIndexList.count) / Double(learnManager.cards.count)) * 100)
     }
     
-    @Binding private var path: [ViewName]
+    @ObservedObject private var pathHandler: PathHandler
     
-    init(path: Binding<[ViewName]>) {
-        _path = path
+    init(pathHandler: PathHandler) {
+        self.pathHandler = pathHandler
     }
     
     
@@ -30,7 +30,7 @@ struct CheckResultView: ResponsiveView {
             VStack {
                 
                 XmarkHeader() {
-                    path = []
+                    pathHandler.backToRootScreen()
                 }
                 
                 Text(checkSharedData.selectedGrade.title)

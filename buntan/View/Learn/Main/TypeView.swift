@@ -18,10 +18,10 @@ struct TypeView: ResponsiveView, LearnViewProtocol {
     @State var isAnswering: Bool = true
     @State var isCorrect: Bool = true
     
-    internal var path: Binding<[ViewName]>
+    internal var pathHandler: PathHandler
     
-    init(path: Binding<[ViewName]>) {
-        self.path = path
+    init(pathHandler: PathHandler) {
+        self.pathHandler = pathHandler
     }
     
     var body: some View {
@@ -30,7 +30,7 @@ struct TypeView: ResponsiveView, LearnViewProtocol {
                 
             VStack {
                 
-                LearnHeader(path: path,
+                LearnHeader(pathHandler: pathHandler,
                             geometry: geometry,
                             learnMode: .type,
                             cards: learnManager.cards,

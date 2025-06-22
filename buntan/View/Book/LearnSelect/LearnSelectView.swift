@@ -11,11 +11,11 @@ struct LearnSelectView: ResponsiveView {
     @EnvironmentObject var loadingSharedData: LoadingSharedData
     @EnvironmentObject var learnManager: LearnManager
     
+    @ObservedObject private var pathHandler: PathHandler
     let cardsContainer: CardsContainer
-    @Binding private var path: [ViewName]
     
-    init(path: Binding<[ViewName]>, cardsContainer: CardsContainer) {
-        _path = path
+    init(pathHandler: PathHandler, cardsContainer: CardsContainer) {
+        self.pathHandler = pathHandler
         self.cardsContainer = cardsContainer
     }
 
@@ -27,7 +27,8 @@ struct LearnSelectView: ResponsiveView {
                     
                     let title = bookSharedData.selectedGrade.title + "   " + bookSharedData.selectedBookConfig.title + "   " +  bookSharedData.selectedSectionTitle
 
-                    Header(path: $path, title: title)
+                    Header(pathHandler: pathHandler,
+                           title: title)
                     
                     subButtonView
                     
@@ -56,7 +57,7 @@ struct LearnSelectView: ResponsiveView {
                         let cards = cardsContainer.getCardsByLearnRange(learnRange: bookSharedData.selectedRange)
                         
                         learnManager.setupLearn(cards, options)
-                        path.append(bookSharedData.selectedMode.viewName(isBookView: true))
+                        pathHandler.transitionScreen(to: bookSharedData.selectedMode.viewName(isBookView: true))
                     }
 
                     Spacer()
@@ -130,7 +131,7 @@ struct LearnSelectView: ResponsiveView {
             subButton(label: "単語一覧",
                       systemName: "info.circle.fill",
                       color: .blue) {
-                path.append(.book(.wordList(cardsContainer.allCards)))
+                pathHandler.transitionScreen(to: .book(.wordList(cardsContainer.allCards)))
             }
         }
         .frame(width: responsiveSize(300, 420))

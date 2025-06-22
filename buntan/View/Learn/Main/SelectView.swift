@@ -24,10 +24,10 @@ struct SelectView: ResponsiveView, LearnViewProtocol {
     /// 正解かどうかを判断する Bool 値
     var isCorrect: Bool { selectedIndex == answerIndex}
     
-    internal var path: Binding<[ViewName]>
+    @ObservedObject var pathHandler: PathHandler
     
-    init(path: Binding<[ViewName]>, isBookView: Bool) {
-        self.path = path
+    init(pathHandler: PathHandler, isBookView: Bool) {
+        self.pathHandler = pathHandler
         self.isBookView = isBookView
     }
     
@@ -37,7 +37,7 @@ struct SelectView: ResponsiveView, LearnViewProtocol {
             
             VStack {
                 
-                LearnHeader(path: path,
+                LearnHeader(pathHandler: pathHandler,
                             geometry: geometry,
                             learnMode: isBookView ? .select : nil,
                             cards: isBookView ? learnManager.cards : checkSharedData.cards,

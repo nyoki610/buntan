@@ -20,10 +20,10 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
     private var animationController: Int { learnManager.animationController }
     private var nonAnimationCard: Card { animationController < cards.count ? cards[animationController] : EmptyModel.card }
     
-    internal var path: Binding<[ViewName]>
+    @ObservedObject var pathHandler: PathHandler
     
-    init(path: Binding<[ViewName]>) {
-        self.path = path
+    init(pathHandler: PathHandler) {
+        self.pathHandler = pathHandler
     }
 
     var body: some View {
@@ -32,7 +32,7 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
             
             VStack {
                 
-                LearnHeader(path: path,
+                LearnHeader(pathHandler: pathHandler,
                             geometry: geometry,
                             learnMode: .swipe,
                             cards: learnManager.cards,

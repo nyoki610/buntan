@@ -66,7 +66,7 @@ extension MainView {
         .frame(maxWidth: .infinity)
         .background(Orange.defaultOrange)
         .onAppear {
-            ViewName.logo.logScreenView()
+            AnalyticsHandler.logScreenTransition(viewName: .logo)
         }
     }
 }

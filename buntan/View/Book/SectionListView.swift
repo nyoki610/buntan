@@ -8,17 +8,17 @@ struct SectionListView: ResponsiveView {
     @EnvironmentObject var bookSharedData: BookSharedData
     
     private let book: Book
-    @Binding private var path: [ViewName]
+    @ObservedObject private var pathHandler: PathHandler
     
-    init(path: Binding<[ViewName]>, book: Book) {
-        _path = path
+    init(pathHandler: PathHandler, book: Book) {
+        self.pathHandler = pathHandler
         self.book = book
     }
 
     var body: some View {
         
         VStack {
-            Header(path: $path,
+            Header(pathHandler: pathHandler,
                    title: bookSharedData.selectedGrade.title + "   " + book.title)
             
             Spacer()
@@ -52,7 +52,7 @@ struct SectionListView: ResponsiveView {
             bookSharedData.selectedSectionTitle = section.title
 
             let cardsContainer = CardsContainer(cards: section.cards, bookCategory: bookSharedData.selectedBookCategory)
-            path.append(.book(.learnSelect(cardsContainer)))
+            pathHandler.transitionScreen(to: .book(.learnSelect(cardsContainer)))
         } label: {
             HStack {
                 

@@ -7,15 +7,15 @@ struct BookView: ResponsiveView {
     @EnvironmentObject var realmService: RealmService
     @EnvironmentObject var bookSharedData: BookSharedData
     
-    @Binding private var path: [ViewName]
+    @ObservedObject private var pathHandler: PathHandler
     
-    init(path: Binding<[ViewName]>) {
-        _path = path
+    init(pathHandler: PathHandler) {
+        self.pathHandler = pathHandler
     }
     
     var body: some View {
         
-        NavigationStack(path: $path) {
+        NavigationStack(path: pathHandler.navigationPath) {
         
             ZStack {
 
@@ -43,7 +43,8 @@ struct BookView: ResponsiveView {
             .background(CustomColor.background)
             .navigationDestination(for: ViewName.self) { viewName in
                 switch viewName {
-                case .book(_): viewName.viewForName(path: $path)
+                case .book(_):
+                    viewName.viewForName(pathHandler: pathHandler)
                 default: EmptyView()
                 }
             }
@@ -131,8 +132,7 @@ struct BookView: ResponsiveView {
             let bookList: [Book] = BookConfiguration.allCases
                 .filter { bookCategory == $0.bookCategory }
                 .compactMap { bookSharedData.booksDict[bookSharedData.selectedGrade]?[$0] }
-            
-            path.append(.book(.bookList(bookList)))
+            pathHandler.transitionScreen(to: .book(.bookList(bookList)))
         } label: {
             HStack {
                 Text(bookCategory.buttonLabel)

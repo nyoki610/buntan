@@ -16,7 +16,7 @@ protocol LearnViewProtocol: View {
     var learnManager: LearnManager { get }
     var alertSharedData: AlertSharedData { get }
     
-    var path: Binding<[ViewName]> { get set }
+    var pathHandler: PathHandler { get set }
     
     func saveAction(isBookView: Bool)
 }
@@ -52,7 +52,7 @@ extension LearnViewProtocol {
             
             /// １単語も学習していない場合は save せずに exit
             guard cardsCount != 0 else {
-                path.wrappedValue.removeLast()
+                pathHandler.backToPreviousScreen(count: 1)
                 return
             }
 
@@ -67,7 +67,7 @@ extension LearnViewProtocol {
                                                                        bookSharedData.selectedGrade,
                                                                        bookSharedData.selectedBookCategory) else {
                     loadingSharedData.finishLoading {
-                        path.wrappedValue.removeLast()
+                        pathHandler.backToPreviousScreen(count: 1)
                     }
                     return
                 }
@@ -92,10 +92,10 @@ extension LearnViewProtocol {
                 /// loading を終了して画面遷移
                 loadingSharedData.finishLoading {
                     if !isFinished {
-                        path.wrappedValue.removeLast(2)
-                        path.wrappedValue.append(.book(.learnSelect(cardsContainer)))
+                        pathHandler.backToPreviousScreen(count: 2)
+                        pathHandler.transitionScreen(to: .book(.learnSelect(cardsContainer)))
                     } else {
-                        path.wrappedValue.append(.book(.learnResult(cardsContainer)))
+                        pathHandler.transitionScreen(to: .book(.learnResult(cardsContainer)))
                     }
                 }
             }
@@ -108,7 +108,7 @@ extension LearnViewProtocol {
                                                    message: "",
                                                    secondaryButtonLabel: "終了",
                                                    secondaryButtonType: .defaultButton) {
-                    path.wrappedValue.removeLast()
+                    pathHandler.backToPreviousScreen(count: 1)
                 }
                 
             } else {
@@ -125,7 +125,7 @@ extension LearnViewProtocol {
                 realmService.synchronizeRecord(checkRecord: checkRecord)
                 
                 loadingSharedData.finishLoading {
-                    path.wrappedValue.append(.check(.checkResult))
+                    pathHandler.transitionScreen(to: .check(.checkResult))
                 }
             }
         }

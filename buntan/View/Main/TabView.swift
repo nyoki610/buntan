@@ -8,7 +8,7 @@ extension MainView {
     ///     - BookView() -> bookSharedData.path が空かどうかを監視
     ///     - CheckView() -> checkSharedData.path が空かどうかを監視
     ///     - RecordView() -> 常に tabView を表示
-    var showTabView: Bool { bookViewPath.isEmpty && checkViewPath.isEmpty }
+    var showTabView: Bool { bookViewPathHandler.isEmpty && checkViewPathHandler.isEmpty }
     
     var tabView: some View {
         
@@ -42,7 +42,7 @@ extension MainView {
         
         Button {
             self.selectedTab = targetTab
-            targetTab.viewName.logScreenView()
+            AnalyticsHandler.logScreenTransition(viewName: targetTab.viewName)
         } label: {
             
             VStack {

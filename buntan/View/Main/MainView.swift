@@ -21,8 +21,8 @@ struct MainView: ResponsiveView {
     /// tabView を管理
     @State var selectedTab: TabType = .book
     
-    @State var bookViewPath: [ViewName] = []
-    @State var checkViewPath: [ViewName] = []
+    @StateObject var bookViewPathHandler = PathHandler()
+    @StateObject var checkViewPathHandler = PathHandler()
     
     var body: some View {
         
@@ -33,8 +33,9 @@ struct MainView: ResponsiveView {
             } else {
                 ZStack {
                     selectedTab.viewName.viewForName(
-                        path: selectedTab == .book ? $bookViewPath : $checkViewPath
+                        pathHandler: selectedTab == .book ? bookViewPathHandler : checkViewPathHandler
                     )
+                    
                     tabView
                 }
             }

@@ -13,11 +13,11 @@ struct LearnResultView: ResponsiveView {
     /// 「学習中」の単語が存在するかどうかを示す bool 値
     private var reviewAll: Bool { cardsContainer.learningCount == 0 }
     
-    @Binding private var path: [ViewName]
+    @ObservedObject private var pathHandler: PathHandler
     private let cardsContainer: CardsContainer
 
-    init(path: Binding<[ViewName]>, cardsContainer: CardsContainer) {
-        _path = path
+    init(pathHandler: PathHandler, cardsContainer: CardsContainer) {
+        self.pathHandler = pathHandler
         self.cardsContainer = cardsContainer
     }
     
@@ -26,8 +26,8 @@ struct LearnResultView: ResponsiveView {
         VStack {
             
             XmarkHeader() {
-                path.removeLast(3)
-                path.append(.book(.learnSelect(cardsContainer)))
+                pathHandler.backToPreviousScreen(count: 3)
+                pathHandler.transitionScreen(to: .book(.learnSelect(cardsContainer)))
             }
             
             Spacer()
@@ -159,6 +159,6 @@ struct LearnResultView: ResponsiveView {
         learnManager.setupLearn(cardsContainer.getCardsByLearnRange(learnRange: bookSharedData.selectedRange), bookSharedData.options)
         
         /// 画面遷移
-        path.removeLast()
+        pathHandler.backToPreviousScreen(count: 1)
     }
 }
