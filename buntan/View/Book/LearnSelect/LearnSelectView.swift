@@ -1,23 +1,6 @@
 import SwiftUI
 
 
-extension LearnSelectView {
-    
-    var cardsContainer: [[Card]] {
-        var cardsContainer: [[Card]] = [[], [], []]
-        cardsContainer[LearnRange.all.rawValue] = section.cards
-        cardsContainer[LearnRange.notLearned.rawValue] = section.cards.filter { $0.status(bookSharedData.selectedBookCategory) == .notLearned}
-        cardsContainer[LearnRange.learning.rawValue] = section.cards.filter { $0.status(bookSharedData.selectedBookCategory) == .learning }
-        
-        for (index, _) in cardsContainer.enumerated() {
-            cardsContainer[index].sort { $0.word < $1.word }
-        }
-        return cardsContainer
-    }
-    
-    var selectedCards: [Card] { cardsContainer[bookSharedData.selectedRange.rawValue] }
-}
-
 struct LearnSelectView: ResponsiveView {
     
     @Environment(\.deviceType) var deviceType: DeviceType
@@ -28,10 +11,12 @@ struct LearnSelectView: ResponsiveView {
     @EnvironmentObject var loadingSharedData: LoadingSharedData
     @EnvironmentObject var learnManager: LearnManager
     
-    private let section: Section
+    let cardsContainer: CardsContainer
+    @Binding private var path: [ViewName]
     
-    init(section: Section) {
-        self.section = section
+    init(path: Binding<[ViewName]>, cardsContainer: CardsContainer) {
+        _path = path
+        self.cardsContainer = cardsContainer
     }
 
     var body: some View {
@@ -42,7 +27,7 @@ struct LearnSelectView: ResponsiveView {
                     
                     let title = bookSharedData.selectedGrade.title + "   " + bookSharedData.selectedBookConfig.title + "   " +  bookSharedData.selectedSectionTitle
 
-                    Header(path: $bookSharedData.path, title: title)
+                    Header(path: $path, title: title)
                     
                     subButtonView
                     
@@ -59,15 +44,19 @@ struct LearnSelectView: ResponsiveView {
                     
                     StartButton(label: "学習を開始 →",
                                 color: Orange.defaultOrange) {
+                        
                         guard let options = bookSharedData.selectedGrade.setupOptions(
                             booksDict: bookSharedData.booksDict,
-                            cards: bookSharedData.cards,
+                            cards: cardsContainer.getCardsByLearnRange(learnRange: bookSharedData.selectedRange),
                             isBookView: true
                         ) else { return }
                         
                         bookSharedData.options = options
-                        learnManager.setupLearn(bookSharedData.cards, bookSharedData.options)
-                        bookSharedData.path.append(bookSharedData.selectedMode.viewName(isBookView: true))
+                        
+                        let cards = cardsContainer.getCardsByLearnRange(learnRange: bookSharedData.selectedRange)
+                        
+                        learnManager.setupLearn(cards, options)
+                        path.append(bookSharedData.selectedMode.viewName(isBookView: true))
                     }
 
                     Spacer()
@@ -83,10 +72,19 @@ struct LearnSelectView: ResponsiveView {
         HStack {
             
             LearnSelectCircle(
-                firstCircle: .init(value: bookSharedData.allCount - bookSharedData.notLearnedCount, color: RoyalBlue.semiOpaque),
-                secondCircle: .init(value: bookSharedData.learnedCount, color: Orange.defaultOrange),
+                
+                firstCircle: .init(
+                    value: cardsContainer.learnedCount + cardsContainer.learningCount,
+                    color: RoyalBlue.semiOpaque
+                ),
+                
+                secondCircle: .init(
+                    value: cardsContainer.learnedCount,
+                    color: Orange.defaultOrange
+                ),
+                
                 size: responsiveSize(140, 200),
-                maxValue: bookSharedData.allCount
+                maxValue: cardsContainer.allCount
             )
             
             Spacer()
@@ -121,7 +119,7 @@ struct LearnSelectView: ResponsiveView {
         
         HStack {
             /// 「未学習の単語数」!=「全単語数」の場合のみ表示
-            if bookSharedData.cardsContainer[LearnRange.notLearned.rawValue].count != bookSharedData.cardsContainer[LearnRange.all.rawValue].count {
+            if cardsContainer.notLearnedCount != cardsContainer.allCount {
                 subButton(label: "リセット",
                           systemName: "arrow.clockwise",
                           color: .red) {
@@ -132,7 +130,7 @@ struct LearnSelectView: ResponsiveView {
             subButton(label: "単語一覧",
                       systemName: "info.circle.fill",
                       color: .blue) {
-                bookSharedData.path.append(.wordList)
+                path.append(.book(.wordList(cardsContainer.allCards)))
             }
         }
         .frame(width: responsiveSize(300, 420))
@@ -176,12 +174,34 @@ extension LearnSelectView {
             /// ensure loading screen rendering by delaying the next process
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 
-                guard let updatedBooksDict = realmService.resetProgress(bookSharedData.cardsContainer[LearnRange.all.rawValue],
-                                                                        bookSharedData.selectedGrade,
-                                                                        bookSharedData.selectedBookConfig.bookCategory) else { return }
+                guard let updatedBooksDict = realmService.resetProgress(
+                    cardsContainer.allCards,
+                    bookSharedData.selectedGrade,
+                    bookSharedData.selectedBookConfig.bookCategory
+                ) else {
+                    return
+                }
+                
                 bookSharedData.setupBooksDict(updatedBooksDict)
 
                 loadingSharedData.finishLoading {}
+            }
+        }
+    }
+}
+
+
+extension LearnSelectView {
+    
+    func adjustSelectedRange() {
+        
+        bookSharedData.selectedRange = .notLearned
+        
+        if cardsContainer.notLearnedCount == 0 {
+            bookSharedData.selectedRange = .learning
+            
+            if cardsContainer.learningCount == 0 {
+                bookSharedData.selectedRange = .all
             }
         }
     }

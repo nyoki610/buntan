@@ -18,15 +18,22 @@ struct TypeView: ResponsiveView, LearnViewProtocol {
     @State var isAnswering: Bool = true
     @State var isCorrect: Bool = true
     
+    internal var path: Binding<[ViewName]>
+    
+    init(path: Binding<[ViewName]>) {
+        self.path = path
+    }
+    
     var body: some View {
         
         GeometryReader { geometry in
                 
             VStack {
                 
-                LearnHeader(geometry: geometry,
+                LearnHeader(path: path,
+                            geometry: geometry,
                             learnMode: .type,
-                            cards: bookSharedData.cards,
+                            cards: learnManager.cards,
                             options: bookSharedData.options)
                 
                 Spacer()

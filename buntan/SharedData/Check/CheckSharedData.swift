@@ -2,8 +2,6 @@ import SwiftUI
 
 class CheckSharedData: ObservableObject {
     
-    @Published var path: [ViewName] = []
-    
     @Published var booksDict: [EikenGrade: [BookConfiguration: Book]] = [:]
     @Published var selectedGrade: EikenGrade = .first
 

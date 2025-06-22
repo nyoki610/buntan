@@ -4,19 +4,24 @@ struct WordListView: ResponsiveView {
     
     @Environment(\.deviceType) var deviceType: DeviceType
     
-    @EnvironmentObject var realmService: RealmService
-    @EnvironmentObject var bookSharedData: BookSharedData
-    
     @State var showInfo: Bool = true
+    
+    @Binding private var path: [ViewName]
+    private let cards: [Card]
+    
+    init(path: Binding<[ViewName]>, cards: [Card]) {
+        _path = path
+        self.cards = cards
+    }
 
     var body: some View {
         
-        WordList(cards: bookSharedData.cardsContainer[LearnRange.all.rawValue],
+        WordList(cards: cards,
                  showInfo: showInfo) {
             
             VStack {
              
-                Header(path: $bookSharedData.path,
+                Header(path: $path,
                        title: "単語一覧")
                 
                 HStack {

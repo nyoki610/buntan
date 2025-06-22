@@ -54,7 +54,7 @@ extension LearnSelectView {
         
         HStack {
             
-            selectButton(labelTop: bookSharedData.cardsContainer[LearnRange.notLearned.rawValue].count.string,
+            selectButton(labelTop: cardsContainer.notLearnedCount.string,
                          labelTopColor: .gray,
                          labelBottom: "未学習",
                          systemName: "text.book.closed.fill",
@@ -63,7 +63,7 @@ extension LearnSelectView {
             
             Spacer()
             
-            selectButton(labelTop: bookSharedData.cardsContainer[LearnRange.learning.rawValue].count.string,
+            selectButton(labelTop: cardsContainer.learningCount.string,
                          labelTopColor: RoyalBlue.semiOpaque,
                          labelBottom: "学習中",
                          systemName: "bookmark.fill",
@@ -72,7 +72,7 @@ extension LearnSelectView {
             
             Spacer()
             
-            selectButton(labelTop: bookSharedData.cardsContainer[LearnRange.all.rawValue].count.string,
+            selectButton(labelTop: cardsContainer.allCount.string,
                          labelTopColor: .black,
                          labelBottom: "すべて",
                          systemName: "books.vertical.fill",

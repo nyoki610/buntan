@@ -9,9 +9,15 @@ struct CheckView: ResponsiveView {
     @EnvironmentObject var checkSharedData: CheckSharedData
     @EnvironmentObject var learnManager: LearnManager
     
+    @Binding private var path: [ViewName]
+    
+    init(path: Binding<[ViewName]>) {
+        _path = path
+    }
+    
     var body: some View {
         
-        NavigationStack(path: $checkSharedData.path) {
+        NavigationStack(path: $path) {
             
             VStack {
                 
@@ -34,7 +40,10 @@ struct CheckView: ResponsiveView {
             .frame(maxWidth: .infinity)
             .background(CustomColor.background)
             .navigationDestination(for: ViewName.self) { viewName in
-                viewName.viewForName(viewName)
+                switch viewName {
+                case .check(_): viewName.viewForName(path: $path)
+                default: EmptyView()
+                }
             }
         }
     }
@@ -54,7 +63,7 @@ struct CheckView: ResponsiveView {
         learnManager.setupLearn(checkSharedData.cards, options)
         
         loadingSharedData.finishLoading {
-            checkSharedData.path.append(LearnMode.select.viewName(isBookView: false))
+            path.append(LearnMode.select.viewName(isBookView: false))
         }
     }
     

@@ -22,17 +22,9 @@ enum LearnMode: String, CaseIterable, Identifiable {
     
     func viewName(isBookView: Bool) -> ViewName {
         switch self {
-        case .swipe: return isBookView ? .swipe : .checkSwipe
-        case .select: return isBookView ? .select : .checkSelect
-        case .type: return isBookView ? .type : .checkType
-        }
-    }
-    
-    var jpName: String {
-        switch self {
-        case .swipe: "カード"
-        case .select: "４択"
-        case .type: "タイピング"
+        case .swipe: return isBookView ? .book(.swipe) : .check(.checkSwipe)
+        case .select: return isBookView ? .book(.select) : .check(.checkSelect)
+        case .type: return isBookView ? .book(.type) : .check(.checkType)
         }
     }
 }

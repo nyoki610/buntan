@@ -19,6 +19,12 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
 
     private var animationController: Int { learnManager.animationController }
     private var nonAnimationCard: Card { animationController < cards.count ? cards[animationController] : EmptyModel.card }
+    
+    internal var path: Binding<[ViewName]>
+    
+    init(path: Binding<[ViewName]>) {
+        self.path = path
+    }
 
     var body: some View {
 
@@ -26,9 +32,10 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
             
             VStack {
                 
-                LearnHeader(geometry: geometry,
+                LearnHeader(path: path,
+                            geometry: geometry,
                             learnMode: .swipe,
-                            cards: bookSharedData.cards,
+                            cards: learnManager.cards,
                             options: bookSharedData.options)
                 Spacer()
                 

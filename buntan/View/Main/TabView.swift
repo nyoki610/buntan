@@ -8,7 +8,7 @@ extension MainView {
     ///     - BookView() -> bookSharedData.path が空かどうかを監視
     ///     - CheckView() -> checkSharedData.path が空かどうかを監視
     ///     - RecordView() -> 常に tabView を表示
-    var showTabView: Bool { bookSharedData.path.isEmpty && checkSharedData.path.isEmpty }
+    var showTabView: Bool { bookViewPath.isEmpty && checkViewPath.isEmpty }
     
     var tabView: some View {
         
@@ -77,19 +77,10 @@ extension MainView {
     enum TabType {
         case book, check, record
         
-        @ViewBuilder
-        var view: some View {
-            switch self {
-            case .book: BookView()
-            case .check: CheckView()
-            case .record: RecordView()
-            }
-        }
-
         var viewName: ViewName {
             switch self {
-            case .book: return .book
-            case .check: return .check
+            case .book: return .book(.book)
+            case .check: return .check(.check)
             case .record: return .record
             }
         }

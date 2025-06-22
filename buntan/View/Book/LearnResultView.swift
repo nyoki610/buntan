@@ -9,23 +9,25 @@ struct LearnResultView: ResponsiveView {
     
     @EnvironmentObject var bookSharedData: BookSharedData
     @EnvironmentObject var learnManager: LearnManager
-    
-    @State private var progressValue: Int = 0
-    @State private var staticProgressValue: Int = 0
-    
-    private var notLearnedCount: Int { bookSharedData.cardsContainer[LearnRange.notLearned.rawValue].count }
-    private var learningCount: Int { bookSharedData.cardsContainer[LearnRange.learning.rawValue].count }
-    private var completedCount: Int { bookSharedData.cardsContainer[LearnRange.all.rawValue].count - notLearnedCount - learningCount }
-    
+
     /// 「学習中」の単語が存在するかどうかを示す bool 値
-    private var reviewAll: Bool { learningCount == 0 }
+    private var reviewAll: Bool { cardsContainer.learningCount == 0 }
+    
+    @Binding private var path: [ViewName]
+    private let cardsContainer: CardsContainer
+
+    init(path: Binding<[ViewName]>, cardsContainer: CardsContainer) {
+        _path = path
+        self.cardsContainer = cardsContainer
+    }
     
     var body: some View {
         
         VStack {
             
             XmarkHeader() {
-                bookSharedData.path.removeLast(2)
+                path.removeLast(3)
+                path.append(.book(.learnSelect(cardsContainer)))
             }
             
             Spacer()
@@ -41,7 +43,7 @@ struct LearnResultView: ResponsiveView {
             }
                          
             
-            if notLearnedCount != 0 {
+            if cardsContainer.notLearnedCount != 0 {
                 StartButton(label: "未学習の単語を学習　→",
                             color: .gray) {
                     buttonAction(isNotLearnedButtonAction: true)
@@ -65,7 +67,7 @@ struct LearnResultView: ResponsiveView {
                 .fontSize(responsiveSize(20, 28))
                 .bold()
             
-            CircularProgress(staticValue: bookSharedData.progressPercentage,
+            CircularProgress(staticValue: cardsContainer.progressPercentage,
                              size: responsiveSize(150, 200),
                              maxValue: 100,
                              color: Orange.defaultOrange)
@@ -80,7 +82,7 @@ struct LearnResultView: ResponsiveView {
                 
                 Spacer()
                 
-                Text("\(completedCount)")
+                Text("\(cardsContainer.learnedCount)")
                     .fontSize(responsiveSize(20, 24))
                     .fontWeight(.bold)
                 
@@ -100,7 +102,7 @@ struct LearnResultView: ResponsiveView {
                 
                 Spacer()
                 
-                Text("\(learningCount)")
+                Text("\(cardsContainer.learningCount)")
                     .fontSize(responsiveSize(20, 24))
                     .fontWeight(.bold)
                 
@@ -113,7 +115,7 @@ struct LearnResultView: ResponsiveView {
             
             
             /// 未学習の単語が存在する場合のみ「未学習の単語を学習」ボタンを表示
-            if notLearnedCount != 0 {
+            if cardsContainer.notLearnedCount != 0 {
                 
                 HStack {
                     VStack {
@@ -124,7 +126,7 @@ struct LearnResultView: ResponsiveView {
                     
                     Spacer()
                     
-                    Text("\(notLearnedCount)")
+                    Text("\(cardsContainer.notLearnedCount)")
                         .fontSize(responsiveSize(20, 24))
                         .fontWeight(.bold)
                     
@@ -145,15 +147,18 @@ struct LearnResultView: ResponsiveView {
         bookSharedData.selectedRange = isNotLearnedButtonAction ? .notLearned : reviewAll ? .all : .learning
         
         /// options を初期化
-        guard let options = bookSharedData.selectedGrade.setupOptions(booksDict: bookSharedData.booksDict,
-                                                                      cards: bookSharedData.cards,
-                                                                      isBookView: true) else { return }
+        guard let options = bookSharedData.selectedGrade.setupOptions(
+            booksDict: bookSharedData.booksDict,
+            cards: cardsContainer.getCardsByLearnRange(learnRange: bookSharedData.selectedRange),
+            isBookView: true
+        ) else { return }
+        
         bookSharedData.options = options
         
         /// 学習モードを初期化
-        learnManager.setupLearn(bookSharedData.cards, bookSharedData.options)
+        learnManager.setupLearn(cardsContainer.getCardsByLearnRange(learnRange: bookSharedData.selectedRange), bookSharedData.options)
         
         /// 画面遷移
-        bookSharedData.path.removeLast()
+        path.removeLast()
     }
 }

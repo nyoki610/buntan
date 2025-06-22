@@ -8,15 +8,17 @@ struct SectionListView: ResponsiveView {
     @EnvironmentObject var bookSharedData: BookSharedData
     
     private let book: Book
+    @Binding private var path: [ViewName]
     
-    init(book: Book) {
+    init(path: Binding<[ViewName]>, book: Book) {
+        _path = path
         self.book = book
     }
 
     var body: some View {
         
         VStack {
-            Header(path: $bookSharedData.path,
+            Header(path: $path,
                    title: bookSharedData.selectedGrade.title + "   " + book.title)
             
             Spacer()
@@ -48,8 +50,9 @@ struct SectionListView: ResponsiveView {
         
         Button {
             bookSharedData.selectedSectionTitle = section.title
-            bookSharedData.arrangeContainer()
-            bookSharedData.path.append(.learnSelect(section))
+
+            let cardsContainer = CardsContainer(cards: section.cards, bookCategory: bookSharedData.selectedBookCategory)
+            path.append(.book(.learnSelect(cardsContainer)))
         } label: {
             HStack {
                 

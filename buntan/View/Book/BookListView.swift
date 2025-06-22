@@ -9,9 +9,11 @@ struct BookListView: ResponsiveView {
     
     @State private var showDetail: Bool = false
     
+    @Binding private var path: [ViewName]
     private let bookList: [Book]
     
-    init(bookList: [Book]) {
+    init(path: Binding<[ViewName]>, bookList: [Book]) {
+        _path = path
         self.bookList = bookList
     }
     
@@ -20,7 +22,7 @@ struct BookListView: ResponsiveView {
             
             VStack {
                 
-                Header(path: $bookSharedData.path)
+                Header(path: $path)
 
                 HStack {
                     Spacer()
@@ -97,7 +99,7 @@ struct BookListView: ResponsiveView {
         
         Button {
             bookSharedData.selectedBookConfig = book.config
-            bookSharedData.path.append(.sectionList(book))
+            path.append(.book(.sectionList(book)))
         } label: {
             
             ZStack {

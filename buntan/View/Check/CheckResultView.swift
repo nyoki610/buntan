@@ -14,6 +14,13 @@ struct CheckResultView: ResponsiveView {
         Int((Double(learnManager.rightCardsIndexList.count) / Double(learnManager.cards.count)) * 100)
     }
     
+    @Binding private var path: [ViewName]
+    
+    init(path: Binding<[ViewName]>) {
+        _path = path
+    }
+    
+    
     var body: some View {
         
         WordList(cards: learnManager.cards.map { $0 },
@@ -23,7 +30,7 @@ struct CheckResultView: ResponsiveView {
             VStack {
                 
                 XmarkHeader() {
-                    checkSharedData.path = []
+                    path = []
                 }
                 
                 Text(checkSharedData.selectedGrade.title)

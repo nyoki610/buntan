@@ -16,6 +16,8 @@ protocol LearnViewProtocol: View {
     var learnManager: LearnManager { get }
     var alertSharedData: AlertSharedData { get }
     
+    var path: Binding<[ViewName]> { get set }
+    
     func saveAction(isBookView: Bool)
 }
 
@@ -50,7 +52,7 @@ extension LearnViewProtocol {
             
             /// １単語も学習していない場合は save せずに exit
             guard cardsCount != 0 else {
-                bookSharedData.path.removeLast()
+                path.wrappedValue.removeLast()
                 return
             }
 
@@ -63,9 +65,9 @@ extension LearnViewProtocol {
                 /// 学習内容を realm に保存
                 guard let updatedBooksDict = realmService.saveProgress(learnManager,
                                                                        bookSharedData.selectedGrade,
-                                                                       bookSharedData.selectedBook.bookCategory) else {
+                                                                       bookSharedData.selectedBookCategory) else {
                     loadingSharedData.finishLoading {
-                        bookSharedData.path.removeLast()
+                        path.wrappedValue.removeLast()
                     }
                     return
                 }
@@ -76,13 +78,24 @@ extension LearnViewProtocol {
                 let learnRecord = LearnRecord(UUID().uuidString, Date(),
                                               cardsCount)
                 realmService.synchronizeRecord(learnRecord: learnRecord)
+                
+                let bookList = BookConfiguration.allCases
+                    .filter { bookSharedData.selectedBookCategory == $0.bookCategory }
+                    .compactMap { bookSharedData.booksDict[bookSharedData.selectedGrade]?[$0] }
+                let book = bookList.first { $0.config == bookSharedData.selectedBookConfig }
+                let section = book?.sections.first { $0.title == bookSharedData.selectedSectionTitle }
+                
+                guard let section = section else { return }
+                
+                let cardsContainer = CardsContainer(cards: section.cards, bookCategory: bookSharedData.selectedBookCategory)
 
                 /// loading を終了して画面遷移
                 loadingSharedData.finishLoading {
                     if !isFinished {
-                        bookSharedData.path.removeLast()
+                        path.wrappedValue.removeLast(2)
+                        path.wrappedValue.append(.book(.learnSelect(cardsContainer)))
                     } else {
-                        bookSharedData.path.append(.learnResult)
+                        path.wrappedValue.append(.book(.learnResult(cardsContainer)))
                     }
                 }
             }
@@ -95,7 +108,7 @@ extension LearnViewProtocol {
                                                    message: "",
                                                    secondaryButtonLabel: "終了",
                                                    secondaryButtonType: .defaultButton) {
-                    checkSharedData.path.removeLast()
+                    path.wrappedValue.removeLast()
                 }
                 
             } else {
@@ -112,7 +125,7 @@ extension LearnViewProtocol {
                 realmService.synchronizeRecord(checkRecord: checkRecord)
                 
                 loadingSharedData.finishLoading {
-                    checkSharedData.path.append(.checkResult)
+                    path.wrappedValue.append(.check(.checkResult))
                 }
             }
         }
