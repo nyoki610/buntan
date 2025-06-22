@@ -7,5 +7,5 @@ protocol ViewNameProtocol: Hashable {
     var screenClassName: String { get }
     
     associatedtype AssociatedViewType: View
-    func viewForName(path: Binding<[ViewName]>) -> AssociatedViewType
+    func viewForName(pathHandler: PathHandler) -> AssociatedViewType
 }

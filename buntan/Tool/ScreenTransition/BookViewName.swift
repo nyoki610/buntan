@@ -45,35 +45,35 @@ extension BookViewName: ViewNameProtocol {
         }
     }
 
-    func viewForName(path: Binding<[ViewName]>) -> some View {
+    func viewForName(pathHandler: PathHandler) -> some View {
 
         switch self {
         case .book:
-            return AnyView(BookView(path: path))
+            return AnyView(BookView(pathHandler: pathHandler))
 
         case .bookList(let bookList):
-            return AnyView(BookListView(path: path, bookList: bookList))
+            return AnyView(BookListView(pathHandler: pathHandler, bookList: bookList))
         
         case .sectionList(let book):
-            return AnyView(SectionListView(path: path, book: book))
+            return AnyView(SectionListView(pathHandler: pathHandler, book: book))
         
         case .learnSelect(let cardsContainer):
-            return AnyView(LearnSelectView(path: path, cardsContainer: cardsContainer))
+            return AnyView(LearnSelectView(pathHandler: pathHandler, cardsContainer: cardsContainer))
         
         case .wordList(let cards):
-            return AnyView(WordListView(path: path, cards: cards))
+            return AnyView(WordListView(pathHandler: pathHandler, cards: cards))
         
         case .swipe:
-            return AnyView(SwipeView(path: path))
+            return AnyView(SwipeView(pathHandler: pathHandler))
         
         case .select:
-            return AnyView(SelectView(path: path, isBookView: true))
+            return AnyView(SelectView(pathHandler: pathHandler, isBookView: true))
         
         case .type:
-            return AnyView(TypeView(path: path))
+            return AnyView(TypeView(pathHandler: pathHandler))
         
         case .learnResult(let cardsContainer):
-            return AnyView(LearnResultView(path: path, cardsContainer: cardsContainer))
+            return AnyView(LearnResultView(pathHandler: pathHandler, cardsContainer: cardsContainer))
         }
     }
 }

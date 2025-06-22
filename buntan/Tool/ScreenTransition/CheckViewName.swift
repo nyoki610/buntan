@@ -34,11 +34,11 @@ extension CheckViewName: ViewNameProtocol {
         }
     }
     
-    func viewForName(path: Binding<[ViewName]>) -> some View {
+    func viewForName(pathHandler: PathHandler) -> some View {
         
         switch self {
         case .check:
-            return AnyView(CheckView(path: path))
+            return AnyView(CheckView(pathHandler: pathHandler))
         
         case .checkSwipe:
             return AnyView(EmptyView())
@@ -47,10 +47,10 @@ extension CheckViewName: ViewNameProtocol {
             return AnyView(EmptyView())
         
         case .checkSelect:
-            return AnyView(SelectView(path: path, isBookView: false))
+            return AnyView(SelectView(pathHandler: pathHandler, isBookView: false))
         
         case .checkResult:
-            return AnyView(CheckResultView(path: path))
+            return AnyView(CheckResultView(pathHandler: pathHandler))
         }
     }
 }
