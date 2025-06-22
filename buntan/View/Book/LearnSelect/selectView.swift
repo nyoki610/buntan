@@ -107,20 +107,20 @@ extension LearnSelectView {
         let isRangeButton = (targetRange != nil)
         var isSelected:Bool {
             if let targetRange = targetRange {
-                return bookSharedData.selectedRange == targetRange
+                return userInput.selectedRange == targetRange
             }
             if let targetMode = targetMode {
-                return bookSharedData.selectedMode == targetMode
+                return userInput.selectedMode == targetMode
             }
             return false
         }
         
         Button {
             if let targetRange = targetRange {
-                bookSharedData.selectedRange = targetRange
+                userInput.selectedRange = targetRange
             }
             if let targetMode = targetMode {
-                bookSharedData.selectedMode = targetMode
+                userInput.selectedMode = targetMode
             }
         } label: {
             VStack {

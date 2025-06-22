@@ -6,8 +6,7 @@ struct CheckResultView: ResponsiveView {
     // Recordクラス内から直接保存できるように修正したい？
     @EnvironmentObject var realmService: RealmService
     @EnvironmentObject var loadingSharedData: LoadingSharedData
-    
-    @EnvironmentObject var checkSharedData: CheckSharedData
+
     @EnvironmentObject var learnManager: LearnManager
     
     var correctPercentage: Int {
@@ -15,9 +14,11 @@ struct CheckResultView: ResponsiveView {
     }
     
     @ObservedObject private var pathHandler: PathHandler
+    @ObservedObject private var userInput: CheckUserInput
     
-    init(pathHandler: PathHandler) {
+    init(pathHandler: PathHandler, userInput: CheckUserInput) {
         self.pathHandler = pathHandler
+        self.userInput = userInput
     }
     
     
@@ -33,7 +34,7 @@ struct CheckResultView: ResponsiveView {
                     pathHandler.backToRootScreen()
                 }
                 
-                Text(checkSharedData.selectedGrade.title)
+                Text(userInput.selectedGrade.title)
                     .fontSize(responsiveSize(20, 24))
                     .fontWeight(.bold)
                 
@@ -45,8 +46,8 @@ struct CheckResultView: ResponsiveView {
                              Orange.translucent)
                     Spacer()
                     progress("予想得点",
-                             checkSharedData.estimatedScore(learnManager),
-                             checkSharedData.selectedGrade.questionCount,
+                             estimatedScore(learnManager: learnManager),
+                             userInput.selectedGrade.questionCount,
                              Orange.egg)
                     Spacer()
                 }
@@ -77,5 +78,23 @@ struct CheckResultView: ResponsiveView {
                              maxValue: maxValue,
                              color: color)
         }
+    }
+    
+    func estimatedScore(learnManager: LearnManager) -> Int {
+        
+        var fullScore: Double = 0
+        var score: Double = 0
+        
+        for (index, card) in learnManager.cards.enumerated() {
+            
+            let cardScore = card.infoList.reduce(0.0) { $0 + ($1.isAnswer ? 3 : 1) }
+            
+            fullScore += cardScore
+            
+            if learnManager.rightCardsIndexList.contains(index) {
+                score += cardScore
+            }
+        }
+        return Int((score / fullScore) * EikenGrade.first.questionCount.double)
     }
 }

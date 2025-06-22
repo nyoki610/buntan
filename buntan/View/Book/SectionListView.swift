@@ -5,13 +5,15 @@ struct SectionListView: ResponsiveView {
     @Environment(\.deviceType) var deviceType: DeviceType
     
     @EnvironmentObject var realmService: RealmService
-    @EnvironmentObject var bookSharedData: BookSharedData
+
     
     private let book: Book
     @ObservedObject private var pathHandler: PathHandler
+    @ObservedObject private var userInput: BookUserInput
     
-    init(pathHandler: PathHandler, book: Book) {
+    init(pathHandler: PathHandler, userInput: BookUserInput, book: Book) {
         self.pathHandler = pathHandler
+        self.userInput = userInput
         self.book = book
     }
 
@@ -19,7 +21,7 @@ struct SectionListView: ResponsiveView {
         
         VStack {
             Header(pathHandler: pathHandler,
-                   title: bookSharedData.selectedGrade.title + "   " + book.title)
+                   title: (userInput.selectedGrade?.title ?? "") + "   " + book.title)
             
             Spacer()
             
@@ -49,9 +51,14 @@ struct SectionListView: ResponsiveView {
     private func selectSectionButton(section: Section) -> some View {
         
         Button {
-            bookSharedData.selectedSectionTitle = section.title
-
-            let cardsContainer = CardsContainer(cards: section.cards, bookCategory: bookSharedData.selectedBookCategory)
+            userInput.selectedSectionTitle = section.title
+            
+            guard let selectedBookCategory = userInput.selectedBookCategory else { return }
+            
+            let cardsContainer = CardsContainer(
+                cards: section.cards,
+                bookCategory: selectedBookCategory
+            )
             pathHandler.transitionScreen(to: .book(.learnSelect(cardsContainer)))
         } label: {
             HStack {

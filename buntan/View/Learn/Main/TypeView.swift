@@ -7,24 +7,26 @@ struct TypeView: ResponsiveView, LearnViewProtocol {
     @EnvironmentObject var realmService: RealmService
     @EnvironmentObject var loadingSharedData: LoadingSharedData
     @EnvironmentObject var alertSharedData: AlertSharedData
-    @EnvironmentObject var bookSharedData: BookSharedData
-    @EnvironmentObject var checkSharedData: CheckSharedData
     @EnvironmentObject var learnManager: LearnManager
     
     /// this variable is not directly manipulated.
     @FocusState var isKeyboardActive: Bool
 
-    @State var userInput: String = ""
+    @State var userInputAnswer: String = ""
     @State var isAnswering: Bool = true
     @State var isCorrect: Bool = true
     
-    internal var pathHandler: PathHandler
+    @ObservedObject var pathHandler: PathHandler
+    @ObservedObject var userInput: UserInput
     
     private let cards: [Card]
+    private let options: [[Option]]?
     
-    init(pathHandler: PathHandler, cards: [Card]) {
+    init(pathHandler: PathHandler, userInput: UserInput, cards: [Card], options: [[Option]]?) {
         self.pathHandler = pathHandler
+        self.userInput = userInput
         self.cards = cards
+        self.options = options
     }
     
     var body: some View {
@@ -34,10 +36,11 @@ struct TypeView: ResponsiveView, LearnViewProtocol {
             VStack {
                 
                 LearnHeader(pathHandler: pathHandler,
+                            userInput: userInput,
                             geometry: geometry,
                             learnMode: .type,
                             cards: cards,
-                            options: bookSharedData.options)
+                            options: options)
                 
                 Spacer()
                 
@@ -131,7 +134,7 @@ struct TypeView: ResponsiveView, LearnViewProtocol {
     @ViewBuilder
     private var isAnsweringView: some View {
         
-        TextField("", text: $userInput)
+        TextField("", text: $userInputAnswer)
             .fontSize(responsiveSize(20, 28))
             .autocapitalization(.none)
             .autocorrectionDisabled()

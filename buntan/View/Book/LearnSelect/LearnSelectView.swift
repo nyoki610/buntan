@@ -6,17 +6,27 @@ struct LearnSelectView: ResponsiveView {
     @Environment(\.deviceType) var deviceType: DeviceType
     
     @EnvironmentObject var realmService: RealmService
-    @EnvironmentObject var bookSharedData: BookSharedData
     @EnvironmentObject var alertSharedData: AlertSharedData
     @EnvironmentObject var loadingSharedData: LoadingSharedData
     @EnvironmentObject var learnManager: LearnManager
     
     @ObservedObject private var pathHandler: PathHandler
+    @ObservedObject var userInput: BookUserInput
     let cardsContainer: CardsContainer
     
-    init(pathHandler: PathHandler, cardsContainer: CardsContainer) {
+    init(pathHandler: PathHandler, userInput: BookUserInput, cardsContainer: CardsContainer) {
         self.pathHandler = pathHandler
+        self.userInput = userInput
         self.cardsContainer = cardsContainer
+    }
+    
+    private var headerTitle: String {
+        var title: String = ""
+        title += userInput.selectedGrade?.title ?? ""
+        title += "   "
+        title += userInput.selectedBookConfig?.title ?? ""
+        title += userInput.selectedSectionTitle ?? ""
+        return title
     }
 
     var body: some View {
@@ -24,11 +34,9 @@ struct LearnSelectView: ResponsiveView {
             ZStack {
                 
                 VStack {
-                    
-                    let title = bookSharedData.selectedGrade.title + "   " + bookSharedData.selectedBookConfig.title + "   " +  bookSharedData.selectedSectionTitle
 
                     Header(pathHandler: pathHandler,
-                           title: title)
+                           title: headerTitle)
                     
                     subButtonView
                     
@@ -46,20 +54,24 @@ struct LearnSelectView: ResponsiveView {
                     StartButton(label: "学習を開始 →",
                                 color: Orange.defaultOrange) {
                         
-                        guard let options = bookSharedData.selectedGrade.setupOptions(
-                            booksDict: realmService.booksDict,
-                            cards: cardsContainer.getCardsByLearnRange(learnRange: bookSharedData.selectedRange),
-                            isBookView: true
+                        
+                        guard let selectedGrade = userInput.selectedGrade,
+                              let selectedMode = userInput.selectedMode,
+                              let selectedRange = userInput.selectedRange else { return }
+                        
+                        let cards = cardsContainer.getCardsByLearnRange(learnRange: selectedRange)
+                        
+                        guard let options = realmService.setupOptions(
+                            eikenGrade: selectedGrade,
+                            cards: cards,
+                            containFifthOption: true
                         ) else { return }
-                        
-                        bookSharedData.options = options
-                        
-                        let cards = cardsContainer.getCardsByLearnRange(learnRange: bookSharedData.selectedRange)
                         
                         learnManager.setupLearn(cards, options)
                         pathHandler.transitionScreen(
-                            to: bookSharedData.selectedMode.viewName(
+                            to: selectedMode.viewName(
                                 cards: cards,
+                                options: options,
                                 isBookView: true
                             )
                         )
@@ -180,15 +192,16 @@ extension LearnSelectView {
             /// ensure loading screen rendering by delaying the next process
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 
-                guard let updatedBooksDict = realmService.resetProgress(
+                guard let selectedGrade = userInput.selectedGrade,
+                      let selectedBookConfig = userInput.selectedBookConfig else { return }
+                
+                guard realmService.resetProgress(
                     cardsContainer.allCards,
-                    bookSharedData.selectedGrade,
-                    bookSharedData.selectedBookConfig.bookCategory
+                    selectedGrade,
+                    selectedBookConfig.bookCategory
                 ) else {
                     return
                 }
-                
-                realmService.booksDict = updatedBooksDict
 
                 loadingSharedData.finishLoading {}
             }
@@ -201,13 +214,13 @@ extension LearnSelectView {
     
     func adjustSelectedRange() {
         
-        bookSharedData.selectedRange = .notLearned
+        userInput.selectedRange = .notLearned
         
         if cardsContainer.notLearnedCount == 0 {
-            bookSharedData.selectedRange = .learning
+            userInput.selectedRange = .learning
             
             if cardsContainer.learningCount == 0 {
-                bookSharedData.selectedRange = .all
+                userInput.selectedRange = .all
             }
         }
     }

@@ -11,10 +11,10 @@ protocol LearnViewProtocol: View {
     
     var realmService: RealmService { get }
     var loadingSharedData: LoadingSharedData { get }
-    var bookSharedData: BookSharedData { get }
-    var checkSharedData: CheckSharedData { get }
+//    var checkSharedData: CheckSharedData { get }
     var learnManager: LearnManager { get }
     var alertSharedData: AlertSharedData { get }
+    var userInput: UserInput { get }
     
     var pathHandler: PathHandler { get set }
     
@@ -55,6 +55,8 @@ extension LearnViewProtocol {
                 pathHandler.backToPreviousScreen(count: 1)
                 return
             }
+            
+            guard let bookUserInput = userInput as? BookUserInput else { return }
 
             /// loading を開始
             loadingSharedData.startLoading(.save)
@@ -62,17 +64,22 @@ extension LearnViewProtocol {
             /// ensure loading screen rendering by delaying the next process
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 
+                guard let selectedGrade = bookUserInput.selectedGrade,
+                      let selectedBookCategory = bookUserInput.selectedBookCategory,
+                      let selectedBookConfig = bookUserInput.selectedBookConfig,
+                      let selectedSectionTitle = bookUserInput.selectedSectionTitle else { return }
+                
                 /// 学習内容を realm に保存
-                guard let updatedBooksDict = realmService.saveProgress(learnManager,
-                                                                       bookSharedData.selectedGrade,
-                                                                       bookSharedData.selectedBookCategory) else {
+                guard realmService.saveProgress(learnManager,
+                                                selectedGrade,
+                                                selectedBookCategory) else {
                     loadingSharedData.finishLoading {
                         pathHandler.backToPreviousScreen(count: 1)
                     }
                     return
                 }
                 /// bookSharedData.bookList を再初期化
-                realmService.booksDict = updatedBooksDict
+//                realmService.booksDict = updatedBooksDict
                 
                 /// 学習量の記録を保存
                 let learnRecord = LearnRecord(UUID().uuidString, Date(),
@@ -80,14 +87,14 @@ extension LearnViewProtocol {
                 realmService.synchronizeRecord(learnRecord: learnRecord)
                 
                 let bookList = BookConfiguration.allCases
-                    .filter { bookSharedData.selectedBookCategory == $0.bookCategory }
-                    .compactMap { realmService.booksDict[bookSharedData.selectedGrade]?[$0] }
-                let book = bookList.first { $0.config == bookSharedData.selectedBookConfig }
-                let section = book?.sections.first { $0.title == bookSharedData.selectedSectionTitle }
+                    .filter { selectedBookCategory == $0.bookCategory }
+                    .compactMap { realmService.booksDict[selectedGrade]?[$0] }
+                let book = bookList.first { $0.config == selectedBookConfig }
+                let section = book?.sections.first { $0.title == selectedSectionTitle }
                 
                 guard let section = section else { return }
                 
-                let cardsContainer = CardsContainer(cards: section.cards, bookCategory: bookSharedData.selectedBookCategory)
+                let cardsContainer = CardsContainer(cards: section.cards, bookCategory: selectedBookCategory)
 
                 /// loading を終了して画面遷移
                 loadingSharedData.finishLoading {
@@ -102,6 +109,8 @@ extension LearnViewProtocol {
         
         /// CheckView の場合の処理
         } else {
+            
+            guard let checkUserInput = userInput as? CheckUserInput else { return }
     
             if !isFinished {
                 alertSharedData.showSelectiveAlert(title: "テストを中断しますか？",
@@ -117,10 +126,10 @@ extension LearnViewProtocol {
                 
                 /// realm にテストの結果を保存
                 let checkRecord = CheckRecord(UUID().uuidString,
-                                              checkSharedData.selectedGrade,
+                                              checkUserInput.selectedGrade,
                                               Date(),
                                               learnManager.rightCardsIndexList.count,
-                                              checkSharedData.estimatedScore(learnManager))
+                                              learnManager.estimatedScore)
 
                 realmService.synchronizeRecord(checkRecord: checkRecord)
                 

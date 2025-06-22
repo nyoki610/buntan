@@ -16,14 +16,14 @@ extension TypeView {
         
         learnManager.readOutTopCard()
         
-        let userAnswer = userInput.filter { !$0.isWhitespace }
+        let userAnswer = userInputAnswer.filter { !$0.isWhitespace }
         
         /// 正解時の処理
         if userAnswer == topCard.answer {
             submitCorrectAnswerAction()
         /// 不正解時の処理
         } else {
-            userInput = ""
+            userInputAnswer = ""
             isCorrect = false
         }
     }
@@ -39,13 +39,13 @@ extension TypeView {
             if nextCardExist {
                 learnManager.hideSettings()
                 learnManager.topCardIndex += 1
-                userInput = ""
+                userInputAnswer = ""
                 isAnswering = true
                 
                 learnManager.isKeyboardActive = true
                 
             } else {
-                userInput = ""
+                userInputAnswer = ""
                 isAnswering = true
                 saveAction(isBookView: true)
             }
@@ -56,7 +56,7 @@ extension TypeView {
         
         isAnswering = false
         isCorrect = false
-        userInput = ""
+        userInputAnswer = ""
         learnManager.readOutTopCard()
     }
     
@@ -72,7 +72,7 @@ extension TypeView {
     
     func backButtonAction() -> Void {
         
-        userInput = ""
+        userInputAnswer = ""
         
         ///　解答中　→　一つ前の問題の解答中画面へ
         if isAnswering {

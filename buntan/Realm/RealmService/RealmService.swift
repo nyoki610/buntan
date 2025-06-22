@@ -29,6 +29,55 @@ class RealmService: ObservableObject {
         self.booksDict = dict
     }
     
+    
+    func setupOptions(eikenGrade: EikenGrade, cards: [Card], containFifthOption: Bool) -> [[Option]]? {
+        
+        func convertBookToOptions(_ book: Book) -> [Option] {
+            book.sections.flatMap { $0.cards.compactMap {$0.convertToOption()} }
+        }
+        
+        guard
+            let targetDict = booksDict[eikenGrade],
+            let bookNoun = targetDict[.pos(.noun)],
+            let bookVerb = targetDict[.pos(.verb)],
+            let bookAdjective = targetDict[.pos(.adjective)],
+            let bookAdverb = targetDict[.pos(.adverb)],
+            let bookIdiom = targetDict[.pos(.idiom)] else { return nil }
+        
+        let optionsRef = [
+            convertBookToOptions(bookNoun),
+            convertBookToOptions(bookVerb),
+            convertBookToOptions(bookAdjective),
+            convertBookToOptions(bookAdverb),
+            convertBookToOptions(bookIdiom)
+        ]
+        
+        let options = cards.map { card in
+            let filteredRef = optionsRef[card.pos.rawValue - 1].filter { $0.word != card.word }
+            let randomOptions = filteredRef.shuffled().prefix(containFifthOption ? 3 : 4)
+            return Array(Set([card.convertToOption()] + randomOptions)).shuffled()
+        }
+        
+        return options
+    }
+    
+    func extractForCheck(eikenGrade: EikenGrade) -> [Card]? {
+
+        func extractFromBook(_ book: Book, _ count: Int) -> [Card] {
+            book.sections.flatMap { $0.cards }.randomElements(count)
+        }
+        
+        guard
+            let targetDict = booksDict[eikenGrade],
+            let bookFreqA = targetDict[.frequency(.freqA)],
+            let bookFreqB = targetDict[.frequency(.freqB)],
+            let bookFreqC = targetDict[.frequency(.freqC)] else {return nil }
+        
+        let (countFreqA, countFreqB, countFreqC) = eikenGrade.checkConfig
+        
+        return (extractFromBook(bookFreqA, countFreqA) + extractFromBook(bookFreqB, countFreqB) + extractFromBook(bookFreqC, countFreqC)).shuffled()
+    }
+    
     ///------------------------------------------------------
     func book(cards: [Card], bookConfig: BookConfiguration) -> Book {
         switch bookConfig {

@@ -8,9 +8,7 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
     @EnvironmentObject var realmService: RealmService
     @EnvironmentObject var loadingSharedData: LoadingSharedData
     @EnvironmentObject var alertSharedData: AlertSharedData
-    
-    @EnvironmentObject var bookSharedData: BookSharedData
-    @EnvironmentObject var checkSharedData: CheckSharedData
+
     @EnvironmentObject var learnManager: LearnManager
 
     @State var offset = CGSize.zero
@@ -21,11 +19,15 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
     private var nonAnimationCard: Card { animationController < cards.count ? cards[animationController] : EmptyModel.card }
     
     @ObservedObject var pathHandler: PathHandler
+    @ObservedObject var userInput: UserInput
     private let cards: [Card]
+    private let options: [[Option]]?
     
-    init(pathHandler: PathHandler, cards: [Card]) {
+    init(pathHandler: PathHandler, userInput: UserInput, cards: [Card], options: [[Option]]?) {
         self.pathHandler = pathHandler
+        self.userInput = userInput
         self.cards = cards
+        self.options = options
     }
 
     var body: some View {
@@ -35,10 +37,11 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
             VStack {
                 
                 LearnHeader(pathHandler: pathHandler,
+                            userInput: userInput,
                             geometry: geometry,
                             learnMode: .swipe,
                             cards: cards,
-                            options: bookSharedData.options)
+                            options: options)
                 Spacer()
                 
                 if learnManager.showSentence {

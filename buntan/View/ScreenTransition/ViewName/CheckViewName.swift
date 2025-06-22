@@ -3,7 +3,6 @@ import SwiftUI
 
 enum CheckViewName {
     
-    case check
     case checkSwipe([Card])
     case checkType([Card])
     case checkSelect([Card])
@@ -16,7 +15,6 @@ extension CheckViewName: ViewNameProtocol {
     var screenName: String {
         switch self {
 
-        case .check: return "check"
         case .checkSwipe: return "checkSwipe"
         case .checkType: return "checkType"
         case .checkSelect: return "checkSelect"
@@ -26,7 +24,6 @@ extension CheckViewName: ViewNameProtocol {
     
     var screenClassName: String {
         switch self {
-        case .check: return "CheckView"
         case .checkSwipe: return "CheckSwipeView"
         case .checkType: return "CheckTypeView"
         case .checkSelect: return "CheckSelectView"
@@ -34,12 +31,9 @@ extension CheckViewName: ViewNameProtocol {
         }
     }
     
-    func viewForName(pathHandler: PathHandler) -> some View {
+    func viewForName(pathHandler: PathHandler, userInput: CheckUserInput) -> some View {
         
         switch self {
-        case .check:
-            return AnyView(CheckView(pathHandler: pathHandler))
-        
         case .checkSwipe(_):
             return AnyView(EmptyView())
         
@@ -47,10 +41,23 @@ extension CheckViewName: ViewNameProtocol {
             return AnyView(EmptyView())
         
         case .checkSelect(let cards):
-            return AnyView(SelectView(pathHandler: pathHandler, cards: cards, isBookView: false))
+            return AnyView(
+                SelectView(
+                    pathHandler:pathHandler,
+                    userInput: userInput,
+                    cards: cards,
+                    options: nil,
+                    isBookView: false
+                )
+            )
         
         case .checkResult:
-            return AnyView(CheckResultView(pathHandler: pathHandler))
+            return AnyView(
+                CheckResultView(
+                    pathHandler: pathHandler,
+                    userInput: userInput
+                )
+            )
         }
     }
 }

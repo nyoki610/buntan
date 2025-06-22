@@ -36,13 +36,13 @@ extension MainView {
     }
     
     @ViewBuilder
-    private func tabButton(_ systemName: String, _ title: String, _ targetTab: TabType) -> some View {
+    private func tabButton(_ systemName: String, _ title: String, _ targetViewName: RootViewName) -> some View {
         
-        let isSelected = self.selectedTab == targetTab
+        let isSelected = self.selectedRootViewName == targetViewName
         
         Button {
-            self.selectedTab = targetTab
-            AnalyticsHandler.logScreenTransition(viewName: targetTab.viewName)
+            self.selectedRootViewName = targetViewName
+            AnalyticsHandler.logScreenTransition(viewName: ViewName.root(targetViewName))
         } label: {
             
             VStack {
@@ -71,18 +71,5 @@ extension MainView {
         }
         .frame(width: responsiveSize(80, 120))
         .contentShape(Rectangle())
-    }
-    
-    /// 表示する View をコントロールする enum
-    enum TabType {
-        case book, check, record
-        
-        var viewName: ViewName {
-            switch self {
-            case .book: return .book(.book)
-            case .check: return .check(.check)
-            case .record: return .record
-            }
-        }
     }
 }

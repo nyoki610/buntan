@@ -7,17 +7,19 @@ struct LearnResultView: ResponsiveView {
     @EnvironmentObject var realmService: RealmService
     @EnvironmentObject var loadingSharedData: LoadingSharedData
     
-    @EnvironmentObject var bookSharedData: BookSharedData
+
     @EnvironmentObject var learnManager: LearnManager
 
     /// 「学習中」の単語が存在するかどうかを示す bool 値
     private var reviewAll: Bool { cardsContainer.learningCount == 0 }
     
     @ObservedObject private var pathHandler: PathHandler
+    @ObservedObject private var userInput: BookUserInput
     private let cardsContainer: CardsContainer
 
-    init(pathHandler: PathHandler, cardsContainer: CardsContainer) {
+    init(pathHandler: PathHandler, userInput: BookUserInput, cardsContainer: CardsContainer) {
         self.pathHandler = pathHandler
+        self.userInput = userInput
         self.cardsContainer = cardsContainer
     }
     
@@ -144,19 +146,24 @@ struct LearnResultView: ResponsiveView {
     private func buttonAction(isNotLearnedButtonAction: Bool) -> Void {
         
         /// 次に学習する範囲を設定
-        bookSharedData.selectedRange = isNotLearnedButtonAction ? .notLearned : reviewAll ? .all : .learning
+        userInput.selectedRange = isNotLearnedButtonAction ? .notLearned : reviewAll ? .all : .learning
         
+        guard let selectedGrade = userInput.selectedGrade,
+              let selectedRange = userInput.selectedRange else { return }
+        
+        let cards = cardsContainer.getCardsByLearnRange(learnRange: selectedRange)
         /// options を初期化
-        guard let options = bookSharedData.selectedGrade.setupOptions(
-            booksDict: realmService.booksDict,
-            cards: cardsContainer.getCardsByLearnRange(learnRange: bookSharedData.selectedRange),
-            isBookView: true
+        guard let options = realmService.setupOptions(
+            eikenGrade: selectedGrade,
+            cards: cards,
+            containFifthOption: true
         ) else { return }
         
-        bookSharedData.options = options
+        /// ここで再学習時に新規のoptionを引き継ぐ処理が必要
+//        bookSharedData.options = options
         
         /// 学習モードを初期化
-        learnManager.setupLearn(cardsContainer.getCardsByLearnRange(learnRange: bookSharedData.selectedRange), bookSharedData.options)
+        learnManager.setupLearn(cards, options)
         
         /// 画面遷移
         pathHandler.backToPreviousScreen(count: 1)

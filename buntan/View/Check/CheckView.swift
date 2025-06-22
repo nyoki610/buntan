@@ -6,10 +6,10 @@ struct CheckView: ResponsiveView {
     
     @EnvironmentObject var realmService: RealmService
     @EnvironmentObject var loadingSharedData: LoadingSharedData
-    @EnvironmentObject var checkSharedData: CheckSharedData
     @EnvironmentObject var learnManager: LearnManager
     
     @ObservedObject private var pathHandler: PathHandler
+    @StateObject private var userInput = CheckUserInput()
     
     init(pathHandler: PathHandler) {
         self.pathHandler = pathHandler
@@ -41,8 +41,8 @@ struct CheckView: ResponsiveView {
             .background(CustomColor.background)
             .navigationDestination(for: ViewName.self) { viewName in
                 switch viewName {
-                case .check(_):
-                    viewName.viewForName(pathHandler: pathHandler)
+                case .check(let checkViewName):
+                    checkViewName.viewForName(pathHandler: pathHandler, userInput: userInput)
                     
                 default: EmptyView()
                 }
@@ -54,20 +54,24 @@ struct CheckView: ResponsiveView {
         
         loadingSharedData.startLoading(.process)
         
-        checkSharedData.extractCards()
+        guard let cards = realmService.extractForCheck(eikenGrade: userInput.selectedGrade) else { return }
+//        checkSharedData.cards = extractedCards
         
         guard
-            !checkSharedData.cards.isEmpty,
-            let options = checkSharedData.selectedGrade.setupOptions(booksDict: checkSharedData.booksDict,
-                                                                     cards: checkSharedData.cards,
-                                                                     isBookView: false) else { loadingSharedData.finishLoading {}; return }
+            !cards.isEmpty,
+            let options = realmService.setupOptions(
+                eikenGrade: userInput.selectedGrade,
+                cards: cards,
+                containFifthOption: false
+            ) else { loadingSharedData.finishLoading {}; return }
 
-        learnManager.setupLearn(checkSharedData.cards, options)
+        learnManager.setupLearn(cards, options)
         
         loadingSharedData.finishLoading {
             pathHandler.transitionScreen(
                 to: LearnMode.select.viewName(
-                    cards: checkSharedData.cards,
+                    cards: cards,
+                    options: options,
                     isBookView: false
                 )
             )
@@ -141,7 +145,7 @@ struct CheckView: ResponsiveView {
             
             Spacer()
             
-            Picker("grade", selection: $checkSharedData.selectedGrade) {
+            Picker("grade", selection: $userInput.selectedGrade) {
                 ForEach(EikenGrade.allCases.filter { realmService.convertGradeToSheet($0) != nil }, id: \.self) { grade in
                     Text(grade.title)
                         .bold()

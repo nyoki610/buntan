@@ -5,15 +5,17 @@ struct BookListView: ResponsiveView {
     @Environment(\.deviceType) var deviceType: DeviceType
     
     @EnvironmentObject var realmService: RealmService
-    @EnvironmentObject var bookSharedData: BookSharedData
+
     
     @State private var showDetail: Bool = false
     
     @ObservedObject private var pathHandler: PathHandler
+    @ObservedObject private var userInput: BookUserInput
     private let bookList: [Book]
     
-    init(pathHandler: PathHandler, bookList: [Book]) {
+    init(pathHandler: PathHandler, userInput: BookUserInput, bookList: [Book]) {
         self.pathHandler = pathHandler
+        self.userInput = userInput
         self.bookList = bookList
     }
     
@@ -30,7 +32,7 @@ struct BookListView: ResponsiveView {
                     Image(systemName: "flag.fill")
                         .foregroundStyle(Orange.defaultOrange)
                     
-                    Text(bookSharedData.selectedBookCategory.headerTitle)
+                    Text(userInput.selectedBookCategory?.headerTitle ?? "")
                     Spacer()
                 }
                 .font(.system(size: responsiveSize(18, 24)))
@@ -38,14 +40,14 @@ struct BookListView: ResponsiveView {
                 
                 HStack {
                     Spacer()
-                    Text(bookSharedData.selectedGrade.title)
+                    Text(userInput.selectedGrade?.title ?? "")
                         .bold()
                         .font(.system(size: responsiveSize(18, 24)))
                         .foregroundColor(.white)
                     Spacer()
                 }
                 .padding(.vertical, 10)
-                .background(bookSharedData.selectedGrade.color)
+                .background(userInput.selectedGrade?.color ?? .clear)
                 .cornerRadius(10)
                 .padding(.horizontal, responsiveSize(40, 120))
                 .padding(.top, 4)
@@ -54,7 +56,7 @@ struct BookListView: ResponsiveView {
                 listView
                     .padding(.horizontal, responsiveSize(30, 100))
                 
-                if bookSharedData.selectedBookCategory == .freq {
+                if userInput.selectedBookCategory == .freq {
                     HStack {
                         Spacer()
                         detailbutton
@@ -98,7 +100,7 @@ struct BookListView: ResponsiveView {
         let disabled = (book.cardsCount == 0)
         
         Button {
-            bookSharedData.selectedBookConfig = book.config
+            userInput.selectedBookConfig = book.config
             pathHandler.transitionScreen(to: .book(.sectionList(book)))
         } label: {
             

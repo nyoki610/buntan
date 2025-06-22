@@ -7,12 +7,11 @@ struct LearnHeader: ResponsiveView, LearnViewProtocol {
     @EnvironmentObject var realmService: RealmService
     @EnvironmentObject var loadingSharedData: LoadingSharedData
     @EnvironmentObject var alertSharedData: AlertSharedData
-    
-    @EnvironmentObject var bookSharedData: BookSharedData
-    @EnvironmentObject var checkSharedData: CheckSharedData
+
     @EnvironmentObject var learnManager: LearnManager
     
     @ObservedObject var pathHandler: PathHandler
+    @ObservedObject var userInput: UserInput
     
     let geometry: GeometryProxy
     let learnMode: LearnMode?
@@ -25,11 +24,13 @@ struct LearnHeader: ResponsiveView, LearnViewProtocol {
     private var isTypeView: Bool { learnMode == .type }
     
     init(pathHandler: PathHandler,
+         userInput: UserInput,
          geometry: GeometryProxy,
          learnMode: LearnMode?,
          cards: [Card],
          options: [[Option]]?) {
         self.pathHandler = pathHandler
+        self.userInput = userInput
         self.geometry = geometry
         self.learnMode = learnMode
         self.cards = cards

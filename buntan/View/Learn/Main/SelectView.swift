@@ -7,8 +7,6 @@ struct SelectView: ResponsiveView, LearnViewProtocol {
     @EnvironmentObject var realmService: RealmService
     @EnvironmentObject var loadingSharedData: LoadingSharedData
     @EnvironmentObject var alertSharedData: AlertSharedData
-    @EnvironmentObject var bookSharedData: BookSharedData
-    @EnvironmentObject var checkSharedData: CheckSharedData
     @EnvironmentObject var learnManager: LearnManager
     
     /// BookView と CheckView で処理を分けるための変数
@@ -25,12 +23,16 @@ struct SelectView: ResponsiveView, LearnViewProtocol {
     var isCorrect: Bool { selectedIndex == answerIndex}
     
     @ObservedObject var pathHandler: PathHandler
+    @ObservedObject var userInput: UserInput
     
     private let cards: [Card]
+    private let options: [[Option]]?
     
-    init(pathHandler: PathHandler, cards: [Card], isBookView: Bool) {
+    init(pathHandler: PathHandler, userInput: UserInput, cards: [Card], options: [[Option]]?, isBookView: Bool) {
         self.pathHandler = pathHandler
+        self.userInput = userInput
         self.cards = cards
+        self.options = options
         self.isBookView = isBookView
     }
     
@@ -41,10 +43,11 @@ struct SelectView: ResponsiveView, LearnViewProtocol {
             VStack {
                 
                 LearnHeader(pathHandler: pathHandler,
+                            userInput: userInput,
                             geometry: geometry,
                             learnMode: isBookView ? .select : nil,
-                            cards: isBookView ? cards : checkSharedData.cards,
-                            options: isBookView ? bookSharedData.options : nil)
+                            cards: cards,
+                            options: isBookView ? options : nil)
                 
                 Spacer()
                 

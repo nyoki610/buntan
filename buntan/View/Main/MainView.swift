@@ -12,14 +12,11 @@ struct MainView: ResponsiveView {
     @ObservedObject private var realmService = RealmService()
     @ObservedObject private var learnManager = LearnManager()
     
-    @ObservedObject var bookSharedData = BookSharedData()
-    @ObservedObject var checkSharedData = CheckSharedData()
-    
     /// 起動時の LogoView の表示を管理
     @State private var showLogoView: Bool = true
     
     /// tabView を管理
-    @State var selectedTab: TabType = .book
+    @State var selectedRootViewName: RootViewName = .book
     
     @StateObject var bookViewPathHandler = PathHandler()
     @StateObject var checkViewPathHandler = PathHandler()
@@ -32,8 +29,9 @@ struct MainView: ResponsiveView {
                 logoView
             } else {
                 ZStack {
-                    selectedTab.viewName.viewForName(
-                        pathHandler: selectedTab == .book ? bookViewPathHandler : checkViewPathHandler
+                    selectedRootViewName.viewForName(
+                        bookViewPathHandler: bookViewPathHandler,
+                        checkViewPathHandler: checkViewPathHandler
                     )
                     
                     tabView
@@ -49,8 +47,6 @@ struct MainView: ResponsiveView {
         .environmentObject(loadingSharedData)
         .environmentObject(alertSharedData)
         .environmentObject(realmService)
-        .environmentObject(bookSharedData)
-        .environmentObject(checkSharedData)
         .environmentObject(learnManager)
         .alert(item: $alertSharedData.alertType) { _ in
             alertSharedData.createAlert()
@@ -59,8 +55,8 @@ struct MainView: ResponsiveView {
             /// bookSharedata.bookList を初期化
 //            guard let updatedBooksDict = realmService.booksDict else { return }
 //            realmService.booksDict = updatedBooksDict
-            let updatedBooksDict = realmService.booksDict
-            checkSharedData.booksDict = updatedBooksDict
+//            let updatedBooksDict = realmService.booksDict
+//            checkSharedData.booksDict = updatedBooksDict
             
             /// LogoView を 3 秒間表示した後, 画面遷移
             Task {

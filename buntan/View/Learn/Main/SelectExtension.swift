@@ -25,8 +25,15 @@ extension SelectView {
         
         if nextCardExist {
             learnManager.hideSettings()
-            learnManager.topCardIndex += 1
-            learnManager.readOutTopCard()
+
+            await MainActor.run {
+            /// 状態更新を少し遅延させることで、ナビゲーション更新の競合を避ける
+            /// この処理がないと以下の警告が出る
+            /// Update NavigationRequestObserver tried to update multiple times per frame.
+            /// Update NavigationAuthority bound path tried to update multiple times per frame. 
+                learnManager.topCardIndex += 1
+                learnManager.readOutTopCard()
+            }
         } else {
             /// animationの完了を待つ
             try? await Task.sleep(nanoseconds: isCorrect ? 0_300_000_000 : 1_000_000_000)

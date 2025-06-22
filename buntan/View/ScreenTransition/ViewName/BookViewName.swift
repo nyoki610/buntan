@@ -3,14 +3,13 @@ import SwiftUI
 
 enum BookViewName {
     
-    case book
     case bookList([Book])
     case sectionList(Book)
     case learnSelect(CardsContainer)
     case wordList([Card])
-    case swipe([Card])
-    case select([Card])
-    case type([Card])
+    case swipe([Card], [[Option]]?)
+    case select([Card], [[Option]]?)
+    case type([Card], [[Option]]?)
     case learnResult(CardsContainer)
 }
 
@@ -18,7 +17,6 @@ extension BookViewName: ViewNameProtocol {
     
     var screenName: String {
         switch self {
-        case .book: return "book"
         case .bookList: return "bookList"
         case .sectionList: return "sectionList"
         case .learnSelect: return "learnSelect"
@@ -33,7 +31,6 @@ extension BookViewName: ViewNameProtocol {
 
     var screenClassName: String {
         switch self {
-        case .book: return "BookView"
         case .bookList: return "BookListView"
         case .sectionList: return "SectionListView"
         case .learnSelect: return "LearnSelectView"
@@ -45,35 +42,84 @@ extension BookViewName: ViewNameProtocol {
         }
     }
 
-    func viewForName(pathHandler: PathHandler) -> some View {
+    func viewForName(pathHandler: PathHandler, userInput: BookUserInput) -> some View {
 
         switch self {
-        case .book:
-            return AnyView(BookView(pathHandler: pathHandler))
 
         case .bookList(let bookList):
-            return AnyView(BookListView(pathHandler: pathHandler, bookList: bookList))
+            return AnyView(
+                BookListView(
+                    pathHandler: pathHandler,
+                    userInput: userInput,
+                    bookList: bookList
+                )
+            )
         
         case .sectionList(let book):
-            return AnyView(SectionListView(pathHandler: pathHandler, book: book))
+            return AnyView(
+                SectionListView(
+                    pathHandler: pathHandler,
+                    userInput: userInput,
+                    book: book
+                )
+            )
         
         case .learnSelect(let cardsContainer):
-            return AnyView(LearnSelectView(pathHandler: pathHandler, cardsContainer: cardsContainer))
+            return AnyView(
+                LearnSelectView(
+                    pathHandler: pathHandler,
+                    userInput: userInput,
+                    cardsContainer: cardsContainer
+                )
+            )
         
         case .wordList(let cards):
-            return AnyView(WordListView(pathHandler: pathHandler, cards: cards))
+            return AnyView(
+                WordListView(
+                    pathHandler: pathHandler,
+                    cards: cards
+                )
+            )
         
-        case .swipe(let cards):
-            return AnyView(SwipeView(pathHandler: pathHandler, cards: cards))
+        case .swipe(let cards, let options):
+            return AnyView(
+                SwipeView(
+                    pathHandler: pathHandler,
+                    userInput: userInput,
+                    cards: cards,
+                    options: options
+                )
+            )
         
-        case .select(let cards):
-            return AnyView(SelectView(pathHandler: pathHandler, cards: cards, isBookView: true))
+        case .select(let cards, let options):
+            return AnyView(
+                SelectView(
+                    pathHandler: pathHandler,
+                    userInput: userInput,
+                    cards: cards,
+                    options: options,
+                    isBookView: true
+                )
+            )
         
-        case .type(let cards):
-            return AnyView(TypeView(pathHandler: pathHandler, cards: cards))
+        case .type(let cards, let options):
+            return AnyView(
+                TypeView(
+                    pathHandler: pathHandler,
+                    userInput: userInput,
+                    cards: cards,
+                    options: options
+                )
+            )
         
         case .learnResult(let cardsContainer):
-            return AnyView(LearnResultView(pathHandler: pathHandler, cardsContainer: cardsContainer))
+            return AnyView(
+                LearnResultView(
+                    pathHandler: pathHandler,
+                    userInput: userInput,
+                    cardsContainer: cardsContainer
+                )
+            )
         }
     }
 }
