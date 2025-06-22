@@ -65,7 +65,12 @@ struct CheckView: ResponsiveView {
         learnManager.setupLearn(checkSharedData.cards, options)
         
         loadingSharedData.finishLoading {
-            pathHandler.transitionScreen(to: LearnMode.select.viewName(isBookView: false))
+            pathHandler.transitionScreen(
+                to: LearnMode.select.viewName(
+                    cards: checkSharedData.cards,
+                    isBookView: false
+                )
+            )
         }
     }
     

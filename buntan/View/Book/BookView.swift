@@ -19,7 +19,7 @@ struct BookView: ResponsiveView {
         
             ZStack {
 
-                Text("総カード数: \(realmService.allCardsCount)")
+//                Text("総カード数: \(realmService.allCardsCount)")
             
                 VStack(spacing: 0) {
                     

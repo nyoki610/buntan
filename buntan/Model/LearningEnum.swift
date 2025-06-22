@@ -20,11 +20,11 @@ enum LearnMode: String, CaseIterable, Identifiable {
         UUID().uuidString
     }
     
-    func viewName(isBookView: Bool) -> ViewName {
+    func viewName(cards: [Card], isBookView: Bool) -> ViewName {
         switch self {
-        case .swipe: return isBookView ? .book(.swipe) : .check(.checkSwipe)
-        case .select: return isBookView ? .book(.select) : .check(.checkSelect)
-        case .type: return isBookView ? .book(.type) : .check(.checkType)
+        case .swipe: return isBookView ? .book(.swipe(cards)) : .check(.checkSwipe(cards))
+        case .select: return isBookView ? .book(.select(cards)) : .check(.checkSelect(cards))
+        case .type: return isBookView ? .book(.type(cards)) : .check(.checkType(cards))
         }
     }
 }

@@ -57,7 +57,12 @@ struct LearnSelectView: ResponsiveView {
                         let cards = cardsContainer.getCardsByLearnRange(learnRange: bookSharedData.selectedRange)
                         
                         learnManager.setupLearn(cards, options)
-                        pathHandler.transitionScreen(to: bookSharedData.selectedMode.viewName(isBookView: true))
+                        pathHandler.transitionScreen(
+                            to: bookSharedData.selectedMode.viewName(
+                                cards: cards,
+                                isBookView: true
+                            )
+                        )
                     }
 
                     Spacer()

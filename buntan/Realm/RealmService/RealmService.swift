@@ -4,11 +4,11 @@ class RealmService: ObservableObject {
     
     @Published var sheetDict: [EikenGrade: Sheet] = [:]
     
-    var allCardsCount: Int {
-        guard let realm = tryRealm() else { return 0 }
-        let realmCards = realm.objects(RealmCard.self)
-        return realmCards.count
-    }
+//    var allCardsCount: Int {
+//        guard let realm = tryRealm() else { return 0 }
+//        let realmCards = realm.objects(RealmCard.self)
+//        return realmCards.count
+//    }
 
     var booksDict: [EikenGrade: [BookConfiguration: Book]]? {
 

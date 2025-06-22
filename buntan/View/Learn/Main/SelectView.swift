@@ -26,8 +26,11 @@ struct SelectView: ResponsiveView, LearnViewProtocol {
     
     @ObservedObject var pathHandler: PathHandler
     
-    init(pathHandler: PathHandler, isBookView: Bool) {
+    private let cards: [Card]
+    
+    init(pathHandler: PathHandler, cards: [Card], isBookView: Bool) {
         self.pathHandler = pathHandler
+        self.cards = cards
         self.isBookView = isBookView
     }
     
@@ -40,7 +43,7 @@ struct SelectView: ResponsiveView, LearnViewProtocol {
                 LearnHeader(pathHandler: pathHandler,
                             geometry: geometry,
                             learnMode: isBookView ? .select : nil,
-                            cards: isBookView ? learnManager.cards : checkSharedData.cards,
+                            cards: isBookView ? cards : checkSharedData.cards,
                             options: isBookView ? bookSharedData.options : nil)
                 
                 Spacer()

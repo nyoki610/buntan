@@ -8,9 +8,9 @@ enum BookViewName {
     case sectionList(Book)
     case learnSelect(CardsContainer)
     case wordList([Card])
-    case swipe
-    case select
-    case type
+    case swipe([Card])
+    case select([Card])
+    case type([Card])
     case learnResult(CardsContainer)
 }
 
@@ -63,14 +63,14 @@ extension BookViewName: ViewNameProtocol {
         case .wordList(let cards):
             return AnyView(WordListView(pathHandler: pathHandler, cards: cards))
         
-        case .swipe:
-            return AnyView(SwipeView(pathHandler: pathHandler))
+        case .swipe(let cards):
+            return AnyView(SwipeView(pathHandler: pathHandler, cards: cards))
         
-        case .select:
-            return AnyView(SelectView(pathHandler: pathHandler, isBookView: true))
+        case .select(let cards):
+            return AnyView(SelectView(pathHandler: pathHandler, cards: cards, isBookView: true))
         
-        case .type:
-            return AnyView(TypeView(pathHandler: pathHandler))
+        case .type(let cards):
+            return AnyView(TypeView(pathHandler: pathHandler, cards: cards))
         
         case .learnResult(let cardsContainer):
             return AnyView(LearnResultView(pathHandler: pathHandler, cardsContainer: cardsContainer))

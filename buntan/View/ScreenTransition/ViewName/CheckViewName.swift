@@ -4,9 +4,9 @@ import SwiftUI
 enum CheckViewName {
     
     case check
-    case checkSwipe
-    case checkType
-    case checkSelect
+    case checkSwipe([Card])
+    case checkType([Card])
+    case checkSelect([Card])
     case checkResult
 }
 
@@ -40,14 +40,14 @@ extension CheckViewName: ViewNameProtocol {
         case .check:
             return AnyView(CheckView(pathHandler: pathHandler))
         
-        case .checkSwipe:
+        case .checkSwipe(_):
             return AnyView(EmptyView())
         
-        case .checkType:
+        case .checkType(_):
             return AnyView(EmptyView())
         
-        case .checkSelect:
-            return AnyView(SelectView(pathHandler: pathHandler, isBookView: false))
+        case .checkSelect(let cards):
+            return AnyView(SelectView(pathHandler: pathHandler, cards: cards, isBookView: false))
         
         case .checkResult:
             return AnyView(CheckResultView(pathHandler: pathHandler))

@@ -21,9 +21,11 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
     private var nonAnimationCard: Card { animationController < cards.count ? cards[animationController] : EmptyModel.card }
     
     @ObservedObject var pathHandler: PathHandler
+    private let cards: [Card]
     
-    init(pathHandler: PathHandler) {
+    init(pathHandler: PathHandler, cards: [Card]) {
         self.pathHandler = pathHandler
+        self.cards = cards
     }
 
     var body: some View {
@@ -35,7 +37,7 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
                 LearnHeader(pathHandler: pathHandler,
                             geometry: geometry,
                             learnMode: .swipe,
-                            cards: learnManager.cards,
+                            cards: cards,
                             options: bookSharedData.options)
                 Spacer()
                 

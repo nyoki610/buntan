@@ -20,8 +20,11 @@ struct TypeView: ResponsiveView, LearnViewProtocol {
     
     internal var pathHandler: PathHandler
     
-    init(pathHandler: PathHandler) {
+    private let cards: [Card]
+    
+    init(pathHandler: PathHandler, cards: [Card]) {
         self.pathHandler = pathHandler
+        self.cards = cards
     }
     
     var body: some View {
@@ -33,7 +36,7 @@ struct TypeView: ResponsiveView, LearnViewProtocol {
                 LearnHeader(pathHandler: pathHandler,
                             geometry: geometry,
                             learnMode: .type,
-                            cards: learnManager.cards,
+                            cards: cards,
                             options: bookSharedData.options)
                 
                 Spacer()
