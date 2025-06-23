@@ -3,10 +3,7 @@ import SwiftUI
 struct SectionListView: ResponsiveView {
     
     @Environment(\.deviceType) var deviceType: DeviceType
-    
-    @EnvironmentObject var realmService: RealmService
 
-    
     private let book: Book
     @ObservedObject private var pathHandler: PathHandler
     @ObservedObject private var userInput: BookUserInput

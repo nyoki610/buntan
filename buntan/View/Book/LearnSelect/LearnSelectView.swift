@@ -5,7 +5,6 @@ struct LearnSelectView: ResponsiveView {
     
     @Environment(\.deviceType) var deviceType: DeviceType
     
-    @EnvironmentObject var realmService: RealmService
     @EnvironmentObject var alertSharedData: AlertSharedData
     @EnvironmentObject var loadingSharedData: LoadingSharedData
     @EnvironmentObject var learnManager: LearnManager
@@ -19,7 +18,7 @@ struct LearnSelectView: ResponsiveView {
         self.userInput = userInput
         self.cardsContainer = cardsContainer
     }
-    
+
     private var headerTitle: String {
         var title: String = ""
         title += userInput.selectedGrade?.title ?? ""
@@ -55,21 +54,23 @@ struct LearnSelectView: ResponsiveView {
                                 color: Orange.defaultOrange) {
                         
                         
-                        guard let selectedGrade = userInput.selectedGrade,
-                              let selectedMode = userInput.selectedMode,
-                              let selectedRange = userInput.selectedRange else { return }
+                        guard let selectedGrade = userInput.selectedGrade else { return }
                         
-                        let cards = cardsContainer.getCardsByLearnRange(learnRange: selectedRange)
+                        let cards = cardsContainer.getCardsByLearnRange(
+                            learnRange: userInput.selectedRange
+                        )
                         
-                        guard let options = realmService.setupOptions(
-                            eikenGrade: selectedGrade,
-                            cards: cards,
-                            containFifthOption: true
-                        ) else { return }
+                        
+                        guard let options = SheetRealmAPI
+                            .getOptions(
+                                eikenGrade: selectedGrade,
+                                cards: cards,
+                                containFifthOption: true
+                            ) else { return }
                         
                         learnManager.setupLearn(cards, options)
                         pathHandler.transitionScreen(
-                            to: selectedMode.viewName(
+                            to: userInput.selectedMode.viewName(
                                 cards: cards,
                                 options: options,
                                 isBookView: true
@@ -82,6 +83,9 @@ struct LearnSelectView: ResponsiveView {
             }
             .background(CustomColor.background)
             .navigationBarBackButtonHidden(true)
+            .onAppear {
+                adjustSelectedRange()
+            }
     }
     
     @ViewBuilder
@@ -192,16 +196,12 @@ extension LearnSelectView {
             /// ensure loading screen rendering by delaying the next process
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 
-                guard let selectedGrade = userInput.selectedGrade,
-                      let selectedBookConfig = userInput.selectedBookConfig else { return }
+                guard let selectedBookCategory = userInput.selectedBookCategory else { return }
                 
-                guard realmService.resetProgress(
-                    cardsContainer.allCards,
-                    selectedGrade,
-                    selectedBookConfig.bookCategory
-                ) else {
-                    return
-                }
+                guard SheetRealmAPI.resetCardsStatus(
+                    cardIdList: cardsContainer.allCards.map { $0.id },
+                    bookCategory: selectedBookCategory
+                ) else { return }
 
                 loadingSharedData.finishLoading {}
             }

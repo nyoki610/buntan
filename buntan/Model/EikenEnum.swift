@@ -50,6 +50,8 @@ enum EikenGrade: Double, CaseIterable {
         
         switch self {
         case .first: return getIntTupel(9, 7)
+            
+        /// 要編集
         case .preFirst: return getIntTupel(0, 0)
         }
     }

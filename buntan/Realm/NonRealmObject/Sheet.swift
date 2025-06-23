@@ -1,7 +1,7 @@
 import Foundation
 import RealmSwift
 
-class Sheet {
+struct Sheet {
     let id: String
     let grade: EikenGrade
     var cardList: [Card]

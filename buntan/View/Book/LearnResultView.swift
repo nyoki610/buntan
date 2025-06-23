@@ -3,11 +3,8 @@ import SwiftUI
 struct LearnResultView: ResponsiveView {
     
     @Environment(\.deviceType) var deviceType: DeviceType
-    // Recordクラス内から直接保存できるように修正したい
-    @EnvironmentObject var realmService: RealmService
-    @EnvironmentObject var loadingSharedData: LoadingSharedData
     
-
+    @EnvironmentObject var loadingSharedData: LoadingSharedData
     @EnvironmentObject var learnManager: LearnManager
 
     /// 「学習中」の単語が存在するかどうかを示す bool 値
@@ -148,12 +145,13 @@ struct LearnResultView: ResponsiveView {
         /// 次に学習する範囲を設定
         userInput.selectedRange = isNotLearnedButtonAction ? .notLearned : reviewAll ? .all : .learning
         
-        guard let selectedGrade = userInput.selectedGrade,
-              let selectedRange = userInput.selectedRange else { return }
+        guard let selectedGrade = userInput.selectedGrade else { return }
         
-        let cards = cardsContainer.getCardsByLearnRange(learnRange: selectedRange)
+        let cards = cardsContainer.getCardsByLearnRange(
+            learnRange: userInput.selectedRange
+        )
         /// options を初期化
-        guard let options = realmService.setupOptions(
+        guard let options = SheetRealmAPI.getOptions(
             eikenGrade: selectedGrade,
             cards: cards,
             containFifthOption: true

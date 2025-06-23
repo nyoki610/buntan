@@ -4,7 +4,7 @@ import Charts
 extension CheckRecordView {
     
     var extractedRecords: [CheckRecord] {
-        realmService.checkRecords.filter { $0.grade == selectedGrade}.reversed()
+        checkRecords.filter { $0.grade == selectedGrade}.reversed()
     }
     
     var prefixedRecords: [CheckRecord] { Array(extractedRecords.dropFirst(chartController * 10).prefix(10)) }

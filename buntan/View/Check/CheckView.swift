@@ -3,8 +3,7 @@ import SwiftUI
 struct CheckView: ResponsiveView {
     
     @Environment(\.deviceType) var deviceType: DeviceType
-    
-    @EnvironmentObject var realmService: RealmService
+
     @EnvironmentObject var loadingSharedData: LoadingSharedData
     @EnvironmentObject var learnManager: LearnManager
     
@@ -53,17 +52,14 @@ struct CheckView: ResponsiveView {
     private func setupCheck() {
         
         loadingSharedData.startLoading(.process)
+                
+        guard let cards = SheetRealmAPI.getCaradsForCheck(eikenGrade: userInput.selectedGrade) else { return }
         
-        guard let cards = realmService.extractForCheck(eikenGrade: userInput.selectedGrade) else { return }
-//        checkSharedData.cards = extractedCards
-        
-        guard
-            !cards.isEmpty,
-            let options = realmService.setupOptions(
-                eikenGrade: userInput.selectedGrade,
-                cards: cards,
-                containFifthOption: false
-            ) else { loadingSharedData.finishLoading {}; return }
+        guard let options = SheetRealmAPI.getOptions(
+            eikenGrade: userInput.selectedGrade,
+            cards: cards,
+            containFifthOption: false
+        ) else { return }
 
         learnManager.setupLearn(cards, options)
         
@@ -145,8 +141,10 @@ struct CheckView: ResponsiveView {
             
             Spacer()
             
+            /// Viewと連動しない？
             Picker("grade", selection: $userInput.selectedGrade) {
-                ForEach(EikenGrade.allCases.filter { realmService.convertGradeToSheet($0) != nil }, id: \.self) { grade in
+                /// 要編集
+                ForEach(EikenGrade.allCases, id: \.self) { grade in
                     Text(grade.title)
                         .bold()
                 }

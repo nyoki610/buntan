@@ -9,7 +9,6 @@ import SwiftUI
 ///     - LearnHeader()
 protocol LearnViewProtocol: View {
     
-    var realmService: RealmService { get }
     var loadingSharedData: LoadingSharedData { get }
 //    var checkSharedData: CheckSharedData { get }
     var learnManager: LearnManager { get }
@@ -70,31 +69,25 @@ extension LearnViewProtocol {
                       let selectedSectionTitle = bookUserInput.selectedSectionTitle else { return }
                 
                 /// 学習内容を realm に保存
-                guard realmService.saveProgress(learnManager,
-                                                selectedGrade,
-                                                selectedBookCategory) else {
-                    loadingSharedData.finishLoading {
-                        pathHandler.backToPreviousScreen(count: 1)
-                    }
-                    return
-                }
-                /// bookSharedData.bookList を再初期化
-//                realmService.booksDict = updatedBooksDict
+                guard SheetRealmAPI.updateCardsStatus(
+                    learnManager: learnManager,
+                    eikenGrade: selectedGrade,
+                    bookCategory: selectedBookCategory
+                ) else { return }
                 
                 /// 学習量の記録を保存
                 let learnRecord = LearnRecord(UUID().uuidString, Date(),
                                               cardsCount)
-                realmService.synchronizeRecord(learnRecord: learnRecord)
+                let _ = LearnRecordRealmAPI.uploadLearnRecord(learnRecord: learnRecord)
                 
-                let bookList = BookConfiguration.allCases
-                    .filter { selectedBookCategory == $0.bookCategory }
-                    .compactMap { realmService.booksDict[selectedGrade]?[$0] }
-                let book = bookList.first { $0.config == selectedBookConfig }
-                let section = book?.sections.first { $0.title == selectedSectionTitle }
-                
-                guard let section = section else { return }
-                
-                let cardsContainer = CardsContainer(cards: section.cards, bookCategory: selectedBookCategory)
+                guard let cards: [Card] = SheetRealmAPI.getSectionCards(
+                    eikenGrade: selectedGrade,
+                    bookCategory: selectedBookCategory,
+                    bookConfig: selectedBookConfig,
+                    sectionTitle: selectedSectionTitle
+                ) else { return }
+
+                let cardsContainer = CardsContainer(cards: cards, bookCategory: selectedBookCategory)
 
                 /// loading を終了して画面遷移
                 loadingSharedData.finishLoading {
@@ -131,7 +124,7 @@ extension LearnViewProtocol {
                                               learnManager.rightCardsIndexList.count,
                                               learnManager.estimatedScore)
 
-                realmService.synchronizeRecord(checkRecord: checkRecord)
+                let _ = CheckRecordRealmAPI.uploadCheckRecord(checkRecord: checkRecord)
                 
                 loadingSharedData.finishLoading {
                     pathHandler.transitionScreen(to: .check(.checkResult))

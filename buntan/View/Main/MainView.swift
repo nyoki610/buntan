@@ -8,8 +8,7 @@ struct MainView: ResponsiveView {
     /// ObservedObjects
     @ObservedObject private var loadingSharedData = LoadingSharedData()
     @ObservedObject private var alertSharedData = AlertSharedData()
-    
-    @ObservedObject private var realmService = RealmService()
+
     @ObservedObject private var learnManager = LearnManager()
     
     /// 起動時の LogoView の表示を管理
@@ -46,17 +45,11 @@ struct MainView: ResponsiveView {
         }
         .environmentObject(loadingSharedData)
         .environmentObject(alertSharedData)
-        .environmentObject(realmService)
         .environmentObject(learnManager)
         .alert(item: $alertSharedData.alertType) { _ in
             alertSharedData.createAlert()
         }
         .onAppear {
-            /// bookSharedata.bookList を初期化
-//            guard let updatedBooksDict = realmService.booksDict else { return }
-//            realmService.booksDict = updatedBooksDict
-//            let updatedBooksDict = realmService.booksDict
-//            checkSharedData.booksDict = updatedBooksDict
             
             /// LogoView を 3 秒間表示した後, 画面遷移
             Task {

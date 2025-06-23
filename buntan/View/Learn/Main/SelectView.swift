@@ -4,7 +4,6 @@ struct SelectView: ResponsiveView, LearnViewProtocol {
     
     @Environment(\.deviceType) var deviceType: DeviceType
     
-    @EnvironmentObject var realmService: RealmService
     @EnvironmentObject var loadingSharedData: LoadingSharedData
     @EnvironmentObject var alertSharedData: AlertSharedData
     @EnvironmentObject var learnManager: LearnManager

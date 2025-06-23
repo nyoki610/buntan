@@ -11,10 +11,13 @@ final class BookUserInput: UserInput {
     var selectedSectionTitle: String?
     var selectedBookCategory: BookCategory?
     
-    @Published var selectedMode: LearnMode?
-    @Published var selectedRange: LearnRange?
+    @Published var selectedMode: LearnMode = .swipe
+    @Published var selectedRange: LearnRange = .notLearned
+    
+    /// 将来的に削除したい？
+    @Published var todaysWordCount: Int?
 }
 
 final class CheckUserInput: UserInput {
-    var selectedGrade: EikenGrade = .first
+    @Published var selectedGrade: EikenGrade = .first
 }

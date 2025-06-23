@@ -4,9 +4,6 @@ struct BookListView: ResponsiveView {
     
     @Environment(\.deviceType) var deviceType: DeviceType
     
-    @EnvironmentObject var realmService: RealmService
-
-    
     @State private var showDetail: Bool = false
     
     @ObservedObject private var pathHandler: PathHandler

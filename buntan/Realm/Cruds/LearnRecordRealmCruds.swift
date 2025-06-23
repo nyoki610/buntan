@@ -1,7 +1,7 @@
 import Foundation
 
 
-class LearnRecordsRealmCruds: RealmCruds {
+class LearnRecordRealmCruds: RealmCruds {
     
     static func getLearnRecords() -> [LearnRecord]? {
         

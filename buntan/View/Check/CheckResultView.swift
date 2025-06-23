@@ -3,8 +3,7 @@ import SwiftUI
 struct CheckResultView: ResponsiveView {
     
     @Environment(\.deviceType) var deviceType: DeviceType
-    // Recordクラス内から直接保存できるように修正したい？
-    @EnvironmentObject var realmService: RealmService
+
     @EnvironmentObject var loadingSharedData: LoadingSharedData
 
     @EnvironmentObject var learnManager: LearnManager

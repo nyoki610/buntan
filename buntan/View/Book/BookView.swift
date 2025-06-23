@@ -4,8 +4,6 @@ struct BookView: ResponsiveView {
     
     @Environment(\.deviceType) var deviceType
     
-    @EnvironmentObject var realmService: RealmService
-    
     @ObservedObject private var pathHandler: PathHandler
     @StateObject private var userInput: BookUserInput = BookUserInput()
     
@@ -19,12 +17,14 @@ struct BookView: ResponsiveView {
         
             ZStack {
 
-//                Text("総カード数: \(realmService.allCardsCount)")
+//                Text("総カード数: \(allCardsCount)")
             
                 VStack(spacing: 0) {
                     
-                    headerView
-                        .padding(.top, 40)
+                    if let todaysWordCount = userInput.todaysWordCount {
+                        headerView(todaysWordCount: todaysWordCount)
+                            .padding(.top, 40)
+                    }
                     
                     Spacer()
                     Spacer()
@@ -48,31 +48,28 @@ struct BookView: ResponsiveView {
                 default: EmptyView()
                 }
             }
+            .onAppear {
+                if let todaysWordCount = LearnRecordRealmAPI.getTodaysWordCount() {
+                    userInput.todaysWordCount = todaysWordCount
+                }
+            }
         }
     }
     
     
     /// headerView で使用する property
     /// ------------------------------
-    private var todayLearnCount: Int {
-        
-        guard let lastRecord = realmService.combinedRecords.last else { return 0 }
-       
-        let lastRecordDate = Calendar.current.dateComponents([.year, .month, .day], from: lastRecord.date)
-        let today = Calendar.current.dateComponents([.year, .month, .day], from: Date())
-
-        return lastRecordDate == today ? lastRecord.learnedCardCount : 0
-   }
     private var variableValue: Double {
-        if todayLearnCount >= 1000 { return 1.0 }
-        if todayLearnCount >= 100 { return 0.5 }
-        if todayLearnCount >= 10 { return 0.3 }
+        guard let todaysWordCount = userInput.todaysWordCount else { return 0.0 }
+        if todaysWordCount >= 1000 { return 1.0 }
+        if todaysWordCount >= 100 { return 0.5 }
+        if todaysWordCount >= 10 { return 0.3 }
         return 0.0
     }
     /// ------------------------------
     
     @ViewBuilder
-    private var headerView: some View {
+    private func headerView(todaysWordCount: Int) -> some View {
         
         HStack {
             VStack {
@@ -86,7 +83,7 @@ struct BookView: ResponsiveView {
             .font(.system(size: responsiveSize(30, 40)))
             .foregroundStyle(Orange.defaultOrange)
                 
-            Text("\(todayLearnCount) words")
+            Text("\(todaysWordCount) words")
                 .padding(.top, 10)
                 .font(.system(size: responsiveSize(17, 24)))
 
@@ -129,9 +126,12 @@ struct BookView: ResponsiveView {
             userInput.selectedGrade = grade
             userInput.selectedBookCategory = bookCategory
             
-            let bookList: [Book] = BookConfiguration.allCases
-                .filter { bookCategory == $0.bookCategory }
-                .compactMap { realmService.booksDict[grade]?[$0] }
+            guard let bookList: [Book] = SheetRealmAPI
+                .getBookListByGradeAndCategory(
+                    eikenGrade: grade,
+                    bookCategory: bookCategory
+                ) else { return }
+            
             pathHandler.transitionScreen(to: .book(.bookList(bookList)))
         } label: {
             HStack {
