@@ -67,6 +67,8 @@ extension MainView {
         .background(Orange.defaultOrange)
         .onAppear {
             AnalyticsHandler.logScreenTransition(viewName: .logo)
+            
+            let _ = SheetRealmAPI.deleteUnnecessaryObjects()
         }
     }
 }

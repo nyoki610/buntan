@@ -1,20 +1,8 @@
 import Foundation
 
 
-class CheckRecordRealmCruds: RealmCruds {
-    
-    static func getCheckRecords() -> [CheckRecord]? {
-        
-        guard let realm = tryRealm() else { return nil }
-        
-        let checkRecords = Array(
-            realm.objects(RealmCheckRecord.self)
-                .compactMap { $0.convertToNonRealm() }
-        )
-        
-        return checkRecords
-    }
-    
+extension CheckRecordRealmCruds {
+
     static func uploadCheckRecord(checkRecord: CheckRecord) -> Bool {
         
         guard let realm = tryRealm() else { return false }

@@ -13,7 +13,7 @@ class RealmCheckRecord: Object, ObjectKeyIdentifiable {
     }
 }
 
-extension RealmCheckRecord {
+extension RealmCheckRecord: ConveretableRealmObject {
     
     func convertToNonRealm() -> CheckRecord? {
         

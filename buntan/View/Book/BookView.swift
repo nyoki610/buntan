@@ -11,13 +11,27 @@ struct BookView: ResponsiveView {
         self.pathHandler = pathHandler
     }
     
+    ///
+    @State var allCardsCount: Int? = TestCruds.getAllCardsCount()
+    @State var allInfomationsCount: Int? = TestCruds.getAllInfomationsCount()
+    ///
+    
     var body: some View {
         
         NavigationStack(path: pathHandler.navigationPath) {
         
             ZStack {
 
-//                Text("総カード数: \(allCardsCount)")
+                ///
+                VStack {
+                    if let allCardsCount = allCardsCount {
+                        Text("allCardsCount: \(allCardsCount)")
+                    }
+                    if let allInfomationsCount = allInfomationsCount {
+                        Text("allInfomationsCount: \(allInfomationsCount)")
+                    }
+                }
+                ///
             
                 VStack(spacing: 0) {
                     
@@ -82,7 +96,7 @@ struct BookView: ResponsiveView {
                   variableValue: variableValue)
             .font(.system(size: responsiveSize(30, 40)))
             .foregroundStyle(Orange.defaultOrange)
-                
+            
             Text("\(todaysWordCount) words")
                 .padding(.top, 10)
                 .font(.system(size: responsiveSize(17, 24)))

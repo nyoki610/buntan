@@ -11,7 +11,7 @@ class RealmSheet: Object {
     }
 }
 
-extension RealmSheet {
+extension RealmSheet: ConveretableRealmObject {
     
     func convertToNonRealm() -> Sheet? {
         

@@ -22,7 +22,7 @@ class RealmCruds {
             let config = Realm.Configuration(fileURL: realmURL, schemaVersion: schemaVersion)
             let userRealm = try Realm(configuration: config)
             
-            print("Log: Realm file successfully accessed at \(realmURL.path)")
+            print("Log: Realm file successfully accessed")
             return userRealm
             
         } catch {
@@ -31,3 +31,7 @@ class RealmCruds {
         }
     }
 }
+
+final class SheetRealmCruds: RealmCruds {}
+final class CheckRecordRealmCruds: RealmCruds {}
+final class LearnRecordRealmCruds: RealmCruds {}

@@ -1,20 +1,7 @@
 import Foundation
 import RealmSwift
 
-
-final class SheetRealmCruds: RealmCruds {
-    
-    static func getSheetByGrade(eikenGrade: EikenGrade) -> Sheet? {
-        
-        guard let realm = tryRealm() else { return nil }
-
-        guard let realmSheet = realm
-            .objects(RealmSheet.self)
-            .filter("gradeRawValue == %@", eikenGrade.rawValue)
-            .first else { return nil }
-
-        return realmSheet.convertToNonRealm()
-    }
+extension SheetRealmCruds {
     
     static func updateCardsStatus(
         newStatusTupleList: [(String, Int)],
@@ -48,35 +35,6 @@ final class SheetRealmCruds: RealmCruds {
             return true
         } catch {
             print("Error: Realm write failed during updateCardsStatus: \(error)") // エラーログ
-            return false
-        }
-    }
-    
-    static func resetCardStatus(
-        cardIdList: [String],
-        bookCategory: BookCategory
-    ) -> Bool {
-        
-        guard let realm = tryRealm() else { return false }
-        
-        do {
-            try realm.write {
-                for cardId in cardIdList {
-                    guard let objectId = try? ObjectId(string: cardId),
-                          let targetCard = realm.object(ofType: RealmCard.self, forPrimaryKey: objectId) else {
-                        continue
-                    }
-
-                    switch bookCategory {
-                    case .freq:
-                        targetCard.statusFreqRawValue = CardStatus.notLearned.rawValue
-                    case .pos:
-                        targetCard.statusPosRawValue = CardStatus.notLearned.rawValue
-                    }
-                }
-            }
-            return true
-        } catch {
             return false
         }
     }
