@@ -1,5 +1,6 @@
 import SwiftUI
 
+
 struct SelectView: ResponsiveView, LearnViewProtocol {
     
     @Environment(\.deviceType) var deviceType: DeviceType
