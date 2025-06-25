@@ -1,50 +1,36 @@
 import SwiftUI
 
 
-struct BookLearnHeader: ResponsiveView, LearnShuffleProtocol {
+struct LearnSettingButtons: ResponsiveView {
     
     @Environment(\.deviceType) var deviceType: DeviceType
     
-    @EnvironmentObject var alertSharedData: AlertSharedData
-    
     @ObservedObject var userDefaultHandler: LearnUserDefaultHandler
-    @ObservedObject var learnManager: BookLearnManager
-    
-    let geometry: GeometryProxy
-    let learnMode: LearnMode?
-    
-    private var isTypeView: Bool { learnMode == .type }
-    
-    let saveAction: () -> Void
+
+    private let learnMode: LearnMode
+
+    @Binding private var showSetting: Bool
+
+    private let shuffleAction: () -> Void
     
     init(
-        learnManager: BookLearnManager,
         userDefaultHandler: LearnUserDefaultHandler,
-        geometry: GeometryProxy,
-        learnMode: LearnMode?,
-        saveAction: @escaping () -> Void
+        learnMode: LearnMode,
+        showSetting: Binding<Bool>,
+        shuffleAction: @escaping () -> Void
     ) {
-        self.learnManager = learnManager
         self.userDefaultHandler = userDefaultHandler
-        self.geometry = geometry
         self.learnMode = learnMode
-        self.saveAction = saveAction
+        self._showSetting = showSetting
+        self.shuffleAction = shuffleAction
     }
     
     var body: some View {
         
-        VStack {
-            
-            _LearnHeader(learnManager: learnManager as _LearnManager,
-                         geometry: geometry) {
-                saveAction()
-            }
-            
-            if learnManager.showSettings {
-                settingButtons
-            } else {
-                showSettingButton
-            }
+        if showSetting {
+            settingButtons
+        } else {
+            showSettingButton
         }
     }
     
@@ -57,7 +43,7 @@ struct BookLearnHeader: ResponsiveView, LearnShuffleProtocol {
                 subLabel: nil,
                 systemName: "shuffle",
                 targetBool: $userDefaultHandler.shouldShuffle) {
-                shuffleAction()
+                    shuffleAction()
             }
             
             Spacer()
@@ -68,13 +54,23 @@ struct BookLearnHeader: ResponsiveView, LearnShuffleProtocol {
                 targetBool: $userDefaultHandler.shouldReadOut
             )
             Spacer()
-
-            _LearnSettingToggleButton(
-                label: isTypeView ? "イニシャルを" : "例文を",
-                subLabel: "表示",
-                systemName: isTypeView ? "character" : "textformat.abc",
-                targetBool: isTypeView ? $userDefaultHandler.showInitial : $userDefaultHandler.showSentence
-            )
+            
+            switch learnMode {
+            case .swipe, .select:
+                _LearnSettingToggleButton(
+                    label: "例文を",
+                    subLabel: "表示",
+                    systemName: "textformat.abc",
+                    targetBool: $userDefaultHandler.showSentence
+                )
+            case .type:
+                _LearnSettingToggleButton(
+                    label: "イニシャルを",
+                    subLabel: "表示",
+                    systemName: "character",
+                    targetBool: $userDefaultHandler.showInitial
+                )
+            }
             Spacer()
         }
         .padding(.top, 10)
@@ -87,7 +83,7 @@ struct BookLearnHeader: ResponsiveView, LearnShuffleProtocol {
             Spacer()
             Button {
                 withAnimation(.easeOut(duration: 0.2)) {
-                    learnManager.showSettings = true
+                    showSetting = true
                 }
             } label: {
                 HStack {
