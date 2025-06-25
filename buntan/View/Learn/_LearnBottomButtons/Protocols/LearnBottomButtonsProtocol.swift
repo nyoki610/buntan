@@ -4,13 +4,24 @@ import SwiftUI
 protocol LearnBottomButtonsProtocol: ResponsiveView {
     
     var deviceType: DeviceType { get }
+    var learnManager: _LearnManager { get }
 }
 
 
 extension LearnBottomButtonsProtocol {
     
     @ViewBuilder
-    func customButton(
+    internal func bottomButtonsFrame<Content: View>(@ViewBuilder content: () -> Content) -> some View {
+        
+        HStack {
+            content()
+        }
+        .padding(.horizontal, responsiveSize(50, 140))
+        .padding(.bottom, responsiveSize(10, 30))
+    }
+    
+    @ViewBuilder
+    internal func customButton(
         label: String,
         subLabel: String,
         systemName: String,
@@ -37,5 +48,19 @@ extension LearnBottomButtonsProtocol {
             .fontWeight(.bold)
             .foregroundStyle(color)
         }
+    }
+    
+    internal func readOutTopCardButton() -> some View {
+        
+        customButton(label: "音声を",
+                     subLabel: "再生",
+                     systemName: "speaker.wave.2.fill",
+                     color: learnManager.buttonDisabled ? .gray : .black) {
+            learnManager.readOutTopCard(
+                isButton: true,
+                shouldReadOut: true
+            )
+        }
+        .disabled(learnManager.buttonDisabled)
     }
 }

@@ -1,8 +1,23 @@
-//
-//  SwipeLearnButtomButtons.swift
-//  buntan
-//
-//  Created by 二木裕也 on 2025/06/25.
-//
+import SwiftUI
 
-import Foundation
+struct LearnBottomButtons: LearnBottomButtonsProtocol, LearnBottomBackProtocol {
+    
+    @Environment(\.deviceType) var deviceType: DeviceType
+
+    @EnvironmentObject var alertSharedData: AlertSharedData
+    @EnvironmentObject var learnManager: _LearnManager
+    
+    var body: some View {
+
+        bottomButtonsFrame {
+            
+            if learnManager.topCardIndex > 0 {
+                backButtons()
+            }
+            
+            Spacer()
+            
+            readOutTopCardButton()
+        }
+    }
+}

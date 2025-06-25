@@ -1,8 +1,22 @@
-//
-//  LearnBottomButtonPassProtocol.swift
-//  buntan
-//
-//  Created by 二木裕也 on 2025/06/25.
-//
+import SwiftUI
 
-import Foundation
+
+protocol LearnBottomPassProtocol: LearnBottomButtonsProtocol {
+    
+    var passAction: (() -> Void) { get }
+}
+
+
+extension LearnBottomPassProtocol {
+    
+    /// ViewBuilder は不要?
+    internal func passButton() -> some View {
+        
+        customButton(label: "パス",
+                     subLabel: "",
+                     systemName: "arrowshape.turn.up.right") {
+            passAction()
+        }
+        .disabled(learnManager.buttonDisabled)
+    }
+}

@@ -18,9 +18,7 @@ struct SelectLearnButtomButtons: LearnBottomButtonsProtocol, LearnBottomBackProt
         bottomButtonsFrame {
             
             if learnManager.topCardIndex > 0 {
-                
                 backButtons()
-                .padding(.leading, 16)
             }
             
             Spacer()

@@ -1,5 +1,9 @@
 import SwiftUI
 
+extension _LearnManager {
+    var topCard: Card { topCardIndex < cards.count ?  cards[topCardIndex] : EmptyModel.card }
+}
+
 
 class _LearnManager: ObservableObject {
     
@@ -13,7 +17,7 @@ class _LearnManager: ObservableObject {
     @Published var leftCardsIndexList: [Int] = []
     @Published var buttonDisabled: Bool = false
     
-    var avSpeaker: AVSpeaker?
+    var avSpeaker = AVSpeaker()
     
     init(cards: [Card], options: [[Option]]) {
         
@@ -31,9 +35,9 @@ class _LearnManager: ObservableObject {
         guard topCardIndex < cards.count else { return }
         let word = cards[topCardIndex].word
         
-        avSpeaker?.readOutText(word,
-                               controllButton: controllButton,
-                               withDelay: withDelay)
+        avSpeaker.readOutText(word,
+                              controllButton: controllButton,
+                              withDelay: withDelay)
     }
     
     /// 表示中のカードを「完了 or 学習中」に振り分け

@@ -13,7 +13,11 @@ struct _LearnHeader: ResponsiveView {
     
     private let xmarkButtonAction: () -> Void
     
-    init(learnManager: _LearnManager, geometry: GeometryProxy, xmarkButtonAction: @escaping () -> Void) {
+    init(
+        learnManager: _LearnManager,
+        geometry: GeometryProxy,
+        xmarkButtonAction: @escaping () -> Void
+    ) {
         
         self.headerLabel = "\(learnManager.rightCardsIndexList.count + learnManager.leftCardsIndexList.count) / \(learnManager.cards.count)"
         

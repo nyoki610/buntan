@@ -35,7 +35,7 @@ struct BookLearnSettingButtons: LearnSettingButtonsProtocol {
             
             HStack {
                 Spacer()
-                _LearnSettingToggleButton(
+                toggleButton(
                     label: "シャッフル",
                     subLabel: nil,
                     systemName: "shuffle",
@@ -44,7 +44,7 @@ struct BookLearnSettingButtons: LearnSettingButtonsProtocol {
                     }
                 
                 Spacer()
-                _LearnSettingToggleButton(
+                toggleButton(
                     label: "音声を",
                     subLabel: "自動再生",
                     systemName: "speaker.wave.2.fill",
@@ -54,14 +54,14 @@ struct BookLearnSettingButtons: LearnSettingButtonsProtocol {
                 
                 switch learnMode {
                 case .swipe, .select:
-                    _LearnSettingToggleButton(
+                    toggleButton(
                         label: "例文を",
                         subLabel: "表示",
                         systemName: "textformat.abc",
                         targetBool: $userDefaultHandler.showSentence
                     )
                 case .type:
-                    _LearnSettingToggleButton(
+                    toggleButton(
                         label: "イニシャルを",
                         subLabel: "表示",
                         systemName: "character",
