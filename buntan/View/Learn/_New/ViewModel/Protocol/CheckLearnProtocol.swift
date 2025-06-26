@@ -1,7 +1,10 @@
 import Foundation
 
 
-final class CheckLearnManager: _LearnManager {
+protocol CheckLearnProtocol: BaseLearnViewModel {}
+
+
+extension CheckLearnProtocol {
     
     var estimatedScore: Int {
         
@@ -19,5 +22,10 @@ final class CheckLearnManager: _LearnManager {
             }
         }
         return Int((score / fullScore) * EikenGrade.first.questionCount.double)
+    }
+    
+    var isFinished: Bool {
+        let cardsCount = leftCardsIndexList.count + rightCardsIndexList.count
+        return cardsCount == cards.count
     }
 }

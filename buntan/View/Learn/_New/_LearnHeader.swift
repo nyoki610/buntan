@@ -14,18 +14,18 @@ struct _LearnHeader: ResponsiveView {
     private let xmarkButtonAction: () -> Void
     
     init(
-        learnManager: _LearnManager,
+        viewModel: BaseLearnViewModel,
         geometry: GeometryProxy,
         xmarkButtonAction: @escaping () -> Void
     ) {
         
-        self.headerLabel = "\(learnManager.rightCardsIndexList.count + learnManager.leftCardsIndexList.count) / \(learnManager.cards.count)"
+        self.headerLabel = "\(viewModel.rightCardsIndexList.count + viewModel.leftCardsIndexList.count) / \(viewModel.cards.count)"
         
         self.blueBarWidth = geometry.size.width *
-        (learnManager.cards.count > 0 ? CGFloat(learnManager.leftCardsIndexList.count) / CGFloat(learnManager.cards.count) : 0)
+        (viewModel.cards.count > 0 ? CGFloat(viewModel.leftCardsIndexList.count) / CGFloat(viewModel.cards.count) : 0)
         
         self.orangeBarWidth = geometry.size.width *
-        (learnManager.cards.count > 0 ? CGFloat(learnManager.rightCardsIndexList.count) / CGFloat(learnManager.cards.count) : 0)
+        (viewModel.cards.count > 0 ? CGFloat(viewModel.rightCardsIndexList.count) / CGFloat(viewModel.cards.count) : 0)
         
         self.xmarkButtonAction = xmarkButtonAction
     }

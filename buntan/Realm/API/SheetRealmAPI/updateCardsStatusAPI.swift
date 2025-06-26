@@ -27,20 +27,22 @@ extension SheetRealmAPI {
         )
     }
     
+    
+    
     static func _updateCardsStatus(
-        learnManager: BookLearnManager,
+        viewModel: BaseLearnViewModel,
         eikenGrade: EikenGrade,
         bookCategory: BookCategory
     ) -> Bool {
         
         var newStatusTupleList: [(String, Int)] = []
         
-        for (index, card) in learnManager.cards.enumerated() {
+        for (index, card) in viewModel.cards.enumerated() {
             
-            if learnManager.leftCardsIndexList.contains(index) {
+            if viewModel.leftCardsIndexList.contains(index) {
                 newStatusTupleList.append((card.id, CardStatus.learning.rawValue))
             }
-            else if learnManager.rightCardsIndexList.contains(index) {
+            else if viewModel.rightCardsIndexList.contains(index) {
                 newStatusTupleList.append((card.id, CardStatus.completed.rawValue))
             }
         }

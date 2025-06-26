@@ -3,7 +3,6 @@ import SwiftUI
 
 protocol LearnSettingButtonsProtocol: ResponsiveView {
     
-    var deviceType: DeviceType { get }
     var showSetting: Bool { get set }
 }
 

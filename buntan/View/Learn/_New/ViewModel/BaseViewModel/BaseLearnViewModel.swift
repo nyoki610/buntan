@@ -1,23 +1,22 @@
 import SwiftUI
 
-extension _LearnManager {
-    var topCard: Card { topCardIndex < cards.count ?  cards[topCardIndex] : EmptyModel.card }
-}
-
-
-class _LearnManager: ObservableObject {
+class BaseLearnViewModel: ObservableObject {
     
     var cards: [Card]
     var options: [[Option]]
 
-    @Published var showSettings: Bool = true
+    @Published var showSetting: Bool = true
     @Published var topCardIndex: Int = 0
     @Published var animationController: Int = 0
     @Published var rightCardsIndexList: [Int] = []
     @Published var leftCardsIndexList: [Int] = []
     @Published var buttonDisabled: Bool = false
+
+    /// 音声が正しく再生されるかの確認必須？
+    private var avSpeaker = AVSpeaker()
     
-    var avSpeaker = AVSpeaker()
+    var topCard: Card { topCardIndex < cards.count ?  cards[topCardIndex] : EmptyModel.card }
+    var nextCardExist: Bool { topCardIndex < cards.count - 1 }
     
     init(cards: [Card], options: [[Option]]) {
         
@@ -55,7 +54,7 @@ class _LearnManager: ObservableObject {
     /// settingsを非表示にする(Swipe, Select, TypeでAnimationを共通にするため関数化)
     func hideSettings() -> Void {
         withAnimation(.easeOut(duration: 0.2)) {
-            self.showSettings = false
+            self.showSetting = false
         }
     }
 }

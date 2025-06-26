@@ -104,31 +104,30 @@ extension LearnViewProtocol {
         } else {
             
             guard let checkUserInput = userInput as? CheckUserInput else { return }
-    
-            if !isFinished {
+            
+            guard isFinished else {
                 alertSharedData.showSelectiveAlert(title: "テストを中断しますか？",
                                                    message: "",
                                                    secondaryButtonLabel: "終了",
                                                    secondaryButtonType: .defaultButton) {
                     pathHandler.backToPreviousScreen(count: 1)
                 }
-                
-            } else {
-                
-                loadingSharedData.startLoading(.save)
-                
-                /// realm にテストの結果を保存
-                let checkRecord = CheckRecord(UUID().uuidString,
-                                              checkUserInput.selectedGrade,
-                                              Date(),
-                                              learnManager.rightCardsIndexList.count,
-                                              learnManager.estimatedScore)
+                return
+            }
+    
+            loadingSharedData.startLoading(.save)
+            
+            /// realm にテストの結果を保存
+            let checkRecord = CheckRecord(UUID().uuidString,
+                                          checkUserInput.selectedGrade,
+                                          Date(),
+                                          learnManager.rightCardsIndexList.count,
+                                          learnManager.estimatedScore)
 
-                let _ = CheckRecordRealmAPI.uploadCheckRecord(checkRecord: checkRecord)
-                
-                loadingSharedData.finishLoading {
-                    pathHandler.transitionScreen(to: .check(.checkResult))
-                }
+            let _ = CheckRecordRealmAPI.uploadCheckRecord(checkRecord: checkRecord)
+            
+            loadingSharedData.finishLoading {
+                pathHandler.transitionScreen(to: .check(.checkResult))
             }
         }
     }
