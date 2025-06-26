@@ -49,11 +49,12 @@ class BaseSelectViewModel: BaseLearnViewModel {
         }
     }
     
+    @MainActor
     func chooseOption(
         selectedOptionIndex: Int,
         shouldReadOut: Bool
     ) async {
-        
+
         selectedIndex = selectedOptionIndex
         
         /// 一時的に isAnswering = false にすることで、解答後の animation を表示

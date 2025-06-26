@@ -15,10 +15,10 @@ class LearnUserDefaultHandler: ObservableObject {
         self.showInitial = UserDefaults.standard.object(forKey: "showInitial") as? Bool ?? false
     }
 
-    func save() {
-        UserDefaults.standard.set(shouldShuffle, forKey: "shouldShuffle")
-        UserDefaults.standard.set(showSentence, forKey: "showSentence")
-        UserDefaults.standard.set(shouldReadOut, forKey: "shouldReadOut")
-        UserDefaults.standard.set(showInitial, forKey: "showInitial")
-    }
+//    func save() {
+//        UserDefaults.standard.set(shouldShuffle, forKey: "shouldShuffle")
+//        UserDefaults.standard.set(showSentence, forKey: "showSentence")
+//        UserDefaults.standard.set(shouldReadOut, forKey: "shouldReadOut")
+//        UserDefaults.standard.set(showInitial, forKey: "showInitial")
+//    }
 }

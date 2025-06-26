@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct BookSwipeViewl: ResponsiveView, BookLearnViewProtocol {
+struct BookSwipeView: ResponsiveView, BookLearnViewProtocol {
     
     @Environment(\.deviceType) var deviceType: DeviceType
 
@@ -15,13 +15,12 @@ struct BookSwipeViewl: ResponsiveView, BookLearnViewProtocol {
     init(
         pathHandler: PathHandler,
         bookUserInput: BookUserInput,
-        userDefaultHandler: LearnUserDefaultHandler,
         cards: [Card],
         options: [[Option]]
     ) {
         self.pathHandler = pathHandler
         self.bookUserInput = bookUserInput
-        self.userDefaultHandler = userDefaultHandler
+        let userDefaultHandler = LearnUserDefaultHandler()
         self._viewModel = StateObject(
             wrappedValue: BookSwipeViewViewModel(
                 cards: cards,
@@ -29,6 +28,7 @@ struct BookSwipeViewl: ResponsiveView, BookLearnViewProtocol {
                 shouldShuffle: userDefaultHandler.shouldShuffle
             )
         )
+        self.userDefaultHandler = userDefaultHandler
     }
 
     var body: some View {

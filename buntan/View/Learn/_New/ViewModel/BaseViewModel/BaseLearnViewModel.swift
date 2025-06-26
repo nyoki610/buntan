@@ -41,11 +41,13 @@ class BaseLearnViewModel: ObservableObject {
     
     /// 表示中のカードを「完了 or 学習中」に振り分け
     func addIndexToList(_ isCorrect: Bool) -> Void {
-        withAnimation(.easeOut(duration: 0.6)) {
-            if isCorrect {
-                rightCardsIndexList.append(topCardIndex)
-            } else {
-                leftCardsIndexList.append(topCardIndex)
+        DispatchQueue.main.async {
+            withAnimation(.easeOut(duration: 0.6)) {
+                if isCorrect {
+                    self.rightCardsIndexList.append(self.topCardIndex)
+                } else {
+                    self.leftCardsIndexList.append(self.topCardIndex)
+                }
             }
         }
     }
@@ -53,8 +55,10 @@ class BaseLearnViewModel: ObservableObject {
     /// 必要? commented at 2025/06/25
     /// settingsを非表示にする(Swipe, Select, TypeでAnimationを共通にするため関数化)
     func hideSettings() -> Void {
-        withAnimation(.easeOut(duration: 0.2)) {
-            self.showSetting = false
+        DispatchQueue.main.async {
+            withAnimation(.easeOut(duration: 0.2)) {
+                self.showSetting = false
+            }
         }
     }
 }

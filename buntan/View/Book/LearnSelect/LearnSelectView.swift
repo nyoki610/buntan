@@ -7,7 +7,6 @@ struct LearnSelectView: ResponsiveView {
     
     @EnvironmentObject var alertSharedData: AlertSharedData
     @EnvironmentObject var loadingSharedData: LoadingSharedData
-    @EnvironmentObject var learnManager: LearnManager
     
     @ObservedObject private var pathHandler: PathHandler
     @ObservedObject var userInput: BookUserInput
@@ -68,7 +67,7 @@ struct LearnSelectView: ResponsiveView {
                                 containFifthOption: true
                             ) else { return }
                         
-                        learnManager.setupLearn(cards, options)
+//                        learnManager.setupLearn(cards, options)
                         pathHandler.transitionScreen(
                             to: userInput.selectedMode.viewName(
                                 cards: cards,

@@ -17,13 +17,12 @@ struct BookSelectView: ResponsiveView, SelectViewProtocol, BookLearnViewProtocol
     init(
         pathHandler: PathHandler,
         bookUserInput: BookUserInput,
-        userDefaultHandler: LearnUserDefaultHandler,
         cards: [Card],
         options: [[Option]]
     ) {
         self.pathHandler = pathHandler
         self.bookUserInput = bookUserInput
-        self.userDefaultHandler = userDefaultHandler
+        let userDefaultHandler = LearnUserDefaultHandler()
         self._viewModel = StateObject(
             wrappedValue: BookSelectViewViewModel(
                 cards: cards,
@@ -31,6 +30,7 @@ struct BookSelectView: ResponsiveView, SelectViewProtocol, BookLearnViewProtocol
                 shouldShuffle: userDefaultHandler.shouldShuffle
             )
         )
+        self.userDefaultHandler = userDefaultHandler
     }
     
     var body: some View {

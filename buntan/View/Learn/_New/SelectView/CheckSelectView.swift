@@ -18,20 +18,19 @@ struct CheckSelectView: ResponsiveView, SelectViewProtocol {
     init(
         pathHandler: PathHandler,
         checkUserInput: CheckUserInput,
-        userDefaultHandler: LearnUserDefaultHandler,
         cards: [Card],
         options: [[Option]]
     ) {
 
         self.pathHandler = pathHandler
         self.checkUserInput = checkUserInput
-        self.userDefaultHandler = userDefaultHandler
         self._viewModel = StateObject(
             wrappedValue: CheckSelectViewViewModel(
                 cards: cards,
                 options: options
             )
         )
+        self.userDefaultHandler = LearnUserDefaultHandler()
     }
     
     var body: some View {
