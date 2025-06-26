@@ -1,7 +1,7 @@
 import SwiftUI
 
 
-struct BookSelectView: ResponsiveView, SelectViewProtocol {
+struct BookSelectView: ResponsiveView, SelectViewProtocol, BookLearnViewProtocol {
     
 
     /// conformance to ResponsiveView
@@ -49,13 +49,5 @@ struct BookSelectView: ResponsiveView, SelectViewProtocol {
     
     internal func xmarkAction() {
         saveAction()
-    }
-    
-    internal func saveAction() {
-        viewModel.bookLearnSaveAction(
-            pathHandler: pathHandler,
-            loadingSharedData: loadingSharedData,
-            bookUserInput: bookUserInput
-        )
     }
 }

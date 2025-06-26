@@ -52,7 +52,16 @@ struct LearnBottomButtons: ResponsiveView {
                     customButton(label: "ひとつ",
                                  subLabel: "戻る",
                                  systemName: "arrowshape.turn.up.left") {
-                        bookLearnViewModel.backButtonAction()
+                        
+                        switch viewModel {
+                        case let bookTypeViewModel as BaseTypeViewModel:
+                            bookTypeViewModel.typeViewBackButtonAction {
+                                bookLearnViewModel.backButtonAction()
+                            }
+                        case is BaseSelectViewModel, is BaseSwipeViewModel:
+                            bookLearnViewModel.backButtonAction()
+                        default: return
+                        }
                     }
                     
                     customButton(label: "最初に",
@@ -94,7 +103,15 @@ struct LearnBottomButtons: ResponsiveView {
                     systemName: typeViewModel.isAnswering ? "arrowshape.turn.up.right" : "arrowshape.turn.up.right.fill",
                     color: typeViewModel.isAnswering ? .black : RoyalBlue.defaultRoyal
                 ) {
-//                    passAction()
+                    typeViewModel.isAnswering ?
+                    typeViewModel.passButtonAction(shouldReadOut: shouldReadOut) :
+                    
+                    typeViewModel.nextCardExist ?
+                    typeViewModel.nextButtonAction() :
+                    
+                    typeViewModel.completeButtonAction() {
+                        saveAction()
+                    }
                 }
                 .padding(.leading, 16)
             }

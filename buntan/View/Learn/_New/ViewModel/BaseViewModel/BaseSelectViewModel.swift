@@ -12,9 +12,9 @@ class BaseSelectViewModel: BaseLearnViewModel {
     /// 正解かどうかを判断する Bool 値
     var isCorrect: Bool { selectedIndex == answerIndex}
 
-    func onAppearAction() {
+    func onAppearAction(shouldReadOut: Bool) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            self.readOutTopCard(shouldReadOut: true)
+            self.readOutTopCard(shouldReadOut: shouldReadOut)
         }
     }
     

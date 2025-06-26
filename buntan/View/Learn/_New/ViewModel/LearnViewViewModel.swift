@@ -31,7 +31,8 @@ final class BookSelectViewViewModel: BaseSelectViewModel, BookLearnProtocol {
     }
 }
 
-final class BookSwipeViewViewModel: BaseLearnViewModel, BookLearnProtocol {
+
+final class BookSwipeViewViewModel: BaseSwipeViewModel, BookLearnProtocol {
 
     internal let nonShuffledCards: [Card]
     internal let nonShuffledOptions: [[Option]]
@@ -61,11 +62,6 @@ final class BookSwipeViewViewModel: BaseLearnViewModel, BookLearnProtocol {
     }
 }
 
-class BaseTypeViewModel: BaseLearnViewModel {
-    var isAnswering: Bool = true
-    var isCorrect: Bool = true
-    var showSpeaker: Bool { !(isAnswering && isCorrect) }
-}
 
 final class BookTypeViewViewModel: BaseTypeViewModel, BookLearnProtocol {
 

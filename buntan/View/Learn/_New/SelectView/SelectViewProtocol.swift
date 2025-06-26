@@ -79,7 +79,7 @@ extension SelectViewProtocol {
             .background(CustomColor.background)
             .navigationBarBackButtonHidden(true)
             .onAppear {
-                viewModel.onAppearAction()
+                viewModel.onAppearAction(shouldReadOut: userDefaultHandler.shouldReadOut)
             }
         }
     }
