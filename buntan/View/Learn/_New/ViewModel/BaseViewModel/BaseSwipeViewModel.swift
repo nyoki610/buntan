@@ -43,7 +43,8 @@ extension BaseSwipeViewModel {
         animationDuration: CGFloat,
         offsetAbs: CGFloat,
         sholdReadOut: Bool
-    ) async {
+        /// shouldSave: Bool
+    ) async -> Bool {
         
         /// to width にカード位置を調整する関数
         func animateCardFlip(to width: CGFloat) async {
@@ -75,12 +76,15 @@ extension BaseSwipeViewModel {
             addIndexToList(self.offset.width > 0)
             await animateCardFlip(to: self.offset.width > 0 ? offsetAbs : -offsetAbs)
             
-            guard nextCardExist else { return }
+            guard nextCardExist else { return true }
             
             await goNext()
+            
+            return false
         /// drag 距離が 100 以下の場合は offset を 0 に戻すのみ
         } else {
             await animateCardFlip(to: 0)
+            return false
         }
     }
 }

@@ -1,7 +1,7 @@
 import SwiftUI
 
 
-struct CheckSelectView: ResponsiveView, SelectViewProtocol, CheckLearnViewProtocol {
+struct CheckSelectView: SelectViewProtocol, CheckLearnViewProtocol {
     
     typealias ViewModelType = CheckSelectViewViewModel
     typealias UserInputType = CheckUserInput
@@ -16,10 +16,10 @@ struct CheckSelectView: ResponsiveView, SelectViewProtocol, CheckLearnViewProtoc
     @StateObject var viewModel: CheckSelectViewViewModel
     @StateObject var userDefaultHandler: LearnUserDefaultHandler
     @ObservedObject var userInput: CheckUserInput
-    @ObservedObject var pathHandler: PathHandler
+    @ObservedObject var pathHandler: CheckViewPathHandler
     
     init(
-        pathHandler: PathHandler,
+        pathHandler: CheckViewPathHandler,
         checkUserInput: CheckUserInput,
         cards: [Card],
         options: [[Option]]
@@ -47,13 +47,13 @@ struct CheckSelectView: ResponsiveView, SelectViewProtocol, CheckLearnViewProtoc
                 
                 learnHeader(geometry: geometry)
                 
-                learnSettingButtons(showSetting: $viewModel.showSetting)
+                learnSettingButtons(
+                    showSetting: $viewModel.showSetting
+                )
                 
                 Spacer()
                 
-                FlipWordCardView(card: viewModel.topCard,
-                                 showPhrase: true)
-                .disabled(true)
+                cardView(viewType: .check)
                 
                 Spacer()
                 

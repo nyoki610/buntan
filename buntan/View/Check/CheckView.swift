@@ -7,16 +7,16 @@ struct CheckView: ResponsiveView {
     @EnvironmentObject var loadingSharedData: LoadingSharedData
     @EnvironmentObject var learnManager: LearnManager
     
-    @ObservedObject private var pathHandler: PathHandler
+    @ObservedObject private var pathHandler: CheckViewPathHandler
     @StateObject private var userInput = CheckUserInput()
     
-    init(pathHandler: PathHandler) {
+    init(pathHandler: CheckViewPathHandler) {
         self.pathHandler = pathHandler
     }
     
     var body: some View {
         
-        NavigationStack(path: pathHandler.navigationPath) {
+        NavigationStack(path: $pathHandler.path) {
             
             VStack {
                 
@@ -38,13 +38,8 @@ struct CheckView: ResponsiveView {
             }
             .frame(maxWidth: .infinity)
             .background(CustomColor.background)
-            .navigationDestination(for: ViewName.self) { viewName in
-                switch viewName {
-                case .check(let checkViewName):
-                    checkViewName.viewForName(pathHandler: pathHandler, userInput: userInput)
-                    
-                default: EmptyView()
-                }
+            .navigationDestination(for: CheckViewName.self) { viewName in
+                viewName.viewForName(pathHandler: pathHandler, userInput: userInput)
             }
         }
     }
@@ -65,10 +60,9 @@ struct CheckView: ResponsiveView {
         
         loadingSharedData.finishLoading {
             pathHandler.transitionScreen(
-                to: LearnMode.select.viewName(
+                to: LearnMode.select.checkViewName(
                     cards: cards,
-                    options: options,
-                    isBookView: false
+                    options: options
                 )
             )
         }

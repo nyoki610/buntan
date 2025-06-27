@@ -4,7 +4,7 @@ import Foundation
 extension CheckLearnProtocol {
     
     func checkLearnSaveAction(
-        pathHandler: PathHandler,
+        pathHandler: CheckViewPathHandler,
         loadingSharedData: LoadingSharedData,
         checkUserInput: CheckUserInput
     ) {
@@ -21,7 +21,7 @@ extension CheckLearnProtocol {
         let _ = CheckRecordRealmAPI.uploadCheckRecord(checkRecord: checkRecord)
         
         loadingSharedData.finishLoading {
-            pathHandler.transitionScreen(to: .check(.checkResult))
+            pathHandler.transitionScreen(to: .checkResult)
         }
     }
 }

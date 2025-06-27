@@ -1,15 +1,15 @@
 import SwiftUI
 
-struct WordListView: ResponsiveView {
+struct WordListView<PathHandlerType: PathHandlerProtocol>: ResponsiveView {
     
     @Environment(\.deviceType) var deviceType: DeviceType
     
     @State var showInfo: Bool = true
     
-    @ObservedObject private var pathHandler: PathHandler
+    @ObservedObject private var pathHandler: PathHandlerType
     private let cards: [Card]
     
-    init(pathHandler: PathHandler, cards: [Card]) {
+    init(pathHandler: PathHandlerType, cards: [Card]) {
         self.pathHandler = pathHandler
         self.cards = cards
     }

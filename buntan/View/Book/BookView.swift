@@ -4,10 +4,10 @@ struct BookView: ResponsiveView {
     
     @Environment(\.deviceType) var deviceType
     
-    @ObservedObject private var pathHandler: PathHandler
+    @ObservedObject private var pathHandler: BookViewPathHandler
     @StateObject private var userInput: BookUserInput = BookUserInput()
     
-    init(pathHandler: PathHandler) {
+    init(pathHandler: BookViewPathHandler) {
         self.pathHandler = pathHandler
     }
     
@@ -18,7 +18,7 @@ struct BookView: ResponsiveView {
     
     var body: some View {
         
-        NavigationStack(path: pathHandler.navigationPath) {
+        NavigationStack(path: $pathHandler.path) {
         
             ZStack {
 
@@ -55,12 +55,8 @@ struct BookView: ResponsiveView {
                 }
             }
             .background(CustomColor.background)
-            .navigationDestination(for: ViewName.self) { viewName in
-                switch viewName {
-                case .book(let bookViewName):
-                    bookViewName.viewForName(pathHandler: pathHandler, userInput: userInput)
-                default: EmptyView()
-                }
+            .navigationDestination(for: BookViewName.self) { viewName in
+                viewName.viewForName(pathHandler: pathHandler, userInput: userInput)
             }
             .onAppear {
                 if let todaysWordCount = LearnRecordRealmAPI.getTodaysWordCount() {
@@ -146,7 +142,7 @@ struct BookView: ResponsiveView {
                     bookCategory: bookCategory
                 ) else { return }
             
-            pathHandler.transitionScreen(to: .book(.bookList(bookList)))
+            pathHandler.transitionScreen(to: .bookList(bookList))
         } label: {
             HStack {
                 Text(bookCategory.buttonLabel)

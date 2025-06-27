@@ -8,11 +8,11 @@ struct LearnSelectView: ResponsiveView {
     @EnvironmentObject var alertSharedData: AlertSharedData
     @EnvironmentObject var loadingSharedData: LoadingSharedData
     
-    @ObservedObject private var pathHandler: PathHandler
+    @ObservedObject private var pathHandler: BookViewPathHandler
     @ObservedObject var userInput: BookUserInput
     let cardsContainer: CardsContainer
     
-    init(pathHandler: PathHandler, userInput: BookUserInput, cardsContainer: CardsContainer) {
+    init(pathHandler: BookViewPathHandler, userInput: BookUserInput, cardsContainer: CardsContainer) {
         self.pathHandler = pathHandler
         self.userInput = userInput
         self.cardsContainer = cardsContainer
@@ -69,10 +69,9 @@ struct LearnSelectView: ResponsiveView {
                         
 //                        learnManager.setupLearn(cards, options)
                         pathHandler.transitionScreen(
-                            to: userInput.selectedMode.viewName(
+                            to: userInput.selectedMode.bookViewName(
                                 cards: cards,
-                                options: options,
-                                isBookView: true
+                                options: options
                             )
                         )
                     }
@@ -151,7 +150,7 @@ struct LearnSelectView: ResponsiveView {
             subButton(label: "単語一覧",
                       systemName: "info.circle.fill",
                       color: .blue) {
-                pathHandler.transitionScreen(to: .book(.wordList(cardsContainer.allCards)))
+                pathHandler.transitionScreen(to: .wordList(cardsContainer.allCards))
             }
         }
         .frame(width: responsiveSize(300, 420))

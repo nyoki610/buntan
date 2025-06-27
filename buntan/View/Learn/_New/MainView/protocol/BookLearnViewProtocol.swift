@@ -3,7 +3,8 @@ import SwiftUI
 
 protocol BookLearnViewProtocol: _LearnViewProtocol where
 ViewModelType: BookLearnProtocol,
-UserInputType: BookUserInput {}
+UserInputType: BookUserInput,
+PathHandlerType: BookViewPathHandler {}
 
 
 extension BookLearnViewProtocol {

@@ -3,7 +3,6 @@ import SwiftUI
 
 extension MainView {
     
-    
     /// BookView() or CheckView or RecordView() 表示時のみtabViewを表示
     ///     - BookView() -> bookSharedData.path が空かどうかを監視
     ///     - CheckView() -> checkSharedData.path が空かどうかを監視

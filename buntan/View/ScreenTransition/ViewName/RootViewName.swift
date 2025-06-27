@@ -9,6 +9,20 @@ enum RootViewName {
 }
 
 
+extension RootViewName: Equatable {
+    static func == (lhs: RootViewName, rhs: RootViewName) -> Bool {
+        switch (lhs, rhs) {
+        case (.book, .book),
+             (.check, .check),
+             (.record, .record):
+            return true
+        default:
+            return false
+        }
+    }
+}
+
+
 extension RootViewName: ViewNameProtocol {
     
     var screenName: String {
@@ -27,7 +41,10 @@ extension RootViewName: ViewNameProtocol {
         }
     }
 
-    func viewForName(bookViewPathHandler: PathHandler, checkViewPathHandler: PathHandler) -> some View {
+    func viewForName(
+        bookViewPathHandler: BookViewPathHandler,
+        checkViewPathHandler: CheckViewPathHandler
+    ) -> some View {
         switch self {
         case .book:
             return AnyView(BookView(pathHandler: bookViewPathHandler))

@@ -13,6 +13,26 @@ enum BookViewName {
     case learnResult(CardsContainer, Int)
 }
 
+
+extension BookViewName: Equatable {
+    static func == (lhs: BookViewName, rhs: BookViewName) -> Bool {
+        switch (lhs, rhs) {
+        case (.bookList, .bookList),
+             (.sectionList, .sectionList),
+             (.learnSelect, .learnSelect),
+             (.wordList, .wordList),
+             (.swipe, .swipe),
+             (.select, .select),
+             (.type, .type),
+             (.learnResult, .learnResult):
+            return true
+        default:
+            return false
+        }
+    }
+}
+
+
 extension BookViewName: ViewNameProtocol {
     
     var screenName: String {
@@ -42,7 +62,7 @@ extension BookViewName: ViewNameProtocol {
         }
     }
 
-    func viewForName(pathHandler: PathHandler, userInput: BookUserInput) -> some View {
+    func viewForName(pathHandler: BookViewPathHandler, userInput: BookUserInput) -> some View {
 
         switch self {
 
@@ -122,4 +142,3 @@ extension BookViewName: ViewNameProtocol {
         }
     }
 }
-

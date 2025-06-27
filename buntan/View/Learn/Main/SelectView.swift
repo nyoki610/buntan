@@ -22,13 +22,13 @@ struct SelectView: ResponsiveView, LearnViewProtocol {
     /// 正解かどうかを判断する Bool 値
     var isCorrect: Bool { selectedIndex == answerIndex}
     
-    @ObservedObject var pathHandler: PathHandler
+    @ObservedObject var pathHandler: _PathHandler
     @ObservedObject var userInput: UserInput
     
     private let cards: [Card]
     private let options: [[Option]]?
     
-    init(pathHandler: PathHandler, userInput: UserInput, cards: [Card], options: [[Option]]?, isBookView: Bool) {
+    init(pathHandler: _PathHandler, userInput: UserInput, cards: [Card], options: [[Option]]?, isBookView: Bool) {
         self.pathHandler = pathHandler
         self.userInput = userInput
         self.cards = cards

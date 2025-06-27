@@ -12,10 +12,10 @@ struct CheckResultView: ResponsiveView {
         Int((Double(learnManager.rightCardsIndexList.count) / Double(learnManager.cards.count)) * 100)
     }
     
-    @ObservedObject private var pathHandler: PathHandler
+    @ObservedObject private var pathHandler: CheckViewPathHandler
     @ObservedObject private var userInput: CheckUserInput
     
-    init(pathHandler: PathHandler, userInput: CheckUserInput) {
+    init(pathHandler: CheckViewPathHandler, userInput: CheckUserInput) {
         self.pathHandler = pathHandler
         self.userInput = userInput
     }

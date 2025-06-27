@@ -9,8 +9,11 @@ protocol _LearnViewProtocol: ResponsiveView {
     associatedtype UserInputType: UserInput
     var userInput: UserInputType { get }
     
+    associatedtype PathHandlerType: PathHandlerProtocol
+    var pathHandler: PathHandlerType { get }
+    
     var loadingSharedData: LoadingSharedData { get }
-    var pathHandler: PathHandler { get }
+    
     var userDefaultHandler: LearnUserDefaultHandler { get }
     
     func xmarkButtonAction() -> Void

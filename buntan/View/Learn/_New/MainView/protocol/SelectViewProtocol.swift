@@ -2,18 +2,33 @@ import SwiftUI
 
 
 protocol SelectViewProtocol: _LearnViewProtocol where
-ViewModelType: BaseSelectViewModel {
-//
-//    associatedtype ViewModel: BaseSelectViewModel
-//    var viewModel: ViewModel { get }
-//    var userDefaultHandler: LearnUserDefaultHandler { get }
-//    
-//    /// saveAction()はView側で実装
-//    func xmarkAction()
-//    func saveAction()
-//    
-//    associatedtype SettingButtonsView: View
-//    var settingButtons: SettingButtonsView { get }
+ViewModelType: BaseSelectViewModel {}
+
+
+extension SelectViewProtocol {
+    
+    @ViewBuilder
+    internal func cardView(viewType: LearnViewViewType) -> some View {
+        
+        /// BookView かつ showSentence = true の場合
+        if viewType == .book && userDefaultHandler.showSentence {
+            FlipSentenceCardView(
+                card: viewModel.topCard,
+                isSelectView: true
+            )
+            .disabled(true)
+            
+        /// 以下のいずれかの場合
+        ///     - BookView かつ showSentence = false
+        ///     - CheckView
+        } else {
+            FlipWordCardView(
+                card: viewModel.topCard,
+                showPhrase: true
+            )
+            .disabled(true)
+        }
+    }
 }
 
 

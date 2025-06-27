@@ -6,11 +6,11 @@ struct BookListView: ResponsiveView {
     
     @State private var showDetail: Bool = false
     
-    @ObservedObject private var pathHandler: PathHandler
+    @ObservedObject private var pathHandler: BookViewPathHandler
     @ObservedObject private var userInput: BookUserInput
     private let bookList: [Book]
     
-    init(pathHandler: PathHandler, userInput: BookUserInput, bookList: [Book]) {
+    init(pathHandler: BookViewPathHandler, userInput: BookUserInput, bookList: [Book]) {
         self.pathHandler = pathHandler
         self.userInput = userInput
         self.bookList = bookList
@@ -98,7 +98,7 @@ struct BookListView: ResponsiveView {
         
         Button {
             userInput.selectedBookConfig = book.config
-            pathHandler.transitionScreen(to: .book(.sectionList(book)))
+            pathHandler.transitionScreen(to: .sectionList(book))
         } label: {
             
             ZStack {

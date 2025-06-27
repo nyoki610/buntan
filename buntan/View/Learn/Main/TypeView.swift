@@ -15,13 +15,13 @@ struct TypeView: ResponsiveView, LearnViewProtocol {
     @State var isAnswering: Bool = true
     @State var isCorrect: Bool = true
     
-    @ObservedObject var pathHandler: PathHandler
+    @ObservedObject var pathHandler: _PathHandler
     @ObservedObject var userInput: UserInput
     
     private let cards: [Card]
     private let options: [[Option]]?
     
-    init(pathHandler: PathHandler, userInput: UserInput, cards: [Card], options: [[Option]]?) {
+    init(pathHandler: _PathHandler, userInput: UserInput, cards: [Card], options: [[Option]]?) {
         self.pathHandler = pathHandler
         self.userInput = userInput
         self.cards = cards

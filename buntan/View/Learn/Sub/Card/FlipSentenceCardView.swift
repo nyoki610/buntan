@@ -39,9 +39,13 @@ struct FlipSentenceCardView: ResponsiveView {
                         let iPadFontSize: CGFloat = 28
                         let size: CGFloat = responsiveSize(iPhoneFontSize, iPadFontSize)
                         
-                        Text(CustomText.boldSentence(card: card,
-                                                     size: size,
-                                                     isUnderlined: true))
+                        Text(
+                            CustomText.boldSentence(
+                                card: card,
+                                size: size,
+                                isUnderlined: true
+                            )
+                        )
                         .fontSize(size)
                     
                     /// 単語に例文が追加されていない場合
@@ -93,7 +97,7 @@ struct FlipSentenceCardView: ResponsiveView {
             axis: (x: 1, y: 0, z: 0)
         )
         .onTapGesture {
-            guard card.isSentenceExist else { return }
+            // 例文が存在しない場合でもタップで反転できるようにする
             withAnimation(.easeInOut(duration: 0.4)) {
                 isFlipped.toggle()
             }

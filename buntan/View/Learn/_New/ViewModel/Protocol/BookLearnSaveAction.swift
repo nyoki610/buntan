@@ -4,7 +4,7 @@ import Foundation
 extension BookLearnProtocol {
     
     internal func bookLearnSaveAction(
-        pathHandler: PathHandler,
+        pathHandler: BookViewPathHandler,
         loadingSharedData: LoadingSharedData,
         bookUserInput: BookUserInput,
         learnedCardsCount: Int
@@ -64,7 +64,7 @@ extension BookLearnProtocol {
     
     private func tnrasitionScreen(
         userInput: BookUserInput,
-        pathHandler: PathHandler,
+        pathHandler: BookViewPathHandler,
         learnedCardCount: Int
     ) -> Bool {
 
@@ -87,9 +87,9 @@ extension BookLearnProtocol {
         
         if !isFinished {
             pathHandler.backToPreviousScreen(count: 2)
-            pathHandler.transitionScreen(to: .book(.learnSelect(cardsContainer)))
+            pathHandler.transitionScreen(to: .learnSelect(cardsContainer))
         } else {
-            pathHandler.transitionScreen(to: .book(.learnResult(cardsContainer, learnedCardCount)))
+            pathHandler.transitionScreen(to: .learnResult(cardsContainer, learnedCardCount))
         }
         
         return true

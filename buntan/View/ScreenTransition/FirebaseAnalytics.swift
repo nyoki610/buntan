@@ -4,7 +4,7 @@ import FirebaseAnalytics
 
 enum AnalyticsHandler {
     
-    static func logScreenTransition(viewName: ViewName) {
+    static func logScreenTransition(viewName: any ViewNameProtocol) {
         
         Analytics.logEvent(
             AnalyticsEventScreenView,

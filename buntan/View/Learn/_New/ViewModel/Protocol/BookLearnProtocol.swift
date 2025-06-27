@@ -6,6 +6,9 @@ protocol BookLearnProtocol: BaseLearnViewModel, ObservableObject, AnyObject {
     var nonShuffledOptions: [[Option]] { get }
 }
 
+
+
+
 extension BookLearnProtocol {
     
     internal func shuffleAction(shouldShuffle: Bool) {

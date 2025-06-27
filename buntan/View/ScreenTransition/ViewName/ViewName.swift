@@ -2,8 +2,8 @@ import SwiftUI
 import FirebaseAnalytics
 
 /// 画面遷移を管理する enum
-enum ViewName: Hashable {
-    
+enum ViewName: ViewNameProtocol, Hashable {
+
     /// Logo
     case logo
     

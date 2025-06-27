@@ -3,7 +3,8 @@ import SwiftUI
 
 protocol CheckLearnViewProtocol: _LearnViewProtocol where
 ViewModelType: CheckLearnProtocol,
-UserInputType: CheckUserInput {
+UserInputType: CheckUserInput,
+PathHandlerType: CheckViewPathHandler {
     var alertSharedData: AlertSharedData { get }
 }
 

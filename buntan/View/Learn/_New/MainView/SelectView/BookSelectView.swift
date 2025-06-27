@@ -1,10 +1,7 @@
 import SwiftUI
 
 
-struct BookSelectView:
-    ResponsiveView,
-    SelectViewProtocol,
-    BookLearnViewProtocol {
+struct BookSelectView: SelectViewProtocol, BookLearnViewProtocol {
     
     typealias ViewModelType = BookSelectViewViewModel
     typealias UserInputType = BookUserInput
@@ -19,10 +16,10 @@ struct BookSelectView:
     @StateObject var viewModel: BookSelectViewViewModel
     @StateObject var userDefaultHandler: LearnUserDefaultHandler
     @ObservedObject var userInput: BookUserInput
-    @ObservedObject var pathHandler: PathHandler
+    @ObservedObject var pathHandler: BookViewPathHandler
     
     init(
-        pathHandler: PathHandler,
+        pathHandler: BookViewPathHandler,
         bookUserInput: BookUserInput,
         cards: [Card],
         options: [[Option]]
@@ -43,8 +40,7 @@ struct BookSelectView:
     }
     
     var body: some View {
-        
-//        swipeView(viewType: .book)
+
         GeometryReader { geometry in
             
             VStack {
@@ -58,15 +54,7 @@ struct BookSelectView:
                 
                 Spacer()
                 
-                if userDefaultHandler.showSentence {
-                    FlipSentenceCardView(card: viewModel.topCard,
-                                         isSelectView: true)
-                    
-                } else {
-                    FlipWordCardView(card: viewModel.topCard,
-                                     showPhrase: true)
-                    .disabled(true)
-                }
+                cardView(viewType: .book)
                 
                 Spacer()
                 

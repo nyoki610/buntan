@@ -17,8 +17,8 @@ struct MainView: ResponsiveView {
     /// tabView を管理
     @State var selectedRootViewName: RootViewName = .book
     
-    @StateObject var bookViewPathHandler = PathHandler()
-    @StateObject var checkViewPathHandler = PathHandler()
+    @StateObject var bookViewPathHandler = BookViewPathHandler()
+    @StateObject var checkViewPathHandler = CheckViewPathHandler()
     
     var body: some View {
         
@@ -36,7 +36,7 @@ struct MainView: ResponsiveView {
                     tabView
                     
                     VStack {
-                        Text("\(bookViewPathHandler.navigationPath.count)")
+                        Text("\(bookViewPathHandler.path.count)")
                             .bold()
                     }
                     .padding()

@@ -5,10 +5,10 @@ struct SectionListView: ResponsiveView {
     @Environment(\.deviceType) var deviceType: DeviceType
 
     private let book: Book
-    @ObservedObject private var pathHandler: PathHandler
+    @ObservedObject private var pathHandler: BookViewPathHandler
     @ObservedObject private var userInput: BookUserInput
     
-    init(pathHandler: PathHandler, userInput: BookUserInput, book: Book) {
+    init(pathHandler: BookViewPathHandler, userInput: BookUserInput, book: Book) {
         self.pathHandler = pathHandler
         self.userInput = userInput
         self.book = book
@@ -56,7 +56,7 @@ struct SectionListView: ResponsiveView {
                 cards: section.cards,
                 bookCategory: selectedBookCategory
             )
-            pathHandler.transitionScreen(to: .book(.learnSelect(cardsContainer)))
+            pathHandler.transitionScreen(to: .learnSelect(cardsContainer))
         } label: {
             HStack {
                 

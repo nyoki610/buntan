@@ -10,11 +10,11 @@ struct LearnResultView: ResponsiveView {
     /// 「学習中」の単語が存在するかどうかを示す bool 値
     private var reviewAll: Bool { cardsContainer.learningCount == 0 }
     
-    @ObservedObject private var pathHandler: PathHandler
+    @ObservedObject private var pathHandler: BookViewPathHandler
     @ObservedObject private var userInput: BookUserInput
     private let cardsContainer: CardsContainer
 
-    init(pathHandler: PathHandler, userInput: BookUserInput, cardsContainer: CardsContainer) {
+    init(pathHandler: BookViewPathHandler, userInput: BookUserInput, cardsContainer: CardsContainer) {
         self.pathHandler = pathHandler
         self.userInput = userInput
         self.cardsContainer = cardsContainer
@@ -26,7 +26,7 @@ struct LearnResultView: ResponsiveView {
             
             XmarkHeader() {
                 pathHandler.backToPreviousScreen(count: 3)
-                pathHandler.transitionScreen(to: .book(.learnSelect(cardsContainer)))
+                pathHandler.transitionScreen(to: .learnSelect(cardsContainer))
             }
             
             Spacer()

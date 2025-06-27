@@ -9,7 +9,7 @@ struct LearnHeader: ResponsiveView, LearnViewProtocol {
 
     @EnvironmentObject var learnManager: LearnManager
     
-    @ObservedObject var pathHandler: PathHandler
+    @ObservedObject var pathHandler: _PathHandler
     @ObservedObject var userInput: UserInput
     
     let geometry: GeometryProxy
@@ -22,7 +22,7 @@ struct LearnHeader: ResponsiveView, LearnViewProtocol {
     var isBookView: Bool { learnMode != nil }
     private var isTypeView: Bool { learnMode == .type }
     
-    init(pathHandler: PathHandler,
+    init(pathHandler: _PathHandler,
          userInput: UserInput,
          geometry: GeometryProxy,
          learnMode: LearnMode?,

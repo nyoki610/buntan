@@ -1,20 +1,19 @@
 import SwiftUI
 
-struct Header: ResponsiveView {
+struct Header<PathHandlerType: PathHandlerProtocol>: ResponsiveView {
     
     @Environment(\.deviceType) var deviceType: DeviceType
-    
+
     let title: String?
 
-    @ObservedObject private var pathHandler: PathHandler
+    @ObservedObject private var pathHandler: PathHandlerType
     
-    init(pathHandler: PathHandler, title: String? = nil) {
-        self.pathHandler = pathHandler
+    init(pathHandler: PathHandlerType, title: String? = nil) {
+        self._pathHandler = ObservedObject(wrappedValue: pathHandler)
         self.title = title
     }
     
     var body: some View {
-        
         ZStack {
             if let title = title {
                 Text(title)

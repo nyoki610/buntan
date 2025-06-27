@@ -11,10 +11,10 @@ final class BookSelectViewViewModel: BaseSelectViewModel, BookLearnProtocol {
         let shuffledArrays = CardsShuffler.getShuffledArrays(cards: cards, options: options)
         
         self.init(
-            cards: cards,
-            options: options,
-            nonShuffledCards: shuffledArrays.shuffledCards,
-            nonShuffledOptions: shuffledArrays.shuffledOptions
+            cards: shouldShuffle ? shuffledArrays.shuffledCards : cards,
+            options: shouldShuffle ? shuffledArrays.shuffledOptions : options,
+            nonShuffledCards: cards,
+            nonShuffledOptions: options
         )
     }
     
@@ -38,14 +38,13 @@ final class BookSwipeViewViewModel: BaseSwipeViewModel, BookLearnProtocol {
     
     convenience init(cards: [Card], options: [[Option]], shouldShuffle: Bool) {
         
-        
         let shuffledArrays = CardsShuffler.getShuffledArrays(cards: cards, options: options)
         
         self.init(
-            cards: cards,
-            options: options,
-            nonShuffledCards: shuffledArrays.shuffledCards,
-            nonShuffledOptions: shuffledArrays.shuffledOptions
+            cards: shouldShuffle ? shuffledArrays.shuffledCards : cards,
+            options: shouldShuffle ? shuffledArrays.shuffledOptions : options,
+            nonShuffledCards: cards,
+            nonShuffledOptions: options
         )
     }
     
@@ -69,14 +68,13 @@ final class BookTypeViewViewModel: BaseTypeViewModel, BookLearnProtocol {
     
     convenience init(cards: [Card], options: [[Option]], shouldShuffle: Bool) {
         
-        
         let shuffledArrays = CardsShuffler.getShuffledArrays(cards: cards, options: options)
         
         self.init(
-            cards: cards,
-            options: options,
-            nonShuffledCards: shuffledArrays.shuffledCards,
-            nonShuffledOptions: shuffledArrays.shuffledOptions
+            cards: shouldShuffle ? shuffledArrays.shuffledCards : cards,
+            options: shouldShuffle ? shuffledArrays.shuffledOptions : options,
+            nonShuffledCards: cards,
+            nonShuffledOptions: options
         )
     }
     

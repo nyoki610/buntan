@@ -11,12 +11,12 @@ struct _LearnResultView: ResponsiveView {
     /// 「学習中」の単語が存在するかどうかを示す bool 値
     private var reviewAll: Bool { cardsContainer.learningCount == 0 }
     
-    @ObservedObject private var pathHandler: PathHandler
+    @ObservedObject private var pathHandler: BookViewPathHandler
     @ObservedObject private var userInput: BookUserInput
     private let cardsContainer: CardsContainer
 
     init(
-        pathHandler: PathHandler,
+        pathHandler: BookViewPathHandler,
         userInput: BookUserInput,
         cardsContainer: CardsContainer,
         learnedCardCount: Int
@@ -32,8 +32,8 @@ struct _LearnResultView: ResponsiveView {
         VStack {
             
             XmarkHeader() {
-                pathHandler.backToPreviousScreen(count: 3)
-                pathHandler.transitionScreen(to: .book(.learnSelect(cardsContainer)))
+                pathHandler.backToDesignatedScreen(to: .sectionList(EmptyModel.book))
+                pathHandler.transitionScreen(to: .learnSelect(cardsContainer))
             }
             
             Spacer()
@@ -43,8 +43,10 @@ struct _LearnResultView: ResponsiveView {
             Spacer()
             Spacer()
             
-            StartButton(label: reviewAll ? "すべての単語を復習　→" : "学習中の単語を復習　→",
-                        color: reviewAll ? Orange.defaultOrange : RoyalBlue.defaultRoyal) {
+            StartButton(
+                label: reviewAll ? "すべての単語を復習　→" : "学習中の単語を復習　→",
+                color: reviewAll ? Orange.defaultOrange : RoyalBlue.defaultRoyal
+            ) {
                 Task {
                     await buttonAction(isNotLearnedButtonAction: false)
                 }
@@ -52,13 +54,15 @@ struct _LearnResultView: ResponsiveView {
                          
             
             if cardsContainer.notLearnedCount != 0 {
-                StartButton(label: "未学習の単語を学習　→",
-                            color: .gray) {
+                StartButton(
+                    label: "未学習の単語を学習　→",
+                    color: .gray
+                ) {
                     Task {
                         await buttonAction(isNotLearnedButtonAction: true)
                     }
                 }
-                         .padding(.top, responsiveSize(20, 40))
+                .padding(.top, responsiveSize(20, 40))
             }
             
             Spacer()
@@ -167,15 +171,11 @@ struct _LearnResultView: ResponsiveView {
             cards: cards,
             containFifthOption: true
         ) else { return }
-        
-        /// 画面遷移
-//        pathHandler.backToPreviousScreen(count: 2)
-        
+                
         pathHandler.transitionScreen(
-            to: userInput.selectedMode.viewName(
+            to: userInput.selectedMode.bookViewName(
                 cards: cards,
-                options: options,
-                isBookView: true
+                options: options
             )
         )
     }

@@ -15,7 +15,8 @@ protocol LearnViewProtocol: View {
     var alertSharedData: AlertSharedData { get }
     var userInput: UserInput { get }
     
-    var pathHandler: PathHandler { get set }
+    associatedtype PathHandlerType: PathHandlerProtocol
+    var pathHandler: PathHandlerType { get set }
     
     func saveAction(isBookView: Bool)
 }
@@ -93,11 +94,11 @@ extension LearnViewProtocol {
                 loadingSharedData.finishLoading {
                     if !isFinished {
                         pathHandler.backToPreviousScreen(count: 2)
-                        pathHandler.transitionScreen(to: .book(.learnSelect(cardsContainer)))
+//                        pathHandler.transitionScreen(to: .learnSelect(cardsContainer))
                     } else {
-                        pathHandler.transitionScreen(
-                            to: .book(.learnResult(cardsContainer, cardsCount))
-                        )
+//                        pathHandler.transitionScreen(
+//                            to: .book(.learnResult(cardsContainer, cardsCount))
+//                        )
                     }
                 }
             }
@@ -129,7 +130,7 @@ extension LearnViewProtocol {
             let _ = CheckRecordRealmAPI.uploadCheckRecord(checkRecord: checkRecord)
             
             loadingSharedData.finishLoading {
-                pathHandler.transitionScreen(to: .check(.checkResult))
+//                pathHandler.transitionScreen(to: .checkResult)
             }
         }
     }
