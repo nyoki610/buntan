@@ -1,7 +1,7 @@
 import Foundation
 
 
-extension CheckLearnProtocol {
+extension CheckLearnViewViewModelProtocol {
     
     func checkLearnSaveAction(
         pathHandler: CheckViewPathHandler,

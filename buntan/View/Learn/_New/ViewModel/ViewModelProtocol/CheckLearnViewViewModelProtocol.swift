@@ -1,10 +1,10 @@
 import Foundation
 
 
-protocol CheckLearnProtocol: BaseLearnViewModel {}
+protocol CheckLearnViewViewModelProtocol: BaseLearnViewViewModel, ObservableObject, AnyObject {}
 
 
-extension CheckLearnProtocol {
+extension CheckLearnViewViewModelProtocol {
     
     var estimatedScore: Int {
         

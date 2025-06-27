@@ -30,7 +30,7 @@ extension SheetRealmAPI {
     
     
     static func _updateCardsStatus(
-        viewModel: BaseLearnViewModel,
+        viewModel: BaseLearnViewViewModel,
         eikenGrade: EikenGrade,
         bookCategory: BookCategory
     ) -> Bool {

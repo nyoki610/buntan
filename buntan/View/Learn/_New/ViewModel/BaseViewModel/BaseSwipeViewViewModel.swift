@@ -1,7 +1,7 @@
 import SwiftUI
 
 
-class BaseSwipeViewModel: BaseLearnViewModel {
+class BaseSwipeViewViewModel: BaseLearnViewViewModel {
 
     @Published var offset = CGSize.zero
     @Published var isFlipped: Bool = false
@@ -10,7 +10,7 @@ class BaseSwipeViewModel: BaseLearnViewModel {
     var nonAnimationCard: Card { animationController < cards.count ? cards[animationController] : EmptyModel.card }
 }
 
-extension BaseSwipeViewModel {
+extension BaseSwipeViewViewModel {
     
     func onAppearAction(shouldReadOut: Bool) {
 

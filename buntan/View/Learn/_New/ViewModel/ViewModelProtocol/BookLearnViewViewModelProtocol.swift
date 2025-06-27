@@ -1,15 +1,13 @@
 import SwiftUI
 
 
-protocol BookLearnProtocol: BaseLearnViewModel, ObservableObject, AnyObject {
+protocol BookLearnViewViewModelProtocol: BaseLearnViewViewModel, ObservableObject, AnyObject {
     var nonShuffledCards: [Card] { get }
     var nonShuffledOptions: [[Option]] { get }
 }
 
 
-
-
-extension BookLearnProtocol {
+extension BookLearnViewViewModelProtocol {
     
     internal func shuffleAction(shouldShuffle: Bool) {
         

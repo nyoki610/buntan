@@ -2,7 +2,7 @@ import SwiftUI
 
 
 protocol SelectViewProtocol: _LearnViewProtocol where
-ViewModelType: BaseSelectViewModel {}
+ViewModelType: BaseSelectViewViewModel {}
 
 
 extension SelectViewProtocol {

@@ -1,7 +1,7 @@
 import Foundation
 
 
-final class BookSelectViewViewModel: BaseSelectViewModel, BookLearnProtocol {
+final class BookSelectViewViewModel: BaseSelectViewViewModel, BookLearnViewViewModelProtocol {
     
     internal let nonShuffledCards: [Card]
     internal let nonShuffledOptions: [[Option]]
@@ -31,7 +31,7 @@ final class BookSelectViewViewModel: BaseSelectViewModel, BookLearnProtocol {
 }
 
 
-final class BookSwipeViewViewModel: BaseSwipeViewModel, BookLearnProtocol {
+final class BookSwipeViewViewModel: BaseSwipeViewViewModel, BookLearnViewViewModelProtocol {
 
     internal let nonShuffledCards: [Card]
     internal let nonShuffledOptions: [[Option]]
@@ -61,7 +61,7 @@ final class BookSwipeViewViewModel: BaseSwipeViewModel, BookLearnProtocol {
 }
 
 
-final class BookTypeViewViewModel: BaseTypeViewModel, BookLearnProtocol {
+final class BookTypeViewViewModel: BaseTypeViewViewModel, BookLearnViewViewModelProtocol {
 
     internal let nonShuffledCards: [Card]
     internal let nonShuffledOptions: [[Option]]
@@ -90,4 +90,4 @@ final class BookTypeViewViewModel: BaseTypeViewModel, BookLearnProtocol {
     }
 }
 
-final class CheckSelectViewViewModel: BaseSelectViewModel, CheckLearnProtocol {}
+final class CheckSelectViewViewModel: BaseSelectViewViewModel, CheckLearnViewViewModelProtocol {}

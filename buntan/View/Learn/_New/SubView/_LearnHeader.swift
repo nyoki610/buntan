@@ -14,7 +14,7 @@ struct _LearnHeader: ResponsiveView {
     private let xmarkButtonAction: () -> Void
     
     init(
-        viewModel: BaseLearnViewModel,
+        viewModel: BaseLearnViewViewModel,
         geometry: GeometryProxy,
         xmarkButtonAction: @escaping () -> Void
     ) {

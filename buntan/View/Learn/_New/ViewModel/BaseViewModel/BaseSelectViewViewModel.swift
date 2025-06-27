@@ -1,7 +1,7 @@
 import Foundation
 
 
-class BaseSelectViewModel: BaseLearnViewModel {
+class BaseSelectViewViewModel: BaseLearnViewViewModel {
     
     /// ユーザーの解答入力を受付中かを示す Bool 値
     @Published var isAnswering: Bool = true

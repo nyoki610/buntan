@@ -1,7 +1,7 @@
 import SwiftUI
 
 
-class BaseTypeViewModel: BaseLearnViewModel {
+class BaseTypeViewViewModel: BaseLearnViewViewModel {
     
     var isKeyboardActive: Bool = false
     @Published var userInputAnswer: String = ""
@@ -12,7 +12,7 @@ class BaseTypeViewModel: BaseLearnViewModel {
 }
 
 
-extension BaseTypeViewModel {
+extension BaseTypeViewViewModel {
     
     func onAppearAction() {
         
@@ -23,7 +23,7 @@ extension BaseTypeViewModel {
 }
 
 
-extension BaseTypeViewModel {
+extension BaseTypeViewViewModel {
     
     func submitAction(shouldReadOut: Bool) -> Void {
         
@@ -66,7 +66,7 @@ extension BaseTypeViewModel {
     }
 }
 
-extension BaseTypeViewModel {
+extension BaseTypeViewViewModel {
     
     func passButtonAction(shouldReadOut: Bool) {
         

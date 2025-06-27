@@ -3,7 +3,7 @@ import SwiftUI
 
 protocol _LearnViewProtocol: ResponsiveView {
     
-    associatedtype ViewModelType: BaseLearnViewModel
+    associatedtype ViewModelType: BaseLearnViewViewModel
     var viewModel: ViewModelType { get }
     
     associatedtype UserInputType: UserInput

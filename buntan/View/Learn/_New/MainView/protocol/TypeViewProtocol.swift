@@ -2,7 +2,7 @@ import SwiftUI
 
 
 protocol TypeViewProtocol: _LearnViewProtocol where
-ViewModelType: BaseTypeViewModel {}
+ViewModelType: BaseTypeViewViewModel {}
 
 
 extension TypeViewProtocol {

@@ -1,6 +1,6 @@
 import SwiftUI
 
-class BaseLearnViewModel: ObservableObject {
+class BaseLearnViewViewModel: ObservableObject {
     
     var cards: [Card]
     var options: [[Option]]

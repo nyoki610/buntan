@@ -6,7 +6,7 @@ struct LearnBottomButtons: ResponsiveView {
 
     @EnvironmentObject var alertSharedData: AlertSharedData
     
-    @ObservedObject var viewModel: BaseLearnViewModel
+    @ObservedObject var viewModel: BaseLearnViewViewModel
     
     private let learnMode: LearnMode?
     
@@ -14,7 +14,7 @@ struct LearnBottomButtons: ResponsiveView {
         
         if learnMode != .type { return true }
         
-        guard let typeViewModel = viewModel as? BaseTypeViewModel else { return nil }
+        guard let typeViewModel = viewModel as? BaseTypeViewViewModel else { return nil }
         
         return typeViewModel.showSpeaker
         
@@ -24,7 +24,7 @@ struct LearnBottomButtons: ResponsiveView {
     
     private let saveAction: () -> Void
     
-    init?(viewModel: BaseLearnViewModel, shouldReadOut: Bool, saveAction: @escaping () -> Void) {
+    init?(viewModel: BaseLearnViewViewModel, shouldReadOut: Bool, saveAction: @escaping () -> Void) {
         
         let learnMode: LearnMode?
         
@@ -45,7 +45,7 @@ struct LearnBottomButtons: ResponsiveView {
 
         HStack {
             
-            if let bookLearnViewModel = viewModel as? any BookLearnProtocol {
+            if let bookLearnViewModel = viewModel as? any BookLearnViewViewModelProtocol {
                 
                 if viewModel.topCardIndex > 0 {
                     
@@ -54,11 +54,11 @@ struct LearnBottomButtons: ResponsiveView {
                                  systemName: "arrowshape.turn.up.left") {
                         
                         switch viewModel {
-                        case let bookTypeViewModel as BaseTypeViewModel:
+                        case let bookTypeViewModel as BaseTypeViewViewModel:
                             bookTypeViewModel.typeViewBackButtonAction {
                                 bookLearnViewModel.backButtonAction()
                             }
-                        case is BaseSelectViewModel, is BaseSwipeViewModel:
+                        case is BaseSelectViewViewModel, is BaseSwipeViewViewModel:
                             bookLearnViewModel.backButtonAction()
                         default: return
                         }
@@ -84,7 +84,7 @@ struct LearnBottomButtons: ResponsiveView {
                 }
             }
             
-            if let selectViewModel = viewModel as? BaseSelectViewModel {
+            if let selectViewModel = viewModel as? BaseSelectViewViewModel {
                 customButton(label: "パス",
                              subLabel: "",
                              systemName: "arrowshape.turn.up.right") {
@@ -96,7 +96,7 @@ struct LearnBottomButtons: ResponsiveView {
                              .padding(.leading, 16)
             }
             
-            if let typeViewModel = viewModel as? BaseTypeViewModel {
+            if let typeViewModel = viewModel as? BaseTypeViewViewModel {
                 customButton(
                     label: typeViewModel.isAnswering ? "パス" : (typeViewModel.nextCardExist ? "次へ" : "完了"),
                     subLabel: "",

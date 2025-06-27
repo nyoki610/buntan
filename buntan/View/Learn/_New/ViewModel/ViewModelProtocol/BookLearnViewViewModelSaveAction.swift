@@ -1,7 +1,7 @@
 import Foundation
 
 
-extension BookLearnProtocol {
+extension BookLearnViewViewModelProtocol {
     
     internal func bookLearnSaveAction(
         pathHandler: BookViewPathHandler,

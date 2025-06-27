@@ -2,7 +2,7 @@ import SwiftUI
 
 
 protocol SwipeViewProtocol: _LearnViewProtocol where
-ViewModelType: BaseSwipeViewModel {}
+ViewModelType: BaseSwipeViewViewModel {}
 
 
 extension SwipeViewProtocol {

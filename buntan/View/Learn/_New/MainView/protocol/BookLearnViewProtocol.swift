@@ -2,7 +2,7 @@ import SwiftUI
 
 
 protocol BookLearnViewProtocol: _LearnViewProtocol where
-ViewModelType: BookLearnProtocol,
+ViewModelType: BookLearnViewViewModelProtocol,
 UserInputType: BookUserInput,
 PathHandlerType: BookViewPathHandler {}
 
