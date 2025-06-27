@@ -6,15 +6,14 @@ extension BookLearnProtocol {
     internal func bookLearnSaveAction(
         pathHandler: PathHandler,
         loadingSharedData: LoadingSharedData,
-        bookUserInput: BookUserInput
+        bookUserInput: BookUserInput,
+        learnedCardsCount: Int
     ) {
 
         /// Keyboard を非表示 (for TypeView())
 //        if let typLearnManager = self as? BookTypeViewViewModel {
 //            typLearnManager.isKeyboardActive = false
 //        }
-        
-        guard checkLearnedCardExist(pathHandler: pathHandler) else { return }
         
         /// loading を開始
         loadingSharedData.startLoading(.save)
@@ -28,26 +27,15 @@ extension BookLearnProtocol {
             
             /// loading を終了して画面遷移
             loadingSharedData.finishLoading {
-                guard self.tnrasitionScreen(userInput: bookUserInput, pathHandler: pathHandler) else { return }
+                guard self.tnrasitionScreen(
+                    userInput: bookUserInput,
+                    pathHandler: pathHandler,
+                    learnedCardCount: learnedCardsCount
+                ) else { return }
             }
         }
     }
-    
-    private func learnedCardsCount() -> Int {
-        self.leftCardsIndexList.count + self.rightCardsIndexList.count
-    }
-    
-    private func checkLearnedCardExist(pathHandler: PathHandler) -> Bool {
-                
-        /// １単語も学習していない場合は save せずに exit
-        guard learnedCardsCount() != 0 else {
-            pathHandler.backToPreviousScreen(count: 1)
-            return false
-        }
-        
-        return true
-    }
-    
+
     private func updateCardsStatus(userInput: BookUserInput) -> Bool {
 
         guard let selectedGrade = userInput.selectedGrade,
@@ -67,7 +55,7 @@ extension BookLearnProtocol {
         
         /// 学習量の記録を保存
         let learnRecord = LearnRecord(UUID().uuidString, Date(),
-                                      learnedCardsCount())
+                                      learnedCardsCount)
         
         guard LearnRecordRealmAPI.uploadLearnRecord(learnRecord: learnRecord) else { return false }
         
@@ -76,7 +64,8 @@ extension BookLearnProtocol {
     
     private func tnrasitionScreen(
         userInput: BookUserInput,
-        pathHandler: PathHandler
+        pathHandler: PathHandler,
+        learnedCardCount: Int
     ) -> Bool {
 
         guard let selectedGrade = userInput.selectedGrade,
@@ -94,13 +83,13 @@ extension BookLearnProtocol {
         let cardsContainer = CardsContainer(cards: cards, bookCategory: selectedBookCategory)
         
         /// 「学習を最後まで進めてから save しようとしているか」を判断
-        let isFinished = (learnedCardsCount() == self.cards.count)
+        let isFinished = (learnedCardsCount == self.cards.count)
         
         if !isFinished {
             pathHandler.backToPreviousScreen(count: 2)
             pathHandler.transitionScreen(to: .book(.learnSelect(cardsContainer)))
         } else {
-            pathHandler.transitionScreen(to: .book(.learnResult(cardsContainer)))
+            pathHandler.transitionScreen(to: .book(.learnResult(cardsContainer, learnedCardCount)))
         }
         
         return true

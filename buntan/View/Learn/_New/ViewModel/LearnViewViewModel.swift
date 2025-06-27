@@ -8,7 +8,6 @@ final class BookSelectViewViewModel: BaseSelectViewModel, BookLearnProtocol {
     
     convenience init(cards: [Card], options: [[Option]], shouldShuffle: Bool) {
         
-        
         let shuffledArrays = CardsShuffler.getShuffledArrays(cards: cards, options: options)
         
         self.init(
@@ -93,6 +92,4 @@ final class BookTypeViewViewModel: BaseTypeViewModel, BookLearnProtocol {
     }
 }
 
-final class CheckSelectViewViewModel: BaseSelectViewModel, CheckLearnProtocol {
-    
-}
+final class CheckSelectViewViewModel: BaseSelectViewModel, CheckLearnProtocol {}

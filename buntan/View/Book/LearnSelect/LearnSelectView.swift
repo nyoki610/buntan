@@ -49,16 +49,16 @@ struct LearnSelectView: ResponsiveView {
                     
                     Spacer()
                     
-                    StartButton(label: "学習を開始 →",
-                                color: Orange.defaultOrange) {
-                        
+                    StartButton(
+                        label: "学習を開始 →",
+                        color: Orange.defaultOrange
+                    ) {
                         
                         guard let selectedGrade = userInput.selectedGrade else { return }
                         
                         let cards = cardsContainer.getCardsByLearnRange(
                             learnRange: userInput.selectedRange
                         )
-                        
                         
                         guard let options = SheetRealmAPI
                             .getOptions(

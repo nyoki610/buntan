@@ -12,6 +12,14 @@ class BaseSelectViewModel: BaseLearnViewModel {
     /// 正解かどうかを判断する Bool 値
     var isCorrect: Bool { selectedIndex == answerIndex}
 
+    override init(cards: [Card], options: [[Option]]) {
+        super.init(cards: cards, options: options)
+        
+        // SelectView固有の状態をリセット
+        self.isAnswering = true
+        self.selectedIndex = 0
+    }
+
     func onAppearAction(shouldReadOut: Bool) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             self.readOutTopCard(shouldReadOut: shouldReadOut)

@@ -10,7 +10,7 @@ enum BookViewName {
     case swipe([Card], [[Option]])
     case select([Card], [[Option]])
     case type([Card], [[Option]])
-    case learnResult(CardsContainer)
+    case learnResult(CardsContainer, Int)
 }
 
 extension BookViewName: ViewNameProtocol {
@@ -110,12 +110,13 @@ extension BookViewName: ViewNameProtocol {
                 )
             )
         
-        case .learnResult(let cardsContainer):
+        case .learnResult(let cardsContainer, let learnedCardCount):
             return AnyView(
-                LearnResultView(
+                _LearnResultView(
                     pathHandler: pathHandler,
                     userInput: userInput,
-                    cardsContainer: cardsContainer
+                    cardsContainer: cardsContainer,
+                    learnedCardCount: learnedCardCount
                 )
             )
         }

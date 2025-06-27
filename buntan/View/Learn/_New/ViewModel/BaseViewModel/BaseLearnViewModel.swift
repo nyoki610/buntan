@@ -17,11 +17,20 @@ class BaseLearnViewModel: ObservableObject {
     
     var topCard: Card { topCardIndex < cards.count ?  cards[topCardIndex] : EmptyModel.card }
     var nextCardExist: Bool { topCardIndex < cards.count - 1 }
+    var learnedCardsCount: Int { leftCardsIndexList.count + rightCardsIndexList.count }
     
     init(cards: [Card], options: [[Option]]) {
         
         self.cards = cards
         self.options = options
+        
+        // 学習状態を明示的にリセット
+        self.showSetting = true
+        self.topCardIndex = 0
+        self.animationController = 0
+        self.rightCardsIndexList = []
+        self.leftCardsIndexList = []
+        self.buttonDisabled = false
     }
     
     /// カードの音声読み上げ
@@ -34,9 +43,11 @@ class BaseLearnViewModel: ObservableObject {
         guard topCardIndex < cards.count else { return }
         let word = cards[topCardIndex].word
         
-        avSpeaker.readOutText(word,
-                              controllButton: controllButton,
-                              withDelay: withDelay)
+        avSpeaker.readOutText(
+            word,
+            controllButton: controllButton,
+            withDelay: withDelay
+        )
     }
     
     /// 表示中のカードを「完了 or 学習中」に振り分け

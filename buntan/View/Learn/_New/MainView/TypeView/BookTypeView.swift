@@ -1,6 +1,9 @@
 import SwiftUI
 
 struct BookTypeView: ResponsiveView, BookLearnViewProtocol {
+    typealias ViewModelType = BookTypeViewViewModel
+    typealias UserInputType = BookUserInput
+    
     
     @Environment(\.deviceType) var deviceType: DeviceType
     
@@ -10,8 +13,8 @@ struct BookTypeView: ResponsiveView, BookLearnViewProtocol {
     @FocusState var isKeyboardActive: Bool
 
     @StateObject var viewModel: BookTypeViewViewModel
-    @ObservedObject var userDefaultHandler: LearnUserDefaultHandler
-    @ObservedObject var bookUserInput: BookUserInput
+    @StateObject var userDefaultHandler: LearnUserDefaultHandler
+    @ObservedObject var userInput: BookUserInput
     @ObservedObject var pathHandler: PathHandler
     
     init(
@@ -20,17 +23,19 @@ struct BookTypeView: ResponsiveView, BookLearnViewProtocol {
         cards: [Card],
         options: [[Option]]
     ) {
-        self.pathHandler = pathHandler
-        self.bookUserInput = bookUserInput
-        let userDefaultHandler = LearnUserDefaultHandler()
+        self._pathHandler = ObservedObject(wrappedValue: pathHandler)
+        self._userInput = ObservedObject(wrappedValue: bookUserInput)
+
+        let handler = LearnUserDefaultHandler()
+        self._userDefaultHandler = StateObject(wrappedValue: handler)
+
         self._viewModel = StateObject(
             wrappedValue: BookTypeViewViewModel(
                 cards: cards,
                 options: options,
-                shouldShuffle: userDefaultHandler.shouldShuffle
+                shouldShuffle: handler.shouldShuffle
             )
         )
-        self.userDefaultHandler = userDefaultHandler
     }
     
     var body: some View {

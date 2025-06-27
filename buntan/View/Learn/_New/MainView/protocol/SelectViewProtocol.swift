@@ -1,88 +1,19 @@
 import SwiftUI
 
 
-protocol SelectViewProtocol: ResponsiveView {
-    
-    associatedtype ViewModel: BaseSelectViewModel
-    var viewModel: ViewModel { get }
-    var userDefaultHandler: LearnUserDefaultHandler { get }
-    
-    /// saveAction()はView側で実装
-    func xmarkAction()
-    func saveAction()
-    
-    associatedtype SettingButtonsView: View
-    var settingButtons: SettingButtonsView { get }
-}
-
-enum LearnViewViewType {
-    case book
-    case check
-}
-
-extension SelectViewProtocol {
-    
-    
-    @ViewBuilder
-    internal func swipeView(viewType: LearnViewViewType) -> some View {
-        
-        GeometryReader { geometry in
-            
-            VStack {
-                
-                _LearnHeader(
-                    viewModel: viewModel,
-                    geometry: geometry
-                ) {
-                    xmarkAction()
-                }
-                
-                settingButtons
-                
-                Spacer()
-                
-                switch viewType {
-                case .book:
-                    
-                    if userDefaultHandler.showSentence {
-                        FlipSentenceCardView(card: viewModel.topCard,
-                                             isSelectView: true)
-                        
-                    } else {
-                        FlipWordCardView(card: viewModel.topCard,
-                                         showPhrase: true)
-                        .disabled(true)
-                    }
-                    
-                case .check:
-                    FlipWordCardView(card: viewModel.topCard,
-                                     showPhrase: true)
-                    .disabled(true)
-                }
-                
-                Spacer()
-                
-                optionButtonListView(optionsCount: 4) {
-                    saveAction()
-                }
-                
-                Spacer()
-                
-                LearnBottomButtons(
-                    viewModel: viewModel,
-                    shouldReadOut: userDefaultHandler.shouldReadOut
-                ) {
-                    saveAction()
-                }
-                .disabled(!viewModel.isAnswering)
-            }
-            .background(CustomColor.background)
-            .navigationBarBackButtonHidden(true)
-            .onAppear {
-                viewModel.onAppearAction(shouldReadOut: userDefaultHandler.shouldReadOut)
-            }
-        }
-    }
+protocol SelectViewProtocol: _LearnViewProtocol where
+ViewModelType: BaseSelectViewModel {
+//
+//    associatedtype ViewModel: BaseSelectViewModel
+//    var viewModel: ViewModel { get }
+//    var userDefaultHandler: LearnUserDefaultHandler { get }
+//    
+//    /// saveAction()はView側で実装
+//    func xmarkAction()
+//    func saveAction()
+//    
+//    associatedtype SettingButtonsView: View
+//    var settingButtons: SettingButtonsView { get }
 }
 
 

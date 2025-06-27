@@ -95,7 +95,9 @@ extension LearnViewProtocol {
                         pathHandler.backToPreviousScreen(count: 2)
                         pathHandler.transitionScreen(to: .book(.learnSelect(cardsContainer)))
                     } else {
-                        pathHandler.transitionScreen(to: .book(.learnResult(cardsContainer)))
+                        pathHandler.transitionScreen(
+                            to: .book(.learnResult(cardsContainer, cardsCount))
+                        )
                     }
                 }
             }

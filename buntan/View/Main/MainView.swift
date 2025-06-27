@@ -34,6 +34,14 @@ struct MainView: ResponsiveView {
                     )
                     
                     tabView
+                    
+                    VStack {
+                        Text("\(bookViewPathHandler.navigationPath.count)")
+                            .bold()
+                    }
+                    .padding()
+                    .background(Orange.egg)
+                    .cornerRadius(10)
                 }
             }
 

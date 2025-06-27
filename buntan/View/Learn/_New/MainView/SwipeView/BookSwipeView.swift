@@ -1,6 +1,9 @@
 import SwiftUI
 
 struct BookSwipeView: ResponsiveView, BookLearnViewProtocol {
+    typealias ViewModelType = BookSwipeViewViewModel
+    typealias UserInputType = BookUserInput
+    
     
     @Environment(\.deviceType) var deviceType: DeviceType
 
@@ -8,8 +11,9 @@ struct BookSwipeView: ResponsiveView, BookLearnViewProtocol {
     @EnvironmentObject var alertSharedData: AlertSharedData
 
     @StateObject var viewModel: BookSwipeViewViewModel
-    @ObservedObject var userDefaultHandler: LearnUserDefaultHandler
-    @ObservedObject var bookUserInput: BookUserInput
+    @StateObject var userDefaultHandler: LearnUserDefaultHandler
+
+    @ObservedObject var userInput: BookUserInput
     @ObservedObject var pathHandler: PathHandler
     
     init(
@@ -18,17 +22,19 @@ struct BookSwipeView: ResponsiveView, BookLearnViewProtocol {
         cards: [Card],
         options: [[Option]]
     ) {
-        self.pathHandler = pathHandler
-        self.bookUserInput = bookUserInput
-        let userDefaultHandler = LearnUserDefaultHandler()
+        self._pathHandler = ObservedObject(wrappedValue: pathHandler)
+        self._userInput = ObservedObject(wrappedValue: bookUserInput)
+
+        let handler = LearnUserDefaultHandler()
+        self._userDefaultHandler = StateObject(wrappedValue: handler)
+
         self._viewModel = StateObject(
             wrappedValue: BookSwipeViewViewModel(
                 cards: cards,
                 options: options,
-                shouldShuffle: userDefaultHandler.shouldShuffle
+                shouldShuffle: handler.shouldShuffle
             )
         )
-        self.userDefaultHandler = userDefaultHandler
     }
 
     var body: some View {
@@ -38,6 +44,11 @@ struct BookSwipeView: ResponsiveView, BookLearnViewProtocol {
             VStack {
 
                 learnHeader(geometry: geometry)
+                
+                learnSettingButtons(
+                    learnMode: .swipe,
+                    showSetting: $viewModel.showSetting
+                )
 
                 Spacer()
                 
@@ -51,7 +62,7 @@ struct BookSwipeView: ResponsiveView, BookLearnViewProtocol {
 
                 Spacer()
                 
-                LearnButton(learnMode: .swipe)
+                learnBottomButtons
             }
             .background(CustomColor.background)
             .navigationBarBackButtonHidden(true)
