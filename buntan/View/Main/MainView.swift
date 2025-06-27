@@ -9,7 +9,6 @@ struct MainView: ResponsiveView {
     @ObservedObject private var loadingSharedData = LoadingSharedData()
     @ObservedObject private var alertSharedData = AlertSharedData()
 
-    @ObservedObject private var learnManager = LearnManager()
     
     /// 起動時の LogoView の表示を管理
     @State private var showLogoView: Bool = true
@@ -53,7 +52,6 @@ struct MainView: ResponsiveView {
         }
         .environmentObject(loadingSharedData)
         .environmentObject(alertSharedData)
-        .environmentObject(learnManager)
         .alert(item: $alertSharedData.alertType) { _ in
             alertSharedData.createAlert()
         }

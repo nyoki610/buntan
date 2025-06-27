@@ -44,11 +44,8 @@ extension BookLearnViewProtocol {
     
     func xmarkButtonAction() {
         
-        var isLearnedCardExist: Bool {
-            viewModel.learnedCardsCount != 0
-        }
-        
-        guard isLearnedCardExist else {
+        /// １単語も学習していない場合は save せずに exit
+        guard viewModel.learnedCardsCount != 0 else {
             pathHandler.backToPreviousScreen(count: 1)
             return
         }

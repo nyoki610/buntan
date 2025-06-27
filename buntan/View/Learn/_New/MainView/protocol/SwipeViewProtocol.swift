@@ -99,24 +99,24 @@ extension SwipeViewProtocol {
             
             /// 単語カードを表示
             ZStack {
-                ForEach(max(0, viewModel.topCardIndex - 1)..<min(viewModel.topCardIndex + 1, viewModel.cards.count), id: \.self) { i in
+                ForEach(max(0, viewModel.topCardIndex - 1)..<min(viewModel.topCardIndex + 1, viewModel.cards.count), id: \.self) { index in
 
                     FlipWordCardView(
-                        card: viewModel.cards[i],
+                        card: viewModel.cards[index],
                         showPhrase: false
                     )
                     .offset(
-                        x:  i == viewModel.topCardIndex ? viewModel.offset.width :
-                            viewModel.rightCardsIndexList.contains(i) ? 600 :
-                            viewModel.leftCardsIndexList.contains(i) ? -600 : 0
+                        x:  index == viewModel.topCardIndex ? viewModel.offset.width :
+                            viewModel.rightCardsIndexList.contains(index) ? 600 :
+                            viewModel.leftCardsIndexList.contains(index) ? -600 : 0
                     )
                     .rotationEffect(
-                        .degrees(i == viewModel.topCardIndex ? Double(viewModel.offset.width / 300) * 15 : 0.0),
+                        .degrees(index == viewModel.topCardIndex ? Double(viewModel.offset.width / 300) * 15 : 0.0),
                         anchor: .bottom
                     )
-                    .opacity(i == viewModel.topCardIndex ? 1.0 : 0.0)
+                    .opacity(index == viewModel.topCardIndex ? 1.0 : 0.0)
                     .gesture(
-                        drugGesture(index: i)
+                        drugGesture(index: index)
                     )
                 }
             }

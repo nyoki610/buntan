@@ -45,12 +45,13 @@ struct BookLearnSettingButtons: LearnSettingButtonsProtocol {
                     label: "シャッフル",
                     subLabel: nil,
                     systemName: "shuffle",
-                    targetBool: $userDefaultHandler.shouldShuffle) {
-                        confirmShuffle {
-                            userDefaultHandler.shouldShuffle.toggle()
-                            shuffleAction()
-                        }
+                    targetBool: $userDefaultHandler.shouldShuffle
+                ) {
+                    confirmShuffle {
+                        userDefaultHandler.shouldShuffle.toggle()
+                        shuffleAction()
                     }
+                }
                 
                 Spacer()
                 toggleButton(

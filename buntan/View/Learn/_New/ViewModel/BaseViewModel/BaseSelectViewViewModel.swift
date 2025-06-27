@@ -22,7 +22,7 @@ class BaseSelectViewViewModel: BaseLearnViewViewModel {
 
     func onAppearAction(shouldReadOut: Bool) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            self.readOutTopCard(shouldReadOut: shouldReadOut)
+            self.readOutTopCard(withDelay: true)
         }
     }
     
@@ -84,7 +84,7 @@ class BaseSelectViewViewModel: BaseLearnViewViewModel {
             /// Update NavigationRequestObserver tried to update multiple times per frame.
             /// Update NavigationAuthority bound path tried to update multiple times per frame.
             topCardIndex += 1
-            readOutTopCard(shouldReadOut: shouldReadOut)
+            readOutTopCard(withDelay: true)
         }
     }
 }

@@ -4,7 +4,7 @@ extension TypeView {
     
     func onAppearAction() {
         
-        learnManager.avSpeaker = AVSpeaker($learnManager.buttonDisabled)
+        learnManager.avSpeaker = AVSpeaker()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             learnManager.isKeyboardActive = true
         }

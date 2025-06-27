@@ -52,16 +52,16 @@ class LearnManager: ObservableObject {
     /// カードの音声読み上げ
     func readOutTopCard(isButton: Bool = false) {
         
-        guard (shouldReadOut || isButton) else { return }
-        
-        let (controllButton, withDelay) = (isButton, !isButton)
-        
-        guard topCardIndex < cards.count else { return }
-        let word = cards[topCardIndex].word
-        
-        avSpeaker?.readOutText(word,
-                               controllButton: controllButton,
-                               withDelay: withDelay)
+//        guard (shouldReadOut || isButton) else { return }
+//        
+//        let (controllButton, withDelay) = (isButton, !isButton)
+//        
+//        guard topCardIndex < cards.count else { return }
+//        let word = cards[topCardIndex].word
+//        
+//        avSpeaker?.readOutText(word,
+//                               controllButton: controllButton,
+//                               withDelay: withDelay)
     }
     
     /// 一つ前のカードに戻る処理

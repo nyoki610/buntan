@@ -3,12 +3,14 @@ import SwiftUI
 
 class BaseTypeViewViewModel: BaseLearnViewViewModel {
     
-    var isKeyboardActive: Bool = false
+    /// keyboard 処理の正確性は保留中
+    @Published var isKeyboardActive: Bool = false
+    
     @Published var userInputAnswer: String = ""
     
     var isAnswering: Bool = true
     var isCorrect: Bool = true
-    var showSpeaker: Bool { !(isAnswering && isCorrect) }
+    var hideSpealer: Bool { isAnswering || isCorrect }
 }
 
 
@@ -29,10 +31,9 @@ extension BaseTypeViewViewModel {
         
         isAnswering = false
         
-        readOutTopCard(
-            isButton: false,
-            shouldReadOut: shouldReadOut
-        )
+        if shouldReadOut {
+            readOutTopCard(withDelay: false)
+        }
         
         let userAnswer = userInputAnswer.filter { !$0.isWhitespace }
         
@@ -73,14 +74,20 @@ extension BaseTypeViewViewModel {
         isAnswering = false
         isCorrect = false
         userInputAnswer = ""
-        readOutTopCard(isButton: false, shouldReadOut: shouldReadOut)
+        
+        if shouldReadOut {
+            readOutTopCard(withDelay: false)
+        }
     }
     
     func nextButtonAction() {
         hideSettings()
         addIndexToList(false)
         isAnswering = true
+        
+        ///  期待する通りに動作していない？ @2025/06/28
         isKeyboardActive = true
+        
         topCardIndex += 1
         /// 不正解　→　正解　の場合の文字色変化を整えるため
         isCorrect = true
@@ -99,6 +106,7 @@ extension BaseTypeViewViewModel {
             isAnswering = true
         }
         
+        ///  期待する通りに動作していない？ @2025/06/28
         isKeyboardActive = true
     }
     

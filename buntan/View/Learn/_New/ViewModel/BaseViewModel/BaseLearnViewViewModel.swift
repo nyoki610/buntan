@@ -10,16 +10,21 @@ class BaseLearnViewViewModel: ObservableObject {
     @Published var animationController: Int = 0
     @Published var rightCardsIndexList: [Int] = []
     @Published var leftCardsIndexList: [Int] = []
-    @Published var buttonDisabled: Bool = false
 
     /// 音声が正しく再生されるかの確認必須？
-    private var avSpeaker = AVSpeaker()
+    @Published var avSpeaker = AVSpeaker()
+    
+    /// AVSpeakerのreadOutButtonDisabled状態と同期
+    @Published var readOutButtonDisabled: Bool = false
     
     var topCard: Card { topCardIndex < cards.count ?  cards[topCardIndex] : EmptyModel.card }
     var nextCardExist: Bool { topCardIndex < cards.count - 1 }
     var learnedCardsCount: Int { leftCardsIndexList.count + rightCardsIndexList.count }
     
-    init(cards: [Card], options: [[Option]]) {
+    init(
+        cards: [Card],
+        options: [[Option]]
+    ) {
         
         self.cards = cards
         self.options = options
@@ -30,24 +35,18 @@ class BaseLearnViewViewModel: ObservableObject {
         self.animationController = 0
         self.rightCardsIndexList = []
         self.leftCardsIndexList = []
-        self.buttonDisabled = false
     }
     
     /// カードの音声読み上げ
-    func readOutTopCard(isButton: Bool = false, shouldReadOut: Bool) {
+    func readOutTopCard(withDelay: Bool) {
+
+        readOutButtonDisabled = true
         
-        guard (shouldReadOut || isButton) else { return }
+        avSpeaker.readOutText(text: topCard.word, withDelay: withDelay)
         
-        let (controllButton, withDelay) = (isButton, !isButton)
-        
-        guard topCardIndex < cards.count else { return }
-        let word = cards[topCardIndex].word
-        
-        avSpeaker.readOutText(
-            word,
-            controllButton: controllButton,
-            withDelay: withDelay
-        )
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+            self.readOutButtonDisabled = false
+        }
     }
     
     /// 表示中のカードを「完了 or 学習中」に振り分け

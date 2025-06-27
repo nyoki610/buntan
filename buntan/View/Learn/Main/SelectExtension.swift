@@ -4,7 +4,7 @@ extension SelectView {
     
     func onAppearAction() {
         /// 音声クラスを初期化 & 読み上げ
-        learnManager.avSpeaker = AVSpeaker($learnManager.buttonDisabled)
+        learnManager.avSpeaker = AVSpeaker()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             learnManager.readOutTopCard()
         }

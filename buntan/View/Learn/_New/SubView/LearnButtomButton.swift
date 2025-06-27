@@ -16,7 +16,7 @@ struct LearnBottomButtons: ResponsiveView {
         
         guard let typeViewModel = viewModel as? BaseTypeViewViewModel else { return nil }
         
-        return typeViewModel.showSpeaker
+        return !typeViewModel.hideSpealer
         
     }
     
@@ -31,7 +31,7 @@ struct LearnBottomButtons: ResponsiveView {
         switch viewModel {
         case is BookSwipeViewViewModel: learnMode = .swipe
         case is BookSelectViewViewModel: learnMode = .select
-        case is BookTypeViewViewModel: learnMode = .select
+        case is BookTypeViewViewModel: learnMode = .type
         case is CheckSelectViewViewModel: learnMode = nil
         default: return nil
         }
@@ -49,9 +49,11 @@ struct LearnBottomButtons: ResponsiveView {
                 
                 if viewModel.topCardIndex > 0 {
                     
-                    customButton(label: "ひとつ",
-                                 subLabel: "戻る",
-                                 systemName: "arrowshape.turn.up.left") {
+                    customButton(
+                        label: "ひとつ",
+                        subLabel: "戻る",
+                        systemName: "arrowshape.turn.up.left"
+                    ) {
                         
                         switch viewModel {
                         case let bookTypeViewModel as BaseTypeViewViewModel:
@@ -64,9 +66,11 @@ struct LearnBottomButtons: ResponsiveView {
                         }
                     }
                     
-                    customButton(label: "最初に",
-                                 subLabel: "戻る",
-                                 systemName: "arrowshape.turn.up.backward.2") {
+                    customButton(
+                        label: "最初に",
+                        subLabel: "戻る",
+                        systemName: "arrowshape.turn.up.backward.2"
+                    ) {
                         bookLearnViewModel.backToStart(alertSharedData: alertSharedData)
                     }
                                  .padding(.leading, 16)
@@ -76,24 +80,28 @@ struct LearnBottomButtons: ResponsiveView {
             Spacer()
             
             if showSpeaker == true {
-                customButton(label: "音声を",
-                             subLabel: "再生",
-                             systemName: "speaker.wave.2.fill",
-                             color: viewModel.buttonDisabled ? .gray : .black) {
-                    viewModel.readOutTopCard(isButton: true, shouldReadOut: shouldReadOut)
+                customButton(
+                    label: "音声を",
+                    subLabel: "再生",
+                    systemName: "speaker.wave.2.fill",
+                    color: viewModel.readOutButtonDisabled ? .gray : .black
+                ) {
+                    viewModel.readOutTopCard(withDelay: false)
                 }
+                .disabled(viewModel.readOutButtonDisabled)
             }
             
             if let selectViewModel = viewModel as? BaseSelectViewViewModel {
-                customButton(label: "パス",
-                             subLabel: "",
-                             systemName: "arrowshape.turn.up.right") {
-                    selectViewModel.passAction(
-                        shouldReadOut: shouldReadOut) {
-                            saveAction()
-                        }
+                customButton(
+                    label: "パス",
+                    subLabel: "",
+                    systemName: "arrowshape.turn.up.right"
+                ) {
+                    selectViewModel.passAction(shouldReadOut: shouldReadOut) {
+                        saveAction()
+                    }
                 }
-                             .padding(.leading, 16)
+                .padding(.leading, 16)
             }
             
             if let typeViewModel = viewModel as? BaseTypeViewViewModel {
