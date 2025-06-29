@@ -56,9 +56,7 @@ struct BookSelectView: SelectViewProtocol, BookLearnViewProtocol {
                 
                 Spacer()
                 
-                optionButtonListView(optionsCount: 4) {
-                    saveAction()
-                }
+                optionButtonListView
                 
                 Spacer()
                 

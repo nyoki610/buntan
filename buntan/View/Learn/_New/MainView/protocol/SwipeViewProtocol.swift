@@ -9,35 +9,39 @@ extension SwipeViewProtocol {
     
     @ViewBuilder
     internal func cardView(
-        isFlipped: Binding<Bool>,
-        isFlippedWithNoAnimation: Binding<Bool>
+        isWordCardFlipped: Binding<Bool>,
+        isWordCardFlippedWithNoAnimation: Binding<Bool>,
+        isSentenceCardFlipped: Binding<Bool>,
+        isSentenceCardFlippedWithNoAnimation: Binding<Bool>
     ) -> some View {
         
         if userDefaultHandler.showSentence {
             sentenceCardView(
-                isFlipped: isFlipped,
-                isFlippedWithNoAnimation: isFlippedWithNoAnimation
+                isSentenceCardFlipped: isSentenceCardFlipped,
+                isSentenceCardFlippedWithNoAnimation: isSentenceCardFlippedWithNoAnimation
             )
             
             Spacer()
         }
 
-        wordCardView
+        wordCardView(
+            isWordCardFlipped: isWordCardFlipped,
+            isWordCardFlippedWithNoAnimation: isWordCardFlippedWithNoAnimation
+        )
     }
     
     @ViewBuilder
     private func sentenceCardView(
-        isFlipped: Binding<Bool>,
-        isFlippedWithNoAnimation: Binding<Bool>
+        isSentenceCardFlipped: Binding<Bool>,
+        isSentenceCardFlippedWithNoAnimation: Binding<Bool>
     ) -> some View {
         
         VStack {
             
             FlipSentenceCardView(
                 card: viewModel.nonAnimationCard,
-                isSelectView: false,
-                isFlipped: isFlipped,
-                isFlippedWithNoAnimation: isFlippedWithNoAnimation
+                isSentenceCardFlipped: isSentenceCardFlipped,
+                isSentenceCardFlippedWithNoAnimation: isSentenceCardFlippedWithNoAnimation
             )
             .font(.system(size: 20))
             .opacity(viewModel.animationController == viewModel.cards.count ? 0.0 : 1.0)
@@ -56,7 +60,10 @@ extension SwipeViewProtocol {
     }
     
     @ViewBuilder
-    private var wordCardView: some View {
+    internal func wordCardView(
+        isWordCardFlipped: Binding<Bool>,
+        isWordCardFlippedWithNoAnimation: Binding<Bool>
+    ) -> some View {
         
         VStack {
             
@@ -103,7 +110,8 @@ extension SwipeViewProtocol {
 
                     FlipWordCardView(
                         card: viewModel.cards[index],
-                        showPhrase: false
+                        isWordCardFlipped: isWordCardFlipped,
+                        isWordCardFlippedWithNoAnimation: isWordCardFlippedWithNoAnimation
                     )
                     .offset(
                         x:  index == viewModel.topCardIndex ? viewModel.offset.width :
@@ -156,9 +164,10 @@ extension SwipeViewProtocol {
     
     private func drugGesture(index: Int) -> some Gesture {
         
-        viewModel.dragGesture {
+        func dragGestureAction() {
+            
             Task {
-                let shouldSave: Bool = await viewModel.onEndedAction(
+                let shouldSave = await viewModel.onEndedAction(
                     index: index,
                     animationDuration: responsiveSize(0.2, 0.4),
                     offsetAbs: responsiveSize(300, 600),
@@ -172,6 +181,10 @@ extension SwipeViewProtocol {
                     saveAction()
                 }
             }
+        }
+        
+        return viewModel.dragGesture {
+            dragGestureAction()
         }
     }
 }

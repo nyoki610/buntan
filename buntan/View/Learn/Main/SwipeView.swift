@@ -10,8 +10,8 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
     @EnvironmentObject var learnManager: LearnManager
 
     @State var offset = CGSize.zero
-    @State var isFlipped: Bool = false
-    @State var isFlippedWithNoAnimation: Bool = false
+    @State var isSentenceCardFlipped: Bool = false
+    @State var isSentenceCardFlippedWithNoAnimation: Bool = false
 
     private var animationController: Int { learnManager.animationController }
     private var nonAnimationCard: Card { animationController < cards.count ? cards[animationController] : EmptyModel.card }
@@ -68,9 +68,8 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
         VStack {
             
             FlipSentenceCardView(card: nonAnimationCard,
-                                 isSelectView: false,
-                                 isFlipped: $isFlipped,
-                                 isFlippedWithNoAnimation: $isFlippedWithNoAnimation)
+                                 isSentenceCardFlipped: $isSentenceCardFlipped,
+                                 isSentenceCardFlippedWithNoAnimation: $isSentenceCardFlippedWithNoAnimation)
             .font(.system(size: 20))
             .opacity(animationController == cards.count ? 0.0 : 1.0)
             
@@ -130,7 +129,8 @@ struct SwipeView: ResponsiveView, LearnViewProtocol {
                 ForEach(max(0, topCardIndex - 1)..<min(topCardIndex + 1, cards.count), id: \.self) { i in
 
                     FlipWordCardView(card: cards[i],
-                                     showPhrase: false)
+                                     isWordCardFlipped: .constant(false),
+                                     isWordCardFlippedWithNoAnimation: .constant(false))
                     .offset(x:  i == topCardIndex ? self.offset.width :
                                 rightCardsIndexList.contains(i) ? 600 :
                                 leftCardsIndexList.contains(i) ? -600 : 0)

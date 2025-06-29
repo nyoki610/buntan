@@ -53,16 +53,13 @@ struct SelectView: ResponsiveView, LearnViewProtocol {
                 
                 /// BookView かつ showSentence = true の場合
                 if learnManager.showSentence && isBookView {
-                    FlipSentenceCardView(card: topCard,
-                                         isSelectView: true)
+                    FlipSentenceCardView(card: topCard)
                     
                 /// 以下のいずれかの場合
                 ///     - BookView かつ showSentence = false
                 ///     - CheckView
                 } else {
-                    FlipWordCardView(card: topCard,
-                                     showPhrase: true)
-                    .disabled(true)
+                    FlipWordCardView(card: topCard)
                 }
                 
                 Spacer()

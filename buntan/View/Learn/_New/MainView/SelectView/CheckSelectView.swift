@@ -57,9 +57,7 @@ struct CheckSelectView: SelectViewProtocol, CheckLearnViewProtocol {
                 
                 Spacer()
                 
-                optionButtonListView(optionsCount: 4) {
-                    saveAction()
-                }
+                optionButtonListView
                 
                 Spacer()
                 

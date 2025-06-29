@@ -12,21 +12,13 @@ extension SelectViewProtocol {
         
         /// BookView かつ showSentence = true の場合
         if viewType == .book && userDefaultHandler.showSentence {
-            FlipSentenceCardView(
-                card: viewModel.topCard,
-                isSelectView: true
-            )
-            .disabled(true)
-            
+            FlipSentenceCardView(card: viewModel.topCard)
+
         /// 以下のいずれかの場合
         ///     - BookView かつ showSentence = false
         ///     - CheckView
         } else {
-            FlipWordCardView(
-                card: viewModel.topCard,
-                showPhrase: true
-            )
-            .disabled(true)
+            FlipWordCardView(card: viewModel.topCard)
         }
     }
 }
@@ -35,12 +27,16 @@ extension SelectViewProtocol {
 extension SelectViewProtocol {
     
     @ViewBuilder
-    internal func optionButtonListView(optionsCount: Int, saveAction: @escaping () -> Void) -> some View {
+    internal var optionButtonListView: some View {
         
-        ForEach(0...optionsCount, id: \.self) { i in
-            optionButtonView(index: i)
-                .disabled(!viewModel.isAnswering)
-                .padding(.bottom, 10)
+        if let optionsCount = viewModel.options.first?.count {
+            ForEach(0..<optionsCount, id: \.self) { i in
+                optionButtonView(index: i)
+                    .disabled(!viewModel.isAnswering)
+                    .padding(.bottom, 10)
+            }
+        } else {
+            EmptyView()
         }
     }
 

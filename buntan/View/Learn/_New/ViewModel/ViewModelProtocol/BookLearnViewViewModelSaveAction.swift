@@ -10,10 +10,13 @@ extension BookLearnViewViewModelProtocol {
         learnedCardsCount: Int
     ) {
 
+        /// ↓この処理は必要？ @2025/06/29
         /// Keyboard を非表示 (for TypeView())
-//        if let typLearnManager = self as? BookTypeViewViewModel {
-//            typLearnManager.isKeyboardActive = false
-//        }
+        if let typLearnManager = self as? BookTypeViewViewModel {
+            DispatchQueue.main.async {
+                typLearnManager.isKeyboardActive = false
+            }
+        }
         
         /// loading を開始
         loadingSharedData.startLoading(.save)
@@ -31,7 +34,10 @@ extension BookLearnViewViewModelProtocol {
                     userInput: bookUserInput,
                     pathHandler: pathHandler,
                     learnedCardCount: learnedCardsCount
-                ) else { return }
+                ) else {
+                    /// エラーハンドリングが必要？
+                    return
+                }
             }
         }
     }
@@ -67,29 +73,17 @@ extension BookLearnViewViewModelProtocol {
         pathHandler: BookViewPathHandler,
         learnedCardCount: Int
     ) -> Bool {
-
-        guard let selectedGrade = userInput.selectedGrade,
-              let selectedBookCategory = userInput.selectedBookCategory,
-              let selectedBookConfig = userInput.selectedBookConfig,
-              let selectedSectionTitle = userInput.selectedSectionTitle else { return false }
         
-        guard let cards: [Card] = SheetRealmAPI.getSectionCards(
-            eikenGrade: selectedGrade,
-            bookCategory: selectedBookCategory,
-            bookConfig: selectedBookConfig,
-            sectionTitle: selectedSectionTitle
-        ) else { return false }
-        
-        let cardsContainer = CardsContainer(cards: cards, bookCategory: selectedBookCategory)
+        guard let cardsContainer = CardsContainer(userInput: userInput) else { return false }
         
         /// 「学習を最後まで進めてから save しようとしているか」を判断
-        let isFinished = (learnedCardsCount == self.cards.count)
+        let isFinished = (learnedCardsCount == cards.count)
         
-        if !isFinished {
-            pathHandler.backToPreviousScreen(count: 2)
-            pathHandler.transitionScreen(to: .learnSelect(cardsContainer))
-        } else {
+        if isFinished {
             pathHandler.transitionScreen(to: .learnResult(cardsContainer, learnedCardCount))
+        } else {
+            pathHandler.backToDesignatedScreen(to: .sectionList(EmptyModel.book))
+            pathHandler.transitionScreen(to: .learnSelect(cardsContainer))
         }
         
         return true

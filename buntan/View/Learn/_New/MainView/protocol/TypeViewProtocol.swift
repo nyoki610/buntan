@@ -88,10 +88,14 @@ extension TypeViewProtocol {
             .autocorrectionDisabled()
             .focused(isKeyboardActive )
             .onSubmit {
-                viewModel.submitAction(shouldReadOut: userDefaultHandler.shouldReadOut)
-                
-                if !viewModel.nextCardExist {
-                    saveAction()
+                Task {
+                    let shouldSave = await viewModel.submitAction(shouldReadOut: userDefaultHandler.shouldReadOut)
+                    
+                    /// 最後の単語かつ正解している場合
+                    /// （不正解の場合は完了ボタンから遷移）
+                    if shouldSave && viewModel.isCorrect {
+                        saveAction()
+                    }
                 }
             }
     }

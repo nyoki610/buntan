@@ -21,8 +21,11 @@ class BaseSelectViewViewModel: BaseLearnViewViewModel {
     }
 
     func onAppearAction(shouldReadOut: Bool) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            self.readOutTopCard(withDelay: true)
+        
+        if shouldReadOut {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                self.readOutTopCard(withDelay: true)
+            }
         }
     }
     
@@ -44,14 +47,12 @@ class BaseSelectViewViewModel: BaseLearnViewViewModel {
     ) {
         
         Task {
-            await chooseOption(
+            let shouldSave = await chooseOption(
                 selectedOptionIndex: selectedOptionIndex,
                 shouldReadOut: shouldReadOut
             )
-            if !nextCardExist {
-                /// animationの完了を待つ
-                try? await Task.sleep(nanoseconds: isCorrect ? 0_300_000_000 : 1_000_000_000)
-                
+
+            if shouldSave {
                 saveAction()
             }
         }
@@ -61,7 +62,8 @@ class BaseSelectViewViewModel: BaseLearnViewViewModel {
     func chooseOption(
         selectedOptionIndex: Int,
         shouldReadOut: Bool
-    ) async {
+    /// shouldSave: Bool
+    ) async -> Bool {
 
         selectedIndex = selectedOptionIndex
         
@@ -72,11 +74,11 @@ class BaseSelectViewViewModel: BaseLearnViewViewModel {
         try? await Task.sleep(nanoseconds: isCorrect ? 0_300_000_000 : 1_000_000_000)
         isAnswering = true
         
-        addIndexToList(isCorrect)
+        addIndexToList(isCorrect: isCorrect)
         
         hideSettings()
 
-        guard nextCardExist else { return }
+        guard nextCardExist else { return true }
         
         await MainActor.run {
             /// 状態更新を少し遅延させることで、ナビゲーション更新の競合を避ける
@@ -86,5 +88,7 @@ class BaseSelectViewViewModel: BaseLearnViewViewModel {
             topCardIndex += 1
             readOutTopCard(withDelay: true)
         }
+        
+        return false
     }
 }

@@ -4,8 +4,10 @@ import SwiftUI
 class BaseSwipeViewViewModel: BaseLearnViewViewModel {
 
     @Published var offset = CGSize.zero
-    @Published var isFlipped: Bool = false
-    @Published var isFlippedWithNoAnimation: Bool = false
+    @Published var isWordCardFlipped: Bool = false
+    @Published var isWordCardFlippedWithNoAnimation: Bool = false
+    @Published var isSentenceCardFlipped: Bool = false
+    @Published var isSentenceCardFlippedWithNoAnimation: Bool = false
 
     var nonAnimationCard: Card { animationController < cards.count ? cards[animationController] : EmptyModel.card }
 }
@@ -13,12 +15,11 @@ class BaseSwipeViewViewModel: BaseLearnViewViewModel {
 extension BaseSwipeViewViewModel {
     
     func onAppearAction(shouldReadOut: Bool) {
-
-        /// 単語カードの位置を中央へ
-        self.offset = .zero
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            self.readOutTopCard(withDelay: true)
+        if shouldReadOut {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                self.readOutTopCard(withDelay: true)
+            }
         }
     }
     
@@ -62,8 +63,10 @@ extension BaseSwipeViewViewModel {
             try? await Task.sleep(nanoseconds: 0_200_000_000)
             hideSettings()
             await MainActor.run {
-                self.isFlipped = false
-                self.isFlippedWithNoAnimation = false
+                self.isWordCardFlipped = false
+                self.isWordCardFlippedWithNoAnimation = false
+                self.isSentenceCardFlipped = false
+                self.isSentenceCardFlippedWithNoAnimation = false
                 self.offset.width = 0
                 self.topCardIndex += 1
                 self.animationController += 1
@@ -73,7 +76,8 @@ extension BaseSwipeViewViewModel {
         
         /// drag 距離が 100 より大きい場合は次の単語へ
         if abs(self.offset.width) > 100 {
-            addIndexToList(self.offset.width > 0)
+            let isCorrect = self.offset.width > 0
+            addIndexToList(isCorrect: isCorrect)
             await animateCardFlip(to: self.offset.width > 0 ? offsetAbs : -offsetAbs)
             
             guard nextCardExist else { return true }

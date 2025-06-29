@@ -10,7 +10,7 @@ extension SwipeView {
         /// 音声クラスを初期化 & 読み上げ
         learnManager.avSpeaker = AVSpeaker()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            learnManager.readOutTopCard()
+//            learnManager.readOutTopCard()
         }
     }
     
@@ -45,12 +45,12 @@ extension SwipeView {
         func goNext() async {
             try? await Task.sleep(nanoseconds: 0_200_000_000)
             learnManager.hideSettings()
-            self.isFlipped = false
-            self.isFlippedWithNoAnimation = false
+            self.isSentenceCardFlipped = false
+            self.isSentenceCardFlippedWithNoAnimation = false
             self.offset.width = 0
             learnManager.topCardIndex += 1
             learnManager.animationController += 1
-            learnManager.readOutTopCard()
+//            learnManager.readOutTopCard()
         }
         
         /// drag 距離が 100 より大きい場合は次の単語へ

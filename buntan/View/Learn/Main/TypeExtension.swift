@@ -14,7 +14,7 @@ extension TypeView {
         
         isAnswering = false
         
-        learnManager.readOutTopCard()
+//        learnManager.readOutTopCard()
         
         let userAnswer = userInputAnswer.filter { !$0.isWhitespace }
         
@@ -57,7 +57,7 @@ extension TypeView {
         isAnswering = false
         isCorrect = false
         userInputAnswer = ""
-        learnManager.readOutTopCard()
+//        learnManager.readOutTopCard()
     }
     
     func nextButtonAction() {

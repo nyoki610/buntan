@@ -2,25 +2,40 @@ import SwiftUI
 
 struct FlipSentenceCardView: ResponsiveView {
     
+    enum ViewType {
+        case swipe, select
+    }
+    
     @Environment(\.deviceType) var deviceType: DeviceType
     
+    let viewType: ViewType
     let card: Card
-    let isSelectView: Bool
-    @Binding var isFlipped: Bool
-    @Binding var isFlippedWithNoAnimation: Bool
+    @Binding var isSentenceCardFlipped: Bool
+    @Binding var isSentenceCardFlippedWithNoAnimation: Bool
     
+    var isSelectView: Bool { viewType == .select }
+    
+    
+    /// init for SwipeView
     init(
         card: Card,
-        isSelectView: Bool,
-        isFlipped: Binding<Bool> = .constant(false),
-        isFlippedWithNoAnimation: Binding<Bool> = .constant(false)
+        isSentenceCardFlipped: Binding<Bool>,
+        isSentenceCardFlippedWithNoAnimation: Binding<Bool>
     ) {
+        self.viewType = .swipe
         self.card = card
-        self.isSelectView = isSelectView
-        self._isFlipped = isFlipped
-        self._isFlippedWithNoAnimation = isFlippedWithNoAnimation
+        self._isSentenceCardFlipped = isSentenceCardFlipped
+        self._isSentenceCardFlippedWithNoAnimation = isSentenceCardFlippedWithNoAnimation
     }
-
+    
+    /// init for SelectView
+    init(card: Card) {
+        self.viewType = .select
+        self.card = card
+        self._isSentenceCardFlipped = .constant(false)
+        self._isSentenceCardFlippedWithNoAnimation = .constant(false)
+    }
+    
     var body: some View {
         
         HStack {
@@ -31,7 +46,7 @@ struct FlipSentenceCardView: ResponsiveView {
                 
                 Spacer()
 
-                if !isFlippedWithNoAnimation {
+                if !isSentenceCardFlippedWithNoAnimation {
                     
                     if card.isSentenceExist {
                         
@@ -93,16 +108,16 @@ struct FlipSentenceCardView: ResponsiveView {
         .cornerRadius(5)
         .shadow(radius: 5)
         .rotation3DEffect(
-            .degrees(isFlipped ? 180 : 0),
+            .degrees(isSentenceCardFlipped ? 180 : 0),
             axis: (x: 1, y: 0, z: 0)
         )
         .onTapGesture {
             // 例文が存在しない場合でもタップで反転できるようにする
             withAnimation(.easeInOut(duration: 0.4)) {
-                isFlipped.toggle()
+                isSentenceCardFlipped.toggle()
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                isFlippedWithNoAnimation.toggle()
+                isSentenceCardFlippedWithNoAnimation.toggle()
             }
         }
     }

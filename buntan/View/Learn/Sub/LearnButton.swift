@@ -56,7 +56,7 @@ struct LearnButton: ResponsiveView {
                          subLabel: "再生",
                          systemName: "speaker.wave.2.fill",
                          color: learnManager.buttonDisabled ? .gray : .black) {
-                learnManager.readOutTopCard(isButton: true)
+//                learnManager.readOutTopCard(isButton: true)
             }
             .disabled(learnManager.buttonDisabled || hideSpeaker)
             .opacity(hideSpeaker ? 0.0 : 1.0)

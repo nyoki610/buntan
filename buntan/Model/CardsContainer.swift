@@ -28,6 +28,33 @@ struct CardsContainer: Hashable {
             .sorted { $0.word < $1.word }
     }
     
+    /// userInputから対応するCardContainerをinit
+    init?(userInput: BookUserInput) {
+        guard let selectedGrade = userInput.selectedGrade,
+              let selectedBookCategory = userInput.selectedBookCategory,
+              let selectedBookConfig = userInput.selectedBookConfig,
+              let selectedSectionTitle = userInput.selectedSectionTitle else { return nil }
+        
+        guard let cards: [Card] = SheetRealmAPI.getSectionCards(
+            eikenGrade: selectedGrade,
+            bookCategory: selectedBookCategory,
+            bookConfig: selectedBookConfig,
+            sectionTitle: selectedSectionTitle
+        ) else { return nil }
+        
+        self.allCards = cards
+            .sorted { $0.word < $1.word }
+        
+        self.notLearnedCards = cards
+            .filter { $0.status(selectedBookCategory) == .notLearned}
+            .sorted { $0.word < $1.word }
+        
+        self.learningCards = cards
+            .filter { $0.status(selectedBookCategory) == .learning }
+            .sorted { $0.word < $1.word }
+    }
+    
+    
     func getCardsByLearnRange(learnRange: LearnRange) -> [Card] {
         switch learnRange {
         case .all: return allCards

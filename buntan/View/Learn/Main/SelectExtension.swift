@@ -6,7 +6,7 @@ extension SelectView {
         /// 音声クラスを初期化 & 読み上げ
         learnManager.avSpeaker = AVSpeaker()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            learnManager.readOutTopCard()
+//            learnManager.readOutTopCard()
         }
     }
     
@@ -32,7 +32,7 @@ extension SelectView {
             /// Update NavigationRequestObserver tried to update multiple times per frame.
             /// Update NavigationAuthority bound path tried to update multiple times per frame. 
                 learnManager.topCardIndex += 1
-                learnManager.readOutTopCard()
+//                learnManager.readOutTopCard()
             }
         } else {
             /// animationの完了を待つ

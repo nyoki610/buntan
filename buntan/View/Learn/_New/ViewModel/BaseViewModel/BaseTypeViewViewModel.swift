@@ -27,62 +27,66 @@ extension BaseTypeViewViewModel {
 
 extension BaseTypeViewViewModel {
     
-    func submitAction(shouldReadOut: Bool) -> Void {
+    /// return shouldSave: Bool
+    internal func submitAction(shouldReadOut: Bool) async -> Bool {
         
         isAnswering = false
         
         if shouldReadOut {
-            readOutTopCard(withDelay: false)
+            readOutTopCard(withDelay: true)
         }
         
-        let userAnswer = userInputAnswer.filter { !$0.isWhitespace }
+        let userAnswer = userInputAnswer.trimmingCharacters(in: .whitespacesAndNewlines)
         
         /// 正解時の処理
         if userAnswer == topCard.answer {
-            submitCorrectAnswerAction()
+            let shouldSave = await submitCorrectAnswerAction()
+            return shouldSave
             
-            /// 不正解時の処理
+        /// 不正解時の処理
         } else {
             userInputAnswer = ""
             isCorrect = false
+            return false
         }
     }
     
-    private func submitCorrectAnswerAction() -> Void {
-        
-        addIndexToList(true)
+    
+    /// return shouldSave: Bool
+    private func submitCorrectAnswerAction() async -> Bool {
+        addIndexToList(isCorrect: true)
         isCorrect = true
-        
-        guard nextCardExist else { return }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            
-            self.hideSettings()
-            self.topCardIndex += 1
-            self.userInputAnswer = ""
-            self.isAnswering = true
-            
-            self.isKeyboardActive = true
-        }
+
+        guard nextCardExist else { return true }
+
+        try? await Task.sleep(nanoseconds: 1_000_000_000)
+
+        self.hideSettings()
+        self.topCardIndex += 1
+        self.userInputAnswer = ""
+        self.isAnswering = true
+        self.isKeyboardActive = true
+
+        return false
     }
 }
 
 extension BaseTypeViewViewModel {
     
-    func passButtonAction(shouldReadOut: Bool) {
+    internal func passButtonAction(shouldReadOut: Bool) {
         
         isAnswering = false
         isCorrect = false
         userInputAnswer = ""
         
         if shouldReadOut {
-            readOutTopCard(withDelay: false)
+            readOutTopCard(withDelay: true)
         }
     }
     
-    func nextButtonAction() {
+    internal func nextButtonAction() {
         hideSettings()
-        addIndexToList(false)
+        addIndexToList(isCorrect: false)
         isAnswering = true
         
         ///  期待する通りに動作していない？ @2025/06/28
@@ -93,7 +97,7 @@ extension BaseTypeViewViewModel {
         isCorrect = true
     }
     
-    func typeViewBackButtonAction(backButtonAction: @escaping (() -> Void)) -> Void {
+    internal func typeViewBackButtonAction(backButtonAction: @escaping (() -> Void)) -> Void {
         
         userInputAnswer = ""
         
@@ -110,9 +114,9 @@ extension BaseTypeViewViewModel {
         isKeyboardActive = true
     }
     
-    func completeButtonAction(saveAction: @escaping () -> Void) -> Void {
+    internal func completeButtonAction(saveAction: @escaping () -> Void) -> Void {
         
-        addIndexToList(false)
+        addIndexToList(isCorrect: false)
         isAnswering = true
         saveAction()
     }

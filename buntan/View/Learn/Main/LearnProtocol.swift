@@ -88,7 +88,7 @@ extension LearnViewProtocol {
                     sectionTitle: selectedSectionTitle
                 ) else { return }
 
-                let cardsContainer = CardsContainer(cards: cards, bookCategory: selectedBookCategory)
+//                let cardsContainer = CardsContainer(cards: cards, bookCategory: selectedBookCategory)
 
                 /// loading を終了して画面遷移
                 loadingSharedData.finishLoading {

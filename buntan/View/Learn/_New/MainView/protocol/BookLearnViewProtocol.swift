@@ -46,13 +46,11 @@ extension BookLearnViewProtocol {
         
         /// １単語も学習していない場合は save せずに exit
         guard viewModel.learnedCardsCount != 0 else {
-            pathHandler.backToPreviousScreen(count: 1)
+            guard let cardsContainer = CardsContainer(userInput: userInput) else { return }
+            pathHandler.backToDesignatedScreen(to: .sectionList(EmptyModel.book))
+            pathHandler.transitionScreen(to: .learnSelect(cardsContainer))
             return
         }
         saveAction()
-    }
-    
-    func shuffleAction() {
-        
     }
 }

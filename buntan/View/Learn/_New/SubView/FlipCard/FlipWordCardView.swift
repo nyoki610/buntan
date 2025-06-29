@@ -2,13 +2,37 @@ import SwiftUI
 
 struct FlipWordCardView: ResponsiveView {
     
+    enum ViewType {
+        case swipe, select
+    }
+    
     @Environment(\.deviceType) var deviceType: DeviceType
     
-    @State private var isFlipped = false
-    @State private var isFlippedWithNoAnimation = false
-
+    let viewType: ViewType
     let card: Card
-    let showPhrase: Bool
+    var showPhrase: Bool { viewType == .select }
+    @Binding var isWordCardFlipped: Bool
+    @Binding var isWordCardFlippedWithNoAnimation: Bool
+    
+    /// init for SwipeView
+    init(
+        card: Card,
+        isWordCardFlipped: Binding<Bool>,
+        isWordCardFlippedWithNoAnimation: Binding<Bool>
+    ) {
+        self.viewType = .swipe
+        self.card = card
+        self._isWordCardFlipped = isWordCardFlipped
+        self._isWordCardFlippedWithNoAnimation = isWordCardFlippedWithNoAnimation
+    }
+    
+    /// init for SelectView
+    init(card: Card) {
+        self.viewType = .select
+        self.card = card
+        self._isWordCardFlipped = .constant(false)
+        self._isWordCardFlippedWithNoAnimation = .constant(false)
+    }
 
     var body: some View {
         
@@ -19,7 +43,9 @@ struct FlipWordCardView: ResponsiveView {
             VStack {
                 
                 Spacer()
-                if !isFlippedWithNoAnimation {
+                
+                /// 表
+                if !isWordCardFlippedWithNoAnimation {
                     VStack {
                      
                         Text(card.word)
@@ -34,7 +60,8 @@ struct FlipWordCardView: ResponsiveView {
                                 .lineLimit(1)
                         }
                     }
-                    
+                
+                /// 裏
                 } else {
                     
                     VStack {
@@ -68,15 +95,15 @@ struct FlipWordCardView: ResponsiveView {
         .cornerRadius(20)
         .shadow(radius: 5)
         .rotation3DEffect(
-            .degrees(isFlipped ? -180 : 0),
+            .degrees(isWordCardFlipped ? -180 : 0),
             axis: (x: 0, y: 1, z: 0)
         )
         .onTapGesture {
             withAnimation(.easeInOut(duration: 0.4)) {
-                isFlipped.toggle()
+                isWordCardFlipped.toggle()
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                isFlippedWithNoAnimation.toggle()
+                isWordCardFlippedWithNoAnimation.toggle()
             }
         }
     }

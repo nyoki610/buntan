@@ -50,8 +50,8 @@ class LearnManager: ObservableObject {
     }
     
     /// カードの音声読み上げ
-    func readOutTopCard(isButton: Bool = false) {
-        
+//    func readOutTopCard(isButton: Bool = false) {
+//        
 //        guard (shouldReadOut || isButton) else { return }
 //        
 //        let (controllButton, withDelay) = (isButton, !isButton)
@@ -62,7 +62,7 @@ class LearnManager: ObservableObject {
 //        avSpeaker?.readOutText(word,
 //                               controllButton: controllButton,
 //                               withDelay: withDelay)
-    }
+//    }
     
     /// 一つ前のカードに戻る処理
     func backButtonAction() -> Void {

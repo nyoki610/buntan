@@ -40,7 +40,9 @@ class BaseLearnViewViewModel: ObservableObject {
     /// カードの音声読み上げ
     func readOutTopCard(withDelay: Bool) {
 
-        readOutButtonDisabled = true
+        DispatchQueue.main.async {
+            self.readOutButtonDisabled = true
+        }
         
         avSpeaker.readOutText(text: topCard.word, withDelay: withDelay)
         
@@ -50,7 +52,7 @@ class BaseLearnViewViewModel: ObservableObject {
     }
     
     /// 表示中のカードを「完了 or 学習中」に振り分け
-    func addIndexToList(_ isCorrect: Bool) -> Void {
+    func addIndexToList(isCorrect: Bool) -> Void {
         DispatchQueue.main.async {
             withAnimation(.easeOut(duration: 0.6)) {
                 if isCorrect {

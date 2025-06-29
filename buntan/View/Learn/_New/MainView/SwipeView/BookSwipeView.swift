@@ -4,7 +4,6 @@ struct BookSwipeView: BookLearnViewProtocol, SwipeViewProtocol {
     typealias ViewModelType = BookSwipeViewViewModel
     typealias UserInputType = BookUserInput
     
-    
     @Environment(\.deviceType) var deviceType: DeviceType
 
     @EnvironmentObject var loadingSharedData: LoadingSharedData
@@ -53,8 +52,10 @@ struct BookSwipeView: BookLearnViewProtocol, SwipeViewProtocol {
                 Spacer()
 
                 cardView(
-                    isFlipped: $viewModel.isFlipped,
-                    isFlippedWithNoAnimation: $viewModel.isFlippedWithNoAnimation
+                    isWordCardFlipped: $viewModel.isWordCardFlipped,
+                    isWordCardFlippedWithNoAnimation: $viewModel.isWordCardFlippedWithNoAnimation,
+                    isSentenceCardFlipped: $viewModel.isSentenceCardFlipped,
+                    isSentenceCardFlippedWithNoAnimation: $viewModel.isSentenceCardFlippedWithNoAnimation
                 )
 
                 Spacer()

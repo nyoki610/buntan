@@ -2,17 +2,24 @@ import SwiftUI
 
 struct LearnBottomButtons: ResponsiveView {
     
+    enum ViewType {
+        case bookSwipe
+        case bookSelect
+        case bookType
+        case checkSelect
+    }
+    
     @Environment(\.deviceType) var deviceType: DeviceType
 
     @EnvironmentObject var alertSharedData: AlertSharedData
     
     @ObservedObject var viewModel: BaseLearnViewViewModel
     
-    private let learnMode: LearnMode?
+    private let learnMode: ViewType
     
     private var showSpeaker: Bool? {
         
-        if learnMode != .type { return true }
+        if learnMode != .bookType { return true }
         
         guard let typeViewModel = viewModel as? BaseTypeViewViewModel else { return nil }
         
@@ -26,13 +33,13 @@ struct LearnBottomButtons: ResponsiveView {
     
     init?(viewModel: BaseLearnViewViewModel, shouldReadOut: Bool, saveAction: @escaping () -> Void) {
         
-        let learnMode: LearnMode?
+        let learnMode: ViewType
         
         switch viewModel {
-        case is BookSwipeViewViewModel: learnMode = .swipe
-        case is BookSelectViewViewModel: learnMode = .select
-        case is BookTypeViewViewModel: learnMode = .type
-        case is CheckSelectViewViewModel: learnMode = nil
+        case is BookSwipeViewViewModel: learnMode = .bookSwipe
+        case is BookSelectViewViewModel: learnMode = .bookSelect
+        case is BookTypeViewViewModel: learnMode = .bookType
+        case is CheckSelectViewViewModel: learnMode = .checkSelect
         default: return nil
         }
         self.viewModel = viewModel
@@ -105,23 +112,33 @@ struct LearnBottomButtons: ResponsiveView {
             }
             
             if let typeViewModel = viewModel as? BaseTypeViewViewModel {
-                customButton(
-                    label: typeViewModel.isAnswering ? "パス" : (typeViewModel.nextCardExist ? "次へ" : "完了"),
-                    subLabel: "",
-                    systemName: typeViewModel.isAnswering ? "arrowshape.turn.up.right" : "arrowshape.turn.up.right.fill",
-                    color: typeViewModel.isAnswering ? .black : RoyalBlue.defaultRoyal
-                ) {
-                    typeViewModel.isAnswering ?
-                    typeViewModel.passButtonAction(shouldReadOut: shouldReadOut) :
-                    
-                    typeViewModel.nextCardExist ?
-                    typeViewModel.nextButtonAction() :
-                    
-                    typeViewModel.completeButtonAction() {
-                        saveAction()
+                
+                if typeViewModel.isAnswering {
+                    customButton(
+                        label: "パス",
+                        subLabel: "",
+                        systemName: "arrowshape.turn.up.right",
+                        color: .black
+                    ) {
+                        typeViewModel.passButtonAction(shouldReadOut: shouldReadOut)
                     }
+                    .padding(.leading, 16)
+                    
+                } else {
+                    customButton(
+                        label: typeViewModel.nextCardExist ? "次へ" : "完了",
+                        subLabel: "",
+                        systemName: "arrowshape.turn.up.right.fill",
+                        color: RoyalBlue.defaultRoyal
+                    ) {
+                        typeViewModel.nextCardExist ?
+                        typeViewModel.nextButtonAction() :
+                        typeViewModel.completeButtonAction() {
+                            saveAction()
+                        }
+                    }
+                    .padding(.leading, 16)
                 }
-                .padding(.leading, 16)
             }
         }
         .padding(.horizontal, responsiveSize(50, 140))
