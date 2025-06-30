@@ -33,7 +33,7 @@ struct BookView: ResponsiveView {
                     Spacer()
                     
                     eachGradeView(grade: .first)
-
+                    
                     Spacer()
                     
                     eachGradeView(grade: .preFirst)
@@ -41,14 +41,14 @@ struct BookView: ResponsiveView {
                     Spacer()
                     
                     ///
-                    VStack {
-                        if let allCardsCount = allCardsCount {
-                            Text("allCardsCount: \(allCardsCount)")
-                        }
-                        if let allInfomationsCount = allInfomationsCount {
-                            Text("allInfomationsCount: \(allInfomationsCount)")
-                        }
-                    }
+//                    VStack {
+//                        if let allCardsCount = allCardsCount {
+//                            Text("allCardsCount: \(allCardsCount)")
+//                        }
+//                        if let allInfomationsCount = allInfomationsCount {
+//                            Text("allInfomationsCount: \(allInfomationsCount)")
+//                        }
+//                    }
                     ///
                     
                     Spacer()
