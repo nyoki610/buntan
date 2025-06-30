@@ -21,17 +21,6 @@ struct BookView: ResponsiveView {
         NavigationStack(path: $pathHandler.path) {
         
             ZStack {
-
-                ///
-                VStack {
-                    if let allCardsCount = allCardsCount {
-                        Text("allCardsCount: \(allCardsCount)")
-                    }
-                    if let allInfomationsCount = allInfomationsCount {
-                        Text("allInfomationsCount: \(allInfomationsCount)")
-                    }
-                }
-                ///
             
                 VStack(spacing: 0) {
                     
@@ -50,6 +39,18 @@ struct BookView: ResponsiveView {
                     eachGradeView(grade: .preFirst)
 
                     Spacer()
+                    
+                    ///
+                    VStack {
+                        if let allCardsCount = allCardsCount {
+                            Text("allCardsCount: \(allCardsCount)")
+                        }
+                        if let allInfomationsCount = allInfomationsCount {
+                            Text("allInfomationsCount: \(allInfomationsCount)")
+                        }
+                    }
+                    ///
+                    
                     Spacer()
                     Spacer()
                 }

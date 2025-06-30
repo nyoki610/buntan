@@ -6,7 +6,11 @@ struct LearnRecord: Identifiable, Hashable {
     let date: Date
     var learnedCardCount: Int
     
-    init(_ id: String, _ date: Date, _ learnedCardCount: Int) {
+    init(
+        id: String,
+        date: Date,
+        learnedCardCount: Int
+    ) {
         self.id = id
         self.date = date
         self.learnedCardCount = learnedCardCount

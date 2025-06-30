@@ -62,7 +62,7 @@ struct CheckSelectView: SelectViewProtocol, CheckLearnViewProtocol {
                 Spacer()
                 
                 learnBottomButtons
-                .disabled(!viewModel.isAnswering)
+                    .disabled(!viewModel.isAnswering)
             }
             .background(CustomColor.background)
             .navigationBarBackButtonHidden(true)

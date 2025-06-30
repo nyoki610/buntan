@@ -70,15 +70,19 @@ extension LearnViewProtocol {
                       let selectedSectionTitle = bookUserInput.selectedSectionTitle else { return }
                 
                 /// 学習内容を realm に保存
-                guard SheetRealmAPI.updateCardsStatus(
-                    learnManager: learnManager,
-                    eikenGrade: selectedGrade,
-                    bookCategory: selectedBookCategory
-                ) else { return }
+//                guard SheetRealmAPI.updateCardsStatus(
+//                    learnManager: learnManager,
+//                    eikenGrade: selectedGrade,
+//                    bookCategory: selectedBookCategory
+//                ) else { return }
                 
                 /// 学習量の記録を保存
-                let learnRecord = LearnRecord(UUID().uuidString, Date(),
-                                              cardsCount)
+                let learnRecord = LearnRecord(
+                    id: UUID().uuidString,
+                    date: Date(),
+                    learnedCardCount: cardsCount
+                )
+                
                 let _ = LearnRecordRealmAPI.uploadLearnRecord(learnRecord: learnRecord)
                 
                 guard let cards: [Card] = SheetRealmAPI.getSectionCards(
@@ -121,11 +125,12 @@ extension LearnViewProtocol {
             loadingSharedData.startLoading(.save)
             
             /// realm にテストの結果を保存
-            let checkRecord = CheckRecord(UUID().uuidString,
-                                          checkUserInput.selectedGrade,
-                                          Date(),
-                                          learnManager.rightCardsIndexList.count,
-                                          learnManager.estimatedScore)
+            let checkRecord = CheckRecord(
+                id: UUID().uuidString,
+                grade: checkUserInput.selectedGrade,
+                date: Date(),
+                correctCount: learnManager.rightCardsIndexList.count,
+                estimatedCount: learnManager.estimatedScore)
 
             let _ = CheckRecordRealmAPI.uploadCheckRecord(checkRecord: checkRecord)
             

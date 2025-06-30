@@ -38,11 +38,11 @@ extension LearnMode {
     }
     
     func checkViewName(cards: [Card], options: [[Option]]) -> CheckViewName {
-        
-        switch self {
-        case .swipe: return .checkSwipe(cards, options)
-        case .select: return .checkSelect(cards, options)
-        case .type: return .checkType(cards, options)
-        }
+        return .checkSelect(cards, options)
+//        switch self {
+//        case .swipe: return .checkSwipe(cards, options)
+//        case .select: return .checkSelect(cards, options)
+//        case .type: return .checkType(cards, options)
+//        }
     }
 }

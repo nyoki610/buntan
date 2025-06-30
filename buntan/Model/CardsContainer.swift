@@ -19,13 +19,11 @@ struct CardsContainer: Hashable {
         self.allCards = cards
             .sorted { $0.word < $1.word }
         
-        self.notLearnedCards = cards
+        self.notLearnedCards = allCards
             .filter { $0.status(bookCategory) == .notLearned}
-            .sorted { $0.word < $1.word }
         
-        self.learningCards = cards
+        self.learningCards = allCards
             .filter { $0.status(bookCategory) == .learning }
-            .sorted { $0.word < $1.word }
     }
     
     /// userInputから対応するCardContainerをinit
@@ -45,15 +43,12 @@ struct CardsContainer: Hashable {
         self.allCards = cards
             .sorted { $0.word < $1.word }
         
-        self.notLearnedCards = cards
+        self.notLearnedCards = allCards
             .filter { $0.status(selectedBookCategory) == .notLearned}
-            .sorted { $0.word < $1.word }
         
-        self.learningCards = cards
+        self.learningCards = allCards
             .filter { $0.status(selectedBookCategory) == .learning }
-            .sorted { $0.word < $1.word }
     }
-    
     
     func getCardsByLearnRange(learnRange: LearnRange) -> [Card] {
         switch learnRange {

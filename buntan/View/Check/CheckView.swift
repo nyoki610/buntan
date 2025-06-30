@@ -53,18 +53,11 @@ struct CheckView: ResponsiveView {
         guard let options = SheetRealmAPI.getOptions(
             eikenGrade: userInput.selectedGrade,
             cards: cards,
-            containFifthOption: false
+            containFifthOption: true
         ) else { return }
-
-        learnManager.setupLearn(cards, options)
         
         loadingSharedData.finishLoading {
-            pathHandler.transitionScreen(
-                to: LearnMode.select.checkViewName(
-                    cards: cards,
-                    options: options
-                )
-            )
+            pathHandler.transitionScreen(to: .checkSelect(cards, options))
         }
     }
     
@@ -135,7 +128,6 @@ struct CheckView: ResponsiveView {
             
             Spacer()
             
-            /// Viewと連動しない？
             Picker("grade", selection: $userInput.selectedGrade) {
                 /// 要編集
                 ForEach(EikenGrade.allCases, id: \.self) { grade in

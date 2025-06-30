@@ -10,12 +10,19 @@ struct LearnSelectView: ResponsiveView {
     
     @ObservedObject private var pathHandler: BookViewPathHandler
     @ObservedObject var userInput: BookUserInput
-    let cardsContainer: CardsContainer
     
-    init(pathHandler: BookViewPathHandler, userInput: BookUserInput, cardsContainer: CardsContainer) {
+    @StateObject var viewModel: LearnSelectViewViewModel
+    
+    init(
+        pathHandler: BookViewPathHandler,
+        userInput: BookUserInput,
+        cardsContainer: CardsContainer
+    ) {
         self.pathHandler = pathHandler
         self.userInput = userInput
-        self.cardsContainer = cardsContainer
+        self._viewModel = StateObject(
+            wrappedValue: LearnSelectViewViewModel(cardsContainer: cardsContainer)
+        )
     }
 
     private var headerTitle: String {
@@ -33,8 +40,10 @@ struct LearnSelectView: ResponsiveView {
                 
                 VStack {
 
-                    Header(pathHandler: pathHandler,
-                           title: headerTitle)
+                    Header(
+                        pathHandler: pathHandler,
+                        title: headerTitle
+                    )
                     
                     subButtonView
                     
@@ -53,10 +62,11 @@ struct LearnSelectView: ResponsiveView {
                         label: "学習を開始 →",
                         color: Orange.defaultOrange
                     ) {
+                        /// loading が必要？
                         
                         guard let selectedGrade = userInput.selectedGrade else { return }
                         
-                        let cards = cardsContainer.getCardsByLearnRange(
+                        let cards = viewModel.cardsContainer.getCardsByLearnRange(
                             learnRange: userInput.selectedRange
                         )
                         
@@ -64,10 +74,9 @@ struct LearnSelectView: ResponsiveView {
                             .getOptions(
                                 eikenGrade: selectedGrade,
                                 cards: cards,
-                                containFifthOption: true
+                                containFifthOption: false
                             ) else { return }
                         
-//                        learnManager.setupLearn(cards, options)
                         pathHandler.transitionScreen(
                             to: userInput.selectedMode.bookViewName(
                                 cards: cards,
@@ -83,6 +92,7 @@ struct LearnSelectView: ResponsiveView {
             .navigationBarBackButtonHidden(true)
             .onAppear {
                 adjustSelectedRange()
+                viewModel.onAppearAction(userInput: userInput)
             }
     }
     
@@ -94,17 +104,17 @@ struct LearnSelectView: ResponsiveView {
             LearnSelectCircle(
                 
                 firstCircle: .init(
-                    value: cardsContainer.learnedCount + cardsContainer.learningCount,
+                    value: viewModel.cardsContainer.learnedCount + viewModel.cardsContainer.learningCount,
                     color: RoyalBlue.semiOpaque
                 ),
                 
                 secondCircle: .init(
-                    value: cardsContainer.learnedCount,
+                    value: viewModel.cardsContainer.learnedCount,
                     color: Orange.defaultOrange
                 ),
                 
                 size: responsiveSize(140, 200),
-                maxValue: cardsContainer.allCount
+                maxValue: viewModel.cardsContainer.allCount
             )
             
             Spacer()
@@ -139,7 +149,7 @@ struct LearnSelectView: ResponsiveView {
         
         HStack {
             /// 「未学習の単語数」!=「全単語数」の場合のみ表示
-            if cardsContainer.notLearnedCount != cardsContainer.allCount {
+            if viewModel.cardsContainer.notLearnedCount != viewModel.cardsContainer.allCount {
                 subButton(label: "リセット",
                           systemName: "arrow.clockwise",
                           color: .red) {
@@ -150,7 +160,7 @@ struct LearnSelectView: ResponsiveView {
             subButton(label: "単語一覧",
                       systemName: "info.circle.fill",
                       color: .blue) {
-                pathHandler.transitionScreen(to: .wordList(cardsContainer.allCards))
+                pathHandler.transitionScreen(to: .wordList(viewModel.cardsContainer.allCards))
             }
         }
         .frame(width: responsiveSize(300, 420))
@@ -197,9 +207,11 @@ extension LearnSelectView {
                 guard let selectedBookCategory = userInput.selectedBookCategory else { return }
                 
                 guard SheetRealmAPI.resetCardsStatus(
-                    cardIdList: cardsContainer.allCards.map { $0.id },
+                    cardIdList: viewModel.cardsContainer.allCards.map { $0.id },
                     bookCategory: selectedBookCategory
                 ) else { return }
+                
+                viewModel.updateCardsContainer(userInput: userInput)
 
                 loadingSharedData.finishLoading {}
             }
@@ -214,10 +226,10 @@ extension LearnSelectView {
         
         userInput.selectedRange = .notLearned
         
-        if cardsContainer.notLearnedCount == 0 {
+        if viewModel.cardsContainer.notLearnedCount == 0 {
             userInput.selectedRange = .learning
             
-            if cardsContainer.learningCount == 0 {
+            if viewModel.cardsContainer.learningCount == 0 {
                 userInput.selectedRange = .all
             }
         }

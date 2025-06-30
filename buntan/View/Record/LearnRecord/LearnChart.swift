@@ -35,8 +35,13 @@ extension LearnRecordView {
 
         return (0..<7).map { dayOffset in
             let targetDate = Calendar.current.date(byAdding: .day, value: Int(dayOffset), to: firstDate)!
-            return filteredRecords.first { Calendar.current.isDate($0.date, inSameDayAs: targetDate) }
-            ?? LearnRecord(UUID().uuidString, targetDate, 0)
+            return filteredRecords
+                .first { Calendar.current.isDate($0.date, inSameDayAs: targetDate) } ??
+            LearnRecord(
+                id: UUID().uuidString,
+                date: targetDate,
+                learnedCardCount: 0
+            )
         }
     }
     

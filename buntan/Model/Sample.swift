@@ -9,16 +9,16 @@ enum Sample {
     }
     
     static let learnRecords: [LearnRecord] = [
-        .init(UUID().uuidString, createDate(2025, 1, 1), 100),
-        .init(UUID().uuidString, createDate(2025, 1, 2), 100),
-        .init(UUID().uuidString, createDate(2025, 1, 3), 100),
-        .init(UUID().uuidString, createDate(2025, 1, 4), 100),
-        .init(UUID().uuidString, createDate(2025, 1, 5), 20),
-        .init(UUID().uuidString, createDate(2025, 1, 6), 30),
-        .init(UUID().uuidString, createDate(2025, 1, 7), 60),
-        .init(UUID().uuidString, createDate(2025, 1, 8), 20),
-        .init(UUID().uuidString, createDate(2025, 1, 9), 40),
-        .init(UUID().uuidString, createDate(2025, 1, 10), 70),
-        .init(UUID().uuidString, createDate(2025, 1, 11), 80)
+        .init(id: UUID().uuidString, date: createDate(2025, 1, 1), learnedCardCount: 100),
+        .init(id: UUID().uuidString, date: createDate(2025, 1, 2), learnedCardCount: 100),
+        .init(id: UUID().uuidString, date: createDate(2025, 1, 3), learnedCardCount: 100),
+        .init(id: UUID().uuidString, date: createDate(2025, 1, 4), learnedCardCount: 100),
+        .init(id: UUID().uuidString, date: createDate(2025, 1, 5), learnedCardCount: 20),
+        .init(id: UUID().uuidString, date: createDate(2025, 1, 6), learnedCardCount: 30),
+        .init(id: UUID().uuidString, date: createDate(2025, 1, 7), learnedCardCount: 60),
+        .init(id: UUID().uuidString, date: createDate(2025, 1, 8), learnedCardCount: 20),
+        .init(id: UUID().uuidString, date: createDate(2025, 1, 9), learnedCardCount: 40),
+        .init(id: UUID().uuidString, date: createDate(2025, 1, 10), learnedCardCount: 70),
+        .init(id: UUID().uuidString, date: createDate(2025, 1, 11), learnedCardCount: 80)
     ]
 }

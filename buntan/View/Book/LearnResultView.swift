@@ -154,7 +154,7 @@ struct LearnResultView: ResponsiveView {
         guard let options = SheetRealmAPI.getOptions(
             eikenGrade: selectedGrade,
             cards: cards,
-            containFifthOption: true
+            containFifthOption: false
         ) else { return }
         
         /// ここで再学習時に新規のoptionを引き継ぐ処理が必要

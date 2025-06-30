@@ -3,20 +3,20 @@ import SwiftUI
 
 enum CheckViewName {
     
-    case checkSwipe([Card], [[Option]])
-    case checkType([Card], [[Option]])
+//    case checkSwipe([Card], [[Option]])
     case checkSelect([Card], [[Option]])
-    case checkResult
+//    case checkType([Card], [[Option]])
+    case checkResult([Card], [Int], Int)
 }
 
 
 extension CheckViewName: Equatable {
     static func == (lhs: CheckViewName, rhs: CheckViewName) -> Bool {
         switch (lhs, rhs) {
-        case (.checkSwipe, .checkSwipe),
-             (.checkType, .checkType),
-             (.checkSelect, .checkSelect),
-             (.checkResult, .checkResult):
+        case (.checkSelect, .checkSelect),
+            (.checkResult, .checkResult):
+//            (.checkSwipe, .checkSwipe),
+//            (.checkType, .checkType),
             return true
         default:
             return false
@@ -30,18 +30,18 @@ extension CheckViewName: ViewNameProtocol {
     var screenName: String {
         switch self {
 
-        case .checkSwipe: return "checkSwipe"
-        case .checkType: return "checkType"
+//        case .checkSwipe: return "checkSwipe"
         case .checkSelect: return "checkSelect"
+//        case .checkType: return "checkType"
         case .checkResult: return "checkResult"
         }
     }
     
     var screenClassName: String {
         switch self {
-        case .checkSwipe: return "CheckSwipeView"
-        case .checkType: return "CheckTypeView"
+//        case .checkSwipe: return "CheckSwipeView"
         case .checkSelect: return "CheckSelectView"
+//        case .checkType: return "CheckTypeView"
         case .checkResult: return "CheckResultView"
         }
     }
@@ -49,11 +49,8 @@ extension CheckViewName: ViewNameProtocol {
     func viewForName(pathHandler: CheckViewPathHandler, userInput: CheckUserInput) -> some View {
         
         switch self {
-        case .checkSwipe(_, _):
-            return AnyView(EmptyView())
-        
-        case .checkType(_, _):
-            return AnyView(EmptyView())
+//        case .checkSwipe(_, _):
+//            return AnyView(EmptyView())
         
         case .checkSelect(let cards, let options):
             return AnyView(
@@ -64,12 +61,18 @@ extension CheckViewName: ViewNameProtocol {
                     options: options
                 )
             )
+            
+//        case .checkType(_, _):
+//            return AnyView(EmptyView())
         
-        case .checkResult:
+        case .checkResult(let cards, let correctIndexList, let estimatedScore):
             return AnyView(
                 CheckResultView(
                     pathHandler: pathHandler,
-                    userInput: userInput
+                    userInput: userInput,
+                    cards: cards,
+                    correctIndexList: correctIndexList,
+                    estimatedScore: estimatedScore
                 )
             )
         }

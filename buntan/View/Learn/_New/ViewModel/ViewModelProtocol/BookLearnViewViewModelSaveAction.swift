@@ -48,7 +48,7 @@ extension BookLearnViewViewModelProtocol {
               let selectedBookCategory = userInput.selectedBookCategory else { return false }
         
         /// 学習内容を realm に保存
-        guard SheetRealmAPI._updateCardsStatus(
+        guard SheetRealmAPI.updateCardsStatus(
             viewModel: self,
             eikenGrade: selectedGrade,
             bookCategory: selectedBookCategory
@@ -60,8 +60,11 @@ extension BookLearnViewViewModelProtocol {
     private func uploadLearnRecord() -> Bool {
         
         /// 学習量の記録を保存
-        let learnRecord = LearnRecord(UUID().uuidString, Date(),
-                                      learnedCardsCount)
+        let learnRecord = LearnRecord(
+            id: UUID().uuidString,
+            date: Date(),
+            learnedCardCount: learnedCardsCount
+        )
         
         guard LearnRecordRealmAPI.uploadLearnRecord(learnRecord: learnRecord) else { return false }
         

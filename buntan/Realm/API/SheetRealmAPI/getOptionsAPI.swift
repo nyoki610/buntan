@@ -41,7 +41,7 @@ extension SheetRealmAPI {
         let options = cards.map { card in
             let filteredRef = optionsRef[card.pos.rawValue - 1].filter { $0.word != card.word }
             /// ランダムなインデックスを選ぶ実装にした方が良い？
-            let randomOptions = filteredRef.shuffled().prefix(containFifthOption ? 3 : 4)
+            let randomOptions = filteredRef.shuffled().prefix(containFifthOption ? 4 : 3)
             return Array(Set([card.convertToOption()] + randomOptions)).shuffled()
         }
         

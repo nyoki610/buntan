@@ -26,6 +26,5 @@ enum EmptyModel {
     static let book = Book(config: BookConfiguration.frequency(.freqA), sections: [])
     static let section = Section(title: "", cards: [])
     
-    static let checkRecord = CheckRecord("", .first, Date(), 0, 0)
-    
+    static let checkRecord = CheckRecord(id: "", grade: .first, date: Date(), correctCount: 0, estimatedCount: 0)
 }

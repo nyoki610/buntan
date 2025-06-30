@@ -8,7 +8,13 @@ struct CheckRecord: Identifiable {
     let correctCount: Int
     let estimatedCount: Int
     
-    init(_ id: String, _ grade: EikenGrade, _ date: Date, _ correctCount: Int,_ estimatedCount: Int) {
+    init(
+        id: String,
+        grade: EikenGrade,
+        date: Date,
+        correctCount: Int,
+        estimatedCount: Int
+    ) {
         self.id = id
         self.grade = grade
         self.date = date

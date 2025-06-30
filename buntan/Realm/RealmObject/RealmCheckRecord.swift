@@ -19,11 +19,13 @@ extension RealmCheckRecord: ConveretableRealmObject {
         
         guard let grade = grade else { return nil }
         
-        let checkRecord = CheckRecord(id.stringValue,
-                                      grade,
-                                      date,
-                                      correctCount,
-                                      estimatedCount)
+        let checkRecord = CheckRecord(
+            id: id.stringValue,
+            grade: grade,
+            date: date,
+            correctCount: correctCount,
+            estimatedCount: estimatedCount
+        )
         return checkRecord
     }
 }

@@ -169,7 +169,7 @@ struct _LearnResultView: ResponsiveView {
         guard let options = SheetRealmAPI.getOptions(
             eikenGrade: selectedGrade,
             cards: cards,
-            containFifthOption: true
+            containFifthOption: false
         ) else { return }
                 
         pathHandler.transitionScreen(

@@ -5,27 +5,41 @@ struct CheckResultView: ResponsiveView {
     @Environment(\.deviceType) var deviceType: DeviceType
 
     @EnvironmentObject var loadingSharedData: LoadingSharedData
-
-    @EnvironmentObject var learnManager: LearnManager
-    
-    var correctPercentage: Int {
-        Int((Double(learnManager.rightCardsIndexList.count) / Double(learnManager.cards.count)) * 100)
-    }
     
     @ObservedObject private var pathHandler: CheckViewPathHandler
     @ObservedObject private var userInput: CheckUserInput
     
-    init(pathHandler: CheckViewPathHandler, userInput: CheckUserInput) {
+    private let cards: [Card]
+    private let correctIndexList: [Int]
+    private let estimatedScore: Int
+    
+    private var correctPercentage: Int {
+        Int((Double(correctIndexList.count) / Double(cards.count)) * 100)
+    }
+    
+    init(
+        pathHandler: CheckViewPathHandler,
+        userInput: CheckUserInput,
+        cards: [Card],
+        correctIndexList: [Int],
+        estimatedScore: Int
+    ) {
         self.pathHandler = pathHandler
         self.userInput = userInput
+        /// not shuffled in checkLearnView
+        self.cards = cards
+        self.correctIndexList = correctIndexList
+        self.estimatedScore = estimatedScore
     }
     
     
     var body: some View {
         
-        WordList(cards: learnManager.cards.map { $0 },
-                 showInfo: false,
-                 correctIndexList: learnManager.rightCardsIndexList) {
+        WordList(
+            cards: cards.map { $0 },
+            showInfo: false,
+            correctIndexList: correctIndexList
+        ) {
             
             VStack {
                 
@@ -39,20 +53,26 @@ struct CheckResultView: ResponsiveView {
                 
                 HStack {
                     Spacer()
-                    progress("推定カバー率",
-                             correctPercentage,
-                             100,
-                             Orange.translucent)
+                    circularProgressView(
+                        title: "推定カバー率",
+                        value: correctPercentage,
+                        maxValue: 100,
+                        color: Orange.translucent
+                    )
                     Spacer()
-                    progress("予想得点",
-                             estimatedScore(learnManager: learnManager),
-                             userInput.selectedGrade.questionCount,
-                             Orange.egg)
+                    
+                    circularProgressView(
+                        title: "予想得点",
+                        value: estimatedScore,
+                        maxValue: userInput.selectedGrade.questionCount,
+                        color: Orange.egg
+                    )
+
                     Spacer()
                 }
                     .padding(.top, 20)
                 
-                Text("\(learnManager.rightCardsIndexList.count) 問正解！")
+                Text("\(correctIndexList.count) 問正解！")
                     .fontSize(responsiveSize(16, 20))
                     .fontWeight(.bold)
                     .padding(.top, 40)
@@ -65,35 +85,19 @@ struct CheckResultView: ResponsiveView {
     }
     
     @ViewBuilder
-    private func progress(_ title: String, _ value: Int, _ maxValue: Int, _ color: Color) -> some View {
+    private func circularProgressView(title: String, value: Int, maxValue: Int, color: Color) -> some View {
         
         VStack {
             
             Text(title)
                 .fontSize(responsiveSize(16, 24))
             
-            CircularProgress(staticValue: value,
-                             size: responsiveSize(120, 160),
-                             maxValue: maxValue,
-                             color: color)
+            CircularProgress(
+                staticValue: value,
+                size: responsiveSize(120, 160),
+                maxValue: maxValue,
+                color: color
+            )
         }
-    }
-    
-    func estimatedScore(learnManager: LearnManager) -> Int {
-        
-        var fullScore: Double = 0
-        var score: Double = 0
-        
-        for (index, card) in learnManager.cards.enumerated() {
-            
-            let cardScore = card.infoList.reduce(0.0) { $0 + ($1.isAnswer ? 3 : 1) }
-            
-            fullScore += cardScore
-            
-            if learnManager.rightCardsIndexList.contains(index) {
-                score += cardScore
-            }
-        }
-        return Int((score / fullScore) * EikenGrade.first.questionCount.double)
     }
 }

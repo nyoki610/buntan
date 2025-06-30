@@ -17,7 +17,11 @@ extension LearnRecordRealmAPI {
             .mapValues { $0.reduce(0) { $0 + $1.learnedCardCount } }
             
             /// 変換後のDictionaryの各key, valueを用いてLearnRecordを再生成
-            .map { LearnRecord(UUID().uuidString, $0.key, $0.value) }
+            .map { LearnRecord(
+                id: UUID().uuidString,
+                date: $0.key,
+                learnedCardCount: $0.value
+            ) }
         
             /// 日付順にsort
             .sorted { $0.date < $1.date }
