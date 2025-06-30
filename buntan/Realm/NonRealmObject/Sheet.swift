@@ -1,12 +1,12 @@
 import Foundation
 import RealmSwift
 
-class Sheet {
+struct Sheet {
     let id: String
-    let grade: Eiken
+    let grade: EikenGrade
     var cardList: [Card]
     
-    init(id: String, grade: Eiken, cardList: [Card]) {
+    init(id: String, grade: EikenGrade, cardList: [Card]) {
         self.id = id
         self.grade = grade
         self.cardList = cardList

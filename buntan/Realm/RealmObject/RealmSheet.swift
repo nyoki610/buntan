@@ -6,12 +6,12 @@ class RealmSheet: Object {
     @Persisted var gradeRawValue: Double
     @Persisted var cardList: List<RealmCard>
     
-    var grade: Eiken? {
-        Eiken(rawValue: gradeRawValue)
+    var grade: EikenGrade? {
+        EikenGrade(rawValue: gradeRawValue)
     }
 }
 
-extension RealmSheet {
+extension RealmSheet: ConveretableRealmObject {
     
     func convertToNonRealm() -> Sheet? {
         

@@ -3,49 +3,76 @@ import SwiftUI
 struct CheckResultView: ResponsiveView {
     
     @Environment(\.deviceType) var deviceType: DeviceType
-    // Recordクラス内から直接保存できるように修正したい？
-    @EnvironmentObject var realmService: RealmService
+
     @EnvironmentObject var loadingSharedData: LoadingSharedData
     
-    @EnvironmentObject var checkSharedData: CheckSharedData
-    @EnvironmentObject var learnManager: LearnManager
+    @ObservedObject private var pathHandler: CheckViewPathHandler
+    @ObservedObject private var userInput: CheckUserInput
     
-    var correctPercentage: Int {
-        Int((Double(learnManager.rightCardsIndexList.count) / Double(learnManager.cards.count)) * 100)
+    private let cards: [Card]
+    private let correctIndexList: [Int]
+    private let estimatedScore: Int
+    
+    private var correctPercentage: Int {
+        Int((Double(correctIndexList.count) / Double(cards.count)) * 100)
     }
+    
+    init(
+        pathHandler: CheckViewPathHandler,
+        userInput: CheckUserInput,
+        cards: [Card],
+        correctIndexList: [Int],
+        estimatedScore: Int
+    ) {
+        self.pathHandler = pathHandler
+        self.userInput = userInput
+        /// not shuffled in checkLearnView
+        self.cards = cards
+        self.correctIndexList = correctIndexList
+        self.estimatedScore = estimatedScore
+    }
+    
     
     var body: some View {
         
-        WordList(cards: learnManager.cards.map { $0 },
-                 showInfo: false,
-                 correctIndexList: learnManager.rightCardsIndexList) {
+        WordList(
+            cards: cards.map { $0 },
+            showInfo: false,
+            correctIndexList: correctIndexList
+        ) {
             
             VStack {
                 
                 XmarkHeader() {
-                    checkSharedData.path = []
+                    pathHandler.backToRootScreen()
                 }
                 
-                Text(checkSharedData.selectedGrade.title)
+                Text(userInput.selectedGrade.title)
                     .fontSize(responsiveSize(20, 24))
                     .fontWeight(.bold)
                 
                 HStack {
                     Spacer()
-                    progress("推定カバー率",
-                             correctPercentage,
-                             100,
-                             Orange.translucent)
+                    circularProgressView(
+                        title: "推定カバー率",
+                        value: correctPercentage,
+                        maxValue: 100,
+                        color: Orange.translucent
+                    )
                     Spacer()
-                    progress("予想得点",
-                             checkSharedData.estimatedScore(learnManager),
-                             checkSharedData.selectedGrade.questionCount,
-                             Orange.egg)
+                    
+                    circularProgressView(
+                        title: "予想得点",
+                        value: estimatedScore,
+                        maxValue: userInput.selectedGrade.questionCount,
+                        color: Orange.egg
+                    )
+
                     Spacer()
                 }
                     .padding(.top, 20)
                 
-                Text("\(learnManager.rightCardsIndexList.count) 問正解！")
+                Text("\(correctIndexList.count) 問正解！")
                     .fontSize(responsiveSize(16, 20))
                     .fontWeight(.bold)
                     .padding(.top, 40)
@@ -58,17 +85,19 @@ struct CheckResultView: ResponsiveView {
     }
     
     @ViewBuilder
-    private func progress(_ title: String, _ value: Int, _ maxValue: Int, _ color: Color) -> some View {
+    private func circularProgressView(title: String, value: Int, maxValue: Int, color: Color) -> some View {
         
         VStack {
             
             Text(title)
                 .fontSize(responsiveSize(16, 24))
             
-            CircularProgress(staticValue: value,
-                             size: responsiveSize(120, 160),
-                             maxValue: maxValue,
-                             color: color)
+            CircularProgress(
+                staticValue: value,
+                size: responsiveSize(120, 160),
+                maxValue: maxValue,
+                color: color
+            )
         }
     }
 }

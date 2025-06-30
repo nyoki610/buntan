@@ -1,19 +1,19 @@
 import SwiftUI
 
-struct Header: ResponsiveView {
+struct Header<PathHandlerType: PathHandlerProtocol>: ResponsiveView {
     
     @Environment(\.deviceType) var deviceType: DeviceType
-    
+
     let title: String?
-    @Binding var path: [ViewName]
+
+    @ObservedObject private var pathHandler: PathHandlerType
     
-    init(path: Binding<[ViewName]>, title: String? = nil) {
-        _path = path
+    init(pathHandler: PathHandlerType, title: String? = nil) {
+        self._pathHandler = ObservedObject(wrappedValue: pathHandler)
         self.title = title
     }
     
     var body: some View {
-        
         ZStack {
             if let title = title {
                 Text(title)
@@ -23,8 +23,7 @@ struct Header: ResponsiveView {
             
             HStack {
                 Button {
-                    guard path.count != 0 else { return }
-                    path.removeLast()
+                    pathHandler.backToPreviousScreen(count: 1)
                 } label: {
                     Image(systemName: "arrowshape.turn.up.left")
                         .font(.system(size: responsiveSize(18, 24)))

@@ -54,7 +54,7 @@ extension LearnSelectView {
         
         HStack {
             
-            selectButton(labelTop: bookSharedData.cardsContainer[LearnRange.notLearned.rawValue].count.string,
+            selectButton(labelTop: viewModel.cardsContainer.notLearnedCount.string,
                          labelTopColor: .gray,
                          labelBottom: "未学習",
                          systemName: "text.book.closed.fill",
@@ -63,7 +63,7 @@ extension LearnSelectView {
             
             Spacer()
             
-            selectButton(labelTop: bookSharedData.cardsContainer[LearnRange.learning.rawValue].count.string,
+            selectButton(labelTop: viewModel.cardsContainer.learningCount.string,
                          labelTopColor: RoyalBlue.semiOpaque,
                          labelBottom: "学習中",
                          systemName: "bookmark.fill",
@@ -72,7 +72,7 @@ extension LearnSelectView {
             
             Spacer()
             
-            selectButton(labelTop: bookSharedData.cardsContainer[LearnRange.all.rawValue].count.string,
+            selectButton(labelTop: viewModel.cardsContainer.allCount.string,
                          labelTopColor: .black,
                          labelBottom: "すべて",
                          systemName: "books.vertical.fill",
@@ -107,20 +107,20 @@ extension LearnSelectView {
         let isRangeButton = (targetRange != nil)
         var isSelected:Bool {
             if let targetRange = targetRange {
-                return bookSharedData.selectedRange == targetRange
+                return userInput.selectedRange == targetRange
             }
             if let targetMode = targetMode {
-                return bookSharedData.selectedMode == targetMode
+                return userInput.selectedMode == targetMode
             }
             return false
         }
         
         Button {
             if let targetRange = targetRange {
-                bookSharedData.selectedRange = targetRange
+                userInput.selectedRange = targetRange
             }
             if let targetMode = targetMode {
-                bookSharedData.selectedMode = targetMode
+                userInput.selectedMode = targetMode
             }
         } label: {
             VStack {

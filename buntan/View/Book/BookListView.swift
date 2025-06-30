@@ -4,17 +4,24 @@ struct BookListView: ResponsiveView {
     
     @Environment(\.deviceType) var deviceType: DeviceType
     
-    @EnvironmentObject var realmService: RealmService
-    @EnvironmentObject var bookSharedData: BookSharedData
-    
     @State private var showDetail: Bool = false
+    
+    @ObservedObject private var pathHandler: BookViewPathHandler
+    @ObservedObject private var userInput: BookUserInput
+    private let bookList: [Book]
+    
+    init(pathHandler: BookViewPathHandler, userInput: BookUserInput, bookList: [Book]) {
+        self.pathHandler = pathHandler
+        self.userInput = userInput
+        self.bookList = bookList
+    }
     
     var body: some View {
         ZStack {
             
             VStack {
                 
-                Header(path: $bookSharedData.path)
+                Header(pathHandler: pathHandler)
 
                 HStack {
                     Spacer()
@@ -22,7 +29,7 @@ struct BookListView: ResponsiveView {
                     Image(systemName: "flag.fill")
                         .foregroundStyle(Orange.defaultOrange)
                     
-                    Text(bookSharedData.selectedBookType.headerTitle)
+                    Text(userInput.selectedBookCategory?.headerTitle ?? "")
                     Spacer()
                 }
                 .font(.system(size: responsiveSize(18, 24)))
@@ -30,14 +37,14 @@ struct BookListView: ResponsiveView {
                 
                 HStack {
                     Spacer()
-                    Text(bookSharedData.selectedGrade.title)
+                    Text(userInput.selectedGrade?.title ?? "")
                         .bold()
                         .font(.system(size: responsiveSize(18, 24)))
                         .foregroundColor(.white)
                     Spacer()
                 }
                 .padding(.vertical, 10)
-                .background(bookSharedData.selectedGrade.color)
+                .background(userInput.selectedGrade?.color ?? .clear)
                 .cornerRadius(10)
                 .padding(.horizontal, responsiveSize(40, 120))
                 .padding(.top, 4)
@@ -46,7 +53,7 @@ struct BookListView: ResponsiveView {
                 listView
                     .padding(.horizontal, responsiveSize(30, 100))
                 
-                if bookSharedData.selectedBookType == .freq {
+                if userInput.selectedBookCategory == .freq {
                     HStack {
                         Spacer()
                         detailbutton
@@ -71,8 +78,6 @@ struct BookListView: ResponsiveView {
     @ViewBuilder
     private var listView: some View {
         
-        let bookList = bookSharedData.selectedBooks.filter { $0.bookType == bookSharedData.selectedBookType }
-        
         VStack {
             
             ForEach(bookList, id: \.self) { book in
@@ -92,8 +97,8 @@ struct BookListView: ResponsiveView {
         let disabled = (book.cardsCount == 0)
         
         Button {
-            bookSharedData.selectedBookDesign = book.id
-            bookSharedData.path.append(.sectionList)
+            userInput.selectedBookConfig = book.config
+            pathHandler.transitionScreen(to: .sectionList(book))
         } label: {
             
             ZStack {
@@ -168,22 +173,10 @@ struct BookListView: ResponsiveView {
             Spacer()
             
             VStack(alignment: .leading) {
-                detailContent(
-                    title: "頻出度A",
-                    description: "「正解」として出題された単語を収録"
-                )
-                
-                detailContent(
-                    title: "頻出度B",
-                    description: "「複数回」出題された単語を収録"
-                )
-                .padding(.top, 8)
-                
-                detailContent(
-                    title: "頻出度C",
-                    description: "出題回数の少ない単語を収録"
-                )
-                .padding(.top, 8)
+                ForEach(FrequencyBookConfiguration.allCases, id: \.self) { freqConfig in
+                    detailContent(title: freqConfig.title, description: freqConfig.description)
+                        .padding(.bottom, 8)
+                }
             }
             
             Spacer()

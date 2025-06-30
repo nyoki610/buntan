@@ -7,6 +7,10 @@ enum LearnType {
 }
  */
 
+enum LearnViewViewType {
+    case book, check
+}
+
 enum LearnRange: Int, CaseIterable {
     case notLearned
     case learning
@@ -19,20 +23,26 @@ enum LearnMode: String, CaseIterable, Identifiable {
     var id: String {
         UUID().uuidString
     }
+}
+
+
+extension LearnMode {
     
-    func viewName(isBookView: Bool) -> ViewName {
+    func bookViewName(cards: [Card], options: [[Option]]) -> BookViewName {
+        
         switch self {
-        case .swipe: return isBookView ? .swipe : .checkSwipe
-        case .select: return isBookView ? .select : .checkSelect
-        case .type: return isBookView ? .type : .checkType
+        case .swipe: return .swipe(cards, options)
+        case .select: return .select(cards, options)
+        case .type: return .type(cards, options)
         }
     }
     
-    var jpName: String {
-        switch self {
-        case .swipe: "カード"
-        case .select: "４択"
-        case .type: "タイピング"
-        }
+    func checkViewName(cards: [Card], options: [[Option]]) -> CheckViewName {
+        return .checkSelect(cards, options)
+//        switch self {
+//        case .swipe: return .checkSwipe(cards, options)
+//        case .select: return .checkSelect(cards, options)
+//        case .type: return .checkType(cards, options)
+//        }
     }
 }

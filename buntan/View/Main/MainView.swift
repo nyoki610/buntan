@@ -8,18 +8,16 @@ struct MainView: ResponsiveView {
     /// ObservedObjects
     @ObservedObject private var loadingSharedData = LoadingSharedData()
     @ObservedObject private var alertSharedData = AlertSharedData()
-    
-    @ObservedObject private var realmService = RealmService()
-    @ObservedObject private var learnManager = LearnManager()
-    
-    @ObservedObject var bookSharedData = BookSharedData()
-    @ObservedObject var checkSharedData = CheckSharedData()
+
     
     /// 起動時の LogoView の表示を管理
     @State private var showLogoView: Bool = true
     
     /// tabView を管理
-    @State var selectedTab: TabType = .book
+    @State var selectedRootViewName: RootViewName = .book
+    
+    @StateObject var bookViewPathHandler = BookViewPathHandler()
+    @StateObject var checkViewPathHandler = CheckViewPathHandler()
     
     var body: some View {
         
@@ -29,8 +27,13 @@ struct MainView: ResponsiveView {
                 logoView
             } else {
                 ZStack {
-                    selectedTab.view
+                    selectedRootViewName.viewForName(
+                        bookViewPathHandler: bookViewPathHandler,
+                        checkViewPathHandler: checkViewPathHandler
+                    )
+                    
                     tabView
+                    
                 }
             }
 
@@ -42,18 +45,10 @@ struct MainView: ResponsiveView {
         }
         .environmentObject(loadingSharedData)
         .environmentObject(alertSharedData)
-        .environmentObject(realmService)
-        .environmentObject(bookSharedData)
-        .environmentObject(checkSharedData)
-        .environmentObject(learnManager)
         .alert(item: $alertSharedData.alertType) { _ in
             alertSharedData.createAlert()
         }
         .onAppear {
-            /// bookSharedata.bookList を初期化
-            guard let updatedBooksList = realmService.setupBooksList() else { return }
-            bookSharedData.setupBooksList(updatedBooksList)
-            checkSharedData.booksList = updatedBooksList
             
             /// LogoView を 3 秒間表示した後, 画面遷移
             Task {

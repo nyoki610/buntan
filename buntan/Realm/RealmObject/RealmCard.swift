@@ -1,7 +1,7 @@
 import Foundation
 import RealmSwift
 
-class RealmCard: Object {
+class RealmCard: Object, IdentifiableRealmObject {
     @Persisted(primaryKey: true) var id: ObjectId
     @Persisted var index: Int
     @Persisted var word: String
@@ -17,7 +17,7 @@ class RealmCard: Object {
     @Persisted var statusPosRawValue: Int
 }
 
-extension RealmCard {
+extension RealmCard: ConveretableRealmObject {
     
     func convertToNonRealm() -> Card? {
         

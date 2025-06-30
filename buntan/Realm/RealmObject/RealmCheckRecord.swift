@@ -8,22 +8,24 @@ class RealmCheckRecord: Object, ObjectKeyIdentifiable {
     @Persisted var correctCount: Int
     @Persisted var estimatedCount: Int
     
-    var grade: Eiken? {
-        Eiken(rawValue: gradeRawValue)
+    var grade: EikenGrade? {
+        EikenGrade(rawValue: gradeRawValue)
     }
 }
 
-extension RealmCheckRecord {
+extension RealmCheckRecord: ConveretableRealmObject {
     
     func convertToNonRealm() -> CheckRecord? {
         
         guard let grade = grade else { return nil }
         
-        let checkRecord = CheckRecord(id.stringValue,
-                                      grade,
-                                      date,
-                                      correctCount,
-                                      estimatedCount)
+        let checkRecord = CheckRecord(
+            id: id.stringValue,
+            grade: grade,
+            date: date,
+            correctCount: correctCount,
+            estimatedCount: estimatedCount
+        )
         return checkRecord
     }
 }

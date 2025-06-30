@@ -4,7 +4,7 @@ import Charts
 extension CheckRecordView {
     
     var extractedRecords: [CheckRecord] {
-        realmService.checkRecords.filter { $0.grade == selectedGrade}.reversed()
+        checkRecords.filter { $0.grade == selectedGrade}.reversed()
     }
     
     var prefixedRecords: [CheckRecord] { Array(extractedRecords.dropFirst(chartController * 10).prefix(10)) }
@@ -23,14 +23,14 @@ extension CheckRecordView {
     var chartView: some View {
 
         let value1Range: ClosedRange<Double> = 0...100
-        let value2Range: ClosedRange<Double> = 0...Eiken.first.questionCount.double
+        let value2Range: ClosedRange<Double> = 0...EikenGrade.first.questionCount.double
         let graphRange: ClosedRange<Double> = 0...100
 
         let indexedRecords = recentCheckRecords.enumerated().map { IndexedCheckRecord(index: $0.offset + 1 + chartController * 10, record: $0.element) }.reversed()
         
         Chart(indexedRecords) { indexedRecord in
             
-            let correctPercentage = indexedRecord.record.correctCount.double / Eiken.first.questionCount.double * 100
+            let correctPercentage = indexedRecord.record.correctCount.double / EikenGrade.first.questionCount.double * 100
             let estimatedCount = Double(indexedRecord.record.estimatedCount)
             
             let value1 = map(correctPercentage, in: value1Range, to: graphRange)

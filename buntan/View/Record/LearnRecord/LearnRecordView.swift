@@ -4,9 +4,15 @@ struct LearnRecordView: ResponsiveView {
     
     @Environment(\.deviceType) var deviceType
     
-    @EnvironmentObject var realmService: RealmService
-    
     @State var chartController: Int = 0
+    
+    let dailyLearnRecords: [LearnRecord]
+    
+    init?() {
+        
+        guard let dailyLearnRecords: [LearnRecord] = LearnRecordRealmAPI.getDailyLearnRecords() else { return nil }
+        self.dailyLearnRecords = dailyLearnRecords
+    }
 
     var body: some View {
         
@@ -93,7 +99,7 @@ extension LearnRecordView {
 
         case .week:
             let targetWeek = calendar.dateComponents([.year, .weekOfYear], from: firstDate)
-            return realmService.learnRecords
+            return dailyLearnRecords
                 .filter {
                     let recordWeek = calendar.dateComponents([.year, .weekOfYear], from: $0.date)
                     return recordWeek.year == targetWeek.year && recordWeek.weekOfYear == targetWeek.weekOfYear
@@ -101,7 +107,7 @@ extension LearnRecordView {
                 .reduce(0) { $0 + $1.learnedCardCount }
 
         case .all:
-            return realmService.learnRecords.reduce(0) { $0 + $1.learnedCardCount }
+            return dailyLearnRecords.reduce(0) { $0 + $1.learnedCardCount }
         }
     }
 }

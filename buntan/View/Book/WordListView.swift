@@ -1,22 +1,27 @@
 import SwiftUI
 
-struct WordListView: ResponsiveView {
+struct WordListView<PathHandlerType: PathHandlerProtocol>: ResponsiveView {
     
     @Environment(\.deviceType) var deviceType: DeviceType
     
-    @EnvironmentObject var realmService: RealmService
-    @EnvironmentObject var bookSharedData: BookSharedData
-    
     @State var showInfo: Bool = true
+    
+    @ObservedObject private var pathHandler: PathHandlerType
+    private let cards: [Card]
+    
+    init(pathHandler: PathHandlerType, cards: [Card]) {
+        self.pathHandler = pathHandler
+        self.cards = cards
+    }
 
     var body: some View {
         
-        WordList(cards: bookSharedData.cardsContainer[LearnRange.all.rawValue],
+        WordList(cards: cards,
                  showInfo: showInfo) {
             
             VStack {
              
-                Header(path: $bookSharedData.path,
+                Header(pathHandler: pathHandler,
                        title: "単語一覧")
                 
                 HStack {

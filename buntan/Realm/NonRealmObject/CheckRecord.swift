@@ -3,12 +3,18 @@ import Foundation
 struct CheckRecord: Identifiable {
     
     let id: String
-    let grade: Eiken
+    let grade: EikenGrade
     let date: Date
     let correctCount: Int
     let estimatedCount: Int
     
-    init(_ id: String, _ grade: Eiken, _ date: Date, _ correctCount: Int,_ estimatedCount: Int) {
+    init(
+        id: String,
+        grade: EikenGrade,
+        date: Date,
+        correctCount: Int,
+        estimatedCount: Int
+    ) {
         self.id = id
         self.grade = grade
         self.date = date

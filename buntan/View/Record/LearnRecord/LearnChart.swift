@@ -3,7 +3,7 @@ import Charts
 
 extension LearnRecordView {
     
-    private var lastElementExist: Bool { realmService.learnRecords.last != nil }
+    private var lastElementExist: Bool { dailyLearnRecords.last != nil }
     
     /// データを表示する7日のうち最初の日(日曜日)のDateを返す
     /// 基準 : latestDateの直近の日曜日
@@ -16,12 +16,12 @@ extension LearnRecordView {
     
     /// LearnRecordが存在する最も古い日付
     var lastDate: Date {
-        realmService.combinedRecords.first?.date ?? Date()
+        dailyLearnRecords.first?.date ?? Date()
     }
     
     /// LearnRecordが存在する最も新しい日付
     var latestData: Date {
-        realmService.combinedRecords.last?.date ?? Date()
+        dailyLearnRecords.last?.date ?? Date()
     }
        
     private var sevenDaysRecord: [LearnRecord] {
@@ -29,14 +29,19 @@ extension LearnRecordView {
         // what for?
         guard lastElementExist else { return [] }
         
-        let filteredRecords = realmService.combinedRecords.filter {
+        let filteredRecords = dailyLearnRecords.filter {
             $0.date >= firstDate && $0.date <= firstDate.afterSevenDays
         }
 
         return (0..<7).map { dayOffset in
             let targetDate = Calendar.current.date(byAdding: .day, value: Int(dayOffset), to: firstDate)!
-            return filteredRecords.first { Calendar.current.isDate($0.date, inSameDayAs: targetDate) }
-            ?? LearnRecord(UUID().uuidString, targetDate, 0)
+            return filteredRecords
+                .first { Calendar.current.isDate($0.date, inSameDayAs: targetDate) } ??
+            LearnRecord(
+                id: UUID().uuidString,
+                date: targetDate,
+                learnedCardCount: 0
+            )
         }
     }
     

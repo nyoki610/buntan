@@ -3,15 +3,19 @@ import SwiftUI
 struct CheckView: ResponsiveView {
     
     @Environment(\.deviceType) var deviceType: DeviceType
-    
-    @EnvironmentObject var realmService: RealmService
+
     @EnvironmentObject var loadingSharedData: LoadingSharedData
-    @EnvironmentObject var checkSharedData: CheckSharedData
-    @EnvironmentObject var learnManager: LearnManager
+    
+    @ObservedObject private var pathHandler: CheckViewPathHandler
+    @StateObject private var userInput = CheckUserInput()
+    
+    init(pathHandler: CheckViewPathHandler) {
+        self.pathHandler = pathHandler
+    }
     
     var body: some View {
         
-        NavigationStack(path: $checkSharedData.path) {
+        NavigationStack(path: $pathHandler.path) {
             
             VStack {
                 
@@ -33,8 +37,8 @@ struct CheckView: ResponsiveView {
             }
             .frame(maxWidth: .infinity)
             .background(CustomColor.background)
-            .navigationDestination(for: ViewName.self) { viewName in
-                viewName.viewForName(viewName)
+            .navigationDestination(for: CheckViewName.self) { viewName in
+                viewName.viewForName(pathHandler: pathHandler, userInput: userInput)
             }
         }
     }
@@ -42,19 +46,17 @@ struct CheckView: ResponsiveView {
     private func setupCheck() {
         
         loadingSharedData.startLoading(.process)
+                
+        guard let cards = SheetRealmAPI.getCaradsForCheck(eikenGrade: userInput.selectedGrade) else { return }
         
-        checkSharedData.extractCards()
-        
-        guard
-            !checkSharedData.cards.isEmpty,
-            let options = checkSharedData.selectedGrade.setupOptions(booksList: checkSharedData.booksList,
-                                                                     cards: checkSharedData.cards,
-                                                                     isBookView: false) else { loadingSharedData.finishLoading {}; return }
-
-        learnManager.setupLearn(checkSharedData.cards, options)
+        guard let options = SheetRealmAPI.getOptions(
+            eikenGrade: userInput.selectedGrade,
+            cards: cards,
+            containFifthOption: true
+        ) else { return }
         
         loadingSharedData.finishLoading {
-            checkSharedData.path.append(LearnMode.select.viewName(isBookView: false))
+            pathHandler.transitionScreen(to: .checkSelect(cards, options))
         }
     }
     
@@ -125,8 +127,9 @@ struct CheckView: ResponsiveView {
             
             Spacer()
             
-            Picker("grade", selection: $checkSharedData.selectedGrade) {
-                ForEach(Eiken.allCases.filter { realmService.convertGradeToSheet($0) != nil }, id: \.self) { grade in
+            Picker("grade", selection: $userInput.selectedGrade) {
+                /// 要編集
+                ForEach(EikenGrade.allCases, id: \.self) { grade in
                     Text(grade.title)
                         .bold()
                 }

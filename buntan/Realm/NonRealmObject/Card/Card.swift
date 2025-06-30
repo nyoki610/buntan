@@ -1,7 +1,8 @@
 import Foundation
 import RealmSwift
 
-class Card: Hashable {
+/// struct or classs 他のクラスについても要チェック 2025.06.22
+struct Card: Hashable {
     let id: String
     let index: Int /// saveProgress, resetProgress 内で id として使用される
     let word: String
@@ -45,12 +46,12 @@ class Card: Hashable {
         self.statusPos = statusPos
     }
     
-    func status(_ bookType: BookType) -> CardStatus {
-        bookType == .freq ? statusFreq : statusPos
+    func status(_ bookCategory: BookCategory) -> CardStatus {
+        bookCategory == .freq ? statusFreq : statusPos
     }
     
-    func toggleStatus(_ bookType: BookType, _ cardStatus: CardStatus) {
-        switch bookType {
+    mutating func toggleStatus(_ bookCategory: BookCategory, _ cardStatus: CardStatus) {
+        switch bookCategory {
         case .freq: statusFreq = cardStatus
         case .pos: statusPos = cardStatus
         }

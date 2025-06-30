@@ -4,37 +4,65 @@ struct BookView: ResponsiveView {
     
     @Environment(\.deviceType) var deviceType
     
-    @EnvironmentObject var realmService: RealmService
-    @EnvironmentObject var bookSharedData: BookSharedData
+    @ObservedObject private var pathHandler: BookViewPathHandler
+    @StateObject private var userInput: BookUserInput = BookUserInput()
+    
+    init(pathHandler: BookViewPathHandler) {
+        self.pathHandler = pathHandler
+    }
+    
+    ///
+    @State var allCardsCount: Int? = TestCruds.getAllCardsCount()
+    @State var allInfomationsCount: Int? = TestCruds.getAllInfomationsCount()
+    ///
     
     var body: some View {
         
-        NavigationStack(path: $bookSharedData.path) {
+        NavigationStack(path: $pathHandler.path) {
         
             ZStack {
             
                 VStack(spacing: 0) {
                     
-                    headerView
-                        .padding(.top, 40)
+                    if let todaysWordCount = userInput.todaysWordCount {
+                        headerView(todaysWordCount: todaysWordCount)
+                            .padding(.top, 40)
+                    }
                     
                     Spacer()
                     Spacer()
                     
                     eachGradeView(grade: .first)
-
+                    
                     Spacer()
                     
                     eachGradeView(grade: .preFirst)
 
                     Spacer()
+                    
+                    ///
+//                    VStack {
+//                        if let allCardsCount = allCardsCount {
+//                            Text("allCardsCount: \(allCardsCount)")
+//                        }
+//                        if let allInfomationsCount = allInfomationsCount {
+//                            Text("allInfomationsCount: \(allInfomationsCount)")
+//                        }
+//                    }
+                    ///
+                    
                     Spacer()
                     Spacer()
                 }
             }
             .background(CustomColor.background)
-            .navigationDestination(for: ViewName.self) { viewName in
-                viewName.viewForName(viewName)
+            .navigationDestination(for: BookViewName.self) { viewName in
+                viewName.viewForName(pathHandler: pathHandler, userInput: userInput)
+            }
+            .onAppear {
+                if let todaysWordCount = LearnRecordRealmAPI.getTodaysWordCount() {
+                    userInput.todaysWordCount = todaysWordCount
+                }
             }
         }
     }
@@ -42,25 +70,17 @@ struct BookView: ResponsiveView {
     
     /// headerView で使用する property
     /// ------------------------------
-    private var todayLearnCount: Int {
-        
-        guard let lastRecord = realmService.combinedRecords.last else { return 0 }
-       
-        let lastRecordDate = Calendar.current.dateComponents([.year, .month, .day], from: lastRecord.date)
-        let today = Calendar.current.dateComponents([.year, .month, .day], from: Date())
-
-        return lastRecordDate == today ? lastRecord.learnedCardCount : 0
-   }
     private var variableValue: Double {
-        if todayLearnCount >= 1000 { return 1.0 }
-        if todayLearnCount >= 100 { return 0.5 }
-        if todayLearnCount >= 10 { return 0.3 }
+        guard let todaysWordCount = userInput.todaysWordCount else { return 0.0 }
+        if todaysWordCount >= 1000 { return 1.0 }
+        if todaysWordCount >= 100 { return 0.5 }
+        if todaysWordCount >= 10 { return 0.3 }
         return 0.0
     }
     /// ------------------------------
     
     @ViewBuilder
-    private var headerView: some View {
+    private func headerView(todaysWordCount: Int) -> some View {
         
         HStack {
             VStack {
@@ -73,8 +93,8 @@ struct BookView: ResponsiveView {
                   variableValue: variableValue)
             .font(.system(size: responsiveSize(30, 40)))
             .foregroundStyle(Orange.defaultOrange)
-                
-            Text("\(todayLearnCount) words")
+            
+            Text("\(todaysWordCount) words")
                 .padding(.top, 10)
                 .font(.system(size: responsiveSize(17, 24)))
 
@@ -86,7 +106,7 @@ struct BookView: ResponsiveView {
     }
     
     @ViewBuilder
-    private func eachGradeView(grade: Eiken) -> some View {
+    private func eachGradeView(grade: EikenGrade) -> some View {
         
         VStack(spacing: 0) {
             Text(grade.title)
@@ -97,9 +117,9 @@ struct BookView: ResponsiveView {
                 
             HStack {
                 Spacer()
-                selectBookTypeButton(grade: grade, bookType: .freq)
+                selectBookCategoryButton(grade: grade, bookCategory: .freq)
                 Spacer()
-                selectBookTypeButton(grade: grade, bookType: .pos)
+                selectBookCategoryButton(grade: grade, bookCategory: .pos)
                 Spacer()
             }
             .padding(.vertical, 20)
@@ -111,16 +131,22 @@ struct BookView: ResponsiveView {
     }
     
     @ViewBuilder
-    private func selectBookTypeButton(grade: Eiken, bookType: BookType) -> some View {
+    private func selectBookCategoryButton(grade: EikenGrade, bookCategory: BookCategory) -> some View {
                 
         Button {
-            guard let sheet = realmService.sheets.first(where: { $0.grade == grade }) else { return }
-            bookSharedData.selectedGrade = sheet.grade
-            bookSharedData.selectedBookType = bookType
-            bookSharedData.path.append(.bookList)
+            userInput.selectedGrade = grade
+            userInput.selectedBookCategory = bookCategory
+            
+            guard let bookList: [Book] = SheetRealmAPI
+                .getBookListByGradeAndCategory(
+                    eikenGrade: grade,
+                    bookCategory: bookCategory
+                ) else { return }
+            
+            pathHandler.transitionScreen(to: .bookList(bookList))
         } label: {
             HStack {
-                Text(bookType.buttonLabel)
+                Text(bookCategory.buttonLabel)
                     .padding(.trailing, 10)
                 Image(systemName: "chevron.right.2")
             }

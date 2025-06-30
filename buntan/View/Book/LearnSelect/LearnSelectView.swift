@@ -1,24 +1,49 @@
 import SwiftUI
 
+
 struct LearnSelectView: ResponsiveView {
     
     @Environment(\.deviceType) var deviceType: DeviceType
     
-    @EnvironmentObject var realmService: RealmService
-    @EnvironmentObject var bookSharedData: BookSharedData
     @EnvironmentObject var alertSharedData: AlertSharedData
     @EnvironmentObject var loadingSharedData: LoadingSharedData
-    @EnvironmentObject var learnManager: LearnManager
+    
+    @ObservedObject private var pathHandler: BookViewPathHandler
+    @ObservedObject var userInput: BookUserInput
+    
+    @StateObject var viewModel: LearnSelectViewViewModel
+    
+    init(
+        pathHandler: BookViewPathHandler,
+        userInput: BookUserInput,
+        cardsContainer: CardsContainer
+    ) {
+        self.pathHandler = pathHandler
+        self.userInput = userInput
+        self._viewModel = StateObject(
+            wrappedValue: LearnSelectViewViewModel(cardsContainer: cardsContainer)
+        )
+    }
+
+    private var headerTitle: String {
+        var title: String = ""
+        title += userInput.selectedGrade?.title ?? ""
+        title += "   "
+        title += userInput.selectedBookConfig?.title ?? ""
+        title += userInput.selectedSectionTitle ?? ""
+        return title
+    }
 
     var body: some View {
             
             ZStack {
                 
                 VStack {
-                    
-                    let title = bookSharedData.selectedGrade.title + "   " + bookSharedData.selectedBook.title + "   " +  bookSharedData.selectedSectionId
 
-                    Header(path: $bookSharedData.path, title: title)
+                    Header(
+                        pathHandler: pathHandler,
+                        title: headerTitle
+                    )
                     
                     subButtonView
                     
@@ -33,17 +58,31 @@ struct LearnSelectView: ResponsiveView {
                     
                     Spacer()
                     
-                    StartButton(label: "学習を開始 →",
-                                color: Orange.defaultOrange) {
-                        guard let options = bookSharedData.selectedGrade.setupOptions(
-                            booksList: bookSharedData.booksList,
-                            cards: bookSharedData.cards,
-                            isBookView: true
-                        ) else { return }
+                    StartButton(
+                        label: "学習を開始 →",
+                        color: Orange.defaultOrange
+                    ) {
+                        /// loading が必要？
                         
-                        bookSharedData.options = options
-                        learnManager.setupLearn(bookSharedData.cards, bookSharedData.options)
-                        bookSharedData.path.append(bookSharedData.selectedMode.viewName(isBookView: true))
+                        guard let selectedGrade = userInput.selectedGrade else { return }
+                        
+                        let cards = viewModel.cardsContainer.getCardsByLearnRange(
+                            learnRange: userInput.selectedRange
+                        )
+                        
+                        guard let options = SheetRealmAPI
+                            .getOptions(
+                                eikenGrade: selectedGrade,
+                                cards: cards,
+                                containFifthOption: false
+                            ) else { return }
+                        
+                        pathHandler.transitionScreen(
+                            to: userInput.selectedMode.bookViewName(
+                                cards: cards,
+                                options: options
+                            )
+                        )
                     }
 
                     Spacer()
@@ -51,6 +90,10 @@ struct LearnSelectView: ResponsiveView {
             }
             .background(CustomColor.background)
             .navigationBarBackButtonHidden(true)
+            .onAppear {
+                adjustSelectedRange()
+                viewModel.onAppearAction(userInput: userInput)
+            }
     }
     
     @ViewBuilder
@@ -59,10 +102,19 @@ struct LearnSelectView: ResponsiveView {
         HStack {
             
             LearnSelectCircle(
-                firstCircle: .init(value: bookSharedData.allCount - bookSharedData.notLearnedCount, color: RoyalBlue.semiOpaque),
-                secondCircle: .init(value: bookSharedData.learnedCount, color: Orange.defaultOrange),
+                
+                firstCircle: .init(
+                    value: viewModel.cardsContainer.learnedCount + viewModel.cardsContainer.learningCount,
+                    color: RoyalBlue.semiOpaque
+                ),
+                
+                secondCircle: .init(
+                    value: viewModel.cardsContainer.learnedCount,
+                    color: Orange.defaultOrange
+                ),
+                
                 size: responsiveSize(140, 200),
-                maxValue: bookSharedData.allCount
+                maxValue: viewModel.cardsContainer.allCount
             )
             
             Spacer()
@@ -97,7 +149,7 @@ struct LearnSelectView: ResponsiveView {
         
         HStack {
             /// 「未学習の単語数」!=「全単語数」の場合のみ表示
-            if bookSharedData.cardsContainer[LearnRange.notLearned.rawValue].count != bookSharedData.cardsContainer[LearnRange.all.rawValue].count {
+            if viewModel.cardsContainer.notLearnedCount != viewModel.cardsContainer.allCount {
                 subButton(label: "リセット",
                           systemName: "arrow.clockwise",
                           color: .red) {
@@ -108,7 +160,7 @@ struct LearnSelectView: ResponsiveView {
             subButton(label: "単語一覧",
                       systemName: "info.circle.fill",
                       color: .blue) {
-                bookSharedData.path.append(.wordList)
+                pathHandler.transitionScreen(to: .wordList(viewModel.cardsContainer.allCards))
             }
         }
         .frame(width: responsiveSize(300, 420))
@@ -152,12 +204,33 @@ extension LearnSelectView {
             /// ensure loading screen rendering by delaying the next process
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 
-                guard let updatedBooksList = realmService.resetProgress(bookSharedData.cardsContainer[LearnRange.all.rawValue],
-                                                                        bookSharedData.selectedGrade,
-                                                                        bookSharedData.selectedBook.bookType) else { return }
-                bookSharedData.setupBooksList(updatedBooksList)
+                guard let selectedBookCategory = userInput.selectedBookCategory else { return }
+                
+                guard SheetRealmAPI.resetCardsStatus(
+                    cardIdList: viewModel.cardsContainer.allCards.map { $0.id },
+                    bookCategory: selectedBookCategory
+                ) else { return }
+                
+                viewModel.updateCardsContainer(userInput: userInput)
 
                 loadingSharedData.finishLoading {}
+            }
+        }
+    }
+}
+
+
+extension LearnSelectView {
+    
+    func adjustSelectedRange() {
+        
+        userInput.selectedRange = .notLearned
+        
+        if viewModel.cardsContainer.notLearnedCount == 0 {
+            userInput.selectedRange = .learning
+            
+            if viewModel.cardsContainer.learningCount == 0 {
+                userInput.selectedRange = .all
             }
         }
     }
