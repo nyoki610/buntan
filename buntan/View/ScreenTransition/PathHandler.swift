@@ -2,24 +2,27 @@ import SwiftUI
 import FirebaseAnalytics
 
 
-class _PathHandler: PathHandlerProtocol {
+final class BookViewPathHandler: PathHandlerProtocol {
+    @Published var path: [BookViewName] = []
+}
+
+
+final class CheckViewPathHandler: PathHandlerProtocol {
+    @Published var path: [CheckViewName] = []
+}
+
+
+protocol PathHandlerProtocol: ObservableObject, AnyObject {
     
-    /// contoroller for navigationPath
-    /// cannot be accessed directly
-    @Published internal var path: [ViewName] = []
+    associatedtype ViewNameType: ViewNameProtocol
+    var path: [ViewNameType] { get set }
+}
 
-    /// Binding for NavigationStack
-    /// can be accessed directly
-    public var navigationPath: Binding<[ViewName]> {
-        Binding(
-            get: { self.path },
-            set: { self.path = $0 }
-        )
-    }
-
-    func transitionScreen(to viewName: ViewName) {
+extension PathHandlerProtocol {
+    
+    func transitionScreen(to viewName: ViewNameType) {
         path.append(viewName)
-//        AnalyticsHandler.logScreenTransition(viewName: viewName)
+        AnalyticsHandler.logScreenTransition(viewName: viewName)
     }
     
     func backToPreviousScreen(count: Int) {
@@ -27,7 +30,7 @@ class _PathHandler: PathHandlerProtocol {
         path.removeLast(count)
     }
     
-    func backToDesignatedScreen(to viewName: ViewName) {
+    func backToDesignatedScreen(to viewName: ViewNameType) {
         
         guard let index = path.firstIndex(of: viewName) else { return }
         
@@ -41,7 +44,5 @@ class _PathHandler: PathHandlerProtocol {
         path.removeAll()
     }
     
-    var isEmpty: Bool {
-        path.isEmpty
-    }
+    var isEmpty: Bool { path.isEmpty }
 }

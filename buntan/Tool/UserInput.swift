@@ -1,8 +1,6 @@
 import Foundation
 
-class UserInput: ObservableObject {
-    
-}
+class UserInput: ObservableObject {}
 
 final class BookUserInput: UserInput {
     

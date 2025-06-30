@@ -5,7 +5,6 @@ struct CheckView: ResponsiveView {
     @Environment(\.deviceType) var deviceType: DeviceType
 
     @EnvironmentObject var loadingSharedData: LoadingSharedData
-    @EnvironmentObject var learnManager: LearnManager
     
     @ObservedObject private var pathHandler: CheckViewPathHandler
     @StateObject private var userInput = CheckUserInput()

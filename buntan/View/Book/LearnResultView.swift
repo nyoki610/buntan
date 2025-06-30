@@ -5,7 +5,8 @@ struct LearnResultView: ResponsiveView {
     @Environment(\.deviceType) var deviceType: DeviceType
     
     @EnvironmentObject var loadingSharedData: LoadingSharedData
-    @EnvironmentObject var learnManager: LearnManager
+    
+    private let learnedCardCount: Int
 
     /// 「学習中」の単語が存在するかどうかを示す bool 値
     private var reviewAll: Bool { cardsContainer.learningCount == 0 }
@@ -14,10 +15,16 @@ struct LearnResultView: ResponsiveView {
     @ObservedObject private var userInput: BookUserInput
     private let cardsContainer: CardsContainer
 
-    init(pathHandler: BookViewPathHandler, userInput: BookUserInput, cardsContainer: CardsContainer) {
+    init(
+        pathHandler: BookViewPathHandler,
+        userInput: BookUserInput,
+        cardsContainer: CardsContainer,
+        learnedCardCount: Int
+    ) {
         self.pathHandler = pathHandler
         self.userInput = userInput
         self.cardsContainer = cardsContainer
+        self.learnedCardCount = learnedCardCount
     }
     
     var body: some View {
@@ -25,7 +32,7 @@ struct LearnResultView: ResponsiveView {
         VStack {
             
             XmarkHeader() {
-                pathHandler.backToPreviousScreen(count: 3)
+                pathHandler.backToDesignatedScreen(to: .sectionList(EmptyModel.book))
                 pathHandler.transitionScreen(to: .learnSelect(cardsContainer))
             }
             
@@ -36,18 +43,26 @@ struct LearnResultView: ResponsiveView {
             Spacer()
             Spacer()
             
-            StartButton(label: reviewAll ? "すべての単語を復習　→" : "学習中の単語を復習　→",
-                        color: reviewAll ? Orange.defaultOrange : RoyalBlue.defaultRoyal) {
-                buttonAction(isNotLearnedButtonAction: false)
+            StartButton(
+                label: reviewAll ? "すべての単語を復習　→" : "学習中の単語を復習　→",
+                color: reviewAll ? Orange.defaultOrange : RoyalBlue.defaultRoyal
+            ) {
+                Task {
+                    await buttonAction(isNotLearnedButtonAction: false)
+                }
             }
                          
             
             if cardsContainer.notLearnedCount != 0 {
-                StartButton(label: "未学習の単語を学習　→",
-                            color: .gray) {
-                    buttonAction(isNotLearnedButtonAction: true)
+                StartButton(
+                    label: "未学習の単語を学習　→",
+                    color: .gray
+                ) {
+                    Task {
+                        await buttonAction(isNotLearnedButtonAction: true)
+                    }
                 }
-                         .padding(.top, responsiveSize(20, 40))
+                .padding(.top, responsiveSize(20, 40))
             }
             
             Spacer()
@@ -62,7 +77,7 @@ struct LearnResultView: ResponsiveView {
         
         VStack {
             
-            Text("\(learnManager.cards.count) words の学習を終えました！")
+            Text("\(learnedCardCount) words の学習を終えました！")
                 .fontSize(responsiveSize(20, 28))
                 .bold()
             
@@ -140,7 +155,7 @@ struct LearnResultView: ResponsiveView {
     }
 
     
-    private func buttonAction(isNotLearnedButtonAction: Bool) -> Void {
+    private func buttonAction(isNotLearnedButtonAction: Bool) async -> Void {
         
         /// 次に学習する範囲を設定
         userInput.selectedRange = isNotLearnedButtonAction ? .notLearned : reviewAll ? .all : .learning
@@ -156,14 +171,12 @@ struct LearnResultView: ResponsiveView {
             cards: cards,
             containFifthOption: false
         ) else { return }
-        
-        /// ここで再学習時に新規のoptionを引き継ぐ処理が必要
-//        bookSharedData.options = options
-        
-        /// 学習モードを初期化
-        learnManager.setupLearn(cards, options)
-        
-        /// 画面遷移
-        pathHandler.backToPreviousScreen(count: 1)
+                
+        pathHandler.transitionScreen(
+            to: userInput.selectedMode.bookViewName(
+                cards: cards,
+                options: options
+            )
+        )
     }
 }

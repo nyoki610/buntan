@@ -58,7 +58,7 @@ extension BookViewName: ViewNameProtocol {
         case .swipe: return "SwipeView"
         case .select: return "SelectView"
         case .type: return "TypeView"
-        case .learnResult: return "LearnResultView"
+        case .learnResult: return "_LearnResultView"
         }
     }
 
@@ -132,7 +132,7 @@ extension BookViewName: ViewNameProtocol {
         
         case .learnResult(let cardsContainer, let learnedCardCount):
             return AnyView(
-                _LearnResultView(
+                LearnResultView(
                     pathHandler: pathHandler,
                     userInput: userInput,
                     cardsContainer: cardsContainer,

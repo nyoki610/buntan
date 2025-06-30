@@ -1,7 +1,7 @@
 import SwiftUI
 
 
-struct _LearnHeader: ResponsiveView {
+struct LearnHeader: ResponsiveView {
     
     @Environment(\.deviceType) internal var deviceType: DeviceType
     
