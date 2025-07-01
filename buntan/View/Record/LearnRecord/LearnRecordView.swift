@@ -1,8 +1,8 @@
 import SwiftUI
 
-struct LearnRecordView: ResponsiveView {
+struct LearnRecordView: View {
     
-    @Environment(\.deviceType) var deviceType
+
     
     @State var chartController: Int = 0
     

@@ -6,9 +6,6 @@ struct BookSelectView: SelectViewProtocol, BookLearnViewProtocol {
     typealias ViewModelType = BookSelectViewViewModel
     typealias UserInputType = BookUserInput
     
-    /// conformance to ResponsiveView
-    @Environment(\.deviceType) var deviceType: DeviceType
-    
     @EnvironmentObject var loadingSharedData: LoadingSharedData
     
     @StateObject var viewModel: BookSelectViewViewModel

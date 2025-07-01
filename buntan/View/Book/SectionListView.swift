@@ -1,8 +1,6 @@
 import SwiftUI
 
-struct SectionListView: ResponsiveView {
-    
-    @Environment(\.deviceType) var deviceType: DeviceType
+struct SectionListView: View {
 
     @ObservedObject private var pathHandler: BookViewPathHandler
     @ObservedObject private var userInput: BookUserInput

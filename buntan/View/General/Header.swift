@@ -1,8 +1,7 @@
 import SwiftUI
 
-struct Header<PathHandlerType: PathHandlerProtocol>: ResponsiveView {
-    
-    @Environment(\.deviceType) var deviceType: DeviceType
+struct Header<PathHandlerType: PathHandlerProtocol>: View {
+
 
     let title: String?
 

@@ -1,8 +1,8 @@
 import SwiftUI
 
-struct BookView: ResponsiveView {
+struct BookView: View {
     
-    @Environment(\.deviceType) var deviceType
+
     
     @ObservedObject private var pathHandler: BookViewPathHandler
     @StateObject private var userInput: BookUserInput = BookUserInput()

@@ -1,8 +1,7 @@
 import SwiftUI
 
-struct WordListView<PathHandlerType: PathHandlerProtocol>: ResponsiveView {
-    
-    @Environment(\.deviceType) var deviceType: DeviceType
+struct WordListView<PathHandlerType: PathHandlerProtocol>: View {
+
     
     @State var showInfo: Bool = true
     

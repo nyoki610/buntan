@@ -2,8 +2,7 @@ import SwiftUI
 
 
 struct BookLearnSettingButtons: LearnSettingButtonsProtocol {
-    
-    @Environment(\.deviceType) var deviceType: DeviceType
+
     
     @EnvironmentObject var alertSharedData: AlertSharedData
     

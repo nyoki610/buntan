@@ -1,7 +1,7 @@
 import SwiftUI
 
 
-protocol LearnSettingButtonsProtocol: ResponsiveView {
+protocol LearnSettingButtonsProtocol: View {
     
     var showSetting: Bool { get set }
 }

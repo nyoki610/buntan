@@ -1,8 +1,8 @@
 import SwiftUI
 
-struct MainView: ResponsiveView {
+struct MainView: View {
     
-    @Environment(\.deviceType) var deviceType
+
     
     
     /// ObservedObjects

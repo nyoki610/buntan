@@ -1,8 +1,7 @@
 import SwiftUI
 
-struct CheckResultView: ResponsiveView {
-    
-    @Environment(\.deviceType) var deviceType: DeviceType
+struct CheckResultView: View {
+
 
     @EnvironmentObject var loadingSharedData: LoadingSharedData
     

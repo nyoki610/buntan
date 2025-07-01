@@ -31,7 +31,6 @@ struct buntanApp: App {
             MainView()
                 /// default font size
                 .font(.system(size: 17))
-                .environment(\.deviceType, DeviceType.model)
         }
     }
 }

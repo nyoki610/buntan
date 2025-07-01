@@ -3,8 +3,7 @@ import SwiftUI
 struct BookSwipeView: BookLearnViewProtocol, SwipeViewProtocol {
     typealias ViewModelType = BookSwipeViewViewModel
     typealias UserInputType = BookUserInput
-    
-    @Environment(\.deviceType) var deviceType: DeviceType
+
 
     @EnvironmentObject var loadingSharedData: LoadingSharedData
     @EnvironmentObject var alertSharedData: AlertSharedData

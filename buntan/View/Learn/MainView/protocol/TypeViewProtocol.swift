@@ -22,7 +22,7 @@ extension TypeViewProtocol {
                 .lineLimit(3)
             
             /// iPhone or iPad で View を調整
-            if deviceType == .iPhone {
+            if DeviceType.getDeviceType() == .iPhone {
                 Spacer()
                 Spacer()
             }

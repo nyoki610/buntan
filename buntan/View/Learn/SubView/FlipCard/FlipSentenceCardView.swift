@@ -1,12 +1,11 @@
 import SwiftUI
 
-struct FlipSentenceCardView: ResponsiveView {
+struct FlipSentenceCardView: View {
     
     enum ViewType {
         case swipe, select
     }
-    
-    @Environment(\.deviceType) var deviceType: DeviceType
+
     
     let viewType: ViewType
     let card: Card

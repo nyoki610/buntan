@@ -1,8 +1,7 @@
 import SwiftUI
 
-struct WordList<Content: View>: ResponsiveView {
-    
-    @Environment(\.deviceType) var deviceType: DeviceType
+struct WordList<Content: View>: View {
+
     
     @State var selectedCard: Card?
     let cards: [Card]
@@ -69,7 +68,7 @@ struct WordList<Content: View>: ResponsiveView {
         
         VStack {
          
-            ForEach(Array(stride(from: 0, to: infoList.count, by: (deviceType == .iPhone) ? 3 : 5)), id: \.self) { index in
+            ForEach(Array(stride(from: 0, to: infoList.count, by: (DeviceType.getDeviceType() == .iPhone) ? 3 : 5)), id: \.self) { index in
                 HStack {
 
                     eachInfoView(infoList[index])
@@ -83,7 +82,7 @@ struct WordList<Content: View>: ResponsiveView {
                         eachInfoView(infoList[index+2])
                     }
                     
-                    if deviceType == .iPad {
+                    if DeviceType.getDeviceType() == .iPad {
                         if index + 3 < infoList.count {
                             eachInfoView(infoList[index+3])
                         }

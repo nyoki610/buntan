@@ -1,8 +1,7 @@
 import SwiftUI
 
-struct StartButton: ResponsiveView {
-    
-    @Environment(\.deviceType) var deviceType: DeviceType
+struct StartButton: View {
+
     let label: String
     let color: Color
     let action: () -> Void

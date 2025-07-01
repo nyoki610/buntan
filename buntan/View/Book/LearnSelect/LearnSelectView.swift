@@ -1,9 +1,7 @@
 import SwiftUI
 
 
-struct LearnSelectView: ResponsiveView {
-    
-    @Environment(\.deviceType) var deviceType: DeviceType
+struct LearnSelectView: View {
     
     @EnvironmentObject var alertSharedData: AlertSharedData
     @EnvironmentObject var loadingSharedData: LoadingSharedData
