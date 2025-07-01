@@ -6,7 +6,7 @@ enum Pos: Int, CaseIterable {
     case verb
     case adjective
     case adverb
-    case idiom
+    case idiom = 99
     
     var jaLabel: String {
         switch self {

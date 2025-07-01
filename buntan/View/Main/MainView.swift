@@ -46,13 +46,22 @@ struct MainView: View {
         }
         .onAppear {
             /// LogoView を 3 秒間表示した後, 画面遷移
+//            Task {
+//                do {
+//                    try await Task.sleep(nanoseconds: 3_000_000_000)
+//                    withAnimation {
+//                        showLogoView = false
+//                    }
+//                } catch { print("Error: \(error)") }
+//            }
             Task {
                 do {
-                    try await Task.sleep(nanoseconds: 3_000_000_000)
-                    withAnimation {
-                        showLogoView = false
-                    }
-                } catch { print("Error: \(error)") }
+                    let (firstGradeCards, preFirstGradeCards) = try await APIHandler.getLatestCards()
+                    print("firstGradeCards: \(firstGradeCards.count)")
+                    print("preFirstGradeCards: \(preFirstGradeCards.count)")
+                } catch {
+                    print("エラー: \(error.localizedDescription)")
+                }
             }
         }
     }

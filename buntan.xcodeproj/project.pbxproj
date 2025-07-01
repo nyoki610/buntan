@@ -50,6 +50,16 @@
 		B3C806132D05B7F400BFC383 /* buntan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = buntan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		B36710F62E14A364004D7A7D /* Exceptions for "buntan" folder in "buntan" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = B3C8037F2D04CA3500BFC383 /* buntan */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		B3C803932D04CA3600BFC383 /* buntanTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
@@ -63,6 +73,9 @@
 		};
 		B3C804E82D04CA8900BFC383 /* buntan */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				B36710F62E14A364004D7A7D /* Exceptions for "buntan" folder in "buntan" target */,
+			);
 			path = buntan;
 			sourceTree = "<group>";
 		};
@@ -302,6 +315,8 @@
 /* Begin XCBuildConfiguration section */
 		B3C803A22D04CA3600BFC383 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = B3C804E82D04CA8900BFC383 /* buntan */;
+			baseConfigurationReferenceRelativePath = Env.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -365,6 +380,8 @@
 		};
 		B3C803A32D04CA3600BFC383 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = B3C804E82D04CA8900BFC383 /* buntan */;
+			baseConfigurationReferenceRelativePath = Env.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -430,6 +447,7 @@
 				DEVELOPMENT_TEAM = 279W33X485;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = buntan/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "ぶんたん";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -467,6 +485,7 @@
 				DEVELOPMENT_TEAM = 279W33X485;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = buntan/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "ぶんたん";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

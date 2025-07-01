@@ -23,8 +23,8 @@ extension RealmCard: ConveretableRealmObject {
         
         guard
             let pos = Pos(rawValue: posRawValue),
-            let statusFreq = CardStatus(rawValue: statusFreqRawValue),
-            let statusPos = CardStatus(rawValue: statusPosRawValue) else {
+            let statusFreq = Card.CardStatus(rawValue: statusFreqRawValue),
+            let statusPos = Card.CardStatus(rawValue: statusPosRawValue) else {
             return nil
         }
         

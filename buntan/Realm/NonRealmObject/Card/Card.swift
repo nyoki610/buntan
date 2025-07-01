@@ -1,7 +1,6 @@
 import Foundation
 import RealmSwift
 
-/// struct or classs 他のクラスについても要チェック 2025.06.22
 struct Card: Hashable {
     let id: String
     let index: Int /// saveProgress, resetProgress 内で id として使用される
@@ -16,6 +15,12 @@ struct Card: Hashable {
     let infoList: [Info]
     var statusFreq: CardStatus
     var statusPos: CardStatus
+    
+    enum CardStatus: Int {
+        case notLearned
+        case learning
+        case completed
+    }
 
     init(id: String,
          index: Int,
@@ -57,31 +62,6 @@ struct Card: Hashable {
         }
     }
     
-    func convertToRealm() -> RealmCard {
-        let realmCard = RealmCard()
-        
-        realmCard.index = index
-        realmCard.word = word
-        realmCard.posRawValue = pos.rawValue
-        realmCard.phrase = phrase
-        realmCard.meaning = meaning
-        realmCard.sentence = sentence
-        realmCard.translation = translation
-        realmCard.startPosition = startPosition
-        realmCard.endPosition = endPosition
-        realmCard.statusFreqRawValue = statusFreq.rawValue
-        realmCard.statusPosRawValue = statusPos.rawValue
-        
-        let realmInfoList = List<RealmInfo>()
-        for info in infoList {
-            let realmInfo = info.convertToRealm()
-            realmInfoList.append(realmInfo)
-        }
-        realmCard.infoList = realmInfoList
-        
-        return realmCard
-    }
-    
     func convertToOption() -> Option {
         
         return Option(id: id, word: word, meaning: meaning)
@@ -97,3 +77,4 @@ struct Card: Hashable {
     }
     ///   要確認
 }
+
