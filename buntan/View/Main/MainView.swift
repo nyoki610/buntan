@@ -1,14 +1,10 @@
 import SwiftUI
 
 struct MainView: View {
-    
 
-    
-    
     /// ObservedObjects
     @ObservedObject private var loadingSharedData = LoadingSharedData()
     @ObservedObject private var alertSharedData = AlertSharedData()
-
     
     /// 起動時の LogoView の表示を管理
     @State private var showLogoView: Bool = true
@@ -49,7 +45,6 @@ struct MainView: View {
             alertSharedData.createAlert()
         }
         .onAppear {
-            
             /// LogoView を 3 秒間表示した後, 画面遷移
             Task {
                 do {

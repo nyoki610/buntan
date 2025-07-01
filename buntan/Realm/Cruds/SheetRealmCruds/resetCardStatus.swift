@@ -8,7 +8,7 @@ extension SheetRealmCruds {
         bookCategory: BookCategory
     ) -> Bool {
         
-        guard let realm = tryRealm() else { return false }
+        guard let realm = tryRealm(caller: "resetCardStatus") else { return false }
         
         do {
             try realm.write {

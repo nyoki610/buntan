@@ -8,7 +8,7 @@ extension SheetRealmCruds {
         unnecessaryIds: Set<String>
     ) -> Bool {
         
-        guard let realm = tryRealm() else { return false }
+        guard let realm = tryRealm(caller: "deleteUnnecessaryObjects") else { return false }
         
         let objectsToDelete = realm
             .objects(type)

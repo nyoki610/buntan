@@ -5,7 +5,7 @@ extension CheckRecordRealmCruds {
     
     static func getCheckRecords() -> [CheckRecord]? {
         
-        guard let realm = tryRealm() else { return nil }
+        guard let realm = tryRealm(caller: "getCheckRecords") else { return nil }
         
         let checkRecords = Array(
             realm.objects(RealmCheckRecord.self)

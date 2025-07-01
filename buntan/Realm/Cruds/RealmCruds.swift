@@ -3,7 +3,7 @@ import RealmSwift
 
 class RealmCruds {
     
-    static func tryRealm() -> Realm? {
+    static func tryRealm(caller: String) -> Realm? {
         
         let schemaVersion: UInt64 = 1
         
@@ -22,7 +22,7 @@ class RealmCruds {
             let config = Realm.Configuration(fileURL: realmURL, schemaVersion: schemaVersion)
             let userRealm = try Realm(configuration: config)
             
-            print("Log: Realm file successfully accessed")
+            print("Log: Realm file successfully accessed. Caller: \(caller)")
             return userRealm
             
         } catch {

@@ -2,8 +2,6 @@ import SwiftUI
 
 struct BookView: View {
     
-
-    
     @ObservedObject private var pathHandler: BookViewPathHandler
     @StateObject private var userInput: BookUserInput = BookUserInput()
     
@@ -12,8 +10,8 @@ struct BookView: View {
     }
     
     ///
-    @State var allCardsCount: Int? = TestCruds.getAllCardsCount()
-    @State var allInfomationsCount: Int? = TestCruds.getAllInfomationsCount()
+//    @State var allCardsCount: Int? = TestCruds.getAllCardsCount()
+//    @State var allInfomationsCount: Int? = TestCruds.getAllInfomationsCount()
     ///
     
     var body: some View {
