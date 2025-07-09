@@ -6,30 +6,24 @@ struct MainView: View {
     @ObservedObject private var loadingSharedData = LoadingSharedData()
     @ObservedObject private var alertSharedData = AlertSharedData()
     
-    /// 起動時の LogoView の表示を管理
-    @State private var showLogoView: Bool = true
-    
-    /// tabView を管理
-    @State var selectedRootViewName: RootViewName = .book
-    
-    @StateObject var bookViewPathHandler = BookViewPathHandler()
-    @StateObject var checkViewPathHandler = CheckViewPathHandler()
+    @StateObject var viewModel = MainViewViewModel()
     
     var body: some View {
         
         ZStack {
             
-            if showLogoView {
+            if viewModel.showLogoView {
                 logoView
             } else {
                 ZStack {
-                    selectedRootViewName.viewForName(
-                        bookViewPathHandler: bookViewPathHandler,
-                        checkViewPathHandler: checkViewPathHandler
+                    viewModel.selectedRootViewName.viewForName(
+                        bookViewPathHandler: viewModel.bookViewPathHandler,
+                        checkViewPathHandler: viewModel.checkViewPathHandler
                     )
                     
-                    tabView
-                    
+                    if viewModel.showTabView {
+                        tabView
+                    }
                 }
             }
 
@@ -45,24 +39,15 @@ struct MainView: View {
             alertSharedData.createAlert()
         }
         .onAppear {
-            /// LogoView を 3 秒間表示した後, 画面遷移
-//            Task {
-//                do {
-//                    try await Task.sleep(nanoseconds: 3_000_000_000)
-//                    withAnimation {
-//                        showLogoView = false
-//                    }
-//                } catch { print("Error: \(error)") }
-//            }
             Task {
-                do {
-                    let (firstGradeCards, preFirstGradeCards) = try await APIHandler.getLatestCards()
-                    print("firstGradeCards: \(firstGradeCards.count)")
-                    print("preFirstGradeCards: \(preFirstGradeCards.count)")
-                } catch {
-                    print("エラー: \(error.localizedDescription)")
-                }
+                await viewModel.onAppearAction()
             }
+        }
+        .onReceive(viewModel.bookViewPathHandler.$path) { _ in
+            viewModel.updateShowTabView()
+        }
+        .onReceive(viewModel.checkViewPathHandler.$path) { _ in
+            viewModel.updateShowTabView()
         }
     }
 }

@@ -3,33 +3,24 @@ import SwiftUI
 
 extension MainView {
     
-    /// BookView() or CheckView or RecordView() 表示時のみtabViewを表示
-    ///     - BookView() -> bookSharedData.path が空かどうかを監視
-    ///     - CheckView() -> checkSharedData.path が空かどうかを監視
-    ///     - RecordView() -> 常に tabView を表示
-    var showTabView: Bool { bookViewPathHandler.isEmpty && checkViewPathHandler.isEmpty }
-    
     var tabView: some View {
         
         VStack {
          
-            if showTabView {
+            Spacer()
+            
+            HStack {
+                Spacer()
+
+                tabButton("book.fill", "単語帳", .book)
+
+                tabButton("checklist.checked", "テスト", .check)
+                    .padding(.horizontal, responsiveSize(20, 60))
+                tabButton("shoeprints.fill", "記録", .record)
+                    .padding(.bottom, responsiveSize(0, 20))
                 
                 Spacer()
                 
-                HStack {
-                    Spacer()
-
-                    tabButton("book.fill", "単語帳", .book)
-
-                    tabButton("checklist.checked", "テスト", .check)
-                        .padding(.horizontal, responsiveSize(20, 60))
-                    tabButton("shoeprints.fill", "記録", .record)
-                        .padding(.bottom, responsiveSize(0, 20))
-                    
-                    Spacer()
-                    
-                }
             }
         }
     }
@@ -37,10 +28,10 @@ extension MainView {
     @ViewBuilder
     private func tabButton(_ systemName: String, _ title: String, _ targetViewName: RootViewName) -> some View {
         
-        let isSelected = self.selectedRootViewName == targetViewName
+        let isSelected = viewModel.selectedRootViewName == targetViewName
         
         Button {
-            self.selectedRootViewName = targetViewName
+            viewModel.selectedRootViewName = targetViewName
             AnalyticsHandler.logScreenTransition(viewName: ViewName.root(targetViewName))
         } label: {
             

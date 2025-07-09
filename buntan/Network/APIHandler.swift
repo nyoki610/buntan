@@ -40,18 +40,14 @@ enum APIHandler {
     }
     
     private static func createRequest(path: String, method: Method) throws -> URLRequest {
-        
-        print("Creating request for path: \(path)")
-        print("API Key: \(AppConfig.apiKey ?? "nil")")
-        print("Base URL: \(AppConfig.baseURL ?? "nil")")
-        
+
         guard let apiKey = AppConfig.apiKey,
               let baseURL = AppConfig.baseURL else {
             print("API Key or Base URL is not set.")
             throw APIError.invalidConfig
         }
         let apiURL = baseURL + path
-        print("Full API URL: \(apiURL)")
+        print("Creating request for URL: \(apiURL)")
         
         guard let url = URL(string: apiURL) else {
             print("Invalid URL: \(apiURL)")
@@ -68,15 +64,8 @@ enum APIHandler {
     }
     
     private static func performRequest(_ request: URLRequest) async throws -> [String: Any] {
-        print("Performing request to: \(request.url?.absoluteString ?? "unknown")")
-        
+
         let (data, response) = try await URLSession.shared.data(for: request)
-        
-        print("Response received")
-        if let httpResponse = response as? HTTPURLResponse {
-            print("Status code: \(httpResponse.statusCode)")
-            print("Response headers: \(httpResponse.allHeaderFields)")
-        }
         
         guard let httpResponse = response as? HTTPURLResponse,
               (200...299).contains(httpResponse.statusCode) else {

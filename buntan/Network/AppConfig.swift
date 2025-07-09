@@ -32,7 +32,14 @@ enum AppConfig {
             return nil
         }
         let cleanedPath = path.replacingOccurrences(of: "\\", with: "")
-        print("Latest Cards Path: \(cleanedPath)")
+        return cleanedPath
+    }
+    
+    static var getLatestVersionPath: String? {
+        guard let path: String = readEnvironmentVariable(named: "LATEST_VERSION_PATH") else {
+            return nil
+        }
+        let cleanedPath = path.replacingOccurrences(of: "\\", with: "")
         return cleanedPath
     }
 }
