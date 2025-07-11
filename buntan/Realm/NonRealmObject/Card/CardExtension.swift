@@ -10,12 +10,21 @@ extension Card {
     
     var customMeaning: String { posPrefix(customPhrase + meaning) }
     
-    var answer: String {
+    var priority: Int {
+        infoList.reduce(0) { $0 + ($1.isAnswer ? 10 : 1) }
+    }
+    
+    var isSentenceExist: Bool {
+        !sentence.isEmpty && !translation.isEmpty
+    }
+}
+
+
+extension Card {
+    
+    var clozeAnswer: String? {
         
-        guard
-            startPosition >= 0,
-            endPosition < sentence.count,
-            startPosition <= endPosition else { return "" }
+        guard isSentenceAvailable else { return nil }
         
         let startIndex = sentence.index(sentence.startIndex, offsetBy: startPosition)
         let endIndex = sentence.index(sentence.startIndex, offsetBy: endPosition)
@@ -23,11 +32,20 @@ extension Card {
         return String(sentence[startIndex...endIndex])
     }
     
-    var priority: Int {
-        infoList.reduce(0) { $0 + ($1.isAnswer ? 10 : 1) }
-    }
-    
-    var isSentenceExist: Bool {
-        !sentence.isEmpty && !translation.isEmpty
+    private var isSentenceAvailable: Bool {
+        
+        /// 例文・訳が含まれていない場合
+        guard sentence != "" && translation != "" else {
+            return false
+        }
+        
+        /// startPosition, endPosition の値が無効である場合
+        guard 0 <= startPosition,
+              startPosition < endPosition,
+              endPosition < sentence.count else {
+            return false
+        }
+        
+        return true
     }
 }
