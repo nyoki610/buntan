@@ -39,14 +39,16 @@ extension BaseTypeViewViewModel {
         let userAnswer = userInputAnswer.trimmingCharacters(in: .whitespacesAndNewlines)
         
         /// 正解時の処理
-        if userAnswer == topCard.answer {
+        if (userAnswer == topCard.word) || (userAnswer == topCard.clozeAnswer) {
             let shouldSave = await submitCorrectAnswerAction()
             return shouldSave
             
         /// 不正解時の処理
         } else {
-            userInputAnswer = ""
-            isCorrect = false
+            DispatchQueue.main.async {
+                self.userInputAnswer = ""
+                self.isCorrect = false
+            }
             return false
         }
     }
@@ -62,10 +64,13 @@ extension BaseTypeViewViewModel {
         try? await Task.sleep(nanoseconds: 1_000_000_000)
 
         self.hideSettings()
-        self.topCardIndex += 1
-        self.userInputAnswer = ""
-        self.isAnswering = true
-        self.isKeyboardActive = true
+        
+        DispatchQueue.main.async {
+            self.topCardIndex += 1
+            self.userInputAnswer = ""
+            self.isAnswering = true
+            self.isKeyboardActive = true
+        }
 
         return false
     }

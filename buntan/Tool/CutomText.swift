@@ -31,23 +31,26 @@ enum CustomText {
         
         return attributedString
     }
+
     
-    /// card.sentence の card.startPosition から card.endPosition までをアンダースコアに置き換える関数
-    static func replaceAnswer(card: Card, showInitial: Bool) -> String {
-        
-        let sentence = card.sentence
-        let startPosition = card.startPosition + (showInitial ? 1 : 0)
-        let endPosition = card.endPosition
-        
-        /// 二文字の単語のイニシャル非表示の場合は statrPosition = endPosition となる
-        guard startPosition <= endPosition, startPosition >= 0, endPosition <= sentence.count else { return sentence }
+    static func replaceSubstring(in originalString: String, targetSubstring: String) -> String {
 
-        var processedSentence = sentence
-        let startIndex = sentence.index(sentence.startIndex, offsetBy: startPosition)
-        let endIndex = sentence.index(sentence.startIndex, offsetBy: endPosition)
-        let range = startIndex...endIndex
+        /// 置き換える対象の文字列が空の場合は、元の文字列をそのまま返す
+        guard !targetSubstring.isEmpty else { return originalString }
 
-        processedSentence.replaceSubrange(range, with: String(repeating: "_", count: endPosition - startPosition + 1))
-        return processedSentence
+        /// 元の文字列に対象の文字列が含まれているか確認
+        guard let range = originalString.range(of: targetSubstring) else {
+            /// 含まれていない場合は元の文字列をそのまま返す
+            return originalString
+        }
+
+        /// 置き換える「_」の数を計算（対象文字列の長さと同じ数だけ）
+        let replacement = String(repeating: "_", count: targetSubstring.count)
+
+        /// 指定された範囲を「_」で置き換える
+        var processedString = originalString
+        processedString.replaceSubrange(range, with: replacement)
+
+        return processedString
     }
 }

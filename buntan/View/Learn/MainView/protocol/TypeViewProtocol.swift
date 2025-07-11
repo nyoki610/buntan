@@ -13,13 +13,28 @@ extension TypeViewProtocol {
         VStack {
             Spacer()
             
-            Text(CustomText.replaceAnswer(
-                card: viewModel.topCard,
-                showInitial: userDefaultHandler.showInitial
-            ))
-                .fontSize(responsiveSize(20, 28))
-                .fixedSize(horizontal: false, vertical: true)
-                .lineLimit(3)
+            if let clozeAnswer = viewModel.topCard.clozeAnswer {
+                
+                var targetSubString: String {
+                    guard clozeAnswer.count >= 2 else { return clozeAnswer }
+                    
+                    if userDefaultHandler.showInitial {
+                        return String(clozeAnswer.dropFirst())
+                    } else {
+                        return clozeAnswer
+                    }
+                }
+                
+                Text(
+                    CustomText.replaceSubstring(
+                        in: viewModel.topCard.sentence,
+                        targetSubstring: targetSubString
+                    )
+                )
+                    .fontSize(responsiveSize(20, 28))
+                    .fixedSize(horizontal: false, vertical: true)
+                    .lineLimit(3)
+            }
             
             /// iPhone or iPad で View を調整
             if DeviceType.getDeviceType() == .iPhone {
@@ -103,13 +118,19 @@ extension TypeViewProtocol {
     @ViewBuilder
     private var notAnsweringView: some View {
         
-        let word = viewModel.topCard.word
-        let answer = viewModel.topCard.answer
-        let isSame = (word == answer)
+        var label: String {
+            /// `clozeAnswer` が存在し、かつ `word` と異なる場合にのみ`(word)`を追加する
+            if let clozeAnswer = viewModel.topCard.clozeAnswer, clozeAnswer != viewModel.topCard.word {
+                return "\(clozeAnswer) (\(viewModel.topCard.word))"
+            } else {
+                /// `clozeAnswer` が nil の場合、または `clozeAnswer` が `word` と同じ場合は `word` のみを表示
+                return viewModel.topCard.word
+            }
+        }
 
         HStack {
             
-            Text(isSame ? answer : "\(answer) (\(word))")
+            Text(label)
                 .fontSize(responsiveSize(20, 28))
                 .foregroundColor(viewModel.isCorrect ? Orange.defaultOrange : RoyalBlue.defaultRoyal)
                 .bold()
