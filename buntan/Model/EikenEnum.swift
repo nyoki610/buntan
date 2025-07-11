@@ -6,13 +6,6 @@ enum EikenGrade: Double, CaseIterable {
     case first = 1.0
     case preFirst = 1.5
     
-    var index: Int {
-        switch self {
-        case .first: return 0
-        case .preFirst: return 1
-        }
-    }
-    
     var title: String {
         switch self {
         case .first: return "1級"
