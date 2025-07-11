@@ -1,4 +1,4 @@
-# Buntan for Eiken®
+# ぶんたん for 英検®
 
 ## App Store URL
 https://apps.apple.com/us/app/ぶんたん-for-英検/id6739174811
