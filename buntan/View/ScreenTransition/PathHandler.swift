@@ -43,6 +43,4 @@ extension PathHandlerProtocol {
     func backToRootScreen() {
         path.removeAll()
     }
-    
-    var isEmpty: Bool { path.isEmpty }
 }

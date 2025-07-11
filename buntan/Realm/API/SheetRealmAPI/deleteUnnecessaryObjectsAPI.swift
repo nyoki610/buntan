@@ -32,7 +32,6 @@ extension SheetRealmAPI {
         
         let unnecessaryObjectIds = allIds.subtracting(necessaryObjectIds)
 
-        
         return SheetRealmCruds
             .deleteUnnecessaryObjects(
                 of: type,

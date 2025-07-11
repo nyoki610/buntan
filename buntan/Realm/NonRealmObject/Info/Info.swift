@@ -1,7 +1,7 @@
 import Foundation
 import RealmSwift
 
-class Info: Identifiable {
+struct Info: Identifiable {
     let id: String
     let year: Int
     let time: Int
@@ -13,13 +13,4 @@ class Info: Identifiable {
         self.time = time
         self.isAnswer = isAnswer
     }
-    
-    func convertToRealm() -> RealmInfo {
-        let realmInfo = RealmInfo()
-        realmInfo.year = year
-        realmInfo.time = time
-        realmInfo.isAnswer = isAnswer
-        return realmInfo
-    }
 }
-

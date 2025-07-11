@@ -5,7 +5,7 @@ extension CheckRecordRealmCruds {
 
     static func uploadCheckRecord(checkRecord: CheckRecord) -> Bool {
         
-        guard let realm = tryRealm() else { return false }
+        guard let realm = tryRealm(caller: "uploadCheckRecord") else { return false }
         
         do {
             try realm.write {

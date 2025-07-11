@@ -8,7 +8,7 @@ extension SheetRealmCruds {
         bookCategory: BookCategory
     ) -> Bool {
         
-        guard let realm = tryRealm() else { return false }
+        guard let realm = tryRealm(caller: "resetCardStatus") else { return false }
         
         do {
             try realm.write {
@@ -20,9 +20,9 @@ extension SheetRealmCruds {
 
                     switch bookCategory {
                     case .freq:
-                        targetCard.statusFreqRawValue = CardStatus.notLearned.rawValue
+                        targetCard.statusFreqRawValue = Card.CardStatus.notLearned.rawValue
                     case .pos:
-                        targetCard.statusPosRawValue = CardStatus.notLearned.rawValue
+                        targetCard.statusPosRawValue = Card.CardStatus.notLearned.rawValue
                     }
                 }
             }

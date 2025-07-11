@@ -1,16 +1,31 @@
 import SwiftUI
 
 
-protocol ResponsiveView: View {
-    var deviceType: DeviceType { get }
+enum DeviceType {
+    
+    case iPhone, iPad, unknown
+    
+    static func getDeviceType() -> DeviceType {
+        let model = UIDevice.current.model
+        if model.contains("iPad") {
+            return .iPad
+        } else if model.contains("iPhone") {
+            return .iPhone
+        } else {
+            return .unknown
+        }
+    }
 }
 
-extension ResponsiveView {
+extension View {
+    
     func responsiveSize(_ iPhoneFloat: CGFloat, _ iPadFloat: CGFloat) -> CGFloat {
-        (deviceType == .iPhone) ? iPhoneFloat : iPadFloat
+        let deviceType: DeviceType = DeviceType.getDeviceType()
+        return (deviceType == .iPhone) ? iPhoneFloat : iPadFloat
     }
     
     func responsiveScaled(_ iPhoneFloat: CGFloat, _ scale: CGFloat) -> CGFloat {
-        (deviceType == .iPhone) ? iPhoneFloat : iPhoneFloat * scale
+        let deviceType: DeviceType = DeviceType.getDeviceType()
+        return (deviceType == .iPhone) ? iPhoneFloat : iPhoneFloat * scale
     }
 }

@@ -6,10 +6,6 @@ struct CheckSelectView: SelectViewProtocol, CheckLearnViewProtocol {
     typealias ViewModelType = CheckSelectViewViewModel
     typealias UserInputType = CheckUserInput
     
-
-    /// conformance to ResponsiveView
-    @Environment(\.deviceType) var deviceType: DeviceType
-    
     @EnvironmentObject var loadingSharedData: LoadingSharedData
     @EnvironmentObject var alertSharedData: AlertSharedData
     

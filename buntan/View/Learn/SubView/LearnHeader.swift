@@ -1,9 +1,7 @@
 import SwiftUI
 
 
-struct LearnHeader: ResponsiveView {
-    
-    @Environment(\.deviceType) internal var deviceType: DeviceType
+struct LearnHeader: View {
     
     private let headerLabel: String
     

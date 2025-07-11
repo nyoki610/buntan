@@ -1,8 +1,6 @@
 import SwiftUI
 
-struct BookListView: ResponsiveView {
-    
-    @Environment(\.deviceType) var deviceType: DeviceType
+struct BookListView: View {
     
     @State private var showDetail: Bool = false
     

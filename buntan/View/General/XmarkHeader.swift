@@ -1,8 +1,7 @@
 import SwiftUI
 
-struct XmarkHeader: ResponsiveView {
-    
-    @Environment(\.deviceType) var deviceType: DeviceType
+struct XmarkHeader: View {
+
     let action: () -> Void
     
     var body: some View {

@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct LearnBottomButtons: ResponsiveView {
+struct LearnBottomButtons: View {
     
     enum ViewType {
         case bookSwipe
@@ -8,8 +8,7 @@ struct LearnBottomButtons: ResponsiveView {
         case bookType
         case checkSelect
     }
-    
-    @Environment(\.deviceType) var deviceType: DeviceType
+
 
     @EnvironmentObject var alertSharedData: AlertSharedData
     

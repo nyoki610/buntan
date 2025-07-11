@@ -1,8 +1,7 @@
 import SwiftUI
 
-struct CheckRecordView: ResponsiveView {
-    
-    @Environment(\.deviceType) var deviceType: DeviceType
+struct CheckRecordView: View {
+
 
     @State var chartController: Int = 0
     @State var selectedLearnMode: LearnMode = .swipe

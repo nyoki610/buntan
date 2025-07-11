@@ -3,3 +3,5 @@
 *.realm.management/
 
 GoogleService-Info.plist
+
+Env.xcconfig

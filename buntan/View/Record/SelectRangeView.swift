@@ -1,8 +1,7 @@
 import SwiftUI
 
-struct SelectRangeView: ResponsiveView {
-    
-    @Environment(\.deviceType) var deviceType: DeviceType
+struct SelectRangeView: View {
+
     let isLearnRecordView: Bool
     let rightButtonDisabled: Bool
     let leftButtonDisabled: Bool

@@ -1,7 +1,7 @@
 import SwiftUI
 
 
-protocol _LearnViewProtocol: ResponsiveView {
+protocol _LearnViewProtocol: View {
     
     associatedtype ViewModelType: BaseLearnViewViewModel
     var viewModel: ViewModelType { get }

@@ -1,8 +1,8 @@
 import SwiftUI
 
-struct RecordView: ResponsiveView {
+struct RecordView: View {
     
-    @Environment(\.deviceType) var deviceType
+
     
     @State var viewType: CheckViewType = .learn
     

@@ -1,8 +1,7 @@
 import SwiftUI
 
-struct CheckView: ResponsiveView {
-    
-    @Environment(\.deviceType) var deviceType: DeviceType
+struct CheckView: View {
+
 
     @EnvironmentObject var loadingSharedData: LoadingSharedData
     
@@ -67,7 +66,7 @@ struct CheckView: ResponsiveView {
             
             HStack {
                 
-                if deviceType == .iPad { Spacer() }
+                if DeviceType.getDeviceType() == .iPad { Spacer() }
                 Spacer()
                 
                 VStack {
@@ -103,7 +102,7 @@ struct CheckView: ResponsiveView {
                 )
                 
                 Spacer()
-                if deviceType == .iPad { Spacer() }
+                if DeviceType.getDeviceType() == .iPad { Spacer() }
             }
             
             Text("がわかる！")

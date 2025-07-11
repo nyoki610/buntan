@@ -1,11 +1,10 @@
 import SwiftUI
 
-struct BookTypeView: ResponsiveView, BookLearnViewProtocol, TypeViewProtocol {
+struct BookTypeView: View, BookLearnViewProtocol, TypeViewProtocol {
     typealias ViewModelType = BookTypeViewViewModel
     typealias UserInputType = BookUserInput
     
-    
-    @Environment(\.deviceType) var deviceType: DeviceType
+
     
     @EnvironmentObject var loadingSharedData: LoadingSharedData
     

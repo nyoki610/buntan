@@ -50,12 +50,16 @@ extension MainView {
             Spacer()
             
             VStack {
-                Text("英検®は、公益財団法人")
-                Text("日本英語検定協会の登録商標です。")
-                    .padding(.bottom, 10)
-                Text("このコンテンツは、公益財団法人")
-                Text("日本英語検定協会の承認や推奨、")
-                Text("その他の検討を受けたものではありません。")
+                if viewModel.isFetchingLatestCards {
+                    Text("データ取得中...")
+                } else {
+                    Text("英検®は、公益財団法人")
+                    Text("日本英語検定協会の登録商標です。")
+                        .padding(.bottom, 10)
+                    Text("このコンテンツは、公益財団法人")
+                    Text("日本英語検定協会の承認や推奨、")
+                    Text("その他の検討を受けたものではありません。")
+                }
             }
             .font(.system(size: responsiveScaled(17, 1.5)))
             

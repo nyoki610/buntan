@@ -5,7 +5,7 @@ extension SheetRealmCruds {
     
     static func getSheetByGrade(eikenGrade: EikenGrade) -> Sheet? {
         
-        guard let realm = tryRealm() else { return nil }
+        guard let realm = tryRealm(caller: "getSheetByGrade") else { return nil }
 
         guard let realmSheet = realm
             .objects(RealmSheet.self)

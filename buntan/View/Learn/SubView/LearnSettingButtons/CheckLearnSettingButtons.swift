@@ -2,8 +2,7 @@ import SwiftUI
 
 
 struct CheckLearnSettingButtons: LearnSettingButtonsProtocol {
-    
-    @Environment(\.deviceType) var deviceType: DeviceType
+
     
     @ObservedObject var userDefaultHandler: LearnUserDefaultHandler
     

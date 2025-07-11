@@ -14,10 +14,10 @@ extension SheetRealmAPI {
         for (index, card) in viewModel.cards.enumerated() {
             
             if viewModel.leftCardsIndexList.contains(index) {
-                newStatusTupleList.append((card.id, CardStatus.learning.rawValue))
+                newStatusTupleList.append((card.id, Card.CardStatus.learning.rawValue))
             }
             else if viewModel.rightCardsIndexList.contains(index) {
-                newStatusTupleList.append((card.id, CardStatus.completed.rawValue))
+                newStatusTupleList.append((card.id, Card.CardStatus.completed.rawValue))
             }
         }
         

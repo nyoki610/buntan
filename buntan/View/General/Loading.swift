@@ -1,8 +1,7 @@
 import SwiftUI
 
-struct Loading: ResponsiveView {
-    
-    @Environment(\.deviceType) var deviceType: DeviceType
+struct Loading: View {
+
 
     let loadingLabel: String
     var isCompleted: Bool = false
