@@ -36,6 +36,7 @@ extension BaseTypeViewViewModel {
             readOutTopCard(withDelay: true)
         }
         
+        /// Removes only leading and trailing whitespace and newline characters from a string.
         let userAnswer = userInputAnswer.trimmingCharacters(in: .whitespacesAndNewlines)
         
         /// 正解時の処理
