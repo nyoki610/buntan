@@ -71,7 +71,9 @@ extension BaseSwipeViewViewModel {
                 self.topCardIndex += 1
                 self.animationController += 1
             }
-            readOutTopCard(withDelay: true)
+            if sholdReadOut {
+                readOutTopCard(withDelay: true)
+            }
         }
         
         /// drag 距離が 100 より大きい場合は次の単語へ

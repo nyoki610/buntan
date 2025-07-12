@@ -86,7 +86,9 @@ class BaseSelectViewViewModel: BaseLearnViewViewModel {
             /// Update NavigationRequestObserver tried to update multiple times per frame.
             /// Update NavigationAuthority bound path tried to update multiple times per frame.
             topCardIndex += 1
-            readOutTopCard(withDelay: true)
+            if shouldReadOut {
+                readOutTopCard(withDelay: true)
+            }
         }
         
         return false
