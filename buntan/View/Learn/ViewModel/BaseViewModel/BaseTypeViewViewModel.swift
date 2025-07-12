@@ -57,7 +57,10 @@ extension BaseTypeViewViewModel {
     /// return shouldSave: Bool
     private func submitCorrectAnswerAction() async -> Bool {
         addIndexToList(isCorrect: true)
-        isCorrect = true
+        
+        DispatchQueue.main.async {
+            self.isCorrect = true
+        }
 
         guard nextCardExist else { return true }
 
