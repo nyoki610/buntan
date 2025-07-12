@@ -44,10 +44,14 @@ struct MainView: View {
             }
         }
         .onReceive(viewModel.bookViewPathHandler.$path) { _ in
-            viewModel.updateShowTabView()
+            DispatchQueue.main.async {
+                viewModel.updateShowTabView()
+            }
         }
         .onReceive(viewModel.checkViewPathHandler.$path) { _ in
-            viewModel.updateShowTabView()
+            DispatchQueue.main.async {
+                viewModel.updateShowTabView()
+            }
         }
     }
 }
