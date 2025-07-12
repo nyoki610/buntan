@@ -53,12 +53,17 @@ class BaseLearnViewViewModel: ObservableObject {
     
     /// 表示中のカードを「完了 or 学習中」に振り分け
     func addIndexToList(isCorrect: Bool) -> Void {
+        
+        /// Save the current topCardIndex to ensure the correct index is appended to the list,
+        /// regardless of any changes to topCardIndex outside this function.
+        let targetIndex = topCardIndex
+        
         DispatchQueue.main.async {
             withAnimation(.easeOut(duration: 0.6)) {
                 if isCorrect {
-                    self.rightCardsIndexList.append(self.topCardIndex)
+                    self.rightCardsIndexList.append(targetIndex)
                 } else {
-                    self.leftCardsIndexList.append(self.topCardIndex)
+                    self.leftCardsIndexList.append(targetIndex)
                 }
             }
         }
