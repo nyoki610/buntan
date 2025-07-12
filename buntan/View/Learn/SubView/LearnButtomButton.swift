@@ -124,6 +124,7 @@ struct LearnBottomButtons: View {
                     .padding(.leading, 16)
                     
                 } else {
+                    
                     customButton(
                         label: typeViewModel.nextCardExist ? "次へ" : "完了",
                         subLabel: "",
@@ -137,6 +138,9 @@ struct LearnBottomButtons: View {
                         }
                     }
                     .padding(.leading, 16)
+                    /// if typeViewModel.isCorrect { による分岐で実装すると,
+                    /// 1単語目でViewの表示が崩れてしまうため, opacityで対応
+                    .opacity(typeViewModel.isCorrect ? 0.0 : 1.0)
                 }
             }
         }

@@ -28,20 +28,27 @@ extension BookLearnViewViewModelProtocol {
     
     /// 一つ前のカードに戻る処理
     internal func backButtonAction() -> Void {
-        
+
+        /// avoid index out of range
         guard topCardIndex > 0 else { return }
         
+        let targetIndex = topCardIndex - 1
+        
         withAnimation(.easeOut(duration: 0.4)) {
-            self.topCardIndex -= 1
+            if let rightIndex = self.rightCardsIndexList.firstIndex(of: targetIndex) {
+                self.rightCardsIndexList.remove(at: rightIndex)
+            } else if let leftIndex = self.leftCardsIndexList.firstIndex(of: targetIndex) {
+                self.leftCardsIndexList.remove(at: leftIndex)
+            } else {
+                /// right, leftのどちらにも存在しない場合はtopCardIndexの更新を行わずにreturn
+                return
+            }
+        }
+        
+        withAnimation(.easeOut(duration: 0.4)) {
+            self.topCardIndex = targetIndex
         }
         self.animationController -= 1
-        
-        if self.rightCardsIndexList.contains(self.topCardIndex) {
-            self.rightCardsIndexList.removeLast()
-        }
-        if self.leftCardsIndexList.contains(self.topCardIndex) {
-            self.leftCardsIndexList.removeLast()
-        }
     }
     
     internal func backToStart(alertSharedData: AlertSharedData) -> Void {
