@@ -6,13 +6,6 @@ enum EikenGrade: Double, CaseIterable {
     case first = 1.0
     case preFirst = 1.5
     
-    var index: Int {
-        switch self {
-        case .first: return 0
-        case .preFirst: return 1
-        }
-    }
-    
     var title: String {
         switch self {
         case .first: return "1級"
@@ -30,7 +23,7 @@ enum EikenGrade: Double, CaseIterable {
     var questionCount: Int {
         switch self {
         case .first: return 22
-        case .preFirst: return 22
+        case .preFirst: return 18
         }
     }
     
@@ -50,9 +43,7 @@ enum EikenGrade: Double, CaseIterable {
         
         switch self {
         case .first: return getIntTupel(9, 7)
-            
-        /// 要編集
-        case .preFirst: return getIntTupel(0, 0)
+        case .preFirst: return getIntTupel(8, 6)
         }
     }
 }
