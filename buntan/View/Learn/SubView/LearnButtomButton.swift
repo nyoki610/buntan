@@ -92,7 +92,9 @@ struct LearnBottomButtons: View {
                     systemName: "speaker.wave.2.fill",
                     color: viewModel.readOutButtonDisabled ? .gray : .black
                 ) {
-                    viewModel.readOutTopCard(withDelay: false)
+                    if shouldReadOut {
+                        viewModel.readOutTopCard(withDelay: false)
+                    }
                 }
                 .disabled(viewModel.readOutButtonDisabled)
             }
