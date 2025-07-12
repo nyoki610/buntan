@@ -2,23 +2,44 @@ import Foundation
 
 
 class LearnUserDefaultHandler: ObservableObject {
+
+    enum Key: String {
+        case shouldShuffle
+        case showSentence
+        case shouldReadOut
+        case showInitial
+    }
     
-    @Published var shouldShuffle: Bool
-    @Published var showSentence: Bool
-    @Published var shouldReadOut: Bool
-    @Published var showInitial: Bool
+    @Published var shouldShuffle: Bool {
+        didSet {
+            UserDefaults.standard.set(shouldShuffle, forKey: Key.shouldShuffle.rawValue)
+        }
+    }
+    @Published var showSentence: Bool {
+        didSet {
+            UserDefaults.standard.set(showSentence, forKey: Key.showSentence.rawValue)
+        }
+    }
+    @Published var shouldReadOut: Bool {
+        didSet {
+            UserDefaults.standard.set(shouldReadOut, forKey: Key.shouldReadOut.rawValue)
+        }
+    }
+    @Published var showInitial: Bool {
+        didSet {
+            UserDefaults.standard.set(showInitial, forKey: Key.showInitial.rawValue)
+        }
+    }
     
     init() {
-        self.shouldShuffle = UserDefaults.standard.object(forKey: "shouldShuffle") as? Bool ?? true
-        self.showSentence = UserDefaults.standard.object(forKey: "showSentence") as? Bool ?? true
-        self.shouldReadOut = UserDefaults.standard.object(forKey: "shouldReadOut") as? Bool ?? true
-        self.showInitial = UserDefaults.standard.object(forKey: "showInitial") as? Bool ?? false
-    }
 
-//    func save() {
-//        UserDefaults.standard.set(shouldShuffle, forKey: "shouldShuffle")
-//        UserDefaults.standard.set(showSentence, forKey: "showSentence")
-//        UserDefaults.standard.set(shouldReadOut, forKey: "shouldReadOut")
-//        UserDefaults.standard.set(showInitial, forKey: "showInitial")
-//    }
+        func getBool(forKey key: Key) -> Bool? {
+            UserDefaults.standard.object(forKey: key.rawValue) as? Bool
+        }
+
+        self.shouldShuffle = getBool(forKey: .shouldShuffle) ?? false
+        self.showSentence = getBool(forKey: .showSentence) ?? true
+        self.shouldReadOut = getBool(forKey: .shouldReadOut) ?? true
+        self.showInitial = getBool(forKey: .showInitial) ?? true
+    }
 }
