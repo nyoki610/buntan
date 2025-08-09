@@ -1,14 +1,14 @@
 import SwiftUI
 
-struct Header<PathHandlerType: PathHandlerProtocol>: View {
+struct Header<NavigatorType: Navigating>: View {
 
 
     let title: String?
 
-    @ObservedObject private var pathHandler: PathHandlerType
+    @ObservedObject private var navigator: NavigatorType
     
-    init(pathHandler: PathHandlerType, title: String? = nil) {
-        self._pathHandler = ObservedObject(wrappedValue: pathHandler)
+    init(navigator: NavigatorType, title: String? = nil) {
+        self._navigator = ObservedObject(wrappedValue: navigator)
         self.title = title
     }
     
@@ -22,7 +22,7 @@ struct Header<PathHandlerType: PathHandlerProtocol>: View {
             
             HStack {
                 Button {
-                    pathHandler.backToPreviousScreen(count: 1)
+                    navigator.pop(count: 1)
                 } label: {
                     Image(systemName: "arrowshape.turn.up.left")
                         .font(.system(size: responsiveSize(18, 24)))

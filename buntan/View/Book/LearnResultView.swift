@@ -9,17 +9,17 @@ struct LearnResultView: View {
     /// 「学習中」の単語が存在するかどうかを示す bool 値
     private var reviewAll: Bool { cardsContainer.learningCount == 0 }
     
-    @ObservedObject private var pathHandler: BookViewPathHandler
+    @ObservedObject private var navigator: BookNavigator
     @ObservedObject private var userInput: BookUserInput
     private let cardsContainer: CardsContainer
 
     init(
-        pathHandler: BookViewPathHandler,
+        navigator: BookNavigator,
         userInput: BookUserInput,
         cardsContainer: CardsContainer,
         learnedCardCount: Int
     ) {
-        self.pathHandler = pathHandler
+        self.navigator = navigator
         self.userInput = userInput
         self.cardsContainer = cardsContainer
         self.learnedCardCount = learnedCardCount
@@ -30,8 +30,8 @@ struct LearnResultView: View {
         VStack {
             
             XmarkHeader() {
-                pathHandler.backToDesignatedScreen(to: .sectionList(EmptyModel.book))
-                pathHandler.transitionScreen(to: .learnSelect(cardsContainer))
+                navigator.pop(to: .sectionList(EmptyModel.book))
+                navigator.push(.learnSelect(cardsContainer))
             }
             
             Spacer()
@@ -170,8 +170,8 @@ struct LearnResultView: View {
             containFifthOption: false
         ) else { return }
                 
-        pathHandler.transitionScreen(
-            to: userInput.selectedMode.bookViewName(
+        navigator.push(
+            userInput.selectedMode.bookViewName(
                 cards: cards,
                 options: options
             )

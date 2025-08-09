@@ -42,16 +42,16 @@ extension RootViewName: ViewNameProtocol {
     }
 
     func viewForName(
-        bookViewPathHandler: BookNavigator,
-        checkViewPathHandler: CheckNavigator
+        bookViewNavigator: BookNavigator,
+        checkViewNavigator: CheckNavigator
     ) -> some View {
         switch self {
         case .book:
             let userInput = BookUserInput()
-            let viewModel = BookViewViewModel(pathHandler: bookViewPathHandler, userInput: userInput)
+            let viewModel = BookViewViewModel(navigator: bookViewNavigator, userInput: userInput)
             return AnyView(BookView(viewModel: viewModel))
         case .check:
-            return AnyView(CheckView(pathHandler: checkViewPathHandler))
+            return AnyView(CheckView(navigator: checkViewNavigator))
         case .record:
             return AnyView(RecordView())
         }

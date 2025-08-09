@@ -46,7 +46,7 @@ extension CheckViewName: ViewNameProtocol {
         }
     }
     
-    func viewForName(pathHandler: CheckNavigator, userInput: CheckUserInput) -> some View {
+    func viewForName(navigator: CheckNavigator, userInput: CheckUserInput) -> some View {
         
         switch self {
 //        case .checkSwipe(_, _):
@@ -55,7 +55,7 @@ extension CheckViewName: ViewNameProtocol {
         case .checkSelect(let cards, let options):
             return AnyView(
                 CheckSelectView(
-                    pathHandler: pathHandler,
+                    navigator: navigator,
                     checkUserInput: userInput,
                     cards: cards,
                     options: options
@@ -68,7 +68,7 @@ extension CheckViewName: ViewNameProtocol {
         case .checkResult(let cards, let correctIndexList, let estimatedScore):
             return AnyView(
                 CheckResultView(
-                    pathHandler: pathHandler,
+                    navigator: navigator,
                     userInput: userInput,
                     cards: cards,
                     correctIndexList: correctIndexList,

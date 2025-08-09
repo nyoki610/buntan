@@ -4,7 +4,7 @@ import Foundation
 extension CheckLearnViewViewModelProtocol {
     
     internal func checkLearnSaveAction(
-        pathHandler: CheckViewPathHandler,
+        navigator: CheckNavigator,
         loadingSharedData: LoadingSharedData,
         checkUserInput: CheckUserInput
     ) {
@@ -25,7 +25,7 @@ extension CheckLearnViewViewModelProtocol {
         let _ = CheckRecordRealmAPI.uploadCheckRecord(checkRecord: checkRecord)
         
         loadingSharedData.finishLoading {
-            pathHandler.transitionScreen(to: .checkResult(
+            navigator.push(.checkResult(
                 self.cards, self.rightCardsIndexList, estimatedScore
             ))
         }

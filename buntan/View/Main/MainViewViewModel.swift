@@ -6,8 +6,8 @@ class MainViewViewModel: ObservableObject {
     /// tabView を管理
     @Published var selectedRootViewName: RootViewName = .book
 
-    @Published var bookViewPathHandler = BookViewPathHandler()
-    @Published var checkViewPathHandler = CheckViewPathHandler()
+    @Published var bookViewNavigator = BookNavigator()
+    @Published var checkViewNavigator = CheckNavigator()
     
     @Published var showLogoView: Bool = true
     
@@ -20,7 +20,7 @@ class MainViewViewModel: ObservableObject {
     @Published var isFetchingLatestCards: Bool = false
     
     func updateShowTabView() {
-        showTabView = bookViewPathHandler.path.count + checkViewPathHandler.path.count == 0
+        showTabView = bookViewNavigator.path.count + checkViewNavigator.path.count == 0
     }
     
     func onAppearAction() async {

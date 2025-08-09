@@ -4,12 +4,12 @@ struct BookListView: View {
     
     @State private var showDetail: Bool = false
     
-    @ObservedObject private var pathHandler: BookViewPathHandler
+    @ObservedObject private var navigator: BookNavigator
     @ObservedObject private var userInput: BookUserInput
     private let bookList: [Book]
     
-    init(pathHandler: BookViewPathHandler, userInput: BookUserInput, bookList: [Book]) {
-        self.pathHandler = pathHandler
+    init(navigator: BookNavigator, userInput: BookUserInput, bookList: [Book]) {
+        self.navigator = navigator
         self.userInput = userInput
         self.bookList = bookList
     }
@@ -19,7 +19,7 @@ struct BookListView: View {
             
             VStack {
                 
-                Header(pathHandler: pathHandler)
+                Header(navigator: navigator)
 
                 HStack {
                     Spacer()
@@ -96,7 +96,7 @@ struct BookListView: View {
         
         Button {
             userInput.selectedBookConfig = book.config
-            pathHandler.transitionScreen(to: .sectionList(book))
+            navigator.push(.sectionList(book))
         } label: {
             
             ZStack {

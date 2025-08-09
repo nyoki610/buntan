@@ -2,16 +2,16 @@ import SwiftUI
 
 struct SectionListView: View {
 
-    @ObservedObject private var pathHandler: BookViewPathHandler
+    @ObservedObject private var navigator: BookNavigator
     @ObservedObject private var userInput: BookUserInput
     @StateObject private var viewModel: SectionListViewViewModel
     
     init(
-        pathHandler: BookViewPathHandler,
+        navigator: BookNavigator,
         userInput: BookUserInput,
         book: Book
     ) {
-        self.pathHandler = pathHandler
+        self.navigator = navigator
         self.userInput = userInput
         self._viewModel = StateObject(
             wrappedValue: SectionListViewViewModel(book: book)
@@ -22,7 +22,7 @@ struct SectionListView: View {
         
         VStack {
             Header(
-                pathHandler: pathHandler,
+                navigator: navigator,
                 title: (userInput.selectedGrade?.title ?? "") + "   " + viewModel.book.title
             )
             
@@ -65,7 +65,7 @@ struct SectionListView: View {
                 cards: section.cards,
                 bookCategory: selectedBookCategory
             )
-            pathHandler.transitionScreen(to: .learnSelect(cardsContainer))
+            navigator.push(.learnSelect(cardsContainer))
         } label: {
             HStack {
                 

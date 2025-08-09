@@ -12,16 +12,16 @@ struct CheckSelectView: SelectViewProtocol, CheckLearnViewProtocol {
     @StateObject var viewModel: CheckSelectViewViewModel
     @StateObject var userDefaultHandler: LearnUserDefaultHandler
     @ObservedObject var userInput: CheckUserInput
-    @ObservedObject var pathHandler: CheckViewPathHandler
+    @ObservedObject var navigator: CheckNavigator
     
     init(
-        pathHandler: CheckViewPathHandler,
+        navigator: CheckNavigator,
         checkUserInput: CheckUserInput,
         cards: [Card],
         options: [[Option]]
     ) {
 
-        self._pathHandler = ObservedObject(wrappedValue: pathHandler)
+        self._navigator = ObservedObject(wrappedValue: navigator)
         self._userInput = ObservedObject(wrappedValue: checkUserInput)
 
         let handler = LearnUserDefaultHandler()

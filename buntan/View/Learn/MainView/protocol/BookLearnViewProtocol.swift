@@ -4,7 +4,7 @@ import SwiftUI
 protocol BookLearnViewProtocol: _LearnViewProtocol where
 ViewModelType: BookLearnViewViewModelProtocol,
 UserInputType: BookUserInput,
-PathHandlerType: BookViewPathHandler {}
+NavigatorType: BookNavigator {}
 
 
 extension BookLearnViewProtocol {
@@ -35,7 +35,7 @@ extension BookLearnViewProtocol {
     
     func saveAction() {
         viewModel.bookLearnSaveAction(
-            pathHandler: pathHandler,
+            navigator: navigator,
             loadingSharedData: loadingSharedData,
             bookUserInput: userInput,
             learnedCardsCount: viewModel.cards.count
@@ -47,8 +47,8 @@ extension BookLearnViewProtocol {
         /// １単語も学習していない場合は save せずに exit
         guard viewModel.learnedCardsCount != 0 else {
             guard let cardsContainer = CardsContainer(userInput: userInput) else { return }
-            pathHandler.backToDesignatedScreen(to: .sectionList(EmptyModel.book))
-            pathHandler.transitionScreen(to: .learnSelect(cardsContainer))
+            navigator.pop(to: .sectionList(EmptyModel.book))
+            navigator.push(.learnSelect(cardsContainer))
             return
         }
         saveAction()

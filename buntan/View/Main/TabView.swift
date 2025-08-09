@@ -32,7 +32,7 @@ extension MainView {
         
         Button {
             viewModel.selectedRootViewName = targetViewName
-            AnalyticsHandler.logScreenTransition(viewName: ViewName.root(targetViewName))
+            AnalyticsLogger.logScreenTransition(viewName: ViewName.root(targetViewName))
         } label: {
             
             VStack {

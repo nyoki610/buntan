@@ -12,15 +12,15 @@ struct BookSwipeView: BookLearnViewProtocol, SwipeViewProtocol {
     @StateObject var userDefaultHandler: LearnUserDefaultHandler
 
     @ObservedObject var userInput: BookUserInput
-    @ObservedObject var pathHandler: BookViewPathHandler
+    @ObservedObject var navigator: BookNavigator
     
     init(
-        pathHandler: BookViewPathHandler,
+        navigator: BookNavigator,
         bookUserInput: BookUserInput,
         cards: [Card],
         options: [[Option]]
     ) {
-        self._pathHandler = ObservedObject(wrappedValue: pathHandler)
+        self._navigator = ObservedObject(wrappedValue: navigator)
         self._userInput = ObservedObject(wrappedValue: bookUserInput)
 
         let handler = LearnUserDefaultHandler()

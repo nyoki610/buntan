@@ -9,8 +9,8 @@ protocol _LearnViewProtocol: View {
     associatedtype UserInputType: UserInput
     var userInput: UserInputType { get }
     
-    associatedtype PathHandlerType: PathHandlerProtocol
-    var pathHandler: PathHandlerType { get }
+    associatedtype NavigatorType: Navigating
+    var navigator: NavigatorType { get }
     
     var loadingSharedData: LoadingSharedData { get }
     

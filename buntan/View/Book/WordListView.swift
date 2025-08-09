@@ -1,15 +1,15 @@
 import SwiftUI
 
-struct WordListView<PathHandlerType: PathHandlerProtocol>: View {
+struct WordListView<NavigatorType: Navigating>: View {
 
     
     @State var showInfo: Bool = true
     
-    @ObservedObject private var pathHandler: PathHandlerType
+    @ObservedObject private var navigator: NavigatorType
     private let cards: [Card]
     
-    init(pathHandler: PathHandlerType, cards: [Card]) {
-        self.pathHandler = pathHandler
+    init(navigator: NavigatorType, cards: [Card]) {
+        self.navigator = navigator
         self.cards = cards
     }
 
@@ -20,7 +20,7 @@ struct WordListView<PathHandlerType: PathHandlerProtocol>: View {
             
             VStack {
              
-                Header(pathHandler: pathHandler,
+                Header(navigator: navigator,
                        title: "単語一覧")
                 
                 HStack {
