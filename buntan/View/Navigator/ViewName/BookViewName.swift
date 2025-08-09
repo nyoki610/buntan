@@ -62,7 +62,7 @@ extension BookViewName: ViewNameProtocol {
         }
     }
 
-    func viewForName(pathHandler: BookViewPathHandler, userInput: BookUserInput) -> some View {
+    func viewForName(pathHandler: BookNavigator, userInput: BookUserInput) -> some View {
 
         switch self {
 
