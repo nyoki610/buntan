@@ -21,7 +21,7 @@ struct BookView<ViewModel: BookViewViewModelProtocol>: View {
             
                 VStack(spacing: 0) {
                     
-                    if let todaysWordCount = viewModel.outputs.todaysWordCount {
+                    if let todaysWordCount = viewModel.output.todaysWordCount {
                         headerView(todaysWordCount: todaysWordCount)
                             .padding(.top, 40)
                     }
@@ -70,7 +70,7 @@ struct BookView<ViewModel: BookViewViewModelProtocol>: View {
             .font(.system(size: responsiveSize(14, 20)))
             
             Image(systemName: "chart.bar.fill",
-                  variableValue: viewModel.outputs.variableValue)
+                  variableValue: viewModel.output.variableValue)
             .font(.system(size: responsiveSize(30, 40)))
             .foregroundStyle(Orange.defaultOrange)
             

@@ -6,7 +6,7 @@ import Combine
 // -----------------
 
 // MARK: - Dependency
-protocol BookViewViewModelDependencies: ObservableObject {
+protocol BookViewViewModelDependency: ObservableObject {
     var navigator: BookNavigator { get set }
     var userInput: BookUserInput { get set }
     var dataService: BookDataServiceProtocol { get set }
@@ -32,9 +32,9 @@ protocol BookViewViewModelActionBinding: ViewModelActionBinding where Action == 
 }
 
 // MARK: - ViewModelProtocol
-protocol BookViewViewModelProtocol: BookViewViewModelDependencies, BookViewViewModelInput, BookViewViewModelOutput, BookViewViewModelActionBinding {
-    var inputs: BookViewViewModelInput { get }
-    var outputs: BookViewViewModelOutput { get }
+protocol BookViewViewModelProtocol: BookViewViewModelDependency, BookViewViewModelInput, BookViewViewModelOutput, BookViewViewModelActionBinding {
+    var input: BookViewViewModelInput { get }
+    var output: BookViewViewModelOutput { get }
 }
 
 // ----------------------
@@ -44,8 +44,8 @@ protocol BookViewViewModelProtocol: BookViewViewModelDependencies, BookViewViewM
 // MARK: - ViewModel Implementation
 class BookViewViewModel: ObservableObject, BookViewViewModelProtocol {
     
-    public var outputs: any BookViewViewModelOutput { return self }
-    public var inputs: any BookViewViewModelInput { return self }
+    public var output: BookViewViewModelOutput { return self }
+    public var input: BookViewViewModelInput { return self }
 
     // MARK: - Dependencies (Protocol Requirements)
     internal var navigator: BookNavigator
