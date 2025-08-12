@@ -17,8 +17,8 @@ struct MainView: View {
             } else {
                 ZStack {
                     viewModel.selectedRootViewName.viewForName(
-                        bookViewPathHandler: viewModel.bookViewPathHandler,
-                        checkViewPathHandler: viewModel.checkViewPathHandler
+                        bookViewNavigator: viewModel.bookViewNavigator,
+                        checkViewNavigator: viewModel.checkViewNavigator
                     )
                     
                     if viewModel.showTabView {
@@ -43,12 +43,12 @@ struct MainView: View {
                 await viewModel.onAppearAction()
             }
         }
-        .onReceive(viewModel.bookViewPathHandler.$path) { _ in
+        .onReceive(viewModel.bookViewNavigator.$path) { _ in
             DispatchQueue.main.async {
                 viewModel.updateShowTabView()
             }
         }
-        .onReceive(viewModel.checkViewPathHandler.$path) { _ in
+        .onReceive(viewModel.checkViewNavigator.$path) { _ in
             DispatchQueue.main.async {
                 viewModel.updateShowTabView()
             }

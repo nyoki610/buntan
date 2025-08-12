@@ -62,14 +62,14 @@ extension BookViewName: ViewNameProtocol {
         }
     }
 
-    func viewForName(pathHandler: BookViewPathHandler, userInput: BookUserInput) -> some View {
+    func viewForName(navigator: BookNavigator, userInput: BookUserInput) -> some View {
 
         switch self {
 
         case .bookList(let bookList):
             return AnyView(
                 BookListView(
-                    pathHandler: pathHandler,
+                    navigator: navigator,
                     userInput: userInput,
                     bookList: bookList
                 )
@@ -78,7 +78,7 @@ extension BookViewName: ViewNameProtocol {
         case .sectionList(let book):
             return AnyView(
                 SectionListView(
-                    pathHandler: pathHandler,
+                    navigator: navigator,
                     userInput: userInput,
                     book: book
                 )
@@ -87,7 +87,7 @@ extension BookViewName: ViewNameProtocol {
         case .learnSelect(let cardsContainer):
             return AnyView(
                 LearnSelectView(
-                    pathHandler: pathHandler,
+                    navigator: navigator,
                     userInput: userInput,
                     cardsContainer: cardsContainer
                 )
@@ -96,7 +96,7 @@ extension BookViewName: ViewNameProtocol {
         case .wordList(let cards):
             return AnyView(
                 WordListView(
-                    pathHandler: pathHandler,
+                    navigator: navigator,
                     cards: cards
                 )
             )
@@ -104,7 +104,7 @@ extension BookViewName: ViewNameProtocol {
         case .swipe(let cards, let options):
             return AnyView(
                 BookSwipeView(
-                    pathHandler: pathHandler,
+                    navigator: navigator,
                     bookUserInput: userInput,
                     cards: cards,
                     options: options
@@ -114,7 +114,7 @@ extension BookViewName: ViewNameProtocol {
         case .select(let cards, let options):
             return AnyView(
                 BookSelectView(
-                    pathHandler: pathHandler,
+                    navigator: navigator,
                     bookUserInput: userInput,
                     cards: cards,
                     options: options)
@@ -123,7 +123,7 @@ extension BookViewName: ViewNameProtocol {
         case .type(let cards, let options):
             return AnyView(
                 BookTypeView(
-                    pathHandler: pathHandler,
+                    navigator: navigator,
                     bookUserInput: userInput,
                     cards: cards,
                     options: options
@@ -133,7 +133,7 @@ extension BookViewName: ViewNameProtocol {
         case .learnResult(let cardsContainer, let learnedCardCount):
             return AnyView(
                 LearnResultView(
-                    pathHandler: pathHandler,
+                    navigator: navigator,
                     userInput: userInput,
                     cardsContainer: cardsContainer,
                     learnedCardCount: learnedCardCount

@@ -58,9 +58,24 @@
 			);
 			target = B3C8037F2D04CA3500BFC383 /* buntan */;
 		};
+		B3812A5D2E4AF4D5002FBDFB /* Exceptions for "docs" folder in "buntan" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				ViewModel.md,
+			);
+			target = B3C8037F2D04CA3500BFC383 /* buntan */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		B3812A5A2E4AF4A4002FBDFB /* docs */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				B3812A5D2E4AF4D5002FBDFB /* Exceptions for "docs" folder in "buntan" target */,
+			);
+			path = docs;
+			sourceTree = "<group>";
+		};
 		B3C803932D04CA3600BFC383 /* buntanTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = buntanTests;
@@ -118,6 +133,7 @@
 		B3C803772D04CA3500BFC383 = {
 			isa = PBXGroup;
 			children = (
+				B3812A5A2E4AF4A4002FBDFB /* docs */,
 				B3BE97052D8B4AEE00F6BC1E /* README.md */,
 				B3C804E82D04CA8900BFC383 /* buntan */,
 				B3C803932D04CA3600BFC383 /* buntanTests */,

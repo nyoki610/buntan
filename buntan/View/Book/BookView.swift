@@ -1,12 +1,11 @@
 import SwiftUI
 
-struct BookView: View {
+struct BookView<ViewModel: BookViewViewModelProtocol>: View {
     
-    @ObservedObject private var pathHandler: BookViewPathHandler
-    @StateObject private var userInput: BookUserInput = BookUserInput()
+    @StateObject private var viewModel: ViewModel
     
-    init(pathHandler: BookViewPathHandler) {
-        self.pathHandler = pathHandler
+    init(viewModel: ViewModel) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
     ///
@@ -16,13 +15,13 @@ struct BookView: View {
     
     var body: some View {
         
-        NavigationStack(path: $pathHandler.path) {
+        NavigationStack(path: $viewModel.navigator.path) {
         
             ZStack {
             
                 VStack(spacing: 0) {
                     
-                    if let todaysWordCount = userInput.todaysWordCount {
+                    if let todaysWordCount = viewModel.output.todaysWordCount {
                         headerView(todaysWordCount: todaysWordCount)
                             .padding(.top, 40)
                     }
@@ -55,27 +54,10 @@ struct BookView: View {
             }
             .background(CustomColor.background)
             .navigationDestination(for: BookViewName.self) { viewName in
-                viewName.viewForName(pathHandler: pathHandler, userInput: userInput)
-            }
-            .onAppear {
-                if let todaysWordCount = LearnRecordRealmAPI.getTodaysWordCount() {
-                    userInput.todaysWordCount = todaysWordCount
-                }
+                viewName.viewForName(navigator: viewModel.navigator, userInput: viewModel.userInput)
             }
         }
     }
-    
-    
-    /// headerView で使用する property
-    /// ------------------------------
-    private var variableValue: Double {
-        guard let todaysWordCount = userInput.todaysWordCount else { return 0.0 }
-        if todaysWordCount >= 1000 { return 1.0 }
-        if todaysWordCount >= 100 { return 0.5 }
-        if todaysWordCount >= 10 { return 0.3 }
-        return 0.0
-    }
-    /// ------------------------------
     
     @ViewBuilder
     private func headerView(todaysWordCount: Int) -> some View {
@@ -88,7 +70,7 @@ struct BookView: View {
             .font(.system(size: responsiveSize(14, 20)))
             
             Image(systemName: "chart.bar.fill",
-                  variableValue: variableValue)
+                  variableValue: viewModel.output.variableValue)
             .font(.system(size: responsiveSize(30, 40)))
             .foregroundStyle(Orange.defaultOrange)
             
@@ -132,16 +114,7 @@ struct BookView: View {
     private func selectBookCategoryButton(grade: EikenGrade, bookCategory: BookCategory) -> some View {
                 
         Button {
-            userInput.selectedGrade = grade
-            userInput.selectedBookCategory = bookCategory
-            
-            guard let bookList: [Book] = SheetRealmAPI
-                .getBookListByGradeAndCategory(
-                    eikenGrade: grade,
-                    bookCategory: bookCategory
-                ) else { return }
-            
-            pathHandler.transitionScreen(to: .bookList(bookList))
+            viewModel.send(.bookCategoryButtonTapped(grade: grade, category: bookCategory))
         } label: {
             HStack {
                 Text(bookCategory.buttonLabel)
@@ -154,5 +127,16 @@ struct BookView: View {
             .background(.white)
             .cornerRadius(10)
         }
+    }
+}
+
+struct BookView_Previews: PreviewProvider {
+    static var previews: some View {
+        BookView(
+            viewModel: BookViewViewModel(
+                navigator: BookNavigator(),
+                userInput: BookUserInput()
+            )
+        )
     }
 }

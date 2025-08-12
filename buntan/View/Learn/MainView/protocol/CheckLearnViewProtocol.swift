@@ -4,7 +4,7 @@ import SwiftUI
 protocol CheckLearnViewProtocol: _LearnViewProtocol where
 ViewModelType: CheckLearnViewViewModelProtocol,
 UserInputType: CheckUserInput,
-PathHandlerType: CheckViewPathHandler {
+NavigatorType: CheckNavigator {
     var alertSharedData: AlertSharedData { get }
 }
 
@@ -24,7 +24,7 @@ extension CheckLearnViewProtocol {
     func saveAction() {
         
         viewModel.checkLearnSaveAction(
-            pathHandler: pathHandler,
+            navigator: navigator,
             loadingSharedData: loadingSharedData,
             checkUserInput: userInput
         )
@@ -40,7 +40,7 @@ extension CheckLearnViewProtocol {
                 secondaryButtonLabel: "終了",
                 secondaryButtonType: .defaultButton
             ) {
-                pathHandler.backToPreviousScreen(count: 1)
+                navigator.pop(count: 1)
             }
             return
         }

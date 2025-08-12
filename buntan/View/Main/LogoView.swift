@@ -70,7 +70,7 @@ extension MainView {
         .frame(maxWidth: .infinity)
         .background(Orange.defaultOrange)
         .onAppear {
-            AnalyticsHandler.logScreenTransition(viewName: ViewName.logo)
+            AnalyticsLogger.logScreenTransition(viewName: ViewName.logo)
             
             let _ = SheetRealmAPI.deleteUnnecessaryObjects()
         }

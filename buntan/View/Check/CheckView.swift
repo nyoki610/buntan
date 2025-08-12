@@ -5,16 +5,16 @@ struct CheckView: View {
 
     @EnvironmentObject var loadingSharedData: LoadingSharedData
     
-    @ObservedObject private var pathHandler: CheckViewPathHandler
+    @ObservedObject private var navigator: CheckNavigator
     @StateObject private var userInput = CheckUserInput()
     
-    init(pathHandler: CheckViewPathHandler) {
-        self.pathHandler = pathHandler
+    init(navigator: CheckNavigator) {
+        self.navigator = navigator
     }
     
     var body: some View {
         
-        NavigationStack(path: $pathHandler.path) {
+        NavigationStack(path: $navigator.path) {
             
             VStack {
                 
@@ -37,7 +37,7 @@ struct CheckView: View {
             .frame(maxWidth: .infinity)
             .background(CustomColor.background)
             .navigationDestination(for: CheckViewName.self) { viewName in
-                viewName.viewForName(pathHandler: pathHandler, userInput: userInput)
+                viewName.viewForName(navigator: navigator, userInput: userInput)
             }
         }
     }
@@ -55,7 +55,7 @@ struct CheckView: View {
         ) else { return }
         
         loadingSharedData.finishLoading {
-            pathHandler.transitionScreen(to: .checkSelect(cards, options))
+            navigator.push(.checkSelect(cards, options))
         }
     }
     

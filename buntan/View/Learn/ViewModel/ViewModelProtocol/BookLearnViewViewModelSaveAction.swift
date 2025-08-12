@@ -4,7 +4,7 @@ import Foundation
 extension BookLearnViewViewModelProtocol {
     
     internal func bookLearnSaveAction(
-        pathHandler: BookViewPathHandler,
+        navigator: BookNavigator,
         loadingSharedData: LoadingSharedData,
         bookUserInput: BookUserInput,
         learnedCardsCount: Int
@@ -32,7 +32,7 @@ extension BookLearnViewViewModelProtocol {
             loadingSharedData.finishLoading {
                 guard self.tnrasitionScreen(
                     userInput: bookUserInput,
-                    pathHandler: pathHandler,
+                    navigator: navigator,
                     learnedCardCount: learnedCardsCount
                 ) else {
                     /// エラーハンドリングが必要？
@@ -73,7 +73,7 @@ extension BookLearnViewViewModelProtocol {
     
     private func tnrasitionScreen(
         userInput: BookUserInput,
-        pathHandler: BookViewPathHandler,
+        navigator: BookNavigator,
         learnedCardCount: Int
     ) -> Bool {
         
@@ -83,10 +83,10 @@ extension BookLearnViewViewModelProtocol {
         let isFinished = (learnedCardsCount == cards.count)
         
         if isFinished {
-            pathHandler.transitionScreen(to: .learnResult(cardsContainer, learnedCardCount))
+            navigator.push(.learnResult(cardsContainer, learnedCardCount))
         } else {
-            pathHandler.backToDesignatedScreen(to: .sectionList(EmptyModel.book))
-            pathHandler.transitionScreen(to: .learnSelect(cardsContainer))
+            navigator.pop(to: .sectionList(EmptyModel.book))
+            navigator.push(.learnSelect(cardsContainer))
         }
         
         return true

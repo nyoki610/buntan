@@ -6,17 +6,17 @@ struct LearnSelectView: View {
     @EnvironmentObject var alertSharedData: AlertSharedData
     @EnvironmentObject var loadingSharedData: LoadingSharedData
     
-    @ObservedObject private var pathHandler: BookViewPathHandler
+    @ObservedObject private var navigator: BookNavigator
     @ObservedObject var userInput: BookUserInput
     
     @StateObject var viewModel: LearnSelectViewViewModel
     
     init(
-        pathHandler: BookViewPathHandler,
+        navigator: BookNavigator,
         userInput: BookUserInput,
         cardsContainer: CardsContainer
     ) {
-        self.pathHandler = pathHandler
+        self.navigator = navigator
         self.userInput = userInput
         self._viewModel = StateObject(
             wrappedValue: LearnSelectViewViewModel(cardsContainer: cardsContainer)
@@ -39,7 +39,7 @@ struct LearnSelectView: View {
                 VStack {
 
                     Header(
-                        pathHandler: pathHandler,
+                        navigator: navigator,
                         title: headerTitle
                     )
                     
@@ -75,8 +75,8 @@ struct LearnSelectView: View {
                                 containFifthOption: false
                             ) else { return }
                         
-                        pathHandler.transitionScreen(
-                            to: userInput.selectedMode.bookViewName(
+                        navigator.push(
+                            userInput.selectedMode.bookViewName(
                                 cards: cards,
                                 options: options
                             )
@@ -158,7 +158,7 @@ struct LearnSelectView: View {
             subButton(label: "単語一覧",
                       systemName: "info.circle.fill",
                       color: .blue) {
-                pathHandler.transitionScreen(to: .wordList(viewModel.cardsContainer.allCards))
+                navigator.push(.wordList(viewModel.cardsContainer.allCards))
             }
         }
         .frame(width: responsiveSize(300, 420))

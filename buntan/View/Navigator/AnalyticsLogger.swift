@@ -2,7 +2,7 @@ import Foundation
 import FirebaseAnalytics
 
 
-enum AnalyticsHandler {
+enum AnalyticsLogger {
     
     static func logScreenTransition(viewName: any ViewNameProtocol) {
         

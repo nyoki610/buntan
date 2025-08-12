@@ -5,7 +5,7 @@ struct CheckResultView: View {
 
     @EnvironmentObject var loadingSharedData: LoadingSharedData
     
-    @ObservedObject private var pathHandler: CheckViewPathHandler
+    @ObservedObject private var navigator: CheckNavigator
     @ObservedObject private var userInput: CheckUserInput
     
     private let cards: [Card]
@@ -17,13 +17,13 @@ struct CheckResultView: View {
     }
     
     init(
-        pathHandler: CheckViewPathHandler,
+        navigator: CheckNavigator,
         userInput: CheckUserInput,
         cards: [Card],
         correctIndexList: [Int],
         estimatedScore: Int
     ) {
-        self.pathHandler = pathHandler
+        self.navigator = navigator
         self.userInput = userInput
         /// not shuffled in checkLearnView
         self.cards = cards
@@ -43,7 +43,7 @@ struct CheckResultView: View {
             VStack {
                 
                 XmarkHeader() {
-                    pathHandler.backToRootScreen()
+                    navigator.popToRoot()
                 }
                 
                 Text(userInput.selectedGrade.title)
