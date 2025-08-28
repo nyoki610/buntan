@@ -8,7 +8,7 @@ extension Card: Decodable {
         case phrase, meaning, sentence, translation
         case startPosition = "start_position"
         case endPosition = "end_position"
-        case infoList = "infomation_list"
+        case infoList = "information_list"
     }
 
     init(from decoder: Decoder) throws {
