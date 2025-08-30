@@ -7,12 +7,7 @@ struct BookView<ViewModel: BookViewViewModelProtocol>: View {
     init(viewModel: ViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
-    
-    ///
-//    @State var allCardsCount: Int? = TestCruds.getAllCardsCount()
-//    @State var allInfomationsCount: Int? = TestCruds.getAllInfomationsCount()
-    ///
-    
+
     var body: some View {
         
         NavigationStack(path: $viewModel.navigator.path) {
@@ -36,18 +31,6 @@ struct BookView<ViewModel: BookViewViewModelProtocol>: View {
                     eachGradeView(grade: .preFirst)
 
                     Spacer()
-                    
-                    ///
-//                    VStack {
-//                        if let allCardsCount = allCardsCount {
-//                            Text("allCardsCount: \(allCardsCount)")
-//                        }
-//                        if let allInfomationsCount = allInfomationsCount {
-//                            Text("allInfomationsCount: \(allInfomationsCount)")
-//                        }
-//                    }
-                    ///
-                    
                     Spacer()
                     Spacer()
                 }
