@@ -17,7 +17,7 @@ extension SheetRealmCruds {
             }
             return true
         } catch {
-            print("createNewSheetでエラー: \(error)")
+            print("error: \(error)")
             return false
         }
     }

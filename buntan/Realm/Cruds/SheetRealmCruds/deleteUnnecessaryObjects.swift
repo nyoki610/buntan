@@ -17,10 +17,8 @@ extension SheetRealmCruds {
         if !objectsToDelete.isEmpty {
             do {
                 try realm.write {
-                    print("delete \(objectsToDelete.count) \(type)")
                     realm.delete(objectsToDelete)
                 }
-                print("sucessfully deleted unecessary \(type) Objects")
             } catch {
                 print("an error occured while deleting unecessary \(type) Objects: \(error.localizedDescription)")
                 return false
