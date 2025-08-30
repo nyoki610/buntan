@@ -28,8 +28,21 @@ struct BookView<ViewModel: BookViewViewModelProtocol>: View {
                     
                     Spacer()
                     
+                    Text("\\          New !          /")
+                        .padding(.bottom, 12)
+                        .fontWeight(.bold)
+                        .foregroundColor(.black.opacity(0.6))
+                        .font(.system(size: 18))
+                    
                     eachGradeView(grade: .preFirst)
 
+                    Spacer()
+                    
+                    Text("各単語の例文は随時追加中！")
+                        .fontWeight(.bold)
+                        .foregroundColor(.black.opacity(0.6))
+                        .font(.system(size: 18))
+                    
                     Spacer()
                     Spacer()
                     Spacer()
