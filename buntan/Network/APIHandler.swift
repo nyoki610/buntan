@@ -43,14 +43,11 @@ enum APIHandler {
 
         guard let apiKey = AppConfig.apiKey,
               let baseURL = AppConfig.baseURL else {
-            print("API Key or Base URL is not set.")
             throw APIError.invalidConfig
         }
         let apiURL = baseURL + path
-        print("Creating request for URL: \(apiURL)")
         
         guard let url = URL(string: apiURL) else {
-            print("Invalid URL: \(apiURL)")
             throw APIError.invalidURL
         }
         
@@ -58,8 +55,7 @@ enum APIHandler {
         request.httpMethod = method.rawValue
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue(apiKey, forHTTPHeaderField: "x-api-key")
-        
-        print("Request created successfully")
+
         return request
     }
     
@@ -69,7 +65,6 @@ enum APIHandler {
         
         guard let httpResponse = response as? HTTPURLResponse,
               (200...299).contains(httpResponse.statusCode) else {
-            print("Invalid response status code")
             throw APIError.invalidResponse
         }
         

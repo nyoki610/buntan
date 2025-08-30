@@ -25,7 +25,7 @@ extension SheetRealmCruds {
             return true
             
         } catch {
-            print("updateSheetCardsでエラー: \(error)")
+            print("error: \(error)")
             return false
         }
     }
