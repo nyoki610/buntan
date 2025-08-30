@@ -22,7 +22,6 @@ class RealmCruds {
             let config = Realm.Configuration(fileURL: realmURL, schemaVersion: schemaVersion)
             let userRealm = try Realm(configuration: config)
             
-            print("Log: Realm file successfully accessed. Caller: \(caller)")
             return userRealm
             
         } catch {

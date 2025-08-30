@@ -6,11 +6,8 @@ enum AppConfig {
     private static func readEnvironmentVariable<T> (named name: String) -> T? {
         // まずInfo.plistから読み取りを試行
         if let value = Bundle.main.object(forInfoDictionaryKey: name) as? T {
-            print("Successfully read environment variable from Info.plist: \(name) = \(value)")
             return value
         }
-        
-        print("Failed to read environment variable: \(name)")
         return nil
     }
         
@@ -23,7 +20,6 @@ enum AppConfig {
             return nil
         }
         let cleanedURL = urlString.replacingOccurrences(of: "\\", with: "")
-        print("Base URL: \(cleanedURL)")
         return cleanedURL
     }
     
