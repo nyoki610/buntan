@@ -27,10 +27,9 @@ struct MainView: View {
                 }
             }
 
-            /// loadingView  を表示
-            if loadingSharedData.isLoading {
+            if let status = loadingSharedData.loadingStatus {
                 Background()
-                loadingSharedData.loadingView()
+                LoadingView(status: status)
             }
         }
         .environmentObject(loadingSharedData)

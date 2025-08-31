@@ -1,57 +1,38 @@
 import SwiftUI
+import AudioToolbox
 
+@MainActor
 class LoadingSharedData: ObservableObject {
+
+    @Published private(set) var loadingStatus: LoadingView.Status?
     
-    /// Loading をコントロール
-    var loadingType: LoadingType?
-    @Published var isLoading: Bool = false
-    @Published var isCompleted: Bool = false
-    ///
-    
-    /// LoadingView() を表示
-    func loadingView() -> some View {
+    enum LoadingType: String {
+        case process = "処理中..."
+        case save = "保存中..."
+    }
+
+    internal func startLoading(_ type: LoadingType) async {
         
-        return Loading(loadingLabel: loadingType?.label ?? "",
-                       isCompleted: isCompleted)
+        self.loadingStatus = .loading(label: type.rawValue)
     }
     
-    /// Loading を開始
-    func startLoading(_ type: LoadingType) {
+    internal func showCompletion() async {
         
-        DispatchQueue.main.async {
-            self.loadingType = type
-            self.isLoading = true
+        guard case .loading = loadingStatus else { return }
+        
+        withAnimation(.easeInOut(duration: 0.3)) {
+            self.loadingStatus = .completed
         }
+        
+        let delay: UInt64 = 800_000_000
+        try? await Task.sleep(nanoseconds: delay)
     }
     
-    /// Loading を終了
-    func finishLoading(_ showCompletion: Bool = false, completion: @escaping () -> Void) {
-        
-        if showCompletion {
-            self.isCompleted = true
-        }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            
-            DispatchQueue.main.async {
-                self.loadingType = nil
-                self.isLoading = false
-                self.isCompleted = false
-            }
-            
-            completion()
-        }
-    }
-    
-    enum LoadingType {
-        case process
-        case save
-        
-        var label: String {
-            switch self {
-            case .process: return "処理中..."
-            case .save: return "保存中..."
-            }
-        }
+    internal func finishLoading() async {
+
+        let delay: UInt64 = 300_000_000
+        try? await Task.sleep(nanoseconds: delay)
+
+        self.loadingStatus = nil
     }
 }
