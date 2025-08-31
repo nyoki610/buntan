@@ -5,11 +5,11 @@ extension CheckLearnViewViewModelProtocol {
     
     internal func checkLearnSaveAction(
         navigator: CheckNavigator,
-        loadingSharedData: LoadingSharedData,
+        loadingManager: LoadingManager,
         checkUserInput: CheckUserInput
-    ) {
+    ) async {
 
-        loadingSharedData.startLoading(.save)
+        await loadingManager.startLoading(.save)
         
         let estimatedScore = calcEstimatedScore(selectedGrade: checkUserInput.selectedGrade)
         
@@ -24,11 +24,9 @@ extension CheckLearnViewViewModelProtocol {
 
         let _ = CheckRecordRealmAPI.uploadCheckRecord(checkRecord: checkRecord)
         
-        loadingSharedData.finishLoading {
-            navigator.push(.checkResult(
-                self.cards, self.rightCardsIndexList, estimatedScore
-            ))
-        }
+        await loadingManager.finishLoading()
+        
+        navigator.push(.checkResult(self.cards, self.rightCardsIndexList, estimatedScore))
     }
     
     private func calcEstimatedScore(selectedGrade: EikenGrade) -> Int {
