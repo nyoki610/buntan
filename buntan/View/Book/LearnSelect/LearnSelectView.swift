@@ -210,6 +210,7 @@ extension LearnSelectView {
                 ) else { return }
                 
                 viewModel.updateCardsContainer(userInput: userInput)
+                adjustSelectedRange()
 
                 loadingSharedData.finishLoading {}
             }
