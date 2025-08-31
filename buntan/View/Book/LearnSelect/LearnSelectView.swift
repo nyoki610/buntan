@@ -4,7 +4,7 @@ import SwiftUI
 struct LearnSelectView: View {
     
     @EnvironmentObject var alertSharedData: AlertSharedData
-    @EnvironmentObject var loadingSharedData: LoadingSharedData
+    @EnvironmentObject var loadingManager: LoadingManager
     
     @ObservedObject private var navigator: BookNavigator
     @ObservedObject var userInput: BookUserInput
@@ -198,7 +198,7 @@ extension LearnSelectView {
                                            secondaryButtonLabel: "リセット",
                                            secondaryButtonType: .destructive) {
             Task {
-                await loadingSharedData.startLoading(.process)
+                await loadingManager.startLoading(.process)
                 
                 /// ensure loading screen rendering by delaying the next process
                 let delay: UInt64 = 100_000_000
@@ -214,7 +214,7 @@ extension LearnSelectView {
                 viewModel.updateCardsContainer(userInput: userInput)
                 adjustSelectedRange()
 
-                await loadingSharedData.finishLoading()
+                await loadingManager.finishLoading()
             }
         }
     }

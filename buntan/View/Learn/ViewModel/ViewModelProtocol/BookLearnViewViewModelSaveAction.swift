@@ -6,7 +6,7 @@ extension BookLearnViewViewModelProtocol {
     @MainActor
     internal func bookLearnSaveAction(
         navigator: BookNavigator,
-        loadingSharedData: LoadingSharedData,
+        loadingManager: LoadingManager,
         bookUserInput: BookUserInput,
         learnedCardsCount: Int
     ) async {
@@ -20,7 +20,7 @@ extension BookLearnViewViewModelProtocol {
         }
         
         /// loading を開始
-        await loadingSharedData.startLoading(.save)
+        await loadingManager.startLoading(.save)
 
         /// ensure loading screen rendering by delaying the next process
         let delay: UInt64 = 100_000_000
@@ -31,7 +31,7 @@ extension BookLearnViewViewModelProtocol {
         guard self.uploadLearnRecord() else { return }
 
         /// loading を終了して画面遷移
-        await loadingSharedData.finishLoading()
+        await loadingManager.finishLoading()
 
         guard self.tnrasitionScreen(
             userInput: bookUserInput,

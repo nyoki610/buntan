@@ -25,7 +25,7 @@ extension CheckLearnViewProtocol {
         
         await viewModel.checkLearnSaveAction(
             navigator: navigator,
-            loadingSharedData: loadingSharedData,
+            loadingManager: loadingManager,
             checkUserInput: userInput
         )
     }

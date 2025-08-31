@@ -5,7 +5,7 @@ struct BookSwipeView: BookLearnViewProtocol, SwipeViewProtocol {
     typealias UserInputType = BookUserInput
 
 
-    @EnvironmentObject var loadingSharedData: LoadingSharedData
+    @EnvironmentObject var loadingManager: LoadingManager
     @EnvironmentObject var alertSharedData: AlertSharedData
 
     @StateObject var viewModel: BookSwipeViewViewModel

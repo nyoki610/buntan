@@ -3,7 +3,7 @@ import SwiftUI
 struct CheckView: View {
 
 
-    @EnvironmentObject var loadingSharedData: LoadingSharedData
+    @EnvironmentObject var loadingManager: LoadingManager
     
     @ObservedObject private var navigator: CheckNavigator
     @StateObject private var userInput = CheckUserInput()
@@ -44,7 +44,7 @@ struct CheckView: View {
     
     private func setupCheck() async {
         
-        await loadingSharedData.startLoading(.process)
+        await loadingManager.startLoading(.process)
                 
         guard let cards = SheetRealmAPI.getCaradsForCheck(eikenGrade: userInput.selectedGrade) else { return }
         
@@ -54,7 +54,7 @@ struct CheckView: View {
             containFifthOption: true
         ) else { return }
 
-        await loadingSharedData.finishLoading()
+        await loadingManager.finishLoading()
         
         navigator.push(.checkSelect(cards, options))
     }

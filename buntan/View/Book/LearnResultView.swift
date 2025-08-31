@@ -2,7 +2,7 @@ import SwiftUI
 
 struct LearnResultView: View {
     
-    @EnvironmentObject var loadingSharedData: LoadingSharedData
+    @EnvironmentObject var loadingManager: LoadingManager
     
     private let learnedCardCount: Int
 

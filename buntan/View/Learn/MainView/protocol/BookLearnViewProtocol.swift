@@ -36,7 +36,7 @@ extension BookLearnViewProtocol {
     func saveAction() async {
         await viewModel.bookLearnSaveAction(
             navigator: navigator,
-            loadingSharedData: loadingSharedData,
+            loadingManager: loadingManager,
             bookUserInput: userInput,
             learnedCardsCount: viewModel.cards.count
         )

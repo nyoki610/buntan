@@ -2,7 +2,7 @@ import SwiftUI
 import AudioToolbox
 
 @MainActor
-class LoadingSharedData: ObservableObject {
+class LoadingManager: ObservableObject {
 
     @Published private(set) var loadingStatus: Status?
     

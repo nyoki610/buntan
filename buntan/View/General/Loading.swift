@@ -2,7 +2,7 @@ import SwiftUI
 
 struct LoadingView: View {
 
-    let status: LoadingSharedData.Status
+    let status: LoadingManager.Status
 
     var body: some View {
             
