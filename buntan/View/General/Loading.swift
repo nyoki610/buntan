@@ -2,12 +2,7 @@ import SwiftUI
 
 struct LoadingView: View {
 
-    let status: Status
-    
-    enum Status {
-        case loading(label: String)
-        case completed
-    }
+    let status: LoadingSharedData.Status
 
     var body: some View {
             
@@ -67,7 +62,7 @@ struct Loading_Previews: PreviewProvider {
             
             VStack {
                 Spacer()
-                LoadingView(status: .loading(label: LoadingSharedData.LoadingType.process.rawValue))
+                LoadingView(status: .loading(label: "データ取得中..."))
                 Spacer()
                 LoadingView(status: .completed)
                 Spacer()

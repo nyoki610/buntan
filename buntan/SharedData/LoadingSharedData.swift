@@ -4,7 +4,12 @@ import AudioToolbox
 @MainActor
 class LoadingSharedData: ObservableObject {
 
-    @Published private(set) var loadingStatus: LoadingView.Status?
+    @Published private(set) var loadingStatus: Status?
+    
+    enum Status {
+        case loading(label: String)
+        case completed
+    }
     
     enum LoadingType: String {
         case process = "処理中..."
