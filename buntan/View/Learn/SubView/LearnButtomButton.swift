@@ -28,7 +28,7 @@ struct LearnBottomButtons: View {
     
     private let shouldReadOut: Bool
     
-    private let saveAction: () -> Void
+    private let saveAction: () async -> Void
     
     init?(viewModel: BaseLearnViewViewModel, shouldReadOut: Bool, saveAction: @escaping () -> Void) {
         
@@ -106,7 +106,7 @@ struct LearnBottomButtons: View {
                     systemName: "arrowshape.turn.up.right"
                 ) {
                     selectViewModel.passAction(shouldReadOut: shouldReadOut) {
-                        saveAction()
+                        Task { await saveAction() }
                     }
                 }
                 .padding(.leading, 16)
@@ -136,7 +136,7 @@ struct LearnBottomButtons: View {
                         typeViewModel.nextCardExist ?
                         typeViewModel.nextButtonAction() :
                         typeViewModel.completeButtonAction() {
-                            saveAction()
+                            Task { await saveAction() }
                         }
                     }
                     .padding(.leading, 16)

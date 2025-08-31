@@ -29,12 +29,12 @@ extension BookLearnViewProtocol {
             viewModel: viewModel,
             shouldReadOut: userDefaultHandler.shouldReadOut
         ) {
-            saveAction()
+            Task { await saveAction() }
         }
     }
     
-    func saveAction() {
-        viewModel.bookLearnSaveAction(
+    func saveAction() async {
+        await viewModel.bookLearnSaveAction(
             navigator: navigator,
             loadingSharedData: loadingSharedData,
             bookUserInput: userInput,
@@ -42,7 +42,7 @@ extension BookLearnViewProtocol {
         )
     }
     
-    func xmarkButtonAction() {
+    func xmarkButtonAction() async {
         
         /// １単語も学習していない場合は save せずに exit
         guard viewModel.learnedCardsCount != 0 else {
@@ -51,6 +51,7 @@ extension BookLearnViewProtocol {
             navigator.push(.learnSelect(cardsContainer))
             return
         }
-        saveAction()
+        
+        await saveAction()
     }
 }

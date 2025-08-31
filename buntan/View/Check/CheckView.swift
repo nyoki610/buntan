@@ -42,9 +42,9 @@ struct CheckView: View {
         }
     }
     
-    private func setupCheck() {
+    private func setupCheck() async {
         
-        loadingSharedData.startLoading(.process)
+        await loadingSharedData.startLoading(.process)
                 
         guard let cards = SheetRealmAPI.getCaradsForCheck(eikenGrade: userInput.selectedGrade) else { return }
         
@@ -53,10 +53,10 @@ struct CheckView: View {
             cards: cards,
             containFifthOption: true
         ) else { return }
+
+        await loadingSharedData.finishLoading()
         
-        loadingSharedData.finishLoading {
-            navigator.push(.checkSelect(cards, options))
-        }
+        navigator.push(.checkSelect(cards, options))
     }
     
     @ViewBuilder
@@ -144,7 +144,7 @@ struct CheckView: View {
         
         StartButton(label: "テストを開始　→",
                     color: Orange.defaultOrange) {
-            setupCheck()
+            Task { await setupCheck() }
         }
     }
     

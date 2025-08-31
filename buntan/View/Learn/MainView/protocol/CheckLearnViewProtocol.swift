@@ -21,16 +21,16 @@ extension CheckLearnViewProtocol {
         )
     }
     
-    func saveAction() {
+    func saveAction() async {
         
-        viewModel.checkLearnSaveAction(
+        await viewModel.checkLearnSaveAction(
             navigator: navigator,
             loadingSharedData: loadingSharedData,
             checkUserInput: userInput
         )
     }
     
-    func xmarkButtonAction() {
+    func xmarkButtonAction() async {
         let isFInished = (viewModel.learnedCardsCount == viewModel.cards.count)
         
         guard isFInished else {
@@ -44,6 +44,6 @@ extension CheckLearnViewProtocol {
             }
             return
         }
-        saveAction()
+        await saveAction()
     }
 }

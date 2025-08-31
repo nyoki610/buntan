@@ -3,12 +3,13 @@ import Foundation
 
 extension BookLearnViewViewModelProtocol {
     
+    @MainActor
     internal func bookLearnSaveAction(
         navigator: BookNavigator,
         loadingSharedData: LoadingSharedData,
         bookUserInput: BookUserInput,
         learnedCardsCount: Int
-    ) {
+    ) async {
 
         /// ↓この処理は必要？ @2025/06/29
         /// Keyboard を非表示 (for TypeView())
@@ -19,26 +20,26 @@ extension BookLearnViewViewModelProtocol {
         }
         
         /// loading を開始
-        loadingSharedData.startLoading(.save)
+        await loadingSharedData.startLoading(.save)
 
         /// ensure loading screen rendering by delaying the next process
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            
-            guard self.updateCardsStatus(userInput: bookUserInput) else { return }
-            
-            guard self.uploadLearnRecord() else { return }
-            
-            /// loading を終了して画面遷移
-            loadingSharedData.finishLoading {
-                guard self.tnrasitionScreen(
-                    userInput: bookUserInput,
-                    navigator: navigator,
-                    learnedCardCount: learnedCardsCount
-                ) else {
-                    /// エラーハンドリングが必要？
-                    return
-                }
-            }
+        let delay: UInt64 = 100_000_000
+        try? await Task.sleep(nanoseconds: delay)
+
+        guard self.updateCardsStatus(userInput: bookUserInput) else { return }
+
+        guard self.uploadLearnRecord() else { return }
+
+        /// loading を終了して画面遷移
+        await loadingSharedData.finishLoading()
+
+        guard self.tnrasitionScreen(
+            userInput: bookUserInput,
+            navigator: navigator,
+            learnedCardCount: learnedCardsCount
+        ) else {
+            /// エラーハンドリングが必要？
+            return
         }
     }
 

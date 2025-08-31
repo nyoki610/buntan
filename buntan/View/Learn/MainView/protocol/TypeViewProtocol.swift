@@ -109,7 +109,7 @@ extension TypeViewProtocol {
                     /// 最後の単語かつ正解している場合
                     /// （不正解の場合は完了ボタンから遷移）
                     if shouldSave && viewModel.isCorrect {
-                        saveAction()
+                        await saveAction()
                     }
                 }
             }
