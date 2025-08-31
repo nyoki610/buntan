@@ -89,8 +89,8 @@ struct LearnSelectView: View {
             .background(CustomColor.background)
             .navigationBarBackButtonHidden(true)
             .onAppear {
-                adjustSelectedRange()
                 viewModel.onAppearAction(userInput: userInput)
+                adjustSelectedRange()
             }
     }
     
