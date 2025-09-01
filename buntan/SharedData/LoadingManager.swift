@@ -11,14 +11,25 @@ class LoadingManager: ObservableObject {
         case completed
     }
     
-    enum LoadingType: String {
-        case process = "処理中..."
-        case save = "保存中..."
+    enum LoadingType: Equatable {
+        case fetch
+        case process
+        case save
+        case custom(message: String)
+        
+        var message: String {
+            switch self {
+            case .fetch: return "データ取得中..."
+            case .process: return "処理中..."
+            case .save: return "保存中..."
+            case .custom(let message): return message
+            }
+        }
     }
-
+    
     internal func startLoading(_ type: LoadingType) async {
         
-        self.loadingStatus = .loading(label: type.rawValue)
+        self.loadingStatus = .loading(label: type.message)
     }
     
     internal func showCompletion() async {
