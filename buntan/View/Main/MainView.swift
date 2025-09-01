@@ -30,20 +30,15 @@ struct MainView: View {
                 }
             }
 
-            if let status = loadingManager.loadingStatus {
+            if let loadingStatus = loadingManager.loadingStatus {
                 Background()
-                LoadingView(status: status)
+                LoadingView(status: loadingStatus)
             }
         }
         .environmentObject(loadingManager)
         .environmentObject(alertSharedData)
         .alert(item: $alertSharedData.alertType) { _ in
             alertSharedData.createAlert()
-        }
-        .onAppear {
-            Task {
-                await viewModel.onAppearAction()
-            }
         }
         .onReceive(viewModel.bookViewNavigator.$path) { _ in
             DispatchQueue.main.async {
