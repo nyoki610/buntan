@@ -96,9 +96,7 @@ class LogoViewViewModel: ObservableObject {
             let _ = SheetRealmAPI.deleteUnnecessaryObjects()
             
             VersionUserDefaultHandler.saveUsersCardsVersionId(version: versionId)
-            await loadingManager.showCompletion()
             await send(.completed)
-            
         } catch {
             await send(.error(message: error.localizedDescription))
         }
