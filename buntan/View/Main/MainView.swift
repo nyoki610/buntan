@@ -12,11 +12,14 @@ struct MainView: View {
         
         ZStack {
             
-            if viewModel.showLogoView {
-                logoView
-            } else {
+            switch viewModel.selectedViewName {
+                
+            case .logo:
+                LogoView(loadingManager: loadingManager, selectedViewName: $viewModel.selectedViewName)
+                
+            case .root(let rootViewName):
                 ZStack {
-                    viewModel.selectedRootViewName.viewForName(
+                    rootViewName.viewForName(
                         bookViewNavigator: viewModel.bookViewNavigator,
                         checkViewNavigator: viewModel.checkViewNavigator
                     )

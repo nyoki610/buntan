@@ -4,7 +4,7 @@ import SwiftUI
 class MainViewViewModel: ObservableObject {
     
     /// tabView を管理
-    @Published var selectedRootViewName: RootViewName = .book
+    @Published var selectedViewName: MainViewName = .logo
 
     @Published var bookViewNavigator = BookNavigator()
     @Published var checkViewNavigator = CheckNavigator()
