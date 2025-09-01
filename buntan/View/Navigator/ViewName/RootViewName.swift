@@ -1,29 +1,35 @@
 import SwiftUI
 
 
-enum RootViewName {
+enum MainViewName: Equatable, ViewNameProtocol {
     
-    case book
-    case check
-    case record
-}
-
-
-extension RootViewName: Equatable {
-    static func == (lhs: RootViewName, rhs: RootViewName) -> Bool {
-        switch (lhs, rhs) {
-        case (.book, .book),
-             (.check, .check),
-             (.record, .record):
-            return true
-        default:
-            return false
+    case logo
+    case root(Root)
+    
+    enum Root: Equatable {
+        
+        case book
+        case check
+        case record
+    }
+    
+    var screenName: String {
+        switch self {
+        case .logo: return "logo"
+        case .root(let rootViewName): return rootViewName.screenName
+        }
+    }
+    
+    var screenClassName: String {
+        switch self {
+        case .logo: return "LogoView"
+        case .root(let rootViewName): return rootViewName.screenClassName
         }
     }
 }
 
 
-extension RootViewName: ViewNameProtocol {
+extension MainViewName.Root: ViewNameProtocol {
     
     var screenName: String {
         switch self {
