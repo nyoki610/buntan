@@ -70,13 +70,15 @@ class LogoViewViewModel: ObservableObject {
     private func fetchLatestVersionId() async {
         
         do {
-            let latestVersionId = try await APIHandler.getLatestVersion()
+            guard let latestDBVersionId = try await RemoteConfigService.shared.string(.latestDBVersionId) else {
+                return
+            }
             let userCardsVersionId = VersionUserDefaultHandler.getUsersCardsVersionId() ?? ""
-            let shouldFetchLatestCards = (latestVersionId != userCardsVersionId)
+            let shouldFetchLatestCards = (latestDBVersionId != userCardsVersionId)
             
             if shouldFetchLatestCards {
                 await loadingManager.startLoading(.custom(message: "更新中..."))
-                await send(.fetchingLatestCards(versionId: latestVersionId))
+                await send(.fetchingLatestCards(versionId: latestDBVersionId))
             } else {
                 let delay: UInt64 = 3_000_000_000
                 try await Task.sleep(nanoseconds: delay)
