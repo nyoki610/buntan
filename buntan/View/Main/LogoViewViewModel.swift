@@ -104,7 +104,7 @@ class LogoViewViewModel: ObservableObject {
     
     @MainActor
     private func complete() async {
-        await loadingManager.finishLoading()
+        await loadingManager.finishLoading(withDelay: true)
         withAnimation {
             parentStateBinding.wrappedValue = .root(.book)
         }

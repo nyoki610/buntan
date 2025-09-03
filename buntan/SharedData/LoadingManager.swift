@@ -44,10 +44,12 @@ class LoadingManager: ObservableObject {
         try? await Task.sleep(nanoseconds: delay)
     }
     
-    internal func finishLoading() async {
+    internal func finishLoading(withDelay: Bool = true) async {
 
-        let delay: UInt64 = 300_000_000
-        try? await Task.sleep(nanoseconds: delay)
+        if withDelay {
+            let delay: UInt64 = 300_000_000
+            try? await Task.sleep(nanoseconds: delay)
+        }
 
         self.loadingStatus = nil
     }
