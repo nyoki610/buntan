@@ -6,6 +6,7 @@ final class RemoteConfigService {
     
     enum ConfigKey: String {
         case latestDBVersionId = "latest_db_version_id"
+        case requiredAppVersionId = "required_app_version_id"
     }
     
     static let shared = RemoteConfigService()
@@ -25,9 +26,12 @@ final class RemoteConfigService {
         self.remoteConfig.configSettings = settings
     }
     
-    internal func string(_ key: ConfigKey) async throws -> String? {
+    internal func string(_ key: ConfigKey, shouldActivate: Bool) async throws -> String? {
+
+        if shouldActivate {
+            try await remoteConfig.fetchAndActivate()
+        }
         
-        try await remoteConfig.fetchAndActivate()
         let configValue = remoteConfig.configValue(forKey: key.rawValue)
         let stringValue = configValue.stringValue
         
