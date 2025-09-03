@@ -3,16 +3,7 @@ import SwiftUI
 
 struct LogoView: View {
     
-    @StateObject private var viewModel: LogoViewViewModel
-    
-    init(loadingManager: LoadingManager, selectedViewName: Binding<MainViewName>) {
-        self._viewModel = StateObject(
-            wrappedValue: LogoViewViewModel(
-                loadingManager: loadingManager,
-                parentStateBinding: selectedViewName
-            )
-        )
-    }
+    @StateObject internal var viewModel: LogoViewViewModel
     
     var body: some View {
         

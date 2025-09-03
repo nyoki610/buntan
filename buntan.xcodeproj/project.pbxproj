@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B36638F42E6700E80067D375 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = B36638F32E6700E80067D375 /* FirebaseRemoteConfig */; };
 		B36DF3802DDE2EAB00DF12EA /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = B36DF37F2DDE2EAB00DF12EA /* FirebaseAnalytics */; };
 		B3C8061E2D08025100BFC383 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B3C8061D2D08025100BFC383 /* RealmSwift */; };
 		B3C8061F2D08025D00BFC383 /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = B3C8061D2D08025100BFC383 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -101,6 +102,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B36638F42E6700E80067D375 /* FirebaseRemoteConfig in Frameworks */,
 				B36DF3802DDE2EAB00DF12EA /* FirebaseAnalytics in Frameworks */,
 				B3C8061E2D08025100BFC383 /* RealmSwift in Frameworks */,
 			);
@@ -168,6 +170,7 @@
 			packageProductDependencies = (
 				B3C8061D2D08025100BFC383 /* RealmSwift */,
 				B36DF37F2DDE2EAB00DF12EA /* FirebaseAnalytics */,
+				B36638F32E6700E80067D375 /* FirebaseRemoteConfig */,
 			);
 			productName = buntan;
 			productReference = B3C806132D05B7F400BFC383 /* buntan.app */;
@@ -662,6 +665,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		B36638F32E6700E80067D375 /* FirebaseRemoteConfig */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B3453B902D40B6D7004B6891 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseRemoteConfig;
+		};
 		B36DF37F2DDE2EAB00DF12EA /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = B3453B902D40B6D7004B6891 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

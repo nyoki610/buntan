@@ -15,8 +15,14 @@ struct MainView: View {
             switch viewModel.selectedViewName {
                 
             case .logo:
-                LogoView(loadingManager: loadingManager, selectedViewName: $viewModel.selectedViewName)
-                
+                LogoView(
+                    viewModel: LogoViewViewModel(
+                        loadingManager: loadingManager,
+                        alertSharedData: alertSharedData,
+                        parentStateBinding: $viewModel.selectedViewName
+                    )
+                )
+
             case .root(let rootViewName):
                 ZStack {
                     rootViewName.viewForName(

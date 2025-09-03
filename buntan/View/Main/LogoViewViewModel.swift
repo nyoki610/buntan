@@ -6,20 +6,23 @@ class LogoViewViewModel: ObservableObject {
     
     @Published private(set) var loadingState: DataSyncState = .idle
     private var cancellables = Set<AnyCancellable>()
+    private var canSkipDataFetching: Bool = false
     
     internal enum DataSyncState {
         case idle
         case fetchingLatestVersionId
         case fetchingLatestCards(versionId: String)
         case completed
-        case error(message: String)
+        case error(message: String?)
     }
     
     private let loadingManager: LoadingManager
+    private let alertSharedData: AlertSharedData
     private var parentStateBinding: Binding<MainViewName>
     
-    init(loadingManager: LoadingManager, parentStateBinding: Binding<MainViewName>) {
+    init(loadingManager: LoadingManager, alertSharedData: AlertSharedData, parentStateBinding: Binding<MainViewName>) {
         self.loadingManager = loadingManager
+        self.alertSharedData = alertSharedData
         self.parentStateBinding = parentStateBinding
         
         setupBindings()
@@ -44,8 +47,10 @@ class LogoViewViewModel: ObservableObject {
                     Task { @MainActor in
                         await self?.complete()
                     }
-                case .error(_):
-                    break
+                case let .error(message):
+                    Task { @MainActor in
+                        await self?.handleError(message: message)
+                    }
                 }
             }
             .store(in: &cancellables)
@@ -70,13 +75,28 @@ class LogoViewViewModel: ObservableObject {
     private func fetchLatestVersionId() async {
         
         do {
-            let latestVersionId = try await APIHandler.getLatestVersion()
-            let userCardsVersionId = VersionUserDefaultHandler.getUsersCardsVersionId() ?? ""
-            let shouldFetchLatestCards = (latestVersionId != userCardsVersionId)
+            let userDBVersionId = VersionUserDefaultHandler.getUsersCardsVersionId()
+            
+            if userDBVersionId != nil {
+                canSkipDataFetching = true
+            }
+            
+            guard let latestDBVersionId = try await RemoteConfigService.shared.string(.latestDBVersionId, shouldActivate: true) else {
+                await send(.error(message: nil))
+                return
+            }
+
+            /// This property is unused in version 1.1.1
+            guard let requiredAppVersionId = try await RemoteConfigService.shared.string(.requiredAppVersionId, shouldActivate: false) else {
+                await send(.error(message: nil))
+                return
+            }
+            
+            let shouldFetchLatestCards = (latestDBVersionId != userDBVersionId)
             
             if shouldFetchLatestCards {
                 await loadingManager.startLoading(.custom(message: "更新中..."))
-                await send(.fetchingLatestCards(versionId: latestVersionId))
+                await send(.fetchingLatestCards(versionId: latestDBVersionId))
             } else {
                 let delay: UInt64 = 3_000_000_000
                 try await Task.sleep(nanoseconds: delay)
@@ -104,9 +124,30 @@ class LogoViewViewModel: ObservableObject {
     
     @MainActor
     private func complete() async {
-        await loadingManager.finishLoading()
+        await loadingManager.finishLoading(withDelay: true)
         withAnimation {
             parentStateBinding.wrappedValue = .root(.book)
         }
+    }
+    
+    private func handleError(message: String?) async {
+        
+        if canSkipDataFetching {
+
+            alertSharedData.showSingleAlert(title: "", message: "最新データの取得に失敗しました") {
+                Task { await self.send(.completed) }
+            }
+            return
+        }
+
+        #if DEBUG
+        if let message = message {
+            print(message)
+        }
+        #endif
+        
+        alertSharedData.showSingleAlert(title: "", message: "データの取得に失敗しました") {}
+        
+        return
     }
 }
