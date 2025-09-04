@@ -44,7 +44,7 @@ struct LogoView: View {
             
             Spacer()
             
-            Text("ver 1.0.2")
+            Text("ver. 1.1.1")
                 .font(.system(size: responsiveScaled(20, 1.5)))
                 .fontWeight(.semibold)
             
