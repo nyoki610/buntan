@@ -4,7 +4,7 @@ extension APIHandler {
     
     static func getLatestCards() async throws -> (firstGradeCards: [Card], preFirstGradeCards: [Card]) {
 
-        guard let getLatestCardsPath = AppConfig.getLatestCardsPath,
+        guard let getLatestCardsPath = AppConfig.shared.getLatestCardsPath,
               let resultJson = await callAPI(path: getLatestCardsPath, method: .get) else {
             throw APIError.invalidJSON
         }

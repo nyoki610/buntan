@@ -41,8 +41,8 @@ enum APIHandler {
     
     private static func createRequest(path: String, method: Method) throws -> URLRequest {
 
-        guard let apiKey = AppConfig.apiKey,
-              let baseURL = AppConfig.baseURL else {
+        guard let apiKey = AppConfig.shared.apiKey,
+              let baseURL = AppConfig.shared.baseURL else {
             throw APIError.invalidConfig
         }
         let apiURL = baseURL + path
