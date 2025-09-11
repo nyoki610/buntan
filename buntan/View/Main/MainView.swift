@@ -3,7 +3,7 @@ import SwiftUI
 struct MainView: View {
 
     /// ObservedObjects
-    @ObservedObject private var loadingSharedData = LoadingSharedData()
+    @ObservedObject private var loadingManager = LoadingManager()
     @ObservedObject private var alertSharedData = AlertSharedData()
     
     @StateObject var viewModel = MainViewViewModel()
@@ -12,11 +12,20 @@ struct MainView: View {
         
         ZStack {
             
-            if viewModel.showLogoView {
-                logoView
-            } else {
+            switch viewModel.selectedViewName {
+                
+            case .logo:
+                LogoView(
+                    viewModel: LogoViewViewModel(
+                        loadingManager: loadingManager,
+                        alertSharedData: alertSharedData,
+                        parentStateBinding: $viewModel.selectedViewName
+                    )
+                )
+
+            case .root(let rootViewName):
                 ZStack {
-                    viewModel.selectedRootViewName.viewForName(
+                    rootViewName.viewForName(
                         bookViewNavigator: viewModel.bookViewNavigator,
                         checkViewNavigator: viewModel.checkViewNavigator
                     )
@@ -27,21 +36,15 @@ struct MainView: View {
                 }
             }
 
-            /// loadingView  を表示
-            if loadingSharedData.isLoading {
+            if let loadingStatus = loadingManager.loadingStatus {
                 Background()
-                loadingSharedData.loadingView()
+                LoadingView(status: loadingStatus)
             }
         }
-        .environmentObject(loadingSharedData)
+        .environmentObject(loadingManager)
         .environmentObject(alertSharedData)
         .alert(item: $alertSharedData.alertType) { _ in
             alertSharedData.createAlert()
-        }
-        .onAppear {
-            Task {
-                await viewModel.onAppearAction()
-            }
         }
         .onReceive(viewModel.bookViewNavigator.$path) { _ in
             DispatchQueue.main.async {

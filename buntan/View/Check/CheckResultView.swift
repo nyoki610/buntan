@@ -3,7 +3,7 @@ import SwiftUI
 struct CheckResultView: View {
 
 
-    @EnvironmentObject var loadingSharedData: LoadingSharedData
+    @EnvironmentObject var loadingManager: LoadingManager
     
     @ObservedObject private var navigator: CheckNavigator
     @ObservedObject private var userInput: CheckUserInput

@@ -1,9 +1,11 @@
 import SwiftUI
 
-extension MainView {
+
+struct LogoView: View {
     
-    /// アプリ起動時に表示されるタイトル画面
-    var logoView: some View {
+    @StateObject internal var viewModel: LogoViewViewModel
+    
+    var body: some View {
         
         VStack {
             
@@ -42,7 +44,7 @@ extension MainView {
             
             Spacer()
             
-            Text("ver 1.0.2")
+            Text("ver. 1.1.1")
                 .font(.system(size: responsiveScaled(20, 1.5)))
                 .fontWeight(.semibold)
             
@@ -50,16 +52,12 @@ extension MainView {
             Spacer()
             
             VStack {
-                if viewModel.isFetchingLatestCards {
-                    Text("データ取得中...")
-                } else {
-                    Text("英検®は、公益財団法人")
-                    Text("日本英語検定協会の登録商標です。")
-                        .padding(.bottom, 10)
-                    Text("このコンテンツは、公益財団法人")
-                    Text("日本英語検定協会の承認や推奨、")
-                    Text("その他の検討を受けたものではありません。")
-                }
+                Text("英検®は、公益財団法人")
+                Text("日本英語検定協会の登録商標です。")
+                    .padding(.bottom, 10)
+                Text("このコンテンツは、公益財団法人")
+                Text("日本英語検定協会の承認や推奨、")
+                Text("その他の検討を受けたものではありません。")
             }
             .font(.system(size: responsiveScaled(17, 1.5)))
             
@@ -69,10 +67,8 @@ extension MainView {
         .fontWeight(.bold)
         .frame(maxWidth: .infinity)
         .background(Orange.defaultOrange)
-        .onAppear {
-            AnalyticsLogger.logScreenTransition(viewName: ViewName.logo)
-            
-            let _ = SheetRealmAPI.deleteUnnecessaryObjects()
+        .task {
+            await viewModel.task()
         }
     }
 }

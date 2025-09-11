@@ -6,7 +6,7 @@ struct BookTypeView: View, BookLearnViewProtocol, TypeViewProtocol {
     
 
     
-    @EnvironmentObject var loadingSharedData: LoadingSharedData
+    @EnvironmentObject var loadingManager: LoadingManager
     
     /// this variable is not directly manipulated.
     @FocusState var isKeyboardActive: Bool

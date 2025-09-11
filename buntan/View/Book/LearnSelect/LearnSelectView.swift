@@ -4,7 +4,7 @@ import SwiftUI
 struct LearnSelectView: View {
     
     @EnvironmentObject var alertSharedData: AlertSharedData
-    @EnvironmentObject var loadingSharedData: LoadingSharedData
+    @EnvironmentObject var loadingManager: LoadingManager
     
     @ObservedObject private var navigator: BookNavigator
     @ObservedObject var userInput: BookUserInput
@@ -89,8 +89,8 @@ struct LearnSelectView: View {
             .background(CustomColor.background)
             .navigationBarBackButtonHidden(true)
             .onAppear {
-                adjustSelectedRange()
                 viewModel.onAppearAction(userInput: userInput)
+                adjustSelectedRange()
             }
     }
     
@@ -197,21 +197,24 @@ extension LearnSelectView {
                                            message: "",
                                            secondaryButtonLabel: "リセット",
                                            secondaryButtonType: .destructive) {
-            loadingSharedData.startLoading(.process)
-            
-            /// ensure loading screen rendering by delaying the next process
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            Task {
+                await loadingManager.startLoading(.process)
                 
+                /// ensure loading screen rendering by delaying the next process
+                let delay: UInt64 = 100_000_000
+                try? await Task.sleep(nanoseconds: delay)
+
                 guard let selectedBookCategory = userInput.selectedBookCategory else { return }
-                
+
                 guard SheetRealmAPI.resetCardsStatus(
                     cardIdList: viewModel.cardsContainer.allCards.map { $0.id },
                     bookCategory: selectedBookCategory
                 ) else { return }
-                
-                viewModel.updateCardsContainer(userInput: userInput)
 
-                loadingSharedData.finishLoading {}
+                viewModel.updateCardsContainer(userInput: userInput)
+                adjustSelectedRange()
+
+                await loadingManager.finishLoading()
             }
         }
     }

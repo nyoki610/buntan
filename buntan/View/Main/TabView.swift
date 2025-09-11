@@ -12,11 +12,11 @@ extension MainView {
             HStack {
                 Spacer()
 
-                tabButton("book.fill", "単語帳", .book)
+                tabButton("book.fill", "単語帳", for: .book)
 
-                tabButton("checklist.checked", "テスト", .check)
+                tabButton("checklist.checked", "テスト", for: .check)
                     .padding(.horizontal, responsiveSize(20, 60))
-                tabButton("shoeprints.fill", "記録", .record)
+                tabButton("shoeprints.fill", "記録", for: .record)
                     .padding(.bottom, responsiveSize(0, 20))
                 
                 Spacer()
@@ -26,13 +26,14 @@ extension MainView {
     }
     
     @ViewBuilder
-    private func tabButton(_ systemName: String, _ title: String, _ targetViewName: RootViewName) -> some View {
+    private func tabButton(_ systemName: String, _ title: String, for viewName: MainViewName.Root) -> some View {
         
-        let isSelected = viewModel.selectedRootViewName == targetViewName
+        let targetViewName = MainViewName.root(viewName)
+        let isSelected = (viewModel.selectedViewName == targetViewName)
         
         Button {
-            viewModel.selectedRootViewName = targetViewName
-            AnalyticsLogger.logScreenTransition(viewName: ViewName.root(targetViewName))
+            viewModel.selectedViewName = targetViewName
+            AnalyticsLogger.logScreenTransition(viewName: targetViewName)
         } label: {
             
             VStack {

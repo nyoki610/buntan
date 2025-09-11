@@ -6,7 +6,7 @@ struct BookSelectView: SelectViewProtocol, BookLearnViewProtocol {
     typealias ViewModelType = BookSelectViewViewModel
     typealias UserInputType = BookUserInput
     
-    @EnvironmentObject var loadingSharedData: LoadingSharedData
+    @EnvironmentObject var loadingManager: LoadingManager
     
     @StateObject var viewModel: BookSelectViewViewModel
     @StateObject var userDefaultHandler: LearnUserDefaultHandler

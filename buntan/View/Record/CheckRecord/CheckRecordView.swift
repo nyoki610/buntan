@@ -21,24 +21,17 @@ struct CheckRecordView: View {
         
         VStack {
             
-            if !extractedRecords.isEmpty {
-                
-                let gradeList: Set<EikenGrade> = Set(checkRecords.map { $0.grade })
-                let extractedGrades = EikenGrade.allCases.filter { gradeList.contains($0) }
-                
-                Picker("grade", selection: $selectedGrade) {
-                    ForEach(extractedGrades, id: \.self) { grade in
-                        Text(grade.title)
-                            .fontSize(responsiveSize(16, 20))
-                            .foregroundColor(.black)
-                    }
+            Picker("grade", selection: $selectedGrade) {
+                ForEach(EikenGrade.allCases, id: \.self) { grade in
+                    Text(grade.title)
+                        .fontSize(responsiveSize(16, 20))
+                        .foregroundColor(.black)
                 }
+            }
                 .onChange(of: selectedGrade) { _ in
                     chartController = 0
                 }
                 .padding(.top, 4)
-                
-                
 
                 SelectRangeView(
                     isLearnRecordView: false,
@@ -53,7 +46,6 @@ struct CheckRecordView: View {
                 .font(.system(size: 14))
                 .foregroundColor(.black)
                 .padding(.top, 10)
-            }
             
             ZStack {
                 
@@ -72,7 +64,7 @@ struct CheckRecordView: View {
             .background(.white)
             .cornerRadius(10)
             .padding(.horizontal, 10)
-            .padding(.top, !extractedRecords.isEmpty ? 10 : 100)
+            .padding(.top, 32)
         }
     }
 }

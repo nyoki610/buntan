@@ -178,7 +178,7 @@ extension SwipeViewProtocol {
                     /// animationの完了を待つ
                     try? await Task.sleep(nanoseconds: 0_300_000_000)
                     
-                    saveAction()
+                    await saveAction()
                 }
             }
         }

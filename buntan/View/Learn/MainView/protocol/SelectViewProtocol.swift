@@ -49,7 +49,7 @@ extension SelectViewProtocol {
                 selectedOptionIndex: index,
                 shouldReadOut: userDefaultHandler.shouldReadOut
             ) {
-                saveAction()
+                Task { await saveAction() }
             }
         } label: {
             

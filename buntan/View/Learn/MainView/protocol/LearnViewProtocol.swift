@@ -12,12 +12,12 @@ protocol _LearnViewProtocol: View {
     associatedtype NavigatorType: Navigating
     var navigator: NavigatorType { get }
     
-    var loadingSharedData: LoadingSharedData { get }
+    var loadingManager: LoadingManager { get }
     
     var userDefaultHandler: LearnUserDefaultHandler { get }
     
-    func xmarkButtonAction() -> Void
-    func saveAction() -> Void
+    func xmarkButtonAction() async -> Void
+    func saveAction() async -> Void
 }
 
 
@@ -29,7 +29,7 @@ extension _LearnViewProtocol {
             viewModel: viewModel,
             geometry: geometry
         ) {
-            xmarkButtonAction()
+            Task { await xmarkButtonAction() }
         }
     }
     
@@ -38,7 +38,7 @@ extension _LearnViewProtocol {
             viewModel: viewModel,
             shouldReadOut: userDefaultHandler.shouldReadOut
         ) {
-            saveAction()
+            Task { await saveAction() }
         }
     }
 }
