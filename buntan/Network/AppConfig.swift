@@ -1,41 +1,33 @@
 import Foundation
 
-
-enum AppConfig {
+protocol AppConfigProtocol {
     
-    private static func readEnvironmentVariable<T> (named name: String) -> T? {
-        // まずInfo.plistから読み取りを試行
-        if let value = Bundle.main.object(forInfoDictionaryKey: name) as? T {
+    var apiKey: String? { get }
+    var baseURL: String? { get }
+}
+
+struct AppConfig: AppConfigProtocol {
+    
+    static let shared = AppConfig()
+    
+    let apiKey: String?
+    let baseURL: String?
+    
+    private enum Key: String {
+        case apiKey = "API_KEY"
+        case baseURL = "API_BASE_URL"
+    }
+    
+    private init() {
+        self.apiKey = Self.readEnvironmentVariable(named: Key.apiKey.rawValue)
+        self.baseURL = Self.readEnvironmentVariable(named: Key.baseURL.rawValue)?.replacingOccurrences(of: "\\", with: "")
+    }
+    
+    private static func readEnvironmentVariable(named name: String) -> String? {
+
+        if let value = Bundle.main.object(forInfoDictionaryKey: name) as? String {
             return value
         }
         return nil
-    }
-        
-    static var apiKey: String? {
-        readEnvironmentVariable(named: "API_KEY")
-    }
-    
-    static var baseURL: String? {
-        guard let urlString: String = readEnvironmentVariable(named: "API_BASE_URL") else {
-            return nil
-        }
-        let cleanedURL = urlString.replacingOccurrences(of: "\\", with: "")
-        return cleanedURL
-    }
-    
-    static var getLatestCardsPath: String? {
-        guard let path: String = readEnvironmentVariable(named: "LATEST_CARDS_PATH") else {
-            return nil
-        }
-        let cleanedPath = path.replacingOccurrences(of: "\\", with: "")
-        return cleanedPath
-    }
-    
-    static var getLatestVersionPath: String? {
-        guard let path: String = readEnvironmentVariable(named: "LATEST_VERSION_PATH") else {
-            return nil
-        }
-        let cleanedPath = path.replacingOccurrences(of: "\\", with: "")
-        return cleanedPath
     }
 }

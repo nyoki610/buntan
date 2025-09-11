@@ -110,11 +110,10 @@ class LogoViewViewModel: ObservableObject {
     private func fetchLatestCards(versionId: String) async {
         
         do {
-            let (firstGradeCards, preFirstGradeCards) = try await APIHandler.getLatestCards()
-            let _ = SheetRealmAPI.updateSheetCards(grade: .first, newCards: firstGradeCards)
-            let _ = SheetRealmAPI.updateSheetCards(grade: .preFirst, newCards: preFirstGradeCards)
+            let response = try await BuntanClient.getCardsLatest(config: AppConfig.shared)
+            let _ = SheetRealmAPI.updateSheetCards(grade: .first, newCards: response.firstGradeCards)
+            let _ = SheetRealmAPI.updateSheetCards(grade: .preFirst, newCards: response.preFirstGradeCards)
             let _ = SheetRealmAPI.deleteUnnecessaryObjects()
-            
             VersionUserDefaultHandler.saveUsersCardsVersionId(version: versionId)
             await send(.completed)
         } catch {
