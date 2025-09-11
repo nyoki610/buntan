@@ -14,13 +14,13 @@ struct AppConfig: AppConfigProtocol {
     let baseURL: String?
     
     private enum Key: String {
-        case API_KEY
-        case API_BASE_URL
+        case apiKey = "API_KEY"
+        case baseURL = "API_BASE_URL"
     }
     
     private init() {
-        self.apiKey = Self.readEnvironmentVariable(named: Key.API_KEY.rawValue)
-        self.baseURL = Self.readEnvironmentVariable(named: Key.API_BASE_URL.rawValue)?.replacingOccurrences(of: "\\", with: "")
+        self.apiKey = Self.readEnvironmentVariable(named: Key.apiKey.rawValue)
+        self.baseURL = Self.readEnvironmentVariable(named: Key.baseURL.rawValue)?.replacingOccurrences(of: "\\", with: "")
     }
     
     private static func readEnvironmentVariable(named name: String) -> String? {
