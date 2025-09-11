@@ -9,6 +9,7 @@ import Foundation
 
 enum BuntanAPIError: Error {
     
+    case failedToCreateAPIClient
     case invalidResponse
     case notDecodedResponse(Data, HTTPURLResponse)
     case notHandledResponse(Data, HTTPURLResponse)
