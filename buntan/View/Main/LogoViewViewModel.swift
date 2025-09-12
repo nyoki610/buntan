@@ -17,12 +17,12 @@ class LogoViewViewModel: ObservableObject {
     }
     
     private let loadingManager: LoadingManager
-    private let alertSharedData: AlertSharedData
+    private let alertManager: AlertManager
     private var parentStateBinding: Binding<MainViewName>
     
-    init(loadingManager: LoadingManager, alertSharedData: AlertSharedData, parentStateBinding: Binding<MainViewName>) {
+    init(loadingManager: LoadingManager, alertManager: AlertManager, parentStateBinding: Binding<MainViewName>) {
         self.loadingManager = loadingManager
-        self.alertSharedData = alertSharedData
+        self.alertManager = alertManager
         self.parentStateBinding = parentStateBinding
         
         setupBindings()
@@ -132,10 +132,14 @@ class LogoViewViewModel: ObservableObject {
     private func handleError(message: String?) async {
         
         if canSkipDataFetching {
-
-            alertSharedData.showSingleAlert(title: "", message: "最新データの取得に失敗しました") {
+            
+            let config = AlertManager.SingleAlertConfig(
+                title: nil,
+                message: "最新データの取得に失敗しました"
+            ) {
                 Task { await self.send(.completed) }
             }
+            await alertManager.showAlert(type: .single(config: config))
             return
         }
 
@@ -145,8 +149,12 @@ class LogoViewViewModel: ObservableObject {
         }
         #endif
         
-        alertSharedData.showSingleAlert(title: "", message: "データの取得に失敗しました") {}
-        
+        let config = AlertManager.SingleAlertConfig(
+            title: nil,
+            message: "データの取得に失敗しました",
+            action: nil
+        )
+        await alertManager.showAlert(type: .single(config: config))
         return
     }
 }

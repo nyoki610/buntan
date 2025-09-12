@@ -4,7 +4,7 @@ import SwiftUI
 struct BookLearnSettingButtons: LearnSettingButtonsProtocol {
 
     
-    @EnvironmentObject var alertSharedData: AlertSharedData
+    @EnvironmentObject var alertManager: AlertManager
     
     @ObservedObject var userDefaultHandler: LearnUserDefaultHandler
 
@@ -88,20 +88,22 @@ struct BookLearnSettingButtons: LearnSettingButtonsProtocol {
         if isInitialState {
             shuffleAction()
         } else {
-            var title = "現在の進捗はリセットされます\n"
-            title += userDefaultHandler.shouldShuffle ? "元に戻" : "シャッフル"
-            title += "しますか？"
+            
+            var title: String {
+                "現在の進捗はリセットされます\n\(userDefaultHandler.shouldShuffle ? "元に戻" : "シャッフル")しますか？"
+            }
             
             let secondaryButtonLabel = userDefaultHandler.shouldShuffle ? "元に戻す" : "シャッフル"
             
-            alertSharedData.showSelectiveAlert(
+            let config = AlertManager.SelectiveAlertConfig(
                 title: title,
-                message: "",
+                message: nil,
                 secondaryButtonLabel: secondaryButtonLabel,
                 secondaryButtonType: .defaultButton
             ) {
                 shuffleAction()
             }
+            alertManager.showAlert(type: .selective(config: config))
         }
     }
 }

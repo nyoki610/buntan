@@ -6,7 +6,7 @@ struct BookSwipeView: BookLearnViewProtocol, SwipeViewProtocol {
 
 
     @EnvironmentObject var loadingManager: LoadingManager
-    @EnvironmentObject var alertSharedData: AlertSharedData
+    @EnvironmentObject var alertManager: AlertManager
 
     @StateObject var viewModel: BookSwipeViewViewModel
     @StateObject var userDefaultHandler: LearnUserDefaultHandler

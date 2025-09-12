@@ -4,7 +4,7 @@ struct MainView: View {
 
     /// ObservedObjects
     @ObservedObject private var loadingManager = LoadingManager()
-    @ObservedObject private var alertSharedData = AlertSharedData()
+    @ObservedObject private var alertManager = AlertManager()
     
     @StateObject var viewModel = MainViewViewModel()
     
@@ -18,7 +18,7 @@ struct MainView: View {
                 LogoView(
                     viewModel: LogoViewViewModel(
                         loadingManager: loadingManager,
-                        alertSharedData: alertSharedData,
+                        alertManager: alertManager,
                         parentStateBinding: $viewModel.selectedViewName
                     )
                 )
@@ -42,9 +42,9 @@ struct MainView: View {
             }
         }
         .environmentObject(loadingManager)
-        .environmentObject(alertSharedData)
-        .alert(item: $alertSharedData.alertType) { _ in
-            alertSharedData.createAlert()
+        .environmentObject(alertManager)
+        .alert(item: $alertManager.alertType) { _ in
+            alertManager.createAlert()
         }
         .onReceive(viewModel.bookViewNavigator.$path) { _ in
             DispatchQueue.main.async {

@@ -7,7 +7,7 @@ struct CheckSelectView: SelectViewProtocol, CheckLearnViewProtocol {
     typealias UserInputType = CheckUserInput
     
     @EnvironmentObject var loadingManager: LoadingManager
-    @EnvironmentObject var alertSharedData: AlertSharedData
+    @EnvironmentObject var alertManager: AlertManager
     
     @StateObject var viewModel: CheckSelectViewViewModel
     @StateObject var userDefaultHandler: LearnUserDefaultHandler

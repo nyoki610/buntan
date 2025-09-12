@@ -10,7 +10,7 @@ struct LearnBottomButtons: View {
     }
 
 
-    @EnvironmentObject var alertSharedData: AlertSharedData
+    @EnvironmentObject var alertManager: AlertManager
     
     @ObservedObject var viewModel: BaseLearnViewViewModel
     
@@ -77,7 +77,7 @@ struct LearnBottomButtons: View {
                         subLabel: "戻る",
                         systemName: "arrowshape.turn.up.backward.2"
                     ) {
-                        bookLearnViewModel.backToStart(alertSharedData: alertSharedData)
+                        bookLearnViewModel.backToStart(alertManager: alertManager)
                     }
                                  .padding(.leading, 16)
                 }

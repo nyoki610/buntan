@@ -3,7 +3,7 @@ import SwiftUI
 
 struct LearnSelectView: View {
     
-    @EnvironmentObject var alertSharedData: AlertSharedData
+    @EnvironmentObject var alertManager: AlertManager
     @EnvironmentObject var loadingManager: LoadingManager
     
     @ObservedObject private var navigator: BookNavigator
@@ -193,30 +193,33 @@ extension LearnSelectView {
     
     func resetAction() {
         
-        alertSharedData.showSelectiveAlert(title: "現在の進捗を\nリセットしますか？",
-                                           message: "",
-                                           secondaryButtonLabel: "リセット",
-                                           secondaryButtonType: .destructive) {
+        let config = AlertManager.SelectiveAlertConfig(
+            title: "現在の進捗を\nリセットしますか？",
+            message: nil,
+            secondaryButtonLabel: "リセット",
+            secondaryButtonType: .destructive
+        ) {
             Task {
                 await loadingManager.startLoading(.process)
                 
                 /// ensure loading screen rendering by delaying the next process
                 let delay: UInt64 = 100_000_000
                 try? await Task.sleep(nanoseconds: delay)
-
+                
                 guard let selectedBookCategory = userInput.selectedBookCategory else { return }
-
+                
                 guard SheetRealmAPI.resetCardsStatus(
                     cardIdList: viewModel.cardsContainer.allCards.map { $0.id },
                     bookCategory: selectedBookCategory
                 ) else { return }
-
+                
                 viewModel.updateCardsContainer(userInput: userInput)
                 adjustSelectedRange()
-
+                
                 await loadingManager.finishLoading()
             }
         }
+        alertManager.showAlert(type: .selective(config: config))
     }
 }
 
