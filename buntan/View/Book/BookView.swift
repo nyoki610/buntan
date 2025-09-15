@@ -52,6 +52,9 @@ struct BookView<ViewModel: BookViewViewModelProtocol>: View {
             .navigationDestination(for: BookViewName.self) { viewName in
                 viewName.viewForName(navigator: viewModel.navigator, userInput: viewModel.userInput)
             }
+            .onAppear {
+                AnalyticsLogger.logScreenTransition(viewName: MainViewName.root(.book))
+            }
         }
     }
     

@@ -19,5 +19,8 @@ struct RecordView: View {
             Spacer()
         }
         .background(CustomColor.background)
+        .onAppear {
+            AnalyticsLogger.logScreenTransition(viewName: MainViewName.root(.record))
+        }
     }
 }
