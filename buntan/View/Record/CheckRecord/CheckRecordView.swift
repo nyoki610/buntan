@@ -25,9 +25,9 @@ struct CheckRecordView: View {
                 ForEach(EikenGrade.allCases, id: \.self) { grade in
                     Text(grade.title)
                         .fontSize(responsiveSize(16, 20))
-                        .foregroundColor(.black)
                 }
             }
+                .background(Orange.semiClear.cornerRadius(10))
                 .onChange(of: selectedGrade) { _ in
                     chartController = 0
                 }
