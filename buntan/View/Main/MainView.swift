@@ -23,17 +23,34 @@ struct MainView: View {
                     )
                 )
 
-            case .root(let rootViewName):
-                ZStack {
-                    rootViewName.viewForName(
-                        bookViewNavigator: viewModel.bookViewNavigator,
-                        checkViewNavigator: viewModel.checkViewNavigator
-                    )
+            case .root:
+                
+                TabView {
                     
-                    if viewModel.showTabView {
-                        tabView
+                    BookView(
+                        viewModel: BookViewViewModel(
+                            navigator: viewModel.bookViewNavigator,
+                            userInput: BookUserInput()
+                        )
+                    )
+                    .tabItem {
+                        Image(systemName: "book.fill")
+                        Text("単語帳")
                     }
+                    
+                    CheckView(navigator: viewModel.checkViewNavigator)
+                        .tabItem {
+                            Image(systemName: "checklist.checked")
+                            Text("テスト")
+                        }
+                    
+                    RecordView()
+                        .tabItem {
+                            Image(systemName: "shoeprints.fill")
+                            Text("記録")
+                        }
                 }
+                .tint(Orange.defaultOrange)
             }
 
             if let loadingStatus = loadingManager.loadingStatus {
