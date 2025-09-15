@@ -39,6 +39,9 @@ struct CheckView: View {
             .navigationDestination(for: CheckViewName.self) { viewName in
                 viewName.viewForName(navigator: navigator, userInput: userInput)
             }
+            .onAppear {
+                AnalyticsLogger.logScreenTransition(viewName: MainViewName.root(.check))
+            }
         }
     }
     
