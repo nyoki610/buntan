@@ -19,13 +19,14 @@ struct ContactView: View {
             }
 
             VStack {
-                Text("不具合報告、アプリの感想、要望など")
+                Text("不具合報告・アプリの感想・要望など")
                 Text("何かお気づきの点がございましたら、")
                 Text("以下のフォームよりお気軽にお知らせください。")
             }
             .font(.subheadline)
             .foregroundColor(.secondary)
 
+            StartButton(label: "お問い合わせフォームへ →", color: .blue) {
                 let contactFormURL = "https://forms.gle/53ayTwLYKHkwusrt9"
                 guard let url = URL(string: contactFormURL) else { return }
                 UIApplication.shared.open(url)
