@@ -49,6 +49,12 @@ struct MainView: View {
                             Image(systemName: "shoeprints.fill")
                             Text("記録")
                         }
+                    
+                    ContactView()
+                        .tabItem {
+                            Image(systemName: "paperplane.fill")
+                            Text("お問い合わせ")
+                        }
                 }
                 .tint(Orange.defaultOrange)
             }
