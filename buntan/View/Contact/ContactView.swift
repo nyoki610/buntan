@@ -37,6 +37,9 @@ struct ContactView: View {
         .background(.white)
         .cornerRadius(15)
         .shadow(color: .black.opacity(0.1), radius: 10)
+        .onAppear {
+            AnalyticsLogger.logScreenTransition(viewName: MainViewName.root(.contact))
+        }
     }
 }
 
