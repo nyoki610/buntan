@@ -26,8 +26,9 @@ struct ContactView: View {
             .font(.subheadline)
             .foregroundColor(.secondary)
 
-            StartButton(label: "外部フォームに移動", color: .blue) {
-                
+                let contactFormURL = "https://forms.gle/53ayTwLYKHkwusrt9"
+                guard let url = URL(string: contactFormURL) else { return }
+                UIApplication.shared.open(url)
             }
         }
         .padding(.horizontal, 20)
