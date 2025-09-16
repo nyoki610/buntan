@@ -11,6 +11,7 @@ enum MainViewName: Equatable, ViewNameProtocol {
         case book
         case check
         case record
+        case contact
     }
     
     var screenName: String {
@@ -36,6 +37,7 @@ extension MainViewName.Root: ViewNameProtocol {
         case .book: return "book"
         case .check: return "check"
         case .record: return "record"
+        case .contact: return "contact"
         }
     }
 
@@ -44,6 +46,7 @@ extension MainViewName.Root: ViewNameProtocol {
         case .book: return "BookView"
         case .check: return "CheckView"
         case .record: return "RecordView"
+        case .contact: return "ContactView"
         }
     }
 
@@ -60,6 +63,8 @@ extension MainViewName.Root: ViewNameProtocol {
             return AnyView(CheckView(navigator: checkViewNavigator))
         case .record:
             return AnyView(RecordView())
+        case .contact:
+            return AnyView(ContactView())
         }
     }
 }
