@@ -65,7 +65,14 @@ class LogoViewViewModel: ObservableObject {
         try? await Task.sleep(nanoseconds: delay)
         
         await loadingManager.startLoading(.fetch)
-        await send(.fetchingLatestVersionId)
+
+        if await CheckForcedUpdateUseCase.isUpdateRequired() {
+            await loadingManager.finishLoading()
+            let config = AlertManager.SingleAlertConfig(title: "更新のお知らせ", message: "新しいバージョンが利用可能です。\nアプリをアップデートしてご利用ください。", action: {})
+            await alertManager.showAlert(type: .single(config: config))
+        } else {
+            await send(.fetchingLatestVersionId)
+        }
     }
     
     @MainActor
@@ -83,12 +90,6 @@ class LogoViewViewModel: ObservableObject {
             }
             
             guard let latestDBVersionId = try await RemoteConfigService.shared.string(.latestDBVersionId) else {
-                await send(.error(message: nil))
-                return
-            }
-
-            /// This property is unused in version 1.1.1
-            guard let requiredAppVersionId = try await RemoteConfigService.shared.string(.requiredAppVersionId) else {
                 await send(.error(message: nil))
                 return
             }
