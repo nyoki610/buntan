@@ -44,8 +44,8 @@ struct LogoView: View {
             
             Spacer()
             
-            if let versionNumber = viewModel.versionNumber {
-                Text("ver. \(versionNumber)")
+            if let appVersionId = viewModel.appVersionId {
+                Text("ver. \(appVersionId)")
                     .font(.system(size: responsiveScaled(20, 1.5)))
                     .fontWeight(.semibold)
             }

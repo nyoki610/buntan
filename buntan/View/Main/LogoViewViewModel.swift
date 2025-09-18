@@ -5,7 +5,7 @@ import Combine
 class LogoViewViewModel: ObservableObject {
     
     @Published private(set) var loadingState: DataSyncState = .idle
-    let versionNumber = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+    let appVersionId = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
     private var cancellables = Set<AnyCancellable>()
     private var canSkipDataFetching: Bool = false
     
