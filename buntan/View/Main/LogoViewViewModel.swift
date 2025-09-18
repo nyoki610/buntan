@@ -82,13 +82,13 @@ class LogoViewViewModel: ObservableObject {
                 canSkipDataFetching = true
             }
             
-            guard let latestDBVersionId = try await RemoteConfigService.shared.string(.latestDBVersionId, shouldActivate: true) else {
+            guard let latestDBVersionId = try await RemoteConfigService.shared.string(.latestDBVersionId) else {
                 await send(.error(message: nil))
                 return
             }
 
             /// This property is unused in version 1.1.1
-            guard let requiredAppVersionId = try await RemoteConfigService.shared.string(.requiredAppVersionId, shouldActivate: false) else {
+            guard let requiredAppVersionId = try await RemoteConfigService.shared.string(.requiredAppVersionId) else {
                 await send(.error(message: nil))
                 return
             }
