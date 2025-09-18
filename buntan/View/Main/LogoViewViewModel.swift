@@ -76,7 +76,7 @@ class LogoViewViewModel: ObservableObject {
     private func fetchLatestVersionId() async {
         
         do {
-            let userDBVersionId = VersionUserDefaultHandler.getUsersCardsVersionId()
+            let userDBVersionId = VersionUserDefaultHandler.getValue(forKey: .usersCardsVersionId)
             
             if userDBVersionId != nil {
                 canSkipDataFetching = true
@@ -115,7 +115,7 @@ class LogoViewViewModel: ObservableObject {
             let _ = SheetRealmAPI.updateSheetCards(grade: .first, newCards: response.firstGradeCards)
             let _ = SheetRealmAPI.updateSheetCards(grade: .preFirst, newCards: response.preFirstGradeCards)
             let _ = SheetRealmAPI.deleteUnnecessaryObjects()
-            VersionUserDefaultHandler.saveUsersCardsVersionId(version: versionId)
+            VersionUserDefaultHandler.setValue(value: versionId, forKey: .usersCardsVersionId)
             await send(.completed)
         } catch {
             await send(.error(message: error.localizedDescription))
