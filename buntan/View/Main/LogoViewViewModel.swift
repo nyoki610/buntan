@@ -68,7 +68,19 @@ class LogoViewViewModel: ObservableObject {
 
         if await CheckForcedUpdateUseCase.isUpdateRequired() {
             await loadingManager.finishLoading()
-            let config = AlertManager.SingleAlertConfig(title: "更新のお知らせ", message: "新しいバージョンが利用可能です。\nアプリをアップデートしてご利用ください。", action: {})
+            let config = AlertManager.SingleAlertConfig(
+                title: "更新のお知らせ",
+                message: "新しいバージョンが利用可能です。\nアプリをアップデートしてご利用ください。"
+            ) {
+                Task {
+                    await MainActor.run {
+                        let contactFormURL = "https://x.gd/R38a3"
+                        guard let url = URL(string: contactFormURL) else { return }
+                        UIApplication.shared.open(url)
+                        self.parentStateBinding.wrappedValue = .forcedUpdate
+                    }
+                }
+            }
             await alertManager.showAlert(type: .single(config: config))
         } else {
             await send(.fetchingLatestVersionId)
