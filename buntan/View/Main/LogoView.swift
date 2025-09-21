@@ -44,9 +44,11 @@ struct LogoView: View {
             
             Spacer()
             
-            Text("ver. 1.1.1")
-                .font(.system(size: responsiveScaled(20, 1.5)))
-                .fontWeight(.semibold)
+            if let appVersionId = viewModel.appVersionId {
+                Text("ver. \(appVersionId)")
+                    .font(.system(size: responsiveScaled(20, 1.5)))
+                    .fontWeight(.semibold)
+            }
             
             Spacer()
             Spacer()

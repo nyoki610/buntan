@@ -22,6 +22,13 @@ struct MainView: View {
                         parentStateBinding: $viewModel.selectedViewName
                     )
                 )
+            
+            case .forcedUpdate:
+                ForcedUpdateView(
+                    viewModel: ForcedUpdateViewViewModel(
+                        alertManager: alertManager
+                    )
+                )
 
             case .root:
                 

@@ -13,6 +13,8 @@ final class RemoteConfigService {
 
     private let remoteConfig: RemoteConfig
     
+    private var isActivated: Bool = false
+    
     private static let debugMinimumFetchInterval: TimeInterval = 0
 
     private init() {
@@ -26,10 +28,11 @@ final class RemoteConfigService {
         self.remoteConfig.configSettings = settings
     }
     
-    internal func string(_ key: ConfigKey, shouldActivate: Bool) async throws -> String? {
+    internal func string(_ key: ConfigKey) async throws -> String? {
 
-        if shouldActivate {
+        if !isActivated {
             try await remoteConfig.fetchAndActivate()
+            isActivated = true
         }
         
         let configValue = remoteConfig.configValue(forKey: key.rawValue)

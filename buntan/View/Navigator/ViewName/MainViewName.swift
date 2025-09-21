@@ -4,6 +4,7 @@ import SwiftUI
 enum MainViewName: Equatable, ViewNameProtocol {
     
     case logo
+    case forcedUpdate
     case root(Root)
     
     enum Root: Equatable {
@@ -17,6 +18,7 @@ enum MainViewName: Equatable, ViewNameProtocol {
     var screenName: String {
         switch self {
         case .logo: return "logo"
+        case .forcedUpdate: return "forcedUpdate"
         case .root(let rootViewName): return rootViewName.screenName
         }
     }
@@ -24,6 +26,7 @@ enum MainViewName: Equatable, ViewNameProtocol {
     var screenClassName: String {
         switch self {
         case .logo: return "LogoView"
+        case .forcedUpdate: return "ForcedUpdateView"
         case .root(let rootViewName): return rootViewName.screenClassName
         }
     }

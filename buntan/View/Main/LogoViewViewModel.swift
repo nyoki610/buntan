@@ -5,6 +5,7 @@ import Combine
 class LogoViewViewModel: ObservableObject {
     
     @Published private(set) var loadingState: DataSyncState = .idle
+    let appVersionId: String? = InfoPlistRepository.value(for: .appVersionId)
     private var cancellables = Set<AnyCancellable>()
     private var canSkipDataFetching: Bool = false
     
@@ -64,7 +65,13 @@ class LogoViewViewModel: ObservableObject {
         try? await Task.sleep(nanoseconds: delay)
         
         await loadingManager.startLoading(.fetch)
-        await send(.fetchingLatestVersionId)
+
+        if await CheckForcedUpdateUseCase.isUpdateRequired() {
+            await loadingManager.finishLoading()
+            await transitionToForcedUpdateView()
+        } else {
+            await send(.fetchingLatestVersionId)
+        }
     }
     
     @MainActor
@@ -72,22 +79,21 @@ class LogoViewViewModel: ObservableObject {
         loadingState = state
     }
     
+    @MainActor
+    private func transitionToForcedUpdateView() {
+        self.parentStateBinding.wrappedValue = .forcedUpdate
+    }
+
     private func fetchLatestVersionId() async {
         
         do {
-            let userDBVersionId = VersionUserDefaultHandler.getUsersCardsVersionId()
+            let userDBVersionId = VersionUserDefaultHandler.getValue(forKey: .usersCardsVersionId)
             
             if userDBVersionId != nil {
                 canSkipDataFetching = true
             }
             
-            guard let latestDBVersionId = try await RemoteConfigService.shared.string(.latestDBVersionId, shouldActivate: true) else {
-                await send(.error(message: nil))
-                return
-            }
-
-            /// This property is unused in version 1.1.1
-            guard let requiredAppVersionId = try await RemoteConfigService.shared.string(.requiredAppVersionId, shouldActivate: false) else {
+            guard let latestDBVersionId = try await RemoteConfigService.shared.string(.latestDBVersionId) else {
                 await send(.error(message: nil))
                 return
             }
@@ -114,7 +120,7 @@ class LogoViewViewModel: ObservableObject {
             let _ = SheetRealmAPI.updateSheetCards(grade: .first, newCards: response.firstGradeCards)
             let _ = SheetRealmAPI.updateSheetCards(grade: .preFirst, newCards: response.preFirstGradeCards)
             let _ = SheetRealmAPI.deleteUnnecessaryObjects()
-            VersionUserDefaultHandler.saveUsersCardsVersionId(version: versionId)
+            VersionUserDefaultHandler.setValue(value: versionId, forKey: .usersCardsVersionId)
             await send(.completed)
         } catch {
             await send(.error(message: error.localizedDescription))
