@@ -12,7 +12,7 @@ struct CheckForcedUpdateUseCase {
     static func isUpdateRequired() async -> Bool {
         
         guard let appVersionId = InfoPlistRepository.value(for: .appVersionId),
-              let requiredAppVersionId = try? await RemoteConfigService.shared.string(.requiredAppVersionId) else {
+              let requiredAppVersionId = try? await RemoteConfigRepository.shared.string(.requiredAppVersionId) else {
             return false
         }
         

@@ -2,14 +2,14 @@ import Foundation
 import FirebaseRemoteConfig
 
 
-final class RemoteConfigService {
+final class RemoteConfigRepository {
     
     enum ConfigKey: String {
         case latestDBVersionId = "latest_db_version_id"
         case requiredAppVersionId = "required_app_version_id"
     }
     
-    static let shared = RemoteConfigService()
+    static let shared = RemoteConfigRepository()
 
     private let remoteConfig: RemoteConfig
     
@@ -22,7 +22,7 @@ final class RemoteConfigService {
         let settings = RemoteConfigSettings()
 
         #if DEBUG
-        settings.minimumFetchInterval = RemoteConfigService.debugMinimumFetchInterval
+        settings.minimumFetchInterval = RemoteConfigRepository.debugMinimumFetchInterval
         #endif
         
         self.remoteConfig.configSettings = settings
