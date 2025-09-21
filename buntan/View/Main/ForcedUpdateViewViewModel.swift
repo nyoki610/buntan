@@ -10,6 +10,7 @@ import SwiftUI
 class ForcedUpdateViewViewModel: ObservableObject {
     
     private let alertManager: AlertManager
+    let alertMessage = "アプリを引き続きご利用いただくためには\nアップデートが必要です。"
     
     init(alertManager: AlertManager) {
         self.alertManager = alertManager
@@ -21,7 +22,7 @@ class ForcedUpdateViewViewModel: ObservableObject {
         
         let config = AlertManager.SingleAlertConfig(
             title: "更新のお知らせ",
-            message: "新しいバージョンが利用可能です。\nアプリをアップデートしてご利用ください。"
+            message: alertMessage
         ) {}
         alertManager.showAlert(type: .single(config: config))
     }

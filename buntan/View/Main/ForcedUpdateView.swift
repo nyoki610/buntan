@@ -26,12 +26,10 @@ struct ForcedUpdateView: View {
                 .frame(width: 120, height: 120)
                 .padding(.vertical, 12)
             
-            VStack {
-                Text("アプリを引き続きご利用いただくためには")
-                Text("アップデートが必要です。")
-            }
-            .font(.subheadline)
-            .foregroundColor(.secondary)
+            Text(viewModel.alertMessage)
+                .multilineTextAlignment(.center)
+                .font(.subheadline)
+                .foregroundColor(.secondary)
 
             StartButton(label: "App Storeを開く →", color: .blue) {
                 viewModel.openAppStore()
