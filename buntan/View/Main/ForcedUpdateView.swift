@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct ForcedUpdateView: View {
+    
+    @StateObject internal var viewModel: ForcedUpdateViewViewModel
+    
     var body: some View {
         VStack(spacing: 20) {
             HStack {
@@ -31,9 +34,7 @@ struct ForcedUpdateView: View {
             .foregroundColor(.secondary)
 
             StartButton(label: "App Storeを開く →", color: .blue) {
-                let contactFormURL = "https://x.gd/R38a3"
-                guard let url = URL(string: contactFormURL) else { return }
-                UIApplication.shared.open(url)
+                viewModel.openAppStore()
             }
         }
         .padding(.horizontal, 20)
@@ -41,12 +42,6 @@ struct ForcedUpdateView: View {
         .background(.white)
         .cornerRadius(15)
         .shadow(color: .black.opacity(0.1), radius: 10)
-        .onAppear {
-            AnalyticsLogger.logScreenTransition(viewName: MainViewName.forcedUpdate)
-        }
+        .task { viewModel.task() }
     }
-}
-
-#Preview {
-    ForcedUpdateView()
 }

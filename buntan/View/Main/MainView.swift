@@ -24,7 +24,11 @@ struct MainView: View {
                 )
             
             case .forcedUpdate:
-                ForcedUpdateView()
+                ForcedUpdateView(
+                    viewModel: ForcedUpdateViewViewModel(
+                        alertManager: alertManager
+                    )
+                )
 
             case .root:
                 
