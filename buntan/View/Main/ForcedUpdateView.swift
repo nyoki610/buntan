@@ -17,7 +17,12 @@ struct ForcedUpdateView: View {
                     .font(.headline)
                     .fontWeight(.bold)
             }
-
+            
+            Image("BuntanIcon")
+                .resizable()
+                .frame(width: 120, height: 120)
+                .padding(.vertical, 12)
+            
             VStack {
                 Text("アプリを引き続きご利用いただくためには")
                 Text("アップデートが必要です。")
