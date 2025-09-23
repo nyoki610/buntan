@@ -7,6 +7,7 @@ final class RemoteConfigRepository {
     enum ConfigKey: String {
         case latestDBVersionId = "latest_db_version_id"
         case requiredAppVersionId = "required_app_version_id"
+        case recommendedAppVersionId = "recommended_app_version_id"
     }
     
     static let shared = RemoteConfigRepository()
@@ -37,6 +38,10 @@ final class RemoteConfigRepository {
         
         let configValue = remoteConfig.configValue(forKey: key.rawValue)
         let stringValue = configValue.stringValue
+        
+        #if DEBUG
+        print("FirebaseRemoteConfig \(key.rawValue): \(stringValue)")
+        #endif
         
         return stringValue.isEmpty ? nil : stringValue
     }
