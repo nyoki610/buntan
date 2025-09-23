@@ -28,8 +28,6 @@ class ForcedUpdateViewViewModel: ObservableObject {
     }
     
     func openAppStore() {
-        let contactFormURL = "https://x.gd/R38a3"
-        guard let url = URL(string: contactFormURL) else { return }
-        UIApplication.shared.open(url)
+        OpenURLUseCase.open(.appStore)
     }
 }
