@@ -35,19 +35,21 @@ class AlertManager: ObservableObject {
         let message: String
         let secondaryButtonLabel: String
         let secondaryButtonType: SecondaryButtonType
-        let action: () -> Void
+        let secondaryButtonAction: () -> Void
+        let closeButtonAction: () -> Void
         
         enum SecondaryButtonType {
             case defaultButton
             case destructive
         }
         
-        init(title: String?, message: String?, secondaryButtonLabel: String, secondaryButtonType: SecondaryButtonType, action: (() -> Void)?) {
+        init(title: String?, message: String?, secondaryButtonLabel: String, secondaryButtonType: SecondaryButtonType, secondaryButtonAction: (() -> Void)?, closeButtonAction: (() -> Void)? = nil) {
             self.title = title ?? ""
             self.message = message ?? ""
             self.secondaryButtonLabel = secondaryButtonLabel
             self.secondaryButtonType = secondaryButtonType
-            self.action = action ?? {}
+            self.secondaryButtonAction = secondaryButtonAction ?? {}
+            self.closeButtonAction = closeButtonAction ?? {}
         }
     }
     
@@ -71,7 +73,9 @@ class AlertManager: ObservableObject {
             )
             
         case let .selective(config):
-            let primaryButton = Alert.Button.default(Text("キャンセル"))
+            let primaryButton = Alert.Button.default(Text("キャンセル")) {
+                config.closeButtonAction()
+            }
             let secondaryButton = createSecondaryButton(config)
             
             return Alert(
@@ -96,12 +100,12 @@ class AlertManager: ObservableObject {
             
         case .defaultButton:
             return .default(Text(config.secondaryButtonLabel)) {
-                config.action()
+                config.secondaryButtonAction()
             }
             
         case .destructive:
             return .destructive(Text(config.secondaryButtonLabel)) {
-                config.action()
+                config.secondaryButtonAction()
             }
         }
     }
