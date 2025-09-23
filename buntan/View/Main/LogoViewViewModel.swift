@@ -65,11 +65,27 @@ class LogoViewViewModel: ObservableObject {
         try? await Task.sleep(nanoseconds: delay)
         
         await loadingManager.startLoading(.fetch)
-
-        if await CheckForcedUpdateUseCase.isUpdateRequired() {
+        
+        switch await CheckForcedUpdateUseCase.isForcedUpdateRequired() {
+        case .force:
             await loadingManager.finishLoading()
             await transitionToForcedUpdateView()
-        } else {
+        
+        case .softForce:
+            let config = AlertManager.SelectiveAlertConfig(
+                title: "更新のお知らせ",
+                message: "新しいバージョンが利用可能です。",
+                secondaryButtonLabel: "アップデート",
+                secondaryButtonType: .defaultButton,
+                secondaryButtonAction: { OpenURLUseCase.open(.appStore) },
+                closeButtonAction: { Task { await self.send(.fetchingLatestVersionId) } }
+            )
+            await alertManager.showAlert(type: .selective(config: config))
+        
+        case .notRequired:
+            await send(.fetchingLatestVersionId)
+        
+        case nil:
             await send(.fetchingLatestVersionId)
         }
     }
