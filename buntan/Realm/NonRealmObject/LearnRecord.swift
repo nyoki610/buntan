@@ -18,19 +18,6 @@ struct LearnRecord: Identifiable, Hashable {
     }
 }
 
-extension LearnRecord {
-    
-    func convertToRealm() -> RealmLearnRecord {
-        
-        let realmLearnRecord = RealmLearnRecord()
-        
-        realmLearnRecord.date = date
-        realmLearnRecord.learnedCardCount = learnedCardCount
-        
-        return realmLearnRecord
-    }
-}
-
 extension LearnRecord: RealmConvertible {
     
     func toRealmWithNewId() -> RealmLearnRecord {
