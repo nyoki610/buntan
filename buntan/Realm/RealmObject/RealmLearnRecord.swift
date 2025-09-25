@@ -17,3 +17,13 @@ extension RealmLearnRecord: ConveretableRealmObject {
         )
     }
 }
+
+extension RealmLearnRecord: NonRealmConvertible {
+    func toNonRealm() -> LearnRecord {
+        return LearnRecord(
+            id: id.stringValue,
+            date: date,
+            learnedCardCount: learnedCardCount
+        )
+    }
+}

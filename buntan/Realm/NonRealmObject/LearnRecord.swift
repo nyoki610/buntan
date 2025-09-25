@@ -1,4 +1,5 @@
 import Foundation
+import RealmSwift
 
 struct LearnRecord: Identifiable, Hashable {
     
@@ -26,6 +27,16 @@ extension LearnRecord {
         realmLearnRecord.date = date
         realmLearnRecord.learnedCardCount = learnedCardCount
         
+        return realmLearnRecord
+    }
+}
+
+extension LearnRecord: RealmConvertible {
+    
+    func toRealmWithNewId() -> RealmLearnRecord {
+        let realmLearnRecord = RealmLearnRecord()
+        realmLearnRecord.date = date
+        realmLearnRecord.learnedCardCount = learnedCardCount
         return realmLearnRecord
     }
 }
