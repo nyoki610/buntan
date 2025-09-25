@@ -13,23 +13,6 @@ class RealmCheckRecord: Object, ObjectKeyIdentifiable {
     }
 }
 
-extension RealmCheckRecord: ConveretableRealmObject {
-    
-    func convertToNonRealm() -> CheckRecord? {
-        
-        guard let grade = grade else { return nil }
-        
-        let checkRecord = CheckRecord(
-            id: id.stringValue,
-            grade: grade,
-            date: date,
-            correctCount: correctCount,
-            estimatedCount: estimatedCount
-        )
-        return checkRecord
-    }
-}
-
 extension RealmCheckRecord: NonRealmConvertible {
     
     typealias NonRealmType = CheckRecord
