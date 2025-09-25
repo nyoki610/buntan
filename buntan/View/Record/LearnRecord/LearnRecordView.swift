@@ -2,16 +2,14 @@ import SwiftUI
 
 struct LearnRecordView: View {
     
-
-    
+    private let learnRecordUseCase: LearnRecordUseCaseProtocol
     @State var chartController: Int = 0
+    @State var dailyLearnRecords: [LearnRecord] = []
     
-    let dailyLearnRecords: [LearnRecord]
-    
-    init?() {
-        
-        guard let dailyLearnRecords: [LearnRecord] = LearnRecordRealmAPI.getDailyLearnRecords() else { return nil }
-        self.dailyLearnRecords = dailyLearnRecords
+    init(
+        learnRecordUseCase: LearnRecordUseCaseProtocol = LearnRecordUseCase()
+    ) {
+        self.learnRecordUseCase = learnRecordUseCase
     }
 
     var body: some View {
@@ -42,6 +40,11 @@ struct LearnRecordView: View {
             wordCountView
             
             Spacer()
+        }
+        .task {
+            if let dailyLearnRecords: [LearnRecord] = try? learnRecordUseCase.getDailyLearnRecords() {
+                self.dailyLearnRecords = dailyLearnRecords
+            }
         }
     }
 }
