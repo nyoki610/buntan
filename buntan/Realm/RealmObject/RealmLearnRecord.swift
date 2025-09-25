@@ -8,7 +8,7 @@ class RealmLearnRecord: Object, ObjectKeyIdentifiable {
 }
 
 extension RealmLearnRecord: NonRealmConvertible {
-    func toNonRealm() -> LearnRecord {
+    func toNonRealm() -> LearnRecord? {
         return LearnRecord(
             id: id.stringValue,
             date: date,

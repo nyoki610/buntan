@@ -19,6 +19,7 @@ struct RealmRepository: RealmRepositoryProtocol {
     
     enum Error: Swift.Error {
         case failedToGetRealmURL
+        case failedToConvertToNonRealm
         case objectNotFound
     }
     
@@ -41,7 +42,13 @@ struct RealmRepository: RealmRepositoryProtocol {
     
     func fetchAll<T: RealmConvertible>() throws -> [T] {
         let realm = try realm()
-        return Array(realm.objects(T.RealmObjectType.self).map { $0.toNonRealm() })
+        let objects = realm.objects(T.RealmObjectType.self)
+        return try objects.map {
+            guard let nonRealmObject = $0.toNonRealm() else {
+                throw Error.failedToConvertToNonRealm
+            }
+            return nonRealmObject
+        }
     }
     
     func insert<T: RealmConvertible>(_ object: T) throws {
@@ -101,7 +108,7 @@ extension IdentifiableNonRealmObject {
 // MARK: - NonRealmConvertible
 protocol NonRealmConvertible: IdentifiableRealmObject {
     associatedtype NonRealmType
-    func toNonRealm() -> NonRealmType
+    func toNonRealm() -> NonRealmType?
 }
 
 protocol IdentifiableRealmObject: Object {
