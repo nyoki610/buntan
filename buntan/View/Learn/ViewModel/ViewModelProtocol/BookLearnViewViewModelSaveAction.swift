@@ -67,7 +67,7 @@ extension BookLearnViewViewModelProtocol {
             learnedCardCount: learnedCardsCount
         )
         
-        guard LearnRecordRealmAPI.uploadLearnRecord(learnRecord: learnRecord) else { return false }
+        try? learnRecordUseCase.uploadLearnRecord(record: learnRecord)
         
         return true
     }

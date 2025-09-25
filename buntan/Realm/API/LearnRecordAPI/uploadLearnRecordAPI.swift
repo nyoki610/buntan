@@ -1,9 +1,9 @@
-import Foundation
-
-
-extension LearnRecordRealmAPI {
-    
-    static func uploadLearnRecord(learnRecord: LearnRecord) -> Bool {
-        LearnRecordRealmCruds.uploadLearnRecord(learnRecord: learnRecord)
-    }
-}
+//import Foundation
+//
+//
+//extension LearnRecordRealmAPI {
+//    
+//    static func uploadLearnRecord(learnRecord: LearnRecord) -> Bool {
+//        LearnRecordRealmCruds.uploadLearnRecord(learnRecord: learnRecord)
+//    }
+//}
