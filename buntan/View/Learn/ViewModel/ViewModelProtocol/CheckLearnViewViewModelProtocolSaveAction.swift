@@ -22,7 +22,7 @@ extension CheckLearnViewViewModelProtocol {
             estimatedCount: estimatedScore
         )
 
-        let _ = CheckRecordRealmAPI.uploadCheckRecord(checkRecord: checkRecord)
+        try? checkRecordUseCase.uploadCheckRecord(checkRecord: checkRecord)
         
         await loadingManager.finishLoading()
         
