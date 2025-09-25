@@ -102,4 +102,14 @@ final class BookTypeViewViewModel: BaseTypeViewViewModel, BookLearnViewViewModel
     }
 }
 
-final class CheckSelectViewViewModel: BaseSelectViewViewModel, CheckLearnViewViewModelProtocol {}
+final class CheckSelectViewViewModel: BaseSelectViewViewModel, CheckLearnViewViewModelProtocol {
+    internal let checkRecordUseCase: any CheckRecordUseCaseProtocol
+    init(
+        cards: [Card],
+        options: [[Option]],
+        checkRecordUseCase: any CheckRecordUseCaseProtocol = CheckRecordUseCase()
+    ) {
+        self.checkRecordUseCase = checkRecordUseCase
+        super.init(cards: cards, options: options)
+    }
+}

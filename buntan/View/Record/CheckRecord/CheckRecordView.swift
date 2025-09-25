@@ -2,19 +2,18 @@ import SwiftUI
 
 struct CheckRecordView: View {
 
-
     @State var chartController: Int = 0
     @State var selectedLearnMode: LearnMode = .swipe
     @State var selectedGrade: EikenGrade = .first
     
-    let checkRecords: [CheckRecord]
+    @State var checkRecords: [CheckRecord] = []
+    private let checkRecordUseCase: any CheckRecordUseCaseProtocol
 
-    init?() {
+    init(checkRecordUseCase: any CheckRecordUseCaseProtocol = CheckRecordUseCase()) {
         let appearance = UISegmentedControl.appearance()
         appearance.selectedSegmentTintColor = .init(Orange.translucent)
 
-        guard let checkRecords: [CheckRecord] = CheckRecordRealmAPI.getCheckRecords() else { return nil }
-        self.checkRecords = checkRecords
+        self.checkRecordUseCase = checkRecordUseCase
     }
     
     var body: some View {
@@ -65,6 +64,11 @@ struct CheckRecordView: View {
             .cornerRadius(10)
             .padding(.horizontal, 10)
             .padding(.top, 32)
+        }
+        .task {
+            if let checkRecords = try? checkRecordUseCase.getCheckRecords() {
+                self.checkRecords = checkRecords
+            }
         }
     }
 }
