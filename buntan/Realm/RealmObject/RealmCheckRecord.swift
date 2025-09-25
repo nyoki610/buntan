@@ -29,3 +29,21 @@ extension RealmCheckRecord: ConveretableRealmObject {
         return checkRecord
     }
 }
+
+extension RealmCheckRecord: NonRealmConvertible {
+    
+    typealias NonRealmType = CheckRecord
+    
+    func toNonRealm() -> CheckRecord? {
+        guard let grade = grade else { return nil }
+        
+        let checkRecord = CheckRecord(
+            id: id.stringValue,
+            grade: grade,
+            date: date,
+            correctCount: correctCount,
+            estimatedCount: estimatedCount
+        )
+        return checkRecord
+    }
+}

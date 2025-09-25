@@ -3,6 +3,6 @@ import RealmSwift
 
 protocol ConveretableRealmObject: Object {
     
-    associatedtype NonRealmType
-    func convertToNonRealm() -> NonRealmType
+    associatedtype _NonRealmType
+    func convertToNonRealm() -> _NonRealmType
 }
