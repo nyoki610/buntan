@@ -19,7 +19,6 @@ struct RealmRepository: RealmRepositoryProtocol {
     
     enum Error: Swift.Error {
         case failedToGetRealmURL
-        case failedToConvertToNonRealm
         case objectNotFound
     }
     
