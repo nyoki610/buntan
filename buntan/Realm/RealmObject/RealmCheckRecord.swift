@@ -17,8 +17,10 @@ extension RealmCheckRecord: NonRealmConvertible {
     
     typealias NonRealmType = CheckRecord
     
-    func toNonRealm() -> CheckRecord? {
-        guard let grade = grade else { return nil }
+    func toNonRealm() throws -> CheckRecord {
+        guard let grade = grade else {
+            throw NonRealmConvertibleError.invalidRawValue
+        }
         
         let checkRecord = CheckRecord(
             id: id.stringValue,

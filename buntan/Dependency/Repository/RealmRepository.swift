@@ -44,9 +44,7 @@ struct RealmRepository: RealmRepositoryProtocol {
         let realm = try realm()
         let objects = realm.objects(T.RealmObjectType.self)
         return try objects.map {
-            guard let nonRealmObject = $0.toNonRealm() else {
-                throw Error.failedToConvertToNonRealm
-            }
+            let nonRealmObject = try $0.toNonRealm()
             return nonRealmObject
         }
     }
@@ -115,7 +113,11 @@ extension IdentifiableNonRealmObject {
 // MARK: - NonRealmConvertible
 protocol NonRealmConvertible: IdentifiableRealmObject {
     associatedtype NonRealmType
-    func toNonRealm() -> NonRealmType?
+    func toNonRealm() throws -> NonRealmType
+}
+
+enum NonRealmConvertibleError: Error {
+    case invalidRawValue
 }
 
 protocol IdentifiableRealmObject: Object {
