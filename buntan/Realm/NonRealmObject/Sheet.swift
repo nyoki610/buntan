@@ -31,3 +31,22 @@ struct Sheet {
         return realmSheet
     }
 }
+
+extension Sheet: RealmConvertible {
+    
+    func toRealm(with idType: RealmIdType) throws -> RealmSheet {
+        let realmSheet = RealmSheet()
+        try setId(to: realmSheet, idType: idType)
+        realmSheet.gradeRawValue = grade.rawValue
+        realmSheet.cardList = try getRealmCardList(from: cardList, with: idType)
+        return realmSheet
+    }
+    
+    private func getRealmCardList(from cardList: [Card], with idType: RealmIdType) throws -> List<RealmCard> {
+        let realmCards = try cardList.map { try $0.toRealm(with: idType) }
+        let realmCardList = List<RealmCard>()
+        realmCardList.append(objectsIn: realmCards)
+        return realmCardList
+    }
+}
+
