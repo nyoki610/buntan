@@ -51,18 +51,20 @@ struct RealmRepository: RealmRepositoryProtocol {
         }
     }
     
-    func insert<T: RealmConvertible>(_ object: T) throws {
+    func insert<T: RealmConvertible>(_ nonRealmObject: T) throws {
         let realm = try realm()
         try realm.write {
-            realm.add(object.toRealmWithNewId(), update: .error)
+            let realmObject = try nonRealmObject.toRealm(with: .newId)
+            realm.add(realmObject, update: .error)
         }
     }
     
-    func insertAll<T: RealmConvertible>(_ objects: [T]) throws {
+    func insertAll<T: RealmConvertible>(_ nonRealmObjects: [T]) throws {
         let realm = try realm()
         try realm.write {
-            for object in objects {
-                realm.add(object.toRealmWithNewId(), update: .error)
+            for nonRealmObject in nonRealmObjects {
+                let realmObject = try nonRealmObject.toRealm(with: .newId)
+                realm.add(realmObject, update: .error)
             }
         }
     }
@@ -75,7 +77,7 @@ struct RealmRepository: RealmRepositoryProtocol {
             throw Error.objectNotFound
         }
         try realm.write {
-            let newRealmObject = try nonRealmObject.toRealmWithExistingId()
+            let newRealmObject = try nonRealmObject.toRealm(with: .existingId)
             realm.add(newRealmObject, update: .modified)
         }
     }
@@ -84,16 +86,21 @@ struct RealmRepository: RealmRepositoryProtocol {
 // MARK: - RealmConvertible
 protocol RealmConvertible: IdentifiableNonRealmObject {
     associatedtype RealmObjectType: NonRealmConvertible where RealmObjectType.NonRealmType == Self
-    func toRealmWithExistingId() throws -> RealmObjectType
-    func toRealmWithNewId() -> RealmObjectType
+    func toRealm(with idType: RealmIdType) throws -> RealmObjectType
 }
 
 extension RealmConvertible {
-    func toRealmWithExistingId() throws -> RealmObjectType {
-        let realmObject = toRealmWithNewId()
-        realmObject.id = try ObjectId(string: id)
-        return realmObject
+    
+    func setId(to object: RealmObjectType, idType: RealmIdType) throws {
+        if idType == .existingId {
+            object.id = try ObjectId(string: id)
+        }
     }
+}
+
+enum RealmIdType {
+    case newId
+    case existingId
 }
 
 // MARK: - IdentifiableNonRealmObject
