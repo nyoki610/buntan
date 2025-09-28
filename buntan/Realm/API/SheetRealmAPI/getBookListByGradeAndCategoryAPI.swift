@@ -9,8 +9,9 @@ extension SheetRealmAPI {
         bookCategory: BookCategory
     ) -> [Book]? {
         
-        guard let cards = SheetRealmCruds
-            .getSheetByGrade(eikenGrade: eikenGrade)?
+        let sheetRepository = SheetRepository()
+        guard let cards = try? sheetRepository
+            .getSheet(of: eikenGrade)
             .cardList else { return nil }
         
         let bookList = BookConfiguration

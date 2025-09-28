@@ -9,9 +9,10 @@ extension SheetRealmAPI {
         cards: [Card],
         containFifthOption: Bool
     ) -> [[Option]]? {
-                
-        guard let targetGradeCards = SheetRealmCruds
-            .getSheetByGrade(eikenGrade: eikenGrade)?
+        
+        let sheetRepository = SheetRepository()
+        guard let targetGradeCards = try? sheetRepository
+            .getSheet(of: eikenGrade)
             .cardList else { return nil }
         
         var nounOptions: [Option] = []

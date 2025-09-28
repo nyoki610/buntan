@@ -9,6 +9,7 @@ import Foundation
 import RealmSwift
 
 protocol RealmRepositoryProtocol {
+    func realm() throws -> Realm
     func fetchAll<T: RealmConvertible>() throws -> [T]
     func insert<T: RealmConvertible>(_ object: T) throws
     func insertAll<T: RealmConvertible>(_ objects: [T]) throws
@@ -25,7 +26,7 @@ struct RealmRepository: RealmRepositoryProtocol {
     private let schemaVersion: UInt64 = 1
     private let fileName = "myrealm.realm"
     
-    private func realm() throws -> Realm {
+    func realm() throws -> Realm {
         
         guard let realmURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
             .first?

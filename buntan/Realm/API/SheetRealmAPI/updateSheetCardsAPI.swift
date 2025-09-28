@@ -10,7 +10,8 @@ extension SheetRealmAPI {
         
         guard confirmTargetSheetExsits(grade: grade) else { return false }
         
-        guard let sheet: Sheet = SheetRealmCruds.getSheetByGrade(eikenGrade: grade) else { return false }
+        let sheetRepository = SheetRepository()
+        guard let sheet: Sheet = try? sheetRepository.getSheet(of: grade) else { return false }
         
         let oldCards: [Card] = sheet.cardList
         let updatedNewCards: [Card] = getUpdatedNewCards(newCards: newCards, oldCards: oldCards)
