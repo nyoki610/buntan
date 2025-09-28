@@ -50,3 +50,14 @@ extension Sheet: RealmConvertible {
     }
 }
 
+struct SheetFactory {
+    
+    static func createNew(from grade: EikenGrade) -> Sheet {
+        return Sheet(
+            /// This id should be overwritten when inserted to realm
+            id: UUID().uuidString,
+            grade: grade,
+            cardList: []
+        )
+    }
+}

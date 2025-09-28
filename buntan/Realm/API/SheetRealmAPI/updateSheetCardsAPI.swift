@@ -34,7 +34,12 @@ extension SheetRealmAPI {
         let grades: Set<EikenGrade> = Set(allSheets.map { $0.grade })
         
         if !grades.contains(grade) {
-            let _ = SheetRealmCruds.createNewSheet(grade: grade)
+            let sheetUseCase = SheetUseCase()
+            do {
+                try sheetUseCase.createNewSheet(grade: grade)
+            } catch {
+                return false
+            }
         }
         
         return true
