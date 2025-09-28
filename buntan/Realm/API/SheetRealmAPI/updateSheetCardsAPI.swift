@@ -15,11 +15,12 @@ extension SheetRealmAPI {
         
         let oldCards: [Card] = sheet.cardList
         let updatedNewCards: [Card] = getUpdatedNewCards(newCards: newCards, oldCards: oldCards)
-        
-        guard SheetRealmCruds.updateSheetCards(
-            sheetId: sheet.id,
-            cards: updatedNewCards
-        ) else { return false }
+                
+        do {
+            try sheetRepository.updateCardList(of: sheet, with: updatedNewCards)
+        } catch {
+            return false
+        }
         
         guard deleteUnnecessaryObjects(oldCards: oldCards) else { return false }
         
