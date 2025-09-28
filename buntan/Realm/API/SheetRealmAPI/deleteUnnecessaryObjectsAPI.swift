@@ -5,7 +5,8 @@ extension SheetRealmAPI {
     
     static func deleteUnnecessaryObjects() -> Bool {
         
-        guard let sheets = SheetRealmCruds.getAllSheets() else { return false }
+        let repository = RealmRepository()
+        guard let sheets: [Sheet] = try? repository.fetchAll() else { return false }
         
         let necessaryCardIds = Set(sheets.flatMap { $0.cardList.map { $0.id } })
         let necessaryInfoIds = Set(sheets.flatMap { $0.cardList.flatMap { $0.infoList.map { $0.id } } })

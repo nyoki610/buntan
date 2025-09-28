@@ -30,7 +30,8 @@ extension SheetRealmAPI {
     
     private static func confirmTargetSheetExsits(grade: EikenGrade) -> Bool {
         
-        guard let allSheets: [Sheet] = SheetRealmCruds.getAllSheets() else { return false }
+        let repository = RealmRepository()
+        guard let allSheets: [Sheet] = try? repository.fetchAll() else { return false }
         let grades: Set<EikenGrade> = Set(allSheets.map { $0.grade })
         
         if !grades.contains(grade) {
