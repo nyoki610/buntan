@@ -8,7 +8,12 @@
 import Foundation
 import RealmSwift
 
-struct SheetRepository {
+protocol SheetRepositoryProtocol {
+    func getSheet(of grade: EikenGrade) throws -> Sheet
+    func updateCardList(of sheet: Sheet, with cards: [Card]) throws
+}
+
+struct SheetRepository: SheetRepositoryProtocol {
     
     private let repository: any RealmRepositoryProtocol
     
