@@ -29,8 +29,11 @@ extension SheetRealmAPI {
         necessaryObjectIds: Set<String>
     ) -> Bool {
         
-        guard let allIds = SheetRealmCruds.getAllIds(of: type) else { return false }
-        
+        let repository = RealmRepository()
+        guard let allIds = try? repository.getAllIds(of: type) else {
+            return false
+        }
+
         let unnecessaryObjectIds = allIds.subtracting(necessaryObjectIds)
 
         return SheetRealmCruds
