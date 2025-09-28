@@ -86,6 +86,17 @@ struct RealmRepository: RealmRepositoryProtocol {
         let objects = realm.objects(type)
         return Set(objects.map { $0.id.stringValue })
     }
+    
+    func deleteObjects<T: IdentifiableRealmObject>(by ids: Set<String>, of type: T.Type) throws {
+        let realm = try realm()
+        let objectsToDelete = realm
+            .objects(type)
+            .filter { ids.contains($0.id.stringValue) }
+        guard objectsToDelete.isEmpty else { return }
+        try realm.write {
+            realm.delete(objectsToDelete)
+        }
+    }
 }
 
 // MARK: - RealmConvertible

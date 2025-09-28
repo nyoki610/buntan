@@ -135,7 +135,7 @@ class LogoViewViewModel: ObservableObject {
             let response = try await BuntanClient.getCardsLatest(config: AppConfig.shared)
             let _ = SheetRealmAPI.updateSheetCards(grade: .first, newCards: response.firstGradeCards)
             let _ = SheetRealmAPI.updateSheetCards(grade: .preFirst, newCards: response.preFirstGradeCards)
-            let _ = SheetRealmAPI.deleteUnnecessaryObjects()
+            let _ = SheetRealmAPI.deleteUnnecessaryObjects() /// Just to confirm?
             VersionUserDefaultHandler.setValue(value: versionId, forKey: .usersCardsVersionId)
             await send(.completed)
         } catch {

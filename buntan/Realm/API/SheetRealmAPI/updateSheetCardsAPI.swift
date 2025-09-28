@@ -75,15 +75,14 @@ extension SheetRealmAPI {
         let unnecessaryCardIds = Set(oldCards.map { $0.id })
         let unnecessaryInfoIds = Set(oldCards.flatMap { $0.infoList.map { $0.id }})
         
-        guard SheetRealmCruds.deleteUnnecessaryObjects(
-            of: RealmCard.self,
-            unnecessaryIds: unnecessaryCardIds
-        ) else { return false }
+        let repository = RealmRepository()
         
-        guard SheetRealmCruds.deleteUnnecessaryObjects(
-            of: RealmInfo.self,
-            unnecessaryIds: unnecessaryInfoIds
-        ) else { return false }
+        do {
+            try repository.deleteObjects(by: unnecessaryCardIds, of: RealmCard.self)
+            try repository.deleteObjects(by: unnecessaryInfoIds, of: RealmInfo.self)
+        } catch {
+            return false
+        }
         
         return true
     }
