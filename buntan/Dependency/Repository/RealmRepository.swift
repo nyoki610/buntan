@@ -14,6 +14,7 @@ protocol RealmRepositoryProtocol {
     func insert<T: RealmConvertible>(_ object: T) throws
     func insertAll<T: RealmConvertible>(_ objects: [T]) throws
     func update<T: RealmConvertible>(_ nonRealmObject: T) throws
+    func updateAll<T: RealmConvertible>(_ nonRealmObjects: [T]) throws
     func getAllIds<T: IdentifiableRealmObject>(of type: T.Type) throws -> Set<String>
 }
 
@@ -78,6 +79,20 @@ struct RealmRepository: RealmRepositoryProtocol {
         try realm.write {
             let newRealmObject = try nonRealmObject.toRealm(with: .existingId)
             realm.add(newRealmObject, update: .modified)
+        }
+    }
+    
+    func updateAll<T: RealmConvertible>(_ nonRealmObjects: [T]) throws {
+        let realm = try realm()
+        try realm.write {
+            for nonRealmObject in nonRealmObjects {
+                let objectId = try nonRealmObject.objectId
+                guard realm.object(ofType: T.RealmObjectType.self, forPrimaryKey: objectId) != nil else {
+                    throw Error.objectNotFound
+                }
+                let newRealmObject = try nonRealmObject.toRealm(with: .existingId)
+                realm.add(newRealmObject, update: .modified)
+            }
         }
     }
     
