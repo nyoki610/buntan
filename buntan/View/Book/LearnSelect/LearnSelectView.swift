@@ -208,10 +208,11 @@ extension LearnSelectView {
                 
                 guard let selectedBookCategory = userInput.selectedBookCategory else { return }
                 
-                guard SheetRealmAPI.resetCardsStatus(
-                    cardIdList: viewModel.cardsContainer.allCards.map { $0.id },
-                    bookCategory: selectedBookCategory
-                ) else { return }
+                let cardUseCase = CardUseCase()
+                try? cardUseCase.resetStatus(
+                    of: viewModel.cardsContainer.allCards,
+                    category: selectedBookCategory
+                )
                 
                 viewModel.updateCardsContainer(userInput: userInput)
                 adjustSelectedRange()
