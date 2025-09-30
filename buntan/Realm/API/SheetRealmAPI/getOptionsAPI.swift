@@ -12,7 +12,7 @@ extension SheetRealmAPI {
         
         let sheetRepository = SheetRepository()
         guard let targetGradeCards = try? sheetRepository
-            .getSheet(of: eikenGrade)
+            .getSheet(for: eikenGrade)
             .cardList else { return nil }
         
         var nounOptions: [Option] = []

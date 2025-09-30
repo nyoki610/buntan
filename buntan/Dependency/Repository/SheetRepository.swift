@@ -9,7 +9,7 @@ import Foundation
 import RealmSwift
 
 protocol SheetRepositoryProtocol {
-    func getSheet(of grade: EikenGrade) throws -> Sheet
+    func getSheet(for grade: EikenGrade) throws -> Sheet
     func updateCardList(of sheet: Sheet, with cards: [Card]) throws
 }
 
@@ -25,7 +25,7 @@ struct SheetRepository: SheetRepositoryProtocol {
         try repository.realm()
     }
     
-    func getSheet(of grade: EikenGrade) throws -> Sheet {
+    func getSheet(for grade: EikenGrade) throws -> Sheet {
         let realm = try realm()
         guard let realmSheet = realm
             .objects(RealmSheet.self)
