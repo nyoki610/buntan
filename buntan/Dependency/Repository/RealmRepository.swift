@@ -16,6 +16,7 @@ protocol RealmRepositoryProtocol {
     func update<T: RealmConvertible>(_ nonRealmObject: T) throws
     func updateAll<T: RealmConvertible>(_ nonRealmObjects: [T]) throws
     func getAllIds<T: IdentifiableRealmObject>(of type: T.Type) throws -> Set<String>
+    func deleteObjects<T: IdentifiableRealmObject>(by ids: Set<String>, of type: T.Type) throws
 }
 
 struct RealmRepository: RealmRepositoryProtocol {
