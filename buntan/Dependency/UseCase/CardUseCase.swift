@@ -31,7 +31,7 @@ struct CardUseCase {
         completedIndices: [Int],
         category: BookCategory
     ) throws {
-        let updatedCards = try cardService.updateStatus(
+        let updatedCards = cardService.updateStatus(
             of: cards,
             learningIndices: learningIndices,
             completedIndices: completedIndices,

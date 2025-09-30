@@ -8,37 +8,47 @@
 import Foundation
 
 protocol CardServiceProtocol {
-    func updateStatus(of cards: [Card], learningIndices: [Int], completedIndices: [Int], category: BookCategory) throws -> [Card]
+    func updateStatus(of cards: [Card], learningIndices: [Int], completedIndices: [Int], category: BookCategory) -> [Card]
     func resetStatus(of cards: [Card], category: BookCategory) -> [Card]
 }
 
 struct CardService: CardServiceProtocol {
-    
-    enum Error: Swift.Error {
-        case indexNotFound
-    }
     
     func updateStatus(
         of cards: [Card],
         learningIndices: [Int],
         completedIndices: [Int],
         category: BookCategory
-    ) throws -> [Card] {
+    ) -> [Card] {
         
         let learningIndexSet = Set(learningIndices)
         let completedIndexSet = Set(completedIndices)
 
-        return try cards.enumerated().map { (index, card) in
-            let newStatus = try getNewStatus(
+        return cards.enumerated().compactMap { (index, card) in
+            guard let newStatus = getNewStatus(
                 for: index,
                 learningIndexSet: learningIndexSet,
                 completedIndexSet: completedIndexSet
-            )
+            ) else { return nil }
             return updateStatus(
                 of: card,
                 to: newStatus,
                 category: category
             )
+        }
+    }
+    
+    private func getNewStatus(
+        for index: Int,
+        learningIndexSet: Set<Int>,
+        completedIndexSet: Set<Int>
+    ) -> Card.CardStatus? {
+        if learningIndexSet.contains(index) {
+            return .learning
+        } else if completedIndexSet.contains(index) {
+            return .completed
+        } else {
+            return nil
         }
     }
     
@@ -55,20 +65,6 @@ struct CardService: CardServiceProtocol {
             updatedCard.statusPos = status
         }
         return updatedCard
-    }
-    
-    private func getNewStatus(
-        for index: Int,
-        learningIndexSet: Set<Int>,
-        completedIndexSet: Set<Int>
-    ) throws -> Card.CardStatus {
-        if learningIndexSet.contains(index) {
-            return .learning
-        } else if completedIndexSet.contains(index) {
-            return .completed
-        } else {
-            throw Error.indexNotFound
-        }
     }
     
     func resetStatus(of cards: [Card], category: BookCategory) -> [Card] {
