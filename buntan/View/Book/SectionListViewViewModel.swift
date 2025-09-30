@@ -26,15 +26,15 @@ class SectionListViewViewModel: ObservableObject {
         isFetchingUpdatedBook = true
         
         guard let selectedGrade = userInput.selectedGrade,
-              let selectedBookCcategory = userInput.selectedBookCategory,
+              let selectedBookCategory = userInput.selectedBookCategory,
               let selectedBookConfig = userInput.selectedBookConfig else {
             return
         }
-        
-        guard let updatedBook = SheetRealmAPI.getBook(
-            eikenGrade: selectedGrade,
-            bookCategory: selectedBookCcategory,
-            bookConfig: selectedBookConfig
+        let bookUseCase = BookUseCase()
+        guard let updatedBook = try? bookUseCase.getBook(
+            for: selectedGrade,
+            category: selectedBookCategory,
+            config: selectedBookConfig
         ) else { return }
         
         book = updatedBook
