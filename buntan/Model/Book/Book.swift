@@ -39,7 +39,14 @@ struct Section: Hashable {
 
 enum BookFactory {
     
-    static func create(from cards: [Card], with config: BookConfiguration) -> Book {
+    static func createBooks(from cards: [Card], category: BookCategory) -> [Book] {
+        return BookConfiguration
+            .allCases
+            .filter { $0.bookCategory == category }
+            .map { BookFactory.create(from: cards, with: $0) }
+    }
+    
+    private static func create(from cards: [Card], with config: BookConfiguration) -> Book {
         switch config {
         case .frequency(let freqConfig):
             let filteredCards = freqConfig.filterCardsByFreq(cards: cards)

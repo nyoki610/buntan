@@ -28,11 +28,7 @@ struct BookUseCase: BookUseCaseProtocol {
         let cards = try sheetRepository
             .getSheet(for: grade)
             .cardList
-        let books = BookConfiguration
-            .allCases
-            .filter { $0.bookCategory == category }
-            .map { BookFactory.create(from: cards, with: $0) }
-        return books
+        return BookFactory.createBooks(from: cards, category: category)
     }
     
     func getBook(for grade: EikenGrade, category: BookCategory, config: BookConfiguration) throws -> Book {
