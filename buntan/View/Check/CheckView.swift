@@ -51,10 +51,11 @@ struct CheckView: View {
                 
         guard let cards = SheetRealmAPI.getCaradsForCheck(eikenGrade: userInput.selectedGrade) else { return }
         
-        guard let options = SheetRealmAPI.getOptions(
-            eikenGrade: userInput.selectedGrade,
-            cards: cards,
-            containFifthOption: true
+        let createOptionsUseCase = CreateOptionsUseCase()
+        guard let options = try? createOptionsUseCase.execute(
+            from: cards,
+            for: userInput.selectedGrade,
+            withFifthOption: true
         ) else { return }
 
         await loadingManager.finishLoading()

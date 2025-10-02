@@ -68,12 +68,12 @@ struct LearnSelectView: View {
                             learnRange: userInput.selectedRange
                         )
                         
-                        guard let options = SheetRealmAPI
-                            .getOptions(
-                                eikenGrade: selectedGrade,
-                                cards: cards,
-                                containFifthOption: false
-                            ) else { return }
+                        let createOptionsUseCase = CreateOptionsUseCase()
+                        guard let options = try? createOptionsUseCase.execute(
+                            from: cards,
+                            for: selectedGrade,
+                            withFifthOption: false
+                        ) else { return }
                         
                         navigator.push(
                             userInput.selectedMode.bookViewName(
