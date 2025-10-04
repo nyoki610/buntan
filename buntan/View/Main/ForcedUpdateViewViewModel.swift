@@ -28,6 +28,7 @@ class ForcedUpdateViewViewModel: ObservableObject {
     }
     
     func openAppStore() {
-        OpenURLUseCase.open(.appStore)
+        let openURLUseCase = OpenURLUseCase()
+        openURLUseCase.open(.appStore)
     }
 }

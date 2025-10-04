@@ -8,7 +8,7 @@
 import UIKit
 
 protocol OpenURLUseCaseProtocol {
-    static func open(_ target: ExternalURL)
+    func open(_ target: ExternalURL)
 }
 
 enum ExternalURL: String {
@@ -16,7 +16,7 @@ enum ExternalURL: String {
 }
 
 struct OpenURLUseCase: OpenURLUseCaseProtocol {
-    static func open(_ target: ExternalURL) {
+    func open(_ target: ExternalURL) {
         guard let url = URL(string: target.rawValue) else { return }
         UIApplication.shared.open(url)
     }

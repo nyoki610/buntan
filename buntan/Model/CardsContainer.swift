@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 struct CardsContainer: Hashable {
 
     let allCards: [Card]
@@ -33,10 +32,11 @@ struct CardsContainer: Hashable {
               let selectedBookConfig = userInput.selectedBookConfig,
               let selectedSectionTitle = userInput.selectedSectionTitle else { return nil }
         
-        guard let cards: [Card] = SheetRealmAPI.getSectionCards(
-            eikenGrade: selectedGrade,
-            bookCategory: selectedBookCategory,
-            bookConfig: selectedBookConfig,
+        let cardService = CardService()
+        guard let cards = try? cardService.getCards(
+            grade: selectedGrade,
+            category: selectedBookCategory,
+            config: selectedBookConfig,
             sectionTitle: selectedSectionTitle
         ) else { return nil }
         

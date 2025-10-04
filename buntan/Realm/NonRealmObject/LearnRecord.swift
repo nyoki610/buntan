@@ -20,8 +20,9 @@ struct LearnRecord: Identifiable, Hashable {
 
 extension LearnRecord: RealmConvertible {
     
-    func toRealmWithNewId() -> RealmLearnRecord {
+    func toRealm(with idType: RealmIdType) throws -> RealmLearnRecord {
         let realmLearnRecord = RealmLearnRecord()
+        try setId(to: realmLearnRecord, idType: idType)
         realmLearnRecord.date = date
         realmLearnRecord.learnedCardCount = learnedCardCount
         return realmLearnRecord

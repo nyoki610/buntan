@@ -45,16 +45,19 @@ extension BookLearnViewViewModelProtocol {
 
     private func updateCardsStatus(userInput: BookUserInput) -> Bool {
 
-        guard let selectedGrade = userInput.selectedGrade,
-              let selectedBookCategory = userInput.selectedBookCategory else { return false }
+        guard let selectedBookCategory = userInput.selectedBookCategory else { return false }
         
-        /// 学習内容を realm に保存
-        guard SheetRealmAPI.updateCardsStatus(
-            viewModel: self,
-            eikenGrade: selectedGrade,
-            bookCategory: selectedBookCategory
-        ) else { return false }
-        
+        let cardUseCase = CardUseCase()
+        do {
+            try cardUseCase.updateStatus(
+                of: cards,
+                learningIndices: leftCardsIndexList,
+                completedIndices: rightCardsIndexList,
+                category: selectedBookCategory
+            )
+        } catch {
+            return false
+        }
         return true
     }
     

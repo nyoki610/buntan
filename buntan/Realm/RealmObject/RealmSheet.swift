@@ -25,3 +25,17 @@ extension RealmSheet: ConveretableRealmObject {
                      cardList: self.cardList.compactMap {$0.convertToNonRealm()})
     }
 }
+
+extension RealmSheet: NonRealmConvertible {
+    
+    func toNonRealm() throws -> Sheet {
+        guard let grade = grade else {
+            throw NonRealmConvertibleError.invalidRawValue
+        }
+        return Sheet(
+            id: id.stringValue,
+            grade: grade,
+            cardList: cardList.compactMap { $0.convertToNonRealm() }
+        )
+    }
+}

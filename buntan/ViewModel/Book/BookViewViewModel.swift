@@ -139,9 +139,7 @@ protocol BookDataServiceProtocol {
 struct BookDataService: BookDataServiceProtocol {
 
     func getBookList(grade: EikenGrade, category: BookCategory) -> [Book]? {
-        return SheetRealmAPI.getBookListByGradeAndCategory(
-            eikenGrade: grade,
-            bookCategory: category
-        )
+        let bookService = BookService()
+        return try? bookService.getBooks(for: grade, category: category)
     }
 }

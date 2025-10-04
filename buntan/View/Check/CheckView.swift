@@ -48,13 +48,15 @@ struct CheckView: View {
     private func setupCheck() async {
         
         await loadingManager.startLoading(.process)
-                
-        guard let cards = SheetRealmAPI.getCaradsForCheck(eikenGrade: userInput.selectedGrade) else { return }
         
-        guard let options = SheetRealmAPI.getOptions(
-            eikenGrade: userInput.selectedGrade,
-            cards: cards,
-            containFifthOption: true
+        let getCheckCardsUseCase = GetCheckCardsUseCase()
+        guard let cards = try? getCheckCardsUseCase.execute(for: userInput.selectedGrade) else { return }
+        
+        let createOptionsUseCase = CreateOptionsUseCase()
+        guard let options = try? createOptionsUseCase.execute(
+            from: cards,
+            for: userInput.selectedGrade,
+            withFifthOption: true
         ) else { return }
 
         await loadingManager.finishLoading()
