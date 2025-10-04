@@ -52,7 +52,7 @@ class BookViewViewModel: ObservableObject, BookViewViewModelProtocol {
     internal var navigator: BookNavigator
     internal var userInput: BookUserInput
     internal var dataService: BookDataServiceProtocol
-    internal var learnRecordUseCase: LearnRecordUseCaseProtocol
+    internal var learnRecordService: LearnRecordServiceProtocol
     
     // MARK: - Constants
     private enum ProgressBarThreshold {
@@ -83,18 +83,18 @@ class BookViewViewModel: ObservableObject, BookViewViewModelProtocol {
         navigator: BookNavigator,
         userInput: BookUserInput,
         dataService: BookDataServiceProtocol = BookDataService(),
-        learnRecordUseCase: LearnRecordUseCaseProtocol = LearnRecordUseCase()
+        learnRecordService: LearnRecordServiceProtocol = LearnRecordService()
     ) {
         self.navigator = navigator
         self.userInput = userInput
         self.dataService = dataService
-        self.learnRecordUseCase = learnRecordUseCase
+        self.learnRecordService = learnRecordService
 
         bindInputs()
     }
     
     internal func task() {
-        self.todaysWordCount = try? learnRecordUseCase.getTodaysWordCount()
+        self.todaysWordCount = try? learnRecordService.getTodaysWordCount()
     }
     
     // MARK: - ActionBinding (action)

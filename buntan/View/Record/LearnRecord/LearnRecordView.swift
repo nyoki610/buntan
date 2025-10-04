@@ -2,14 +2,14 @@ import SwiftUI
 
 struct LearnRecordView: View {
     
-    private let learnRecordUseCase: LearnRecordUseCaseProtocol
+    private let learnRecordService: LearnRecordServiceProtocol
     @State var chartController: Int = 0
     @State var dailyLearnRecords: [LearnRecord] = []
     
     init(
-        learnRecordUseCase: LearnRecordUseCaseProtocol = LearnRecordUseCase()
+        learnRecordService: LearnRecordServiceProtocol = LearnRecordService()
     ) {
-        self.learnRecordUseCase = learnRecordUseCase
+        self.learnRecordService = learnRecordService
     }
 
     var body: some View {
@@ -42,7 +42,7 @@ struct LearnRecordView: View {
             Spacer()
         }
         .task {
-            if let dailyLearnRecords: [LearnRecord] = try? learnRecordUseCase.getDailyLearnRecords() {
+            if let dailyLearnRecords: [LearnRecord] = try? learnRecordService.getDailyLearnRecords() {
                 self.dailyLearnRecords = dailyLearnRecords
             }
         }

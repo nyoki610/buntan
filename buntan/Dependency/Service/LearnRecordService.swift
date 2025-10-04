@@ -8,19 +8,31 @@
 import Foundation
 
 protocol LearnRecordServiceProtocol {
-    func aggregateByDate(records: [LearnRecord]) -> [LearnRecord]
-    func countTodaysWord(from records: [LearnRecord], calendar: Calendar, today: Date) -> Int
-}
-
-extension LearnRecordServiceProtocol {
-    func countTodaysWord(from records: [LearnRecord], calendar: Calendar = .current, today: Date = Date()) -> Int {
-        countTodaysWord(from: records, calendar: calendar, today: today)
-    }
+    func getDailyLearnRecords() throws -> [LearnRecord]
+    func getTodaysWordCount() throws -> Int
 }
 
 struct LearnRecordService: LearnRecordServiceProtocol {
+    
+    private let repository: any RealmRepositoryProtocol
+    
+    init(repository: any RealmRepositoryProtocol = RealmRepository()) {
+        self.repository = repository
+    }
+    
+    func getDailyLearnRecords() throws -> [LearnRecord] {
+        let records: [LearnRecord] = try repository.fetchAll()
+        let aggregatedRecords = aggregateByDate(records: records)
+        return aggregatedRecords
+    }
+    
+    func getTodaysWordCount() throws -> Int {
+        let records: [LearnRecord] = try repository.fetchAll()
+        let count = countTodaysWord(from: records)
+        return count
+    }
 
-    func aggregateByDate(records: [LearnRecord]) -> [LearnRecord] {
+    private func aggregateByDate(records: [LearnRecord]) -> [LearnRecord] {
 
         return Dictionary(
             grouping: records,
@@ -31,7 +43,7 @@ struct LearnRecordService: LearnRecordServiceProtocol {
         .sorted { $0.date < $1.date }
     }
     
-    func countTodaysWord(from records: [LearnRecord], calendar: Calendar = .current, today: Date = Date()) -> Int {
+    private func countTodaysWord(from records: [LearnRecord], calendar: Calendar = .current, today: Date = Date()) -> Int {
         
         let todayComponents = ymdComponents(of: today, using: calendar)
         let count = records

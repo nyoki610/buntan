@@ -7,9 +7,9 @@ struct CheckRecordView: View {
     @State var selectedGrade: EikenGrade = .first
     
     @State var checkRecords: [CheckRecord] = []
-    private let checkRecordUseCase: any CheckRecordUseCaseProtocol
+    private let checkRecordUseCase: any CheckRecordServiceProtocol
 
-    init(checkRecordUseCase: any CheckRecordUseCaseProtocol = CheckRecordUseCase()) {
+    init(checkRecordUseCase: any CheckRecordServiceProtocol = CheckRecordUseCase()) {
         let appearance = UISegmentedControl.appearance()
         appearance.selectedSegmentTintColor = .init(Orange.translucent)
 
