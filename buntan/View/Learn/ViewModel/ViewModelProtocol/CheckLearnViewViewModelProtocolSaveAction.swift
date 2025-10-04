@@ -3,6 +3,7 @@ import Foundation
 
 extension CheckLearnViewViewModelProtocol {
     
+    @MainActor
     internal func checkLearnSaveAction(
         navigator: CheckNavigator,
         loadingManager: LoadingManager,

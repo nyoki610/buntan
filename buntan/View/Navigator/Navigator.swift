@@ -1,5 +1,6 @@
 import Foundation
 
+@MainActor
 class Navigator<ViewName: ViewNameProtocol>: ObservableObject, Navigating {
     @Published var path: [ViewName] = []
 }

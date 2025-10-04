@@ -1,6 +1,6 @@
 import SwiftUI
 
-
+@MainActor
 protocol Navigating: ObservableObject, AnyObject {
     
     associatedtype ViewNameType: ViewNameProtocol
