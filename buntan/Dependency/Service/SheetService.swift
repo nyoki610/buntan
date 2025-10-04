@@ -7,7 +7,11 @@
 
 import Foundation
 
-struct SheetService {
+protocol SheetServiceProtocol {
+    func syncSheetCards(for grade: EikenGrade, with newCards: [Card]) throws
+}
+
+struct SheetService: SheetServiceProtocol {
     
     private let realmRepository: any RealmRepositoryProtocol
     private let sheetRepository: any SheetRepositoryProtocol
