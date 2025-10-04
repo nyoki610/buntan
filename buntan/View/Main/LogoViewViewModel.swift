@@ -39,7 +39,8 @@ class LogoViewViewModel: ObservableObject {
         
         await loadingManager.startLoading(.fetch)
         
-        switch await dependency.checkForcedUpdateUseCase.isForcedUpdateRequired() {
+        let requiredUpdateType = try? await dependency.checkForcedUpdateUseCase.isForcedUpdateRequired()
+        switch requiredUpdateType {
         case .force:
             await loadingManager.finishLoading()
             self.parentStateBinding.wrappedValue = .forcedUpdate

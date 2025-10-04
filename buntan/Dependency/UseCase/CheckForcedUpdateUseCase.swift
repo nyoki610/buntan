@@ -8,7 +8,7 @@
 import Foundation
 
 protocol CheckForcedUpdateUseCaseProtocol {
-    func isForcedUpdateRequired() async -> CheckForcedUpdateUseCase.RequiredUpdateType?
+    func isForcedUpdateRequired() async throws -> CheckForcedUpdateUseCase.RequiredUpdateType
 }
 
 struct CheckForcedUpdateUseCase: CheckForcedUpdateUseCaseProtocol {
@@ -30,20 +30,13 @@ struct CheckForcedUpdateUseCase: CheckForcedUpdateUseCaseProtocol {
         case notRequired
     }
     
-    func isForcedUpdateRequired() async -> RequiredUpdateType? {
+    func isForcedUpdateRequired() async throws -> RequiredUpdateType {
         
-        guard let requiredAppVersionId = try? await dependency.remoteConfigRepository.string(.requiredAppVersionId) else {
-            return nil
-        }
-        
+        let requiredAppVersionId = try await dependency.remoteConfigRepository.string(.requiredAppVersionId)
         if isUpdateRequired(for: requiredAppVersionId) {
             return .force
         }
-
-        guard let recommendedAppVersionId = try? await dependency.remoteConfigRepository.string(.recommendedAppVersionId) else {
-            return nil
-        }
-
+        let recommendedAppVersionId = try await dependency.remoteConfigRepository.string(.recommendedAppVersionId)
         return isUpdateRequired(for: recommendedAppVersionId) ? .softForce : .notRequired
     }
     
