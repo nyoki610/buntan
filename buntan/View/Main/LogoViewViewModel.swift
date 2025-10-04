@@ -109,10 +109,7 @@ class LogoViewViewModel: ObservableObject {
                 canSkipDataFetching = true
             }
             
-            guard let latestDBVersionId = try await RemoteConfigRepository.shared.string(.latestDBVersionId) else {
-                await send(.error(message: nil))
-                return
-            }
+            let latestDBVersionId = try await RemoteConfigRepository.shared.string(.latestDBVersionId)
             
             let shouldFetchLatestCards = (latestDBVersionId != userDBVersionId)
             
