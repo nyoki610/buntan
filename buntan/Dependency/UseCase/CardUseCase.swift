@@ -8,7 +8,6 @@
 import Foundation
 
 protocol CardUseCaseProtocol {
-    func updateStatus(of cards: [Card], learningIndices: [Int], completedIndices: [Int], category: BookCategory) throws
     func resetStatus(of cards: [Card], category: BookCategory) throws
 }
 
@@ -23,21 +22,6 @@ struct CardUseCase {
     ) {
         self.repository = repository
         self.cardService = cardService
-    }
-    
-    func updateStatus(
-        of cards: [Card],
-        learningIndices: [Int],
-        completedIndices: [Int],
-        category: BookCategory
-    ) throws {
-        let updatedCards = cardService.updateStatus(
-            of: cards,
-            learningIndices: learningIndices,
-            completedIndices: completedIndices,
-            category: category
-        )
-        try repository.updateAll(updatedCards)
     }
     
     func resetStatus(of cards: [Card], category: BookCategory) throws {

@@ -25,10 +25,14 @@ extension BookLearnViewViewModelProtocol {
         /// ensure loading screen rendering by delaying the next process
         let delay: UInt64 = 100_000_000
         try? await Task.sleep(nanoseconds: delay)
-
-        guard self.updateCardsStatus(userInput: bookUserInput) else { return }
-
-        guard self.uploadLearnRecord() else { return }
+        guard let selectedBookCategory = bookUserInput.selectedBookCategory else { return }
+        let saveLearningUseCase = SaveLearningUseCase()
+        try? saveLearningUseCase.execute(
+            cards: cards,
+            learningIndices: Set(leftCardsIndexList),
+            completedIndices: Set(rightCardsIndexList),
+            category: selectedBookCategory
+        )
 
         /// loading を終了して画面遷移
         await loadingManager.finishLoading()
@@ -43,38 +47,7 @@ extension BookLearnViewViewModelProtocol {
         }
     }
 
-    private func updateCardsStatus(userInput: BookUserInput) -> Bool {
-
-        guard let selectedBookCategory = userInput.selectedBookCategory else { return false }
-        
-        let cardUseCase = CardUseCase()
-        do {
-            try cardUseCase.updateStatus(
-                of: cards,
-                learningIndices: leftCardsIndexList,
-                completedIndices: rightCardsIndexList,
-                category: selectedBookCategory
-            )
-        } catch {
-            return false
-        }
-        return true
-    }
-    
-    private func uploadLearnRecord() -> Bool {
-        
-        /// 学習量の記録を保存
-        let learnRecord = LearnRecord(
-            id: UUID().uuidString,
-            date: Date(),
-            learnedCardCount: learnedCardsCount
-        )
-        
-        try? learnRecordUseCase.uploadLearnRecord(record: learnRecord)
-        
-        return true
-    }
-    
+    @MainActor
     private func tnrasitionScreen(
         userInput: BookUserInput,
         navigator: BookNavigator,
