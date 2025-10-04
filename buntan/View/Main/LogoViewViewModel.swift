@@ -51,7 +51,10 @@ class LogoViewViewModel: ObservableObject {
                 message: "新しいバージョンが利用可能です。",
                 secondaryButtonLabel: "アップデート",
                 secondaryButtonType: .defaultButton,
-                secondaryButtonAction: { self.dependency.openURLUseCase.open(.appStore) },
+                secondaryButtonAction: {
+                    self.dependency.openURLUseCase.open(.appStore)
+                    Task { await self.syncCards() }
+                },
                 closeButtonAction: { Task { await self.syncCards() } }
             )
             alertManager.showAlert(type: .selective(config: config))
