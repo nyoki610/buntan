@@ -7,9 +7,13 @@
 
 import Foundation
 
-struct SyncCardsUseCase {
+protocol SyncCardsUseCaseProtocol {
+    func execute(loadingManager: LoadingManager) async -> Result<Void, SyncCardsUseCase.Error>
+}
+
+struct SyncCardsUseCase: SyncCardsUseCaseProtocol {
     
-    enum ExecutionError: Swift.Error {
+    enum Error: Swift.Error {
         case general(Swift.Error, canSkipDataFetching: Bool)
     }
 
@@ -26,7 +30,7 @@ struct SyncCardsUseCase {
         self.dependency = dependency
     }
     
-    func execute(loadingManager: LoadingManager) async -> Result<Void, ExecutionError> {
+    func execute(loadingManager: LoadingManager) async -> Result<Void, Error> {
         let userDBVersionId = dependency.localDBVersionRepository.getValue(forKey: .usersCardsVersionId)
         do {
             let latestDBVersionId = try await dependency.remoteConfigRepository.string(.latestDBVersionId)
