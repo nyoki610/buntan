@@ -1,4 +1,4 @@
-import Foundation
+import SwiftUI
 import Combine
 
 // -----------------
@@ -17,12 +17,13 @@ protocol BookViewViewModelInput {}
 
 // MARK: - Output
 protocol BookViewViewModelOutput {
-    var todaysWordCount: Int? { get }
+    var todaysWordCount: Int? { get set }
     var variableValue: Double { get }
 }
 
 // MARK: - Action
 enum BookViewViewModelAction {
+    case task
     case bookCategoryButtonTapped(grade: EikenGrade, category: BookCategory)
 }
 
@@ -51,6 +52,7 @@ class BookViewViewModel: ObservableObject, BookViewViewModelProtocol {
     internal var navigator: BookNavigator
     internal var userInput: BookUserInput
     internal var dataService: BookDataServiceProtocol
+    internal var learnRecordService: LearnRecordServiceProtocol
     
     // MARK: - Constants
     private enum ProgressBarThreshold {
@@ -60,7 +62,7 @@ class BookViewViewModel: ObservableObject, BookViewViewModelProtocol {
     }
     
     // MARK: - Outputs
-    internal let todaysWordCount: Int?
+    @Published internal var todaysWordCount: Int?
     internal var variableValue: Double {
         guard let count = todaysWordCount else { return 0.0 }
         
@@ -80,15 +82,19 @@ class BookViewViewModel: ObservableObject, BookViewViewModelProtocol {
     init(
         navigator: BookNavigator,
         userInput: BookUserInput,
-        dataService: BookDataServiceProtocol = BookDataService()
+        dataService: BookDataServiceProtocol = BookDataService(),
+        learnRecordService: LearnRecordServiceProtocol = LearnRecordService()
     ) {
         self.navigator = navigator
         self.userInput = userInput
         self.dataService = dataService
-
-        self.todaysWordCount = dataService.getTodaysWordCount()
+        self.learnRecordService = learnRecordService
 
         bindInputs()
+    }
+    
+    internal func task() {
+        self.todaysWordCount = try? learnRecordService.getTodaysWordCount()
     }
     
     // MARK: - ActionBinding (action)
@@ -99,6 +105,8 @@ class BookViewViewModel: ObservableObject, BookViewViewModelProtocol {
             .sink { [weak self] event in
                 guard let self else { return }
                 switch event {
+                case .task:
+                    self.task()
                 case let .bookCategoryButtonTapped(grade, category):
                     self.selectBookCategory(grade: grade, bookCategory: category)
                 }
@@ -124,21 +132,14 @@ class BookViewViewModel: ObservableObject, BookViewViewModelProtocol {
 // MARK: - Data Service Protocol
 protocol BookDataServiceProtocol {
 
-    func getTodaysWordCount() -> Int?
     func getBookList(grade: EikenGrade, category: BookCategory) -> [Book]?
 }
 
 // MARK: - Data Service Implementation
 struct BookDataService: BookDataServiceProtocol {
-    
-    func getTodaysWordCount() -> Int? {
-        return LearnRecordRealmAPI.getTodaysWordCount()
-    }
-    
+
     func getBookList(grade: EikenGrade, category: BookCategory) -> [Book]? {
-        return SheetRealmAPI.getBookListByGradeAndCategory(
-            eikenGrade: grade,
-            bookCategory: category
-        )
+        let bookService = BookService()
+        return try? bookService.getBooks(for: grade, category: category)
     }
 }

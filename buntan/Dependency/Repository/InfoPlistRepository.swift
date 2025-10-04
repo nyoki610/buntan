@@ -7,13 +7,17 @@
 
 import Foundation
 
-struct InfoPlistRepository {
+protocol InfoPlistRepositoryProtocol {
+    func value(for key: InfoPlistRepository.Key) -> String?
+}
+
+struct InfoPlistRepository: InfoPlistRepositoryProtocol {
     
     enum Key: String {
         case appVersionId = "CFBundleShortVersionString"
     }
 
-    static func value(for key: Key) -> String? {
+    func value(for key: Key) -> String? {
         return Bundle.main.object(forInfoDictionaryKey: key.rawValue) as? String
     }
 }

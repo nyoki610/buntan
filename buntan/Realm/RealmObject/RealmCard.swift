@@ -44,3 +44,31 @@ extension RealmCard: ConveretableRealmObject {
         )
     }
 }
+
+extension RealmCard: NonRealmConvertible {
+    
+    func toNonRealm() throws -> Card {
+        
+        guard let pos = Pos(rawValue: posRawValue),
+              let statusFreq = Card.CardStatus(rawValue: statusFreqRawValue),
+              let statusPos = Card.CardStatus(rawValue: statusPosRawValue) else {
+            throw NonRealmConvertibleError.invalidRawValue
+        }
+        
+        return Card(
+            id: id.stringValue,
+            index: index,
+            word: word,
+            pos: pos,
+            phrase: phrase,
+            meaning: meaning,
+            sentence: sentence,
+            translation: translation,
+            startPosition: startPosition,
+            endPosition: endPosition,
+            infoList: infoList.map { $0.toNonRealm() },
+            statusFreq: statusFreq,
+            statusPos: statusPos
+        )
+    }
+}

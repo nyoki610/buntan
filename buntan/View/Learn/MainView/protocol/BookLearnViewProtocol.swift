@@ -42,6 +42,7 @@ extension BookLearnViewProtocol {
         )
     }
     
+    @MainActor
     func xmarkButtonAction() async {
         
         /// １単語も学習していない場合は save せずに exit

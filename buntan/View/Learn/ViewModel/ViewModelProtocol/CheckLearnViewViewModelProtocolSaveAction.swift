@@ -3,6 +3,7 @@ import Foundation
 
 extension CheckLearnViewViewModelProtocol {
     
+    @MainActor
     internal func checkLearnSaveAction(
         navigator: CheckNavigator,
         loadingManager: LoadingManager,
@@ -22,7 +23,7 @@ extension CheckLearnViewViewModelProtocol {
             estimatedCount: estimatedScore
         )
 
-        let _ = CheckRecordRealmAPI.uploadCheckRecord(checkRecord: checkRecord)
+        try? checkRecordService.uploadCheckRecord(checkRecord: checkRecord)
         
         await loadingManager.finishLoading()
         

@@ -4,6 +4,7 @@ import SwiftUI
 protocol BookLearnViewViewModelProtocol: BaseLearnViewViewModel, ObservableObject, AnyObject {
     var nonShuffledCards: [Card] { get }
     var nonShuffledOptions: [[Option]] { get }
+    var learnRecordService: LearnRecordServiceProtocol { get }
 }
 
 
