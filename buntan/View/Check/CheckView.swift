@@ -48,8 +48,9 @@ struct CheckView: View {
     private func setupCheck() async {
         
         await loadingManager.startLoading(.process)
-                
-        guard let cards = SheetRealmAPI.getCaradsForCheck(eikenGrade: userInput.selectedGrade) else { return }
+        
+        let getCheckCardsUseCase = GetCheckCardsUseCase()
+        guard let cards = try? getCheckCardsUseCase.execute(for: userInput.selectedGrade) else { return }
         
         let createOptionsUseCase = CreateOptionsUseCase()
         guard let options = try? createOptionsUseCase.execute(
