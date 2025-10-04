@@ -1,6 +1,6 @@
 import SwiftUI
 
-
+@MainActor
 class MainViewViewModel: ObservableObject {
     
     /// tabView を管理

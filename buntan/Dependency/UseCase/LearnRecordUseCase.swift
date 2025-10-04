@@ -10,7 +10,6 @@ import Foundation
 protocol LearnRecordUseCaseProtocol {
     func getDailyLearnRecords() throws -> [LearnRecord]
     func getTodaysWordCount() throws -> Int
-    func uploadLearnRecord(record: LearnRecord) throws
 }
 
 struct LearnRecordUseCase: LearnRecordUseCaseProtocol {
@@ -36,9 +35,5 @@ struct LearnRecordUseCase: LearnRecordUseCaseProtocol {
         let records: [LearnRecord] = try repository.fetchAll()
         let count = service.countTodaysWord(from: records)
         return count
-    }
-    
-    func uploadLearnRecord(record: LearnRecord) throws {
-        try repository.insert(record)
     }
 }

@@ -30,6 +30,7 @@ extension CheckLearnViewProtocol {
         )
     }
     
+    @MainActor
     // TODO: refactor
     func xmarkButtonAction() async {
         let isFInished = (viewModel.learnedCardsCount == viewModel.cards.count)

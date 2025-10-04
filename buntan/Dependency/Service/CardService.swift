@@ -9,7 +9,7 @@ import Foundation
 
 protocol CardServiceProtocol {
     func getCards(grade: EikenGrade, category: BookCategory, config: BookConfiguration, sectionTitle: String) throws -> [Card]
-    func updateStatus(of cards: [Card], learningIndices: [Int], completedIndices: [Int], category: BookCategory) -> [Card]
+    func updateStatus(of cards: [Card], learningIndices: Set<Int>, completedIndices: Set<Int>, category: BookCategory) -> [Card]
     func resetStatus(of cards: [Card], category: BookCategory) -> [Card]
 }
 
@@ -40,19 +40,16 @@ struct CardService: CardServiceProtocol {
     
     func updateStatus(
         of cards: [Card],
-        learningIndices: [Int],
-        completedIndices: [Int],
+        learningIndices: Set<Int>,
+        completedIndices: Set<Int>,
         category: BookCategory
     ) -> [Card] {
-        
-        let learningIndexSet = Set(learningIndices)
-        let completedIndexSet = Set(completedIndices)
 
         return cards.enumerated().compactMap { (index, card) in
             guard let newStatus = getNewStatus(
                 for: index,
-                learningIndexSet: learningIndexSet,
-                completedIndexSet: completedIndexSet
+                learningIndices: learningIndices,
+                completedIndices: completedIndices
             ) else { return nil }
             return updateStatus(
                 of: card,
@@ -64,12 +61,12 @@ struct CardService: CardServiceProtocol {
     
     private func getNewStatus(
         for index: Int,
-        learningIndexSet: Set<Int>,
-        completedIndexSet: Set<Int>
+        learningIndices: Set<Int>,
+        completedIndices: Set<Int>
     ) -> Card.CardStatus? {
-        if learningIndexSet.contains(index) {
+        if learningIndices.contains(index) {
             return .learning
-        } else if completedIndexSet.contains(index) {
+        } else if completedIndices.contains(index) {
             return .completed
         } else {
             return nil
