@@ -208,8 +208,8 @@ extension LearnSelectView {
                 
                 guard let selectedBookCategory = userInput.selectedBookCategory else { return }
                 
-                let cardUseCase = CardUseCase()
-                try? cardUseCase.resetStatus(
+                let resetCardsStatusUseCase = ResetCardsStatusUseCase()
+                try? resetCardsStatusUseCase.execute(
                     of: viewModel.cardsContainer.allCards,
                     category: selectedBookCategory
                 )
