@@ -139,7 +139,7 @@ protocol BookDataServiceProtocol {
 struct BookDataService: BookDataServiceProtocol {
 
     func getBookList(grade: EikenGrade, category: BookCategory) -> [Book]? {
-        let bookUseCase = BookUseCase()
-        return try? bookUseCase.getBooks(for: grade, category: category)
+        let bookService = BookService()
+        return try? bookService.getBooks(for: grade, category: category)
     }
 }

@@ -30,8 +30,8 @@ class SectionListViewViewModel: ObservableObject {
               let selectedBookConfig = userInput.selectedBookConfig else {
             return
         }
-        let bookUseCase = BookUseCase()
-        guard let updatedBook = try? bookUseCase.getBook(
+        let bookService = BookService()
+        guard let updatedBook = try? bookService.getBook(
             for: selectedGrade,
             category: selectedBookCategory,
             config: selectedBookConfig

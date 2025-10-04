@@ -9,8 +9,8 @@ extension SheetRealmAPI {
             book.sections.flatMap { $0.cards }.randomElements(count)
         }
         
-        let bookUseCase = BookUseCase()
-        guard let bookList = try? bookUseCase.getBooks(
+        let bookService = BookService()
+        guard let bookList = try? bookService.getBooks(
             for: eikenGrade,
             category: .freq
         ) else { return nil }
