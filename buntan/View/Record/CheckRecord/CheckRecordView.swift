@@ -7,13 +7,13 @@ struct CheckRecordView: View {
     @State var selectedGrade: EikenGrade = .first
     
     @State var checkRecords: [CheckRecord] = []
-    private let checkRecordUseCase: any CheckRecordServiceProtocol
+    private let checkRecordService: any CheckRecordServiceProtocol
 
-    init(checkRecordUseCase: any CheckRecordServiceProtocol = CheckRecordUseCase()) {
+    init(checkRecordService: any CheckRecordServiceProtocol = CheckRecordService()) {
         let appearance = UISegmentedControl.appearance()
         appearance.selectedSegmentTintColor = .init(Orange.translucent)
 
-        self.checkRecordUseCase = checkRecordUseCase
+        self.checkRecordService = checkRecordService
     }
     
     var body: some View {
@@ -66,7 +66,7 @@ struct CheckRecordView: View {
             .padding(.top, 32)
         }
         .task {
-            if let checkRecords = try? checkRecordUseCase.getCheckRecords() {
+            if let checkRecords = try? checkRecordService.getCheckRecords() {
                 self.checkRecords = checkRecords
             }
         }

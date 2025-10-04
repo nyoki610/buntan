@@ -23,7 +23,7 @@ extension CheckLearnViewViewModelProtocol {
             estimatedCount: estimatedScore
         )
 
-        try? checkRecordUseCase.uploadCheckRecord(checkRecord: checkRecord)
+        try? checkRecordService.uploadCheckRecord(checkRecord: checkRecord)
         
         await loadingManager.finishLoading()
         
