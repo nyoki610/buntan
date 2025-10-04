@@ -27,7 +27,6 @@ extension SheetRealmAPI {
         return true
     }
     
-    
     private static func confirmTargetSheetExsits(grade: EikenGrade) -> Bool {
         
         let repository = RealmRepository()
@@ -35,9 +34,9 @@ extension SheetRealmAPI {
         let grades: Set<EikenGrade> = Set(allSheets.map { $0.grade })
         
         if !grades.contains(grade) {
-            let sheetUseCase = SheetUseCase()
             do {
-                try sheetUseCase.createNewSheet(grade: grade)
+                let newSheet = SheetFactory.createNew(from: grade)
+                try repository.insert(newSheet)
             } catch {
                 return false
             }
