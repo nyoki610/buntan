@@ -1,5 +1,11 @@
+//
+//  LoadingManager.swift
+//  buntan
+//
+//  Created by 二木裕也 on 2025/10/05.
+//
+
 import SwiftUI
-import AudioToolbox
 
 @MainActor
 class LoadingManager: ObservableObject {

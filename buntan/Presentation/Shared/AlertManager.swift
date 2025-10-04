@@ -2,11 +2,12 @@
 //  AlertManager.swift
 //  buntan
 //
-//  Created by 二木裕也 on 2025/09/12.
+//  Created by 二木裕也 on 2025/10/05.
 //
 
 import SwiftUI
 
+@MainActor
 class AlertManager: ObservableObject {
     
     @Published var alertType: AlertType?
@@ -53,7 +54,6 @@ class AlertManager: ObservableObject {
         }
     }
     
-    @MainActor
     func showAlert(type: AlertType) {
         alertType = type
         return
