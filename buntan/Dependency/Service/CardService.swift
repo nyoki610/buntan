@@ -8,11 +8,35 @@
 import Foundation
 
 protocol CardServiceProtocol {
+    func getCards(grade: EikenGrade, category: BookCategory, config: BookConfiguration, sectionTitle: String) throws -> [Card]
     func updateStatus(of cards: [Card], learningIndices: [Int], completedIndices: [Int], category: BookCategory) -> [Card]
     func resetStatus(of cards: [Card], category: BookCategory) -> [Card]
 }
 
 struct CardService: CardServiceProtocol {
+    
+    enum Error: Swift.Error {
+        case bookNotFound
+        case sectionNotFound
+    }
+    
+    func getCards(
+        grade: EikenGrade,
+        category: BookCategory,
+        config: BookConfiguration,
+        sectionTitle: String
+    ) throws -> [Card] {
+        let bookService = BookService()
+        let books = try bookService.getBooks(for: grade, category: category)
+        guard let book = books.first(where: { $0.config == config }) else {
+            throw Error.bookNotFound
+        }
+        guard let section = book.sections.first(where: { $0.title == sectionTitle }) else {
+            throw Error.sectionNotFound
+        }
+        return section.cards
+    }
+    
     
     func updateStatus(
         of cards: [Card],
