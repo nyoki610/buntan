@@ -1,51 +1,47 @@
+//
+//  SectionListView.swift
+//  buntan
+//
+//  Created by 二木裕也 on 2025/10/05.
+//
+
 import SwiftUI
 
 struct SectionListView: View {
 
-    private let navigator: BookNavigator
-    @ObservedObject private var userInput: BookUserInput
-    @StateObject private var viewModel: SectionListViewViewModel
+    @State private var viewModel: SectionListViewViewModel
     
-    init(
-        navigator: BookNavigator,
-        userInput: BookUserInput,
-        book: Book
-    ) {
-        self.navigator = navigator
-        self.userInput = userInput
-        self._viewModel = StateObject(
-            wrappedValue: SectionListViewViewModel(book: book)
-        )
+    init(viewModel: SectionListViewViewModel) {
+        self.viewModel = viewModel
     }
 
     var body: some View {
         
         VStack {
             Header(
-                navigator: navigator,
-                title: (userInput.selectedGrade?.title ?? "") + "   " + viewModel.book.title
+                navigator: viewModel.argument.navigator,
+                title: (viewModel.argument.userInput.selectedGrade?.title ?? "") + "   " + (viewModel.state.book?.title ?? "")
             )
             
             Spacer()
             
-            listView
+            if let book = viewModel.state.book {
+                listView(book: book)
+            }
         }
         .background(CustomColor.background)
         .navigationBarBackButtonHidden(true)
         .onAppear {
-            viewModel.onAppearAction(userInput: userInput)
+            viewModel.send(.task)
         }
     }
-    
-    @ViewBuilder
-    private var listView: some View {
+
+    private func listView(book: Book) -> some View {
         
         ZStack {
-            
             CustomScroll({
                 VStack {
-                    
-                    ForEach(viewModel.book.sections, id: \.self) { section in
+                    ForEach(book.sections, id: \.self) { section in
                         selectSectionButton(section: section)
                     }
                 }
@@ -53,19 +49,10 @@ struct SectionListView: View {
         }
     }
     
-    @ViewBuilder
     private func selectSectionButton(section: Section) -> some View {
         
         Button {
-            userInput.selectedSectionTitle = section.title
-            
-            guard let selectedBookCategory = userInput.selectedBookCategory else { return }
-            
-            let cardsContainer = CardsContainer(
-                cards: section.cards,
-                bookCategory: selectedBookCategory
-            )
-            navigator.push(.learnSelect(cardsContainer))
+            viewModel.send(.sectionButtonTapped(section))
         } label: {
             HStack {
                 
@@ -74,7 +61,10 @@ struct SectionListView: View {
                 Spacer()
                 
                 var progressLabel: String {
-                    viewModel.isFetchingUpdatedBook ? "-" : "\(section.progressPercentage(viewModel.book.bookCategory))"
+                    guard let category = viewModel.argument.userInput.selectedBookCategory else {
+                        return ""
+                    }
+                    return "\(section.progressPercentage(category))"
                 }
                 
                 Text("\(progressLabel) %")

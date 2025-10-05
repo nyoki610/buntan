@@ -4,7 +4,7 @@ import SwiftUI
 enum BookViewName {
     
     case bookList([Book])
-    case sectionList(Book)
+    case sectionList
     case learnSelect(CardsContainer)
     case wordList([Card])
     case swipe([Card], [[Option]])
@@ -80,12 +80,15 @@ extension BookViewName: ViewNameProtocol {
                 )
             )
         
-        case .sectionList(let book):
+        case .sectionList:
             return AnyView(
                 SectionListView(
-                    navigator: navigator,
-                    userInput: userInput,
-                    book: book
+                    viewModel: .init(
+                        argument: .init(
+                            navigator: navigator,
+                            userInput: userInput
+                        )
+                    )
                 )
             )
         

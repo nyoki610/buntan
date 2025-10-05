@@ -48,7 +48,7 @@ extension BookLearnViewProtocol {
         /// １単語も学習していない場合は save せずに exit
         guard viewModel.learnedCardsCount != 0 else {
             guard let cardsContainer = CardsContainer(userInput: userInput) else { return }
-            navigator.pop(to: .sectionList(EmptyModel.book))
+            navigator.pop(to: .sectionList)
             navigator.push(.learnSelect(cardsContainer))
             return
         }
