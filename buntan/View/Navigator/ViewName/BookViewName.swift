@@ -62,16 +62,21 @@ extension BookViewName: ViewNameProtocol {
         }
     }
 
+    @MainActor
     func viewForName(navigator: BookNavigator, userInput: BookUserInput) -> some View {
 
         switch self {
 
-        case .bookList(let bookList):
+        case .bookList(let books):
             return AnyView(
                 BookListView(
-                    navigator: navigator,
-                    userInput: userInput,
-                    bookList: bookList
+                    viewModel: .init(
+                        argument: .init(
+                            navigator: navigator,
+                            userInput: userInput
+                        ),
+                        books: books
+                    )
                 )
             )
         
