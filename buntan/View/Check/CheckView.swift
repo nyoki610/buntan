@@ -5,7 +5,7 @@ struct CheckView: View {
 
     @EnvironmentObject var loadingManager: LoadingManager
     
-    @ObservedObject private var navigator: CheckNavigator
+    @Bindable private var navigator: CheckNavigator
     @StateObject private var userInput = CheckUserInput()
     
     init(navigator: CheckNavigator) {

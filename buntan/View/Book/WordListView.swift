@@ -5,7 +5,7 @@ struct WordListView<NavigatorType: Navigating>: View {
     
     @State var showInfo: Bool = true
     
-    @ObservedObject private var navigator: NavigatorType
+    private let navigator: NavigatorType
     private let cards: [Card]
     
     init(navigator: NavigatorType, cards: [Card]) {

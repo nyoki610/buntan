@@ -5,10 +5,10 @@ struct Header<NavigatorType: Navigating>: View {
 
     let title: String?
 
-    @ObservedObject private var navigator: NavigatorType
+    private let navigator: NavigatorType
     
     init(navigator: NavigatorType, title: String? = nil) {
-        self._navigator = ObservedObject(wrappedValue: navigator)
+        self.navigator = navigator
         self.title = title
     }
     

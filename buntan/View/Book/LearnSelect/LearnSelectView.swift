@@ -6,7 +6,7 @@ struct LearnSelectView: View {
     @EnvironmentObject var alertManager: AlertManager
     @EnvironmentObject var loadingManager: LoadingManager
     
-    @ObservedObject private var navigator: BookNavigator
+    private var navigator: BookNavigator
     @ObservedObject var userInput: BookUserInput
     
     @StateObject var viewModel: LearnSelectViewViewModel

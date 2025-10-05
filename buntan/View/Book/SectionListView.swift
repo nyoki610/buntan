@@ -2,7 +2,7 @@ import SwiftUI
 
 struct SectionListView: View {
 
-    @ObservedObject private var navigator: BookNavigator
+    private let navigator: BookNavigator
     @ObservedObject private var userInput: BookUserInput
     @StateObject private var viewModel: SectionListViewViewModel
     
