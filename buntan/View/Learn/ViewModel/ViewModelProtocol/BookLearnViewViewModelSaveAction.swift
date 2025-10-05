@@ -62,7 +62,7 @@ extension BookLearnViewViewModelProtocol {
         if isFinished {
             navigator.push(.learnResult(cardsContainer, learnedCardCount))
         } else {
-            navigator.pop(to: .sectionList(EmptyModel.book))
+            navigator.pop(to: .sectionList)
             navigator.push(.learnSelect(cardsContainer))
         }
         

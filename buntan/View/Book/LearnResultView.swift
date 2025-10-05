@@ -30,7 +30,7 @@ struct LearnResultView: View {
         VStack {
             
             XmarkHeader() {
-                navigator.pop(to: .sectionList(EmptyModel.book))
+                navigator.pop(to: .sectionList)
                 navigator.push(.learnSelect(cardsContainer))
             }
             

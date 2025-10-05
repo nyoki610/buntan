@@ -60,6 +60,6 @@ final class BookListViewViewModel: ViewModel {
     
     private func select(book: Book) {
         argument.userInput.selectedBookConfig = book.config
-        argument.navigator.push(.sectionList(book))
+        argument.navigator.push(.sectionList)
     }
 }
