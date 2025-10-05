@@ -3,8 +3,8 @@ import SwiftUI
 struct MainView: View {
 
     /// ObservedObjects
-    @ObservedObject private var loadingManager = LoadingManager()
-    @ObservedObject private var alertManager = AlertManager()
+    @ObservedObject private var loadingManager = LoadingManager.shared
+    @ObservedObject private var alertManager = AlertManager.shared
     
     @StateObject var viewModel = MainViewViewModel()
     

@@ -9,6 +9,9 @@ import SwiftUI
 
 @MainActor
 class LoadingManager: ObservableObject {
+    
+    static let shared = LoadingManager()
+    private init() {}
 
     @Published private(set) var loadingStatus: Status?
     

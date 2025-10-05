@@ -10,6 +10,9 @@ import SwiftUI
 @MainActor
 class AlertManager: ObservableObject {
     
+    static let shared = AlertManager()
+    private init() {}
+    
     @Published var alertType: AlertType?
     
     enum AlertType: Identifiable {
