@@ -4,7 +4,8 @@ struct MainView: View {
 
     @StateObject private var loadingManager = LoadingManager.shared
     @StateObject private var alertManager = AlertManager.shared
-    @StateObject private var viewModel = MainViewViewModel()
+    @State private var viewModel = MainViewViewModel()
+    private let bookUserInput: BookUserInput = BookUserInput()
     
     var body: some View {
         
@@ -74,12 +75,12 @@ struct MainView: View {
         .alert(item: $alertManager.alertType) { _ in
             alertManager.createAlert()
         }
-        .onReceive(viewModel.bookViewNavigator.$path) { _ in
+        .onChange(of: viewModel.bookViewNavigator.path) {
             DispatchQueue.main.async {
                 viewModel.updateShowTabView()
             }
         }
-        .onReceive(viewModel.checkViewNavigator.$path) { _ in
+        .onChange(of: viewModel.checkViewNavigator.path) {
             DispatchQueue.main.async {
                 viewModel.updateShowTabView()
             }
