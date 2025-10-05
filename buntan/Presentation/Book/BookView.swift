@@ -62,7 +62,6 @@ struct BookView: View {
         }
     }
     
-    @ViewBuilder
     private func headerView(todaysWordCount: Int) -> some View {
         
         HStack {
@@ -87,8 +86,7 @@ struct BookView: View {
         .padding(.vertical, 10)
         .padding(.horizontal, 40)
     }
-    
-    @ViewBuilder
+
     private func eachGradeView(grade: EikenGrade) -> some View {
         
         VStack(spacing: 0) {
@@ -113,7 +111,6 @@ struct BookView: View {
         .padding(.horizontal, responsiveSize(10, 60))
     }
     
-    @ViewBuilder
     private func selectBookCategoryButton(grade: EikenGrade, bookCategory: BookCategory) -> some View {
                 
         Button {
@@ -133,15 +130,10 @@ struct BookView: View {
     }
 }
 
-struct BookView_Previews: PreviewProvider {
-    static var previews: some View {
-        BookView(
-            viewModel: BookViewViewModel(
-                argument: .init(
-                    navigator: BookNavigator(),
-                    userInput: BookUserInput()
-                )
-            )
+#Preview {
+    BookView(
+        viewModel: BookViewViewModel(
+            argument: .init(navigator: BookNavigator(), userInput: BookUserInput())
         )
-    }
+    )
 }
