@@ -35,8 +35,10 @@ struct MainView: View {
                     
                     BookView(
                         viewModel: BookViewViewModel(
-                            navigator: viewModel.bookViewNavigator,
-                            userInput: BookUserInput()
+                            argument: .init(
+                                navigator: viewModel.bookViewNavigator,
+                                userInput: bookUserInput
+                            )
                         )
                     )
                     .tabItem {
