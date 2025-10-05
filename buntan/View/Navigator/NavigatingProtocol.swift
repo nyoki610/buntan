@@ -1,7 +1,7 @@
 import SwiftUI
 
 @MainActor
-protocol Navigating: ObservableObject, AnyObject {
+protocol Navigating: AnyObject {
     
     associatedtype ViewNameType: ViewNameProtocol
     var path: [ViewNameType] { get set }

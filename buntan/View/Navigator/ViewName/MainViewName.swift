@@ -53,6 +53,7 @@ extension MainViewName.Root: ViewNameProtocol {
         }
     }
 
+    @MainActor
     func viewForName(
         bookViewNavigator: BookNavigator,
         checkViewNavigator: CheckNavigator
@@ -60,7 +61,7 @@ extension MainViewName.Root: ViewNameProtocol {
         switch self {
         case .book:
             let userInput = BookUserInput()
-            let viewModel = BookViewViewModel(navigator: bookViewNavigator, userInput: userInput)
+            let viewModel = BookViewViewModel(argument: .init(navigator: bookViewNavigator, userInput: userInput))
             return AnyView(BookView(viewModel: viewModel))
         case .check:
             return AnyView(CheckView(navigator: checkViewNavigator))

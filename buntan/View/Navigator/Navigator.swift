@@ -1,9 +1,15 @@
 import Foundation
 
 @MainActor
-class Navigator<ViewName: ViewNameProtocol>: ObservableObject, Navigating {
-    @Published var path: [ViewName] = []
+@Observable
+class Navigator<ViewName: ViewNameProtocol>: Navigating {
+    var path: [ViewName] = []
 }
 
+@MainActor
+@Observable
 final class BookNavigator: Navigator<BookViewName> {}
+
+@MainActor
+@Observable
 final class CheckNavigator: Navigator<CheckViewName> {}

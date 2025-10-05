@@ -9,7 +9,7 @@ struct LearnResultView: View {
     /// 「学習中」の単語が存在するかどうかを示す bool 値
     private var reviewAll: Bool { cardsContainer.learningCount == 0 }
     
-    @ObservedObject private var navigator: BookNavigator
+    private let navigator: BookNavigator
     @ObservedObject private var userInput: BookUserInput
     private let cardsContainer: CardsContainer
 

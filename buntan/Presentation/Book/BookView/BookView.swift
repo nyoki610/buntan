@@ -1,22 +1,22 @@
 import SwiftUI
 
-struct BookView<ViewModel: BookViewViewModelProtocol>: View {
+struct BookView: View {
     
-    @StateObject private var viewModel: ViewModel
+    @State private var viewModel: BookViewViewModel
     
-    init(viewModel: ViewModel) {
-        self._viewModel = StateObject(wrappedValue: viewModel)
+    init(viewModel: BookViewViewModel) {
+        self.viewModel = viewModel
     }
 
     var body: some View {
         
-        NavigationStack(path: $viewModel.navigator.path) {
+        NavigationStack(path: $viewModel.argument.navigator.path) {
         
             ZStack {
             
                 VStack(spacing: 0) {
                     
-                    if let todaysWordCount = viewModel.output.todaysWordCount {
+                    if let todaysWordCount = viewModel.state.todaysWordCount {
                         headerView(todaysWordCount: todaysWordCount)
                             .padding(.top, 40)
                     }
@@ -50,7 +50,10 @@ struct BookView<ViewModel: BookViewViewModelProtocol>: View {
             }
             .background(CustomColor.background)
             .navigationDestination(for: BookViewName.self) { viewName in
-                viewName.viewForName(navigator: viewModel.navigator, userInput: viewModel.userInput)
+                viewName.viewForName(
+                    navigator: viewModel.argument.navigator,
+                    userInput: viewModel.argument.userInput
+                )
             }
             .task {
                 AnalyticsLogger.logScreenTransition(viewName: MainViewName.root(.book))
@@ -59,7 +62,6 @@ struct BookView<ViewModel: BookViewViewModelProtocol>: View {
         }
     }
     
-    @ViewBuilder
     private func headerView(todaysWordCount: Int) -> some View {
         
         HStack {
@@ -70,7 +72,7 @@ struct BookView<ViewModel: BookViewViewModelProtocol>: View {
             .font(.system(size: responsiveSize(14, 20)))
             
             Image(systemName: "chart.bar.fill",
-                  variableValue: viewModel.output.variableValue)
+                  variableValue: viewModel.state.variableValue)
             .font(.system(size: responsiveSize(30, 40)))
             .foregroundStyle(Orange.defaultOrange)
             
@@ -84,8 +86,7 @@ struct BookView<ViewModel: BookViewViewModelProtocol>: View {
         .padding(.vertical, 10)
         .padding(.horizontal, 40)
     }
-    
-    @ViewBuilder
+
     private func eachGradeView(grade: EikenGrade) -> some View {
         
         VStack(spacing: 0) {
@@ -110,7 +111,6 @@ struct BookView<ViewModel: BookViewViewModelProtocol>: View {
         .padding(.horizontal, responsiveSize(10, 60))
     }
     
-    @ViewBuilder
     private func selectBookCategoryButton(grade: EikenGrade, bookCategory: BookCategory) -> some View {
                 
         Button {
@@ -130,13 +130,10 @@ struct BookView<ViewModel: BookViewViewModelProtocol>: View {
     }
 }
 
-struct BookView_Previews: PreviewProvider {
-    static var previews: some View {
-        BookView(
-            viewModel: BookViewViewModel(
-                navigator: BookNavigator(),
-                userInput: BookUserInput()
-            )
+#Preview {
+    BookView(
+        viewModel: BookViewViewModel(
+            argument: .init(navigator: BookNavigator(), userInput: BookUserInput())
         )
-    }
+    )
 }

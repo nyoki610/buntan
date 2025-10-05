@@ -4,7 +4,7 @@ struct BookListView: View {
     
     @State private var showDetail: Bool = false
     
-    @ObservedObject private var navigator: BookNavigator
+    private var navigator: BookNavigator
     @ObservedObject private var userInput: BookUserInput
     private let bookList: [Book]
     
