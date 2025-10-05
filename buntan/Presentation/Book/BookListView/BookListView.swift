@@ -1,3 +1,10 @@
+//
+//  BookListView.swift
+//  buntan
+//
+//  Created by 二木裕也 on 2025/10/05.
+//
+
 import SwiftUI
 
 struct BookListView: View {
@@ -84,7 +91,7 @@ struct BookListView: View {
         let disabled = (book.cardsCount == 0)
         
         Button {
-            viewModel.send(.selectBookButtonTapped(book))
+            viewModel.send(.bookButtonTapped(book))
         } label: {
             
             ZStack {

@@ -30,7 +30,7 @@ final class BookListViewViewModel: ViewModel {
     
     enum Action {
         case detailButtonTapped
-        case selectBookButtonTapped(Book)
+        case bookButtonTapped(Book)
     }
     
     var argument: Argument
@@ -49,7 +49,7 @@ final class BookListViewViewModel: ViewModel {
         switch action {
         case .detailButtonTapped:
             binding.showDetail = true
-        case let .selectBookButtonTapped(book):
+        case let .bookButtonTapped(book):
             select(book: book)
         }
     }

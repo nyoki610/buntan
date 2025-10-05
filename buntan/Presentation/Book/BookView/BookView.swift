@@ -1,3 +1,10 @@
+//
+//  BookView.swift
+//  buntan
+//
+//  Created by 二木裕也 on 2025/10/05.
+//
+
 import SwiftUI
 
 struct BookView: View {
