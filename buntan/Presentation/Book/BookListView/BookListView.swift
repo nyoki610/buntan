@@ -1,17 +1,11 @@
 import SwiftUI
 
 struct BookListView: View {
+
+    @State private var viewModel: BookListViewViewModel
     
-    @State private var showDetail: Bool = false
-    
-    private var navigator: BookNavigator
-    @ObservedObject private var userInput: BookUserInput
-    private let bookList: [Book]
-    
-    init(navigator: BookNavigator, userInput: BookUserInput, bookList: [Book]) {
-        self.navigator = navigator
-        self.userInput = userInput
-        self.bookList = bookList
+    init(viewModel: BookListViewViewModel) {
+        self.viewModel = viewModel
     }
     
     var body: some View {
@@ -19,7 +13,7 @@ struct BookListView: View {
             
             VStack {
                 
-                Header(navigator: navigator)
+                Header(navigator: viewModel.argument.navigator)
 
                 HStack {
                     Spacer()
@@ -27,7 +21,7 @@ struct BookListView: View {
                     Image(systemName: "flag.fill")
                         .foregroundStyle(Orange.defaultOrange)
                     
-                    Text(userInput.selectedBookCategory?.headerTitle ?? "")
+                    Text(viewModel.argument.userInput.selectedBookCategory?.headerTitle ?? "")
                     Spacer()
                 }
                 .font(.system(size: responsiveSize(18, 24)))
@@ -35,14 +29,14 @@ struct BookListView: View {
                 
                 HStack {
                     Spacer()
-                    Text(userInput.selectedGrade?.title ?? "")
+                    Text(viewModel.argument.userInput.selectedGrade?.title ?? "")
                         .bold()
                         .font(.system(size: responsiveSize(18, 24)))
                         .foregroundColor(.white)
                     Spacer()
                 }
                 .padding(.vertical, 10)
-                .background(userInput.selectedGrade?.color ?? .clear)
+                .background(viewModel.argument.userInput.selectedGrade?.color ?? .clear)
                 .cornerRadius(10)
                 .padding(.horizontal, responsiveSize(40, 120))
                 .padding(.top, 4)
@@ -51,7 +45,7 @@ struct BookListView: View {
                 listView
                     .padding(.horizontal, responsiveSize(30, 100))
                 
-                if userInput.selectedBookCategory == .freq {
+                if viewModel.argument.userInput.selectedBookCategory == .freq {
                     HStack {
                         Spacer()
                         detailbutton
@@ -67,22 +61,17 @@ struct BookListView: View {
         }
         .background(CustomColor.background)
         .navigationBarBackButtonHidden(true)
-        .sheet(isPresented: $showDetail) {
+        .sheet(isPresented: $viewModel.binding.showDetail) {
             bookDetailView
                 .presentationDetents([.medium])
         }
     }
     
-    @ViewBuilder
     private var listView: some View {
-        
         VStack {
-            
-            ForEach(bookList, id: \.self) { book in
+            ForEach(viewModel.state.books, id: \.self) { book in
                 VStack {
-
                     selectBookButton(book)
-                    
                 }
                 .padding(.vertical, 8)
             }
@@ -95,8 +84,7 @@ struct BookListView: View {
         let disabled = (book.cardsCount == 0)
         
         Button {
-            userInput.selectedBookConfig = book.config
-            navigator.push(.sectionList(book))
+            viewModel.send(.selectBookButtonTapped(book))
         } label: {
             
             ZStack {
@@ -134,10 +122,9 @@ struct BookListView: View {
         .disabled(disabled)
     }
     
-    @ViewBuilder
     private var detailbutton: some View {
         Button {
-            showDetail = true
+            viewModel.send(.detailButtonTapped)
         } label: {
             HStack {
                 Image(systemName: "info.circle.fill")
@@ -154,7 +141,6 @@ struct BookListView: View {
         }
     }
     
-    @ViewBuilder
     private var bookDetailView: some View {
         VStack {
             
@@ -181,8 +167,7 @@ struct BookListView: View {
         }
         .padding(.horizontal, 10)
     }
-    
-    @ViewBuilder
+
     private func detailContent(title: String, description: String) -> some View {
         VStack(alignment: .leading) {
             Text("【\(title)】")

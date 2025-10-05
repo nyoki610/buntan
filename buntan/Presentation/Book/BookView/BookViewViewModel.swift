@@ -10,6 +10,7 @@ import Foundation
 @MainActor
 @Observable
 final class BookViewViewModel: ViewModel {
+    typealias BindingState = Void
     
     struct Argument {
         var navigator: BookNavigator
