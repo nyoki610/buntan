@@ -77,15 +77,5 @@ struct MainView: View {
         .alert(item: $alertManager.alertType) { _ in
             alertManager.createAlert()
         }
-        .onChange(of: viewModel.bookViewNavigator.path) {
-            DispatchQueue.main.async {
-                viewModel.updateShowTabView()
-            }
-        }
-        .onChange(of: viewModel.checkViewNavigator.path) {
-            DispatchQueue.main.async {
-                viewModel.updateShowTabView()
-            }
-        }
     }
 }
