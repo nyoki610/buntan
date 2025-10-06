@@ -76,9 +76,7 @@ class LogoViewViewModel: ObservableObject {
     
     private func complete() async {
         await loadingManager.finishLoading(withDelay: true)
-        withAnimation {
-            parentStateBinding.wrappedValue = .root(.book)
-        }
+        parentStateBinding.wrappedValue = .root(.book)
     }
     
     private func handleError(canSkipDataFetching: Bool, message: String) async {
