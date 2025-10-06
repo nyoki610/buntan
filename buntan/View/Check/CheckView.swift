@@ -42,6 +42,7 @@ struct CheckView: View {
             .onAppear {
                 AnalyticsLogger.logScreenTransition(viewName: MainViewName.root(.check))
             }
+            .toolbar(navigator.path.isEmpty ? .visible : .hidden, for: .tabBar)
         }
     }
     

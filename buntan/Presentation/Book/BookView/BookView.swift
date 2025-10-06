@@ -66,6 +66,7 @@ struct BookView: View {
                 AnalyticsLogger.logScreenTransition(viewName: MainViewName.root(.book))
                 viewModel.send(.task)
             }
+            .toolbar(viewModel.argument.navigator.path.isEmpty ? .visible : .hidden, for: .tabBar)
         }
     }
     
