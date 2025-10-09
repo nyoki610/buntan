@@ -40,13 +40,5 @@ extension RecordView {
     enum CheckViewType: String {
         case learn = "学習の記録"
         case check = "テストの記録"
-        
-        @ViewBuilder
-        var view: some View  {
-            switch self {
-            case .learn: LearnRecordView()
-            case .check: CheckRecordView()
-            }
-        }
     }
 }
