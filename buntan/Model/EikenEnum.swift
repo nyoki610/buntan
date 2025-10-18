@@ -1,7 +1,7 @@
 import SwiftUI
 import RealmSwift
 
-enum EikenGrade: Double, CaseIterable {
+enum EikenGrade: Double, CaseIterable, Hashable {
     
     case first = 1.0
     case preFirst = 1.5

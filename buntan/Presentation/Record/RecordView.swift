@@ -11,8 +11,7 @@ struct RecordView: View {
     
     var body: some View {
         
-        VStack {
-            
+        VStack(spacing: 0) {
             selectViewType
                 .padding(.top, 40)
             
@@ -21,7 +20,7 @@ struct RecordView: View {
                 LearnRecordView(viewModel: .init())
                     .padding(.horizontal, responsiveSize(0, 100))
             case .check:
-                CheckRecordView()
+                CheckRecordView(viewModel: .init())
                     .padding(.horizontal, responsiveSize(0, 100))
             }
             
