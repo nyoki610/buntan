@@ -33,6 +33,7 @@ struct CheckRecordChartState {
     func ghostData(for grade: EikenGrade) -> ChartData {
         let count = {
             guard checkRecords.count != 0 else { return 10 }
+            guard checkRecords.count % 10 != 0 else { return 0 }
             return 10 - (checkRecords.count % 10)
         }()
         let chartData = ChartDataFactory.createGhostForCheckRecord(
