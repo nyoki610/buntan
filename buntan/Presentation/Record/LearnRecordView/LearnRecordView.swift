@@ -4,7 +4,7 @@ struct LearnRecordView: View {
     
     @State var viewModel: LearnRecordViewViewModel
     
-    private var chartState: LearnChartState { viewModel.state.chartState }
+    private var chartState: LearnRecordChartState { viewModel.state.chartState }
     private var recordsContainer: DailyLearnRecordsContainer { viewModel.state.recordsContainer }
     
     init(viewModel: LearnRecordViewViewModel) {
@@ -26,7 +26,7 @@ struct LearnRecordView: View {
             }
             .padding(.top, 20)
             
-            LearnChart(sevenDaysRecords: chartState.sevenDaysRecords)
+            LearnRecordChart(learnedCardsCountData: viewModel.state.learnedCardsCountData)
                 .overlay(alignment: .center) {
                     if recordsContainer.allCount == 0 {
                         Text("この期間の記録はありません")

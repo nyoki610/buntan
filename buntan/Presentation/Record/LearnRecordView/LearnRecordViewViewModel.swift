@@ -24,13 +24,14 @@ final class LearnRecordViewViewModel: ViewModel {
     struct State {
         var weekOffsetCount: Int = 0
         var recordsContainer = DailyLearnRecordsContainer()
-        var chartState: LearnChartState {
+        var chartState: LearnRecordChartState {
             .init(
                 weekOffsetCount: weekOffsetCount,
                 dailyLearnRecords: recordsContainer.dailyLearnRecords,
                 latestSunday: recordsContainer.latest.previousSunday
             )
         }
+        var learnedCardsCountData: ChartData { ChartDataFactory.create(sevenDaysRecords: chartState.sevenDaysRecords) }
     }
     
     enum Action {

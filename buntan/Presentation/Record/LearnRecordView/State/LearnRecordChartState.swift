@@ -1,5 +1,5 @@
 //
-//  LearnChartState.swift
+//  LearnRecordChartState.swift
 //  buntan
 //
 //  Created by 二木裕也 on 2025/10/09.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct LearnChartState {
+struct LearnRecordChartState {
     private let weekOffsetCount: Int
     private let dailyLearnRecords: [LearnRecord]
     private let latestSunday: Date
@@ -43,15 +43,4 @@ struct LearnChartState {
                 } ?? LearnRecord(id: UUID().uuidString, date: targetDate, learnedCardCount: 0)
         }
     }
-}
-
-struct DailyLearnRecordsContainer {
-    var dailyLearnRecords: [LearnRecord] = []
-    var allCount: Int { dailyLearnRecords.reduce(0) { $0 + $1.learnedCardCount } }
-    
-    /// The earliest date for which LearnRecord exists
-    var earliest: Date { dailyLearnRecords.first?.date ?? Date() }
-    
-    /// The most recent date for which LearnRecord exists
-    var latest: Date { dailyLearnRecords.last?.date ?? Date() }
 }
