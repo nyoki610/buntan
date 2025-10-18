@@ -66,7 +66,7 @@ extension MainViewName.Root: ViewNameProtocol {
         case .check:
             return AnyView(CheckView(navigator: checkViewNavigator))
         case .record:
-            return AnyView(RecordView())
+            return AnyView(RecordView(viewModel: .init()))
         case .contact:
             return AnyView(ContactView())
         }

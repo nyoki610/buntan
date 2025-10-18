@@ -34,7 +34,7 @@ struct MainView: View {
                 TabView {
                     
                     BookView(
-                        viewModel: BookViewViewModel(
+                        viewModel: .init(
                             argument: .init(
                                 navigator: viewModel.bookViewNavigator,
                                 userInput: bookUserInput
@@ -52,7 +52,7 @@ struct MainView: View {
                             Text("テスト")
                         }
                     
-                    RecordView()
+                    RecordView(viewModel: .init())
                         .tabItem {
                             Image(systemName: "shoeprints.fill")
                             Text("記録")
