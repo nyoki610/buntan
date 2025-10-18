@@ -8,7 +8,6 @@ struct RecordView: View {
     }
     
     var body: some View {
-        
         VStack(spacing: 0) {
             HStack(spacing: 4) {
                 viewSelectButton(
@@ -36,15 +35,11 @@ struct RecordView: View {
                 CheckRecordView(viewModel: .init())
                     .padding(.horizontal, responsiveSize(0, 100))
             }
-            
             Spacer()
         }
         .background(CustomColor.background)
         .onAppear {
             AnalyticsLogger.logScreenTransition(viewName: MainViewName.root(.record))
-        }
-        .task {
-            viewModel.send(.task)
         }
     }
     
