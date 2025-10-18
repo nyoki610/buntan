@@ -19,19 +19,15 @@ struct ChartRangePicker: View {
     let action: (ButtonType) -> Void
     
     var body: some View {
-        
-        HStack {
-            
+        HStack(spacing: 20) {
             ArrowButton(label: "←", buttonDisabled: leftButtonDisabled) {
                 action(.left)
             }
-            
-            HStack{
+            HStack(spacing: 0){
                 Text(label)
             }
             .foregroundColor(.black.opacity(0.7))
             .frame(width: responsiveSize(140, 200))
-            .padding(.horizontal, 24)
             
             ArrowButton(label: "→", buttonDisabled: rightButtonDisabled) {
                 action(.right)
