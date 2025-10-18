@@ -22,11 +22,18 @@ final class RecordViewViewModel: ViewModel {
     }
     
     struct State {
+        var selectedViewType: ViewType = .learn
         var dailyLearnRecords: [LearnRecord] = []
+    }
+    
+    enum ViewType: String {
+        case learn
+        case check
     }
     
     enum Action {
         case task
+        case didTapViewSelectPicker(ViewType)
     }
     
     @ObservationIgnored let dependency: Dependency
@@ -43,6 +50,9 @@ final class RecordViewViewModel: ViewModel {
             switch action {
             case .task:
                 state.dailyLearnRecords = try dependency.learnRecordService.getDailyLearnRecords()
+                
+            case let .didTapViewSelectPicker(viewType):
+                state.selectedViewType = viewType
             }
         } catch {
             self.error = error
