@@ -25,7 +25,7 @@ extension _LearnViewProtocol {
     
     func learnHeader(geometry: GeometryProxy) -> some View {
         
-        LearnHeader(
+        _LearnHeader(
             viewModel: viewModel,
             geometry: geometry
         ) {

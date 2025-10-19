@@ -1,7 +1,7 @@
 import SwiftUI
 
 
-struct LearnHeader: View {
+struct _LearnHeader: View {
     
     private let headerLabel: String
     
