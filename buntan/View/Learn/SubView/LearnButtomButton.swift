@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct LearnBottomButtons: View {
+struct _LearnBottomButtons: View {
     
     enum ViewType {
         case bookSwipe
