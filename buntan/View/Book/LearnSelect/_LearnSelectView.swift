@@ -9,7 +9,7 @@ struct _LearnSelectView: View {
     private var navigator: BookNavigator
     @ObservedObject var userInput: BookUserInput
     
-    @StateObject var viewModel: LearnSelectViewViewModel
+    @StateObject var viewModel: _LearnSelectViewViewModel
     
     init(
         navigator: BookNavigator,
@@ -19,7 +19,7 @@ struct _LearnSelectView: View {
         self.navigator = navigator
         self.userInput = userInput
         self._viewModel = StateObject(
-            wrappedValue: LearnSelectViewViewModel(cardsContainer: cardsContainer)
+            wrappedValue: _LearnSelectViewViewModel(cardsContainer: cardsContainer)
         )
     }
 

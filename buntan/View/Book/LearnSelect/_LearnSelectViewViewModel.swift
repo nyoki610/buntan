@@ -1,7 +1,7 @@
 import Foundation
 
 
-class LearnSelectViewViewModel: ObservableObject {
+class _LearnSelectViewViewModel: ObservableObject {
     
     @Published var cardsContainer: CardsContainer
     @Published var isFetchingUpdatedBook: Bool = false
