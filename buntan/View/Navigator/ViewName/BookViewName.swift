@@ -94,7 +94,7 @@ extension BookViewName: ViewNameProtocol {
         
         case .learnSelect(let cardsContainer):
             return AnyView(
-                LearnSelectView(
+                _LearnSelectView(
                     navigator: navigator,
                     userInput: userInput,
                     cardsContainer: cardsContainer

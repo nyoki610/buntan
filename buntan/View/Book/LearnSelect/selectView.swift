@@ -1,6 +1,6 @@
 import SwiftUI
 
-extension LearnSelectView {
+extension _LearnSelectView {
     
     @ViewBuilder
     var selectView: some View {
