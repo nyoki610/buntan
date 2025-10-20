@@ -25,7 +25,7 @@ extension BookLearnViewProtocol {
     }
     
     var learnBottomButtons: some View {
-        LearnBottomButtons(
+        _LearnBottomButtons(
             viewModel: viewModel,
             shouldReadOut: userDefaultHandler.shouldReadOut
         ) {
