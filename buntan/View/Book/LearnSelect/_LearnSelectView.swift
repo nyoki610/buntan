@@ -1,7 +1,7 @@
 import SwiftUI
 
 
-struct LearnSelectView: View {
+struct _LearnSelectView: View {
     
     @EnvironmentObject var alertManager: AlertManager
     @EnvironmentObject var loadingManager: LoadingManager
@@ -189,7 +189,7 @@ struct LearnSelectView: View {
     }
 }
 
-extension LearnSelectView {
+extension _LearnSelectView {
     
     func resetAction() {
         
@@ -225,7 +225,7 @@ extension LearnSelectView {
 }
 
 
-extension LearnSelectView {
+extension _LearnSelectView {
     
     func adjustSelectedRange() {
         
