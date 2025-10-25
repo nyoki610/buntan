@@ -8,36 +8,40 @@
 import SwiftUI
 
 struct LearnOptionView: View {
-    enum Status {
-        case answering((String) -> Void)
+    enum Status: Equatable {
+        case answering
         case showingFeedBack(answerId: String, selectedId: String)
     }
     let status: Status
-    let options: [Option]
+    let fourChoiceOptions: FourChoiceOptions
+    let didTapOption: ((String) -> Void)
     
     var body: some View {
         VStack(spacing: 16) {
-            ForEach(options) { option in
-                switch status {
-                case let .answering(onAnswerSelected):
-                    Button {
-                        onAnswerSelected(option.id)
-                    } label: {
-                        LearnOptionButtonLabel(
-                            option: option,
-                            status: .answering
-                        )
-                    }
-                case .showingFeedBack(let answerId, let selectedId):
+            ForEach(fourChoiceOptions.options) { option in
+                Button {
+                    didTapOption(option.id)
+                } label: {
                     LearnOptionButtonLabel(
                         option: option,
-                        status: .showingFeedBack(
-                            isAnswerOption: answerId == option.id,
-                            isSelected: selectedId == option.id
-                        )
+                        status: optionStatus(for: option)
                     )
                 }
+                .disabled(status != .answering)
             }
+        }
+    }
+    
+    private func optionStatus(for option: Option) -> LearnOptionButtonLabel.Status {
+        switch status {
+        case .answering:
+            return .answering
+
+        case .showingFeedBack(let answerId, let selectedId):
+            return .showingFeedBack(
+                isAnswerOption: answerId == option.id,
+                isSelected: selectedId == option.id
+            )
         }
     }
 }
