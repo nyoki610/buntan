@@ -8,8 +8,7 @@
 import Foundation
 
 enum LearnState: Hashable {
-    case initial
-    case answering(LearnCard)
+    case answering(LearnCard, FourChoiceOptions)
     case showingFeedbackAnimation(ResultType)
     case reviewing(ResultType)
     case complete
@@ -21,14 +20,6 @@ enum LearnState: Hashable {
     
     func canTransition(to nextState: LearnState) -> Bool {
         switch self {
-        case .initial:
-            switch nextState {
-            case .answering:
-                return true
-            default:
-                return false
-            }
-            
         case .answering:
             switch nextState {
             case .showingFeedbackAnimation:

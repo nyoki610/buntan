@@ -21,31 +21,41 @@ class LearnStateMachine {
         case finishReview
     }
     
-    private(set) var current: LearnState = .initial
+    private(set) var current: LearnState
     private(set) var currentIndex: Int = 0
     private(set) var result = LearnResult()
     private let cards: [LearnCard]
-    private var topCard: LearnCard? {
+    private var currentCard: LearnCard? {
         guard cards.indices.contains(currentIndex) else {
             return nil
         }
         return cards[currentIndex]
     }
-    
-    init(cards: [LearnCard]) {
-        self.cards = cards
-        if let topCard = topCard {
-            try? transition(to: .answering(topCard))
+    private let options: [FourChoiceOptions]
+    private var currentOption: FourChoiceOptions? {
+        guard options.indices.contains(currentIndex) else {
+            return nil
         }
+        return options[currentIndex]
+    }
+    
+    init(
+        cards: [LearnCard],
+        options: [FourChoiceOptions],
+        initialState: LearnState
+    ) {
+        self.cards = cards
+        self.options = options
+        current = initialState
     }
     
     func dispatch(_ action: Action) throws {
         switch action {
         case let .submitAnswer(resultType):
-            guard let topCard = topCard else {
-                throw Error.topCardNotExist
+            guard let currentCard = currentCard else {
+                throw Error.currentCardNotExist
             }
-            saveResult(cardId: topCard.id, resultType: resultType)
+            saveResult(cardId: currentCard.id, resultType: resultType)
             try transition(to: .showingFeedbackAnimation(resultType))
             
         case let .completeAnimation(result):
@@ -53,11 +63,11 @@ class LearnStateMachine {
             
         case .finishReview:
             currentIndex += 1
-            guard let nextCard = topCard else {
+            guard let nextCard = currentCard, let nextOption = currentOption else {
                 try transition(to: .complete)
                 return
             }
-            try transition(to: .answering(nextCard))
+            try transition(to: .answering(nextCard, nextOption))
         }
     }
     
@@ -80,6 +90,6 @@ class LearnStateMachine {
     
     private enum Error: Swift.Error {
         case invalidTransitionTarget
-        case topCardNotExist
+        case currentCardNotExist
     }
 }
