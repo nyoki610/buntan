@@ -8,11 +8,11 @@
 import SwiftUI
 
 enum LearnBottomButtonType {
-    case back(() -> Void)
-    case backToStart(() -> Void)
-    case readOut(isDisabled: Bool, (() -> Void))
-    case pass(() -> Void)
-    case next(() -> Void)
+    case back(didTapped: () -> Void)
+    case backToStart(didTapped: () -> Void)
+    case readOut(isDisabled: Bool, didTapped: () -> Void)
+    case pass(didTapped: () -> Void)
+    case next(didTapped: () -> Void)
 }
 
 extension LearnBottomButtonType: Identifiable {
@@ -25,7 +25,7 @@ struct LearnBottomButtonConfig {
     let systemName: String
     let color: Color
     let isDisabled: Bool
-    let onTappedAction: (() -> Void)
+    let didTapped: (() -> Void)
     
     init(
         label: String,
@@ -33,61 +33,61 @@ struct LearnBottomButtonConfig {
         systemName: String,
         color: Color = .black,
         isDisabled: Bool = false,
-        onTappedAction: @escaping () -> Void
+        didTapped: @escaping () -> Void
     ) {
         self.label = label
         self.subLabel = subLabel
         self.systemName = systemName
         self.color = color
         self.isDisabled = isDisabled
-        self.onTappedAction = onTappedAction
+        self.didTapped = didTapped
     }
 }
 
 extension LearnBottomButtonType {
     var config: LearnBottomButtonConfig {
         switch self {
-        case let .back(onTappedAction):
+        case let .back(didTapped):
             return .init(
                 label: "ひとつ",
                 subLabel: "戻る",
                 systemName: "arrowshape.turn.up.left",
-                onTappedAction: onTappedAction
+                didTapped: didTapped
             )
             
-        case let .backToStart(onTappedAction):
+        case let .backToStart(didTapped):
             return .init(
                 label: "最初に",
                 subLabel: "戻る",
                 systemName: "arrowshape.turn.up.backward.2",
-                onTappedAction: onTappedAction
+                didTapped: didTapped
             )
             
-        case let .readOut(isDisabled, onTappedAction):
+        case let .readOut(isDisabled, didTapped):
             return .init(
                 label: "音声を",
                 subLabel: "再生",
                 systemName: "speaker.wave.2.fill",
                 color: isDisabled ? .gray : .black,
                 isDisabled: isDisabled,
-                onTappedAction: onTappedAction
+                didTapped: didTapped
             )
             
-        case let .pass(onTappedAction):
+        case let .pass(didTapped):
             return .init(
                 label: "パス",
                 subLabel: nil,
                 systemName: "arrowshape.turn.up.right",
-                onTappedAction: onTappedAction
+                didTapped: didTapped
             )
             
-        case let .next(onTappedAction):
+        case let .next(didTapped):
             return .init(
                 label: "次へ",
                 subLabel: nil,
                 systemName: "arrowshape.turn.up.right.fill",
                 color: RoyalBlue.defaultRoyal,
-                onTappedAction: onTappedAction
+                didTapped: didTapped
             )
         }
     }

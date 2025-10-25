@@ -64,7 +64,7 @@ struct LearnSettingButtons: View {
                 isOn: type.config.isOn,
                 color: Orange.egg,
                 scale: responsiveSize(1.0, 1.3),
-                action: type.config.onTapAction
+                action: type.config.didTapped
             )
         }
     }

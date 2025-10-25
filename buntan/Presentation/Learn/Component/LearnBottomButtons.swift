@@ -30,7 +30,7 @@ struct LearnBottomButtons: View {
     
     private func bottomButton(for config: LearnBottomButtonConfig) -> some View {
         Button {
-            config.onTappedAction()
+            config.didTapped()
         } label: {
             VStack(spacing: 4) {
                 Image(systemName: config.systemName)
