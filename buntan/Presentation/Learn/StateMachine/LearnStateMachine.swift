@@ -10,7 +10,7 @@ import Foundation
 class LearnStateMachine {
     typealias ResultType = LearnState.ResultType
     
-    struct LearnResult {
+    struct LearnResult: Hashable {
         var correctCardsIds: Set<String> = []
         var incorrectCardsIds: Set<String> = []
     }
@@ -19,6 +19,7 @@ class LearnStateMachine {
         case submitAnswer(ResultType)
         case completeAnimation(ResultType)
         case finishReview
+        case interruptLearning
         case shuffleCards(ShuffleType)
         
         enum ShuffleType {
@@ -29,7 +30,7 @@ class LearnStateMachine {
     
     private(set) var current: LearnState
     private(set) var currentIndex: Int = 0
-    private(set) var result = LearnResult()
+    private var result = LearnResult()
     private var cards: [LearnCard]
     private var currentCard: LearnCard? {
         guard cards.indices.contains(currentIndex) else {
@@ -71,10 +72,15 @@ class LearnStateMachine {
         case .finishReview:
             currentIndex += 1
             guard let nextCard = currentCard, let nextOption = currentOption else {
-                try transition(to: .complete)
+                try transition(to: .complete(cards, result))
                 return
             }
             try transition(to: .answering(nextCard, nextOption))
+            
+        case .interruptLearning:
+            let cards = Array(cards[0..<currentIndex])
+            try transition(to: .interrupted(cards, result))
+            
         case .shuffleCards(let shuffleType):
             resetLearning()
             switch shuffleType {
