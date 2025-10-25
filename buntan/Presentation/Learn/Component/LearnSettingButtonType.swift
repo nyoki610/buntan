@@ -8,7 +8,7 @@
 import SwiftUI
 
 enum LearnSettingButtonType {
-    case shuffle(Binding<Bool>, () -> Void)
+    case shuffle(Binding<Bool>, didTapped: () -> Void)
     case readOut(Binding<Bool>)
     case showSentence(Binding<Bool>)
     case showInitial(Binding<Bool>)
@@ -23,33 +23,33 @@ struct LearnSettingButtonConfig {
     let subLabel: String?
     let systemName: String
     let isOn: Binding<Bool>
-    let onTapAction: (() -> Void)?
+    let didTapped: (() -> Void)?
     
     init(
         label: String,
         subLabel: String?,
         systemName: String,
         isOn: Binding<Bool>,
-        onTapAction: (() -> Void)? = nil
+        didTapped: (() -> Void)? = nil
     ) {
         self.label = label
         self.subLabel = subLabel
         self.systemName = systemName
         self.isOn = isOn
-        self.onTapAction = onTapAction
+        self.didTapped = didTapped
     }
 }
 
 extension LearnSettingButtonType {
     var config: LearnSettingButtonConfig {
         switch self {
-        case let .shuffle(isOn, onTapAction):
+        case let .shuffle(isOn, didTapped):
             return .init(
                 label: "シャッフル",
                 subLabel: nil,
                 systemName: "shuffle",
                 isOn: isOn,
-                onTapAction: onTapAction
+                didTapped: didTapped
             )
         
         case let .readOut(isOn):
