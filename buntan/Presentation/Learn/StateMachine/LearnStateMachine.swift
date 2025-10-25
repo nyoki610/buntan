@@ -5,7 +5,7 @@
 //  Created by 二木裕也 on 2025/10/18.
 //
 
-import Foundation
+import SwiftUI
 
 class LearnStateMachine {
     typealias ResultType = LearnState.ResultType
@@ -22,6 +22,8 @@ class LearnStateMachine {
         case interruptLearning
         case shuffleCards
         case revertShuffle
+        case backToPrevious
+        case backToStart
     }
     
     private(set) var current: LearnState
@@ -67,11 +69,7 @@ class LearnStateMachine {
             
         case .finishReview:
             currentIndex += 1
-            guard let nextCard = currentCard, let nextOption = currentOption else {
-                try transition(to: .complete(cards, result))
-                return
-            }
-            try transition(to: .answering(nextCard, nextOption))
+            try transitionToAnswering()
             
         case .interruptLearning:
             let cards = Array(cards[0..<currentIndex])
@@ -84,6 +82,14 @@ class LearnStateMachine {
         case .revertShuffle:
             resetLearning()
             revertShuffle()
+        
+        case .backToPrevious:
+            backToPrevious()
+            try transitionToAnswering()
+            
+        case .backToStart:
+            backToStart()
+            try transitionToAnswering()
         }
         await onStateChanged?(current)
     }
@@ -93,6 +99,13 @@ class LearnStateMachine {
             throw Error.invalidTransitionTarget
         }
         current = newState
+    }
+    
+    private func transitionToAnswering() throws {
+        guard let nextCard = currentCard, let nextOption = currentOption else {
+            return
+        }
+        try transition(to: .answering(nextCard, nextOption))
     }
     
     private func saveResult(cardId: String, resultType: ResultType) {
@@ -122,6 +135,27 @@ class LearnStateMachine {
         options = options.sorted { $0.index < $1.index }
     }
     
+    private func backToPrevious() {
+        guard let currentCardId = currentCard?.id else { return }
+        withAnimation(.easeOut(duration: 0.4)) {
+            if result.correctCardsIds.contains(currentCardId) {
+                result.correctCardsIds.remove(currentCardId)
+            } else if result.incorrectCardsIds.contains(currentCardId) {
+                result.incorrectCardsIds.remove(currentCardId)
+            }
+        }
+        withAnimation(.easeOut(duration: 0.4)) {
+            currentIndex -= 1
+        }
+    }
+    
+    private func backToStart() {
+        while currentIndex > 0 {
+            backToPrevious()
+        }
+    }
+    
+    
     private enum Error: Swift.Error {
         case invalidTransitionTarget
         case currentCardNotExist
@@ -134,6 +168,7 @@ extension LearnStateMachine {
         private var cardsCount: Int { stateMachine.cards.count }
         private var correctCount: Int { stateMachine.result.correctCardsIds.count }
         private var incorrectCount: Int { stateMachine.result.incorrectCardsIds.count }
+        var isInitialState: Bool { cardsCount == 0 }
         var correctRatio: Double { Double(correctCount) / Double(cardsCount) }
         var incorrectRatio: Double { Double(incorrectCount) / Double(cardsCount) }
         var headerLabel: String { "\(correctCount + incorrectCount) / \(cardsCount)" }
