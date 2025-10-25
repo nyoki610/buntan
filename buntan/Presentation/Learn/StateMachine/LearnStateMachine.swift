@@ -20,12 +20,8 @@ class LearnStateMachine {
         case completeAnimation(ResultType)
         case finishReview
         case interruptLearning
-        case shuffleCards(ShuffleType)
-        
-        enum ShuffleType {
-            case shuffle
-            case revert
-        }
+        case shuffleCards
+        case revertShuffle
     }
     
     private(set) var current: LearnState
@@ -81,12 +77,13 @@ class LearnStateMachine {
             let cards = Array(cards[0..<currentIndex])
             try transition(to: .interrupted(cards, result))
             
-        case .shuffleCards(let shuffleType):
+        case .shuffleCards:
             resetLearning()
-            switch shuffleType {
-            case .shuffle: shuffleCards()
-            case .revert: revertShuffle()
-            }
+            shuffleCards()
+            
+        case .revertShuffle:
+            resetLearning()
+            revertShuffle()
         }
         await onStateChanged?(current)
     }
