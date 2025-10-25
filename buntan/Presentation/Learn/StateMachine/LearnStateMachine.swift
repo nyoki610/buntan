@@ -93,3 +93,19 @@ class LearnStateMachine {
         case currentCardNotExist
     }
 }
+
+extension LearnStateMachine {
+    struct UIOutput {
+        let stateMachine: LearnStateMachine
+        private var cardsCount: Int { stateMachine.cards.count }
+        private var correctCount: Int { stateMachine.result.correctCardsIds.count }
+        private var incorrectCount: Int { stateMachine.result.incorrectCardsIds.count }
+        var correctRatio: Double { Double(correctCount) / Double(cardsCount) }
+        var incorrectRatio: Double { Double(incorrectCount) / Double(cardsCount) }
+        var headerLabel: String { "\(correctCount + incorrectCount) / \(cardsCount)" }
+        
+        init(stateMachine: LearnStateMachine) {
+            self.stateMachine = stateMachine
+        }
+    }
+}
