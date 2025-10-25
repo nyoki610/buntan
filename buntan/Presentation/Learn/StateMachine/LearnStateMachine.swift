@@ -19,19 +19,25 @@ class LearnStateMachine {
         case submitAnswer(ResultType)
         case completeAnimation(ResultType)
         case finishReview
+        case shuffleCards(ShuffleType)
+        
+        enum ShuffleType {
+            case shuffle
+            case revert
+        }
     }
     
     private(set) var current: LearnState
     private(set) var currentIndex: Int = 0
     private(set) var result = LearnResult()
-    private let cards: [LearnCard]
+    private var cards: [LearnCard]
     private var currentCard: LearnCard? {
         guard cards.indices.contains(currentIndex) else {
             return nil
         }
         return cards[currentIndex]
     }
-    private let options: [FourChoiceOptions]
+    private var options: [FourChoiceOptions]
     private var currentOption: FourChoiceOptions? {
         guard options.indices.contains(currentIndex) else {
             return nil
@@ -69,6 +75,12 @@ class LearnStateMachine {
                 return
             }
             try transition(to: .answering(nextCard, nextOption))
+        case .shuffleCards(let shuffleType):
+            resetLearning()
+            switch shuffleType {
+            case .shuffle: shuffleCards()
+            case .revert: revertShuffle()
+            }
         }
         await onStateChanged?(current)
     }
@@ -88,6 +100,23 @@ class LearnStateMachine {
             }
         }()
         result[keyPath: keyPath].insert(cardId)
+    }
+    
+    private func resetLearning() {
+        currentIndex = 0
+        result.correctCardsIds.removeAll()
+        result.incorrectCardsIds.removeAll()
+    }
+    
+    private func shuffleCards() {
+        let shuffledArrays = CardsShuffler.getShuffledArrays(cards: cards, options: options)
+        cards = shuffledArrays.shuffledCards
+        options = shuffledArrays.shuffledOptions
+    }
+    
+    private func revertShuffle() {
+        cards = cards.sorted { $0.index < $1.index }
+        options = options.sorted { $0.index < $1.index }
     }
     
     private enum Error: Swift.Error {

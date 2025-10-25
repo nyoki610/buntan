@@ -8,6 +8,7 @@
 import Foundation
 
 struct FourChoiceOptions: Hashable {
+    let index: Int /// Store original card order to enable shuffle restoration functionality
     let options: [Option]
     let correctAnswerId: String
     
@@ -15,10 +16,12 @@ struct FourChoiceOptions: Hashable {
         correctAnswer: Option,
         wrongOption1: Option,
         wrongOption2: Option,
-        wrongOption3: Option
+        wrongOption3: Option,
+        index: Int
     ) {
         self.correctAnswerId = correctAnswer.id
         self.options = [correctAnswer, wrongOption1, wrongOption2, wrongOption3].shuffled()
+        self.index = index
     }
     
     func isCorrect(for optionId: String) -> Bool {
