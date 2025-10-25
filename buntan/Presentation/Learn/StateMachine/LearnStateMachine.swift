@@ -38,6 +38,7 @@ class LearnStateMachine {
         }
         return options[currentIndex]
     }
+    var onStateChanged: ((LearnState) async -> Void)?
     
     init(
         cards: [LearnCard],
@@ -49,7 +50,7 @@ class LearnStateMachine {
         current = initialState
     }
     
-    func dispatch(_ action: Action) throws {
+    func dispatch(_ action: Action) async throws {
         switch action {
         case let .submitAnswer(resultType):
             guard let currentCard = currentCard else {
@@ -69,6 +70,7 @@ class LearnStateMachine {
             }
             try transition(to: .answering(nextCard, nextOption))
         }
+        await onStateChanged?(current)
     }
     
     private func transition(to newState: LearnState) throws {
