@@ -11,7 +11,8 @@ enum LearnState: Hashable {
     case answering(LearnCard, FourChoiceOptions)
     case showingFeedbackAnimation(ResultType)
     case reviewing(ResultType)
-    case complete
+    case complete([LearnCard], LearnStateMachine.LearnResult)
+    case interrupted([LearnCard], LearnStateMachine.LearnResult)
 
     enum ResultType: Hashable {
         case correct
@@ -22,7 +23,7 @@ enum LearnState: Hashable {
         switch self {
         case .answering:
             switch nextState {
-            case .showingFeedbackAnimation:
+            case .showingFeedbackAnimation, .interrupted:
                 return true
             default:
                 return false
@@ -30,7 +31,7 @@ enum LearnState: Hashable {
             
         case let .showingFeedbackAnimation(resultType):
             switch nextState {
-            case .reviewing(resultType):
+            case .reviewing(resultType), .interrupted:
                 return true
             default:
                 return false
@@ -38,13 +39,21 @@ enum LearnState: Hashable {
             
         case .reviewing:
             switch nextState {
-            case .answering, .complete:
+            case .answering, .complete, .interrupted:
                 return true
             default:
                 return false
             }
             
         case .complete:
+            switch nextState {
+            case .interrupted:
+                return true
+            default:
+                return false
+            }
+        
+        case .interrupted:
             return false
         }
     }
