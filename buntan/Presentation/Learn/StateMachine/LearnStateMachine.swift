@@ -172,6 +172,15 @@ extension LearnStateMachine {
         var incorrectRatio: Double { Double(incorrectCount) / Double(cardsCount) }
         var headerLabel: String { "\(correctCount + incorrectCount) / \(cardsCount)" }
 
+        var isAnswering: Bool {
+            switch stateMachine.current {
+            case .answering:
+                return true
+            default:
+                return false
+            }
+        }
+
         init(stateMachine: LearnStateMachine) {
             self.stateMachine = stateMachine
         }
