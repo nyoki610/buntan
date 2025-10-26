@@ -94,7 +94,7 @@ class LearnStateMachine {
     
     private func transition(to newState: LearnState) throws {
         guard current.canTransition(to: newState) else {
-            throw Error.invalidTransitionTarget
+            throw Error.invalidTransitionTarget(from: current, to: newState)
         }
         current = newState
     }
@@ -156,7 +156,7 @@ class LearnStateMachine {
     
     private enum Error: Swift.Error {
         case invalidCurrentCardIndex
-        case invalidTransitionTarget
+        case invalidTransitionTarget(from: LearnState, to: LearnState)
         case currentCardNotExist
     }
 }
