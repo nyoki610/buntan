@@ -44,7 +44,7 @@ class BaseLearnViewViewModel: ObservableObject {
             self.readOutButtonDisabled = true
         }
         
-        avSpeaker.readOutText(text: topCard.word, withDelay: withDelay)
+        avSpeaker._readOutText(text: topCard.word, withDelay: withDelay)
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
             self.readOutButtonDisabled = false

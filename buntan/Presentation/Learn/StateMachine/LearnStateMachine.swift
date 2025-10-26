@@ -24,7 +24,6 @@ class LearnStateMachine {
         case revertShuffle
         case backToPrevious
         case backToStart
-        case readOutCurrentCard
     }
     
     private(set) var current: LearnState
@@ -44,8 +43,6 @@ class LearnStateMachine {
         }
         return options[currentIndex]
     }
-    private let avSpeaker = AVSpeaker()
-    private var isReadingOut: Bool = false
     var onStateChanged: ((LearnState) async -> Void)?
     
     init(
@@ -95,9 +92,6 @@ class LearnStateMachine {
             try transition(to: .idle)
             try backToStart()
             try transitionToAnswering()
-            
-        case .readOutCurrentCard:
-            readOutCurrentCard()
         }
         await onStateChanged?(current)
     }
@@ -154,14 +148,6 @@ class LearnStateMachine {
         result.incorrectCardsIds.remove(previousCardId)
         currentIndex = previousCardIndex
     }
-    
-    private func readOutCurrentCard() {
-        guard let currentCard = currentCard else { return }
-        isReadingOut = true
-        avSpeaker.readOutText(text: currentCard.word, withDelay: false)
-        isReadingOut = false
-    }
-    
     private func pass() {
         
     }
@@ -189,8 +175,7 @@ extension LearnStateMachine {
         var correctRatio: Double { Double(correctCount) / Double(cardsCount) }
         var incorrectRatio: Double { Double(incorrectCount) / Double(cardsCount) }
         var headerLabel: String { "\(correctCount + incorrectCount) / \(cardsCount)" }
-        var readOutButtonDisabled: Bool { stateMachine.isReadingOut }
-        
+
         init(stateMachine: LearnStateMachine) {
             self.stateMachine = stateMachine
         }
