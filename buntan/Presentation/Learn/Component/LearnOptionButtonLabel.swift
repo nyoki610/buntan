@@ -51,10 +51,11 @@ struct LearnOptionButtonLabel: View {
     }
     
     private func feedBackOverlay(isAnswerOption: Bool, isSelected: Bool) -> some View {
-        let backgroundColor = isAnswerOption ? Orange.semiClear : RoyalBlue.semiClear
-        let borderColor = isAnswerOption ? Orange.translucent : RoyalBlue.translucent
+        let backgroundColor = isAnswerOption ? Orange.semiClear : isSelected ? RoyalBlue.semiClear : .clear
+        let borderColor = isAnswerOption ? Orange.translucent : isSelected ? RoyalBlue.translucent : .clear
         return ZStack {
             backgroundColor
+                .cornerRadius(40)
             RoundedRectangle(cornerRadius: 40)
                 .stroke(borderColor, lineWidth: 4)
         }

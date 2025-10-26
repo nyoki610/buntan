@@ -83,6 +83,7 @@ private enum CardConstants {
 private extension View {
     func cardStyle() -> some View {
         self
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(.white)
             .frame(width: responsiveSize(280, 340), height: responsiveSize(100, 120))
             .cornerRadius(CardConstants.cornerRadius)
