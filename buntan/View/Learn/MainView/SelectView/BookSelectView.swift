@@ -43,7 +43,7 @@ struct BookSelectView: SelectViewProtocol, BookLearnViewProtocol {
                 learnHeader(geometry: geometry)
                 
                 learnSettingButtons(
-                    learnMode: .select,
+                    learnMode: .fourChoices,
                     showSetting: $viewModel.showSetting
                 )
                 

@@ -62,7 +62,7 @@ struct BookLearnSettingButtons: LearnSettingButtonsProtocol {
                 Spacer()
                 
                 switch learnMode {
-                case .swipe, .select:
+                case .swipe, .fourChoices:
                     toggleButton(
                         label: "例文を",
                         subLabel: "表示",
