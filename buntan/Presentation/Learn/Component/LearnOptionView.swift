@@ -17,7 +17,7 @@ struct LearnOptionView: View {
     let didTapOption: ((String) -> Void)
     
     var body: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 20) {
             ForEach(fourChoiceOptions.options) { option in
                 Button {
                     didTapOption(option.id)
