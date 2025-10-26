@@ -9,6 +9,7 @@ enum BookViewName {
     case wordList([Card])
     case swipe([Card], [[Option]])
     case select([Card], [[Option]])
+    case learnFourChoices([Card])
     case type([Card], [[Option]])
     case learnResult(CardsContainer, Int)
 }
@@ -43,6 +44,7 @@ extension BookViewName: ViewNameProtocol {
         case .wordList: return "wordList"
         case .swipe: return "swipe"
         case .select: return "select"
+        case .learnFourChoices: return "learnFourChoices"
         case .type: return "type"
         case .learnResult: return "learnResult"
         }
@@ -57,6 +59,7 @@ extension BookViewName: ViewNameProtocol {
         case .wordList: return "WordListView"
         case .swipe: return "SwipeView"
         case .select: return "SelectView"
+        case .learnFourChoices: return "LearnFourChoicesView"
         case .type: return "TypeView"
         case .learnResult: return "_LearnResultView"
         }
@@ -127,6 +130,16 @@ extension BookViewName: ViewNameProtocol {
                     cards: cards,
                     options: options)
             )
+            
+        case .learnFourChoices(let cards):
+            guard let viewModel = try? LearnFourChoicesViewViewModelFactory.create(
+                cards: cards,
+                argument: .init(
+                    navigator: navigator,
+                    userInput: userInput
+                )
+            ) else { return AnyView(EmptyView()) }
+            return AnyView(LearnFourChoicesView(viewModel: viewModel))
         
         case .type(let cards, let options):
             return AnyView(
