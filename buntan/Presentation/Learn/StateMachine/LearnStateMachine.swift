@@ -144,10 +144,7 @@ class LearnStateMachine {
         result.incorrectCardsIds.remove(previousCardId)
         currentIndex = previousCardIndex
     }
-    private func pass() {
-        
-    }
-    
+
     private func backToStart() throws {
         while currentIndex > 0 {
             try backToPrevious()
