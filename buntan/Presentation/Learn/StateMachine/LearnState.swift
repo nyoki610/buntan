@@ -12,8 +12,13 @@ enum LearnState: Hashable {
     case answering(LearnCard, FourChoiceOptions)
     case showingFeedbackAnimation(ResultType)
     case reviewing(ResultType)
-    case complete([LearnCard], LearnStateMachine.LearnResult)
-    case interrupted([LearnCard], LearnStateMachine.LearnResult)
+    case complete([LearnCard], LearnResult)
+    case interrupted([LearnCard], LearnResult)
+    
+    struct LearnResult: Hashable {
+        var correctCardsIds: Set<String> = []
+        var incorrectCardsIds: Set<String> = []
+    }
 
     enum ResultType: Hashable {
         case correct
