@@ -18,7 +18,7 @@ enum LearnRange: Int, CaseIterable {
 }
 
 enum LearnMode: String, CaseIterable, Identifiable {
-    case swipe, select, type
+    case swipe, fourChoices, type
     
     var id: String {
         UUID().uuidString
@@ -32,7 +32,7 @@ extension LearnMode {
         
         switch self {
         case .swipe: return .swipe(cards, options)
-        case .select: return .select(cards, options)
+        case .fourChoices: return .learnFourChoices(cards)
         case .type: return .type(cards, options)
         }
     }

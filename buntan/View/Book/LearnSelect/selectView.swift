@@ -34,7 +34,7 @@ extension _LearnSelectView {
                          labelBottom: "4択",
                          systemName: "list.bullet",
                          targetRange: nil,
-                         targetMode: .select)
+                         targetMode: .fourChoices)
             
             Spacer()
             
