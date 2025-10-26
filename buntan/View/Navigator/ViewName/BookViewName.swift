@@ -24,6 +24,7 @@ extension BookViewName: Equatable {
              (.wordList, .wordList),
              (.swipe, .swipe),
              (.select, .select),
+             (.learnFourChoices, .learnFourChoices),
              (.type, .type),
              (.learnResult, .learnResult):
             return true
