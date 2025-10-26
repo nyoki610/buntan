@@ -22,7 +22,7 @@ protocol ViewModel {
     var binding: BindingState { get }
     var error: Error? { get }
 
-    func send(_ action: Action)
+    func send(_ action: Action) async
 }
 
 extension ViewModel where Argument == Void {
