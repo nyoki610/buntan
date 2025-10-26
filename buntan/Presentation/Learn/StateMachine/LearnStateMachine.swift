@@ -87,11 +87,13 @@ class LearnStateMachine {
             revertShuffle()
         
         case .backToPrevious:
-            backToPrevious()
+            try transition(to: .idle)
+            try backToPrevious()
             try transitionToAnswering()
             
         case .backToStart:
-            backToStart()
+            try transition(to: .idle)
+            try backToStart()
             try transitionToAnswering()
             
         case .readOutCurrentCard:
@@ -141,18 +143,16 @@ class LearnStateMachine {
         options = options.sorted { $0.index < $1.index }
     }
     
-    private func backToPrevious() {
-        guard let currentCardId = currentCard?.id else { return }
-        withAnimation(.easeOut(duration: 0.4)) {
-            if result.correctCardsIds.contains(currentCardId) {
-                result.correctCardsIds.remove(currentCardId)
-            } else if result.incorrectCardsIds.contains(currentCardId) {
-                result.incorrectCardsIds.remove(currentCardId)
-            }
+    private func backToPrevious() throws {
+        guard currentIndex > 0 else { return }
+        let previousCardIndex = currentIndex - 1
+        guard cards.indices.contains(previousCardIndex) else {
+            throw Error.invalidCurrentCardIndex
         }
-        withAnimation(.easeOut(duration: 0.4)) {
-            currentIndex -= 1
-        }
+        let previousCardId = cards[previousCardIndex].id
+        result.correctCardsIds.remove(previousCardId)
+        result.incorrectCardsIds.remove(previousCardId)
+        currentIndex = previousCardIndex
     }
     
     private func readOutCurrentCard() {
@@ -166,14 +166,14 @@ class LearnStateMachine {
         
     }
     
-    private func backToStart() {
+    private func backToStart() throws {
         while currentIndex > 0 {
-            backToPrevious()
+            try backToPrevious()
         }
     }
     
-    
     private enum Error: Swift.Error {
+        case invalidCurrentCardIndex
         case invalidTransitionTarget
         case currentCardNotExist
     }
