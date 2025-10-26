@@ -22,7 +22,7 @@ struct BookSelectView: SelectViewProtocol, BookLearnViewProtocol {
         self.navigator = navigator
         self._userInput = ObservedObject(wrappedValue: bookUserInput)
 
-        let handler = LearnUserDefaultHandler()
+        let handler = LearnUserDefaultHandler.shared
         self._userDefaultHandler = StateObject(wrappedValue: handler)
 
         self._viewModel = StateObject(

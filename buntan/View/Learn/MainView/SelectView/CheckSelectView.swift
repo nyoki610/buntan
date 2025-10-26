@@ -24,7 +24,7 @@ struct CheckSelectView: SelectViewProtocol, CheckLearnViewProtocol {
         self.navigator = navigator
         self._userInput = ObservedObject(wrappedValue: checkUserInput)
 
-        let handler = LearnUserDefaultHandler()
+        let handler = LearnUserDefaultHandler.shared
         self._userDefaultHandler = StateObject(wrappedValue: handler)
 
         self._viewModel = StateObject(

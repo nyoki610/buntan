@@ -10,6 +10,8 @@ class LearnUserDefaultHandler: ObservableObject {
         case showInitial
     }
     
+    static let shared: LearnUserDefaultHandler = .init()
+    
     @Published var shouldShuffle: Bool {
         didSet {
             UserDefaults.standard.set(shouldShuffle, forKey: Key.shouldShuffle.rawValue)
@@ -31,7 +33,7 @@ class LearnUserDefaultHandler: ObservableObject {
         }
     }
     
-    init() {
+    private init() {
 
         func getBool(forKey key: Key) -> Bool? {
             UserDefaults.standard.object(forKey: key.rawValue) as? Bool
