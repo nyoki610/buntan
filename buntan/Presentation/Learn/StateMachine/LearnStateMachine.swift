@@ -9,11 +9,7 @@ import SwiftUI
 
 class LearnStateMachine {
     typealias ResultType = LearnState.ResultType
-    
-    struct LearnResult: Hashable {
-        var correctCardsIds: Set<String> = []
-        var incorrectCardsIds: Set<String> = []
-    }
+    typealias LearnResult = LearnState.LearnResult
     
     enum Action {
         case submitAnswer(ResultType)
