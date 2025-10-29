@@ -51,12 +51,12 @@ struct LearnFourChoicesView: View {
                 Spacer()
                 
                 if viewModel.userDefaultHandler.showSentence {
-                    FlickWordCardView(
+                    FlickSentenceCardView(
                         card: viewModel.state.currentCard,
                         config: .fourChoices
                     )
                 } else {
-                    FlickSentenceCardView(
+                    FlickWordCardView(
                         card: viewModel.state.currentCard,
                         config: .fourChoices
                     )

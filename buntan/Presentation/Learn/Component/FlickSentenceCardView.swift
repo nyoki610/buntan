@@ -89,6 +89,7 @@ struct FlickSentenceCardView: View {
                 .fontWeight(.medium)
             }
         }
+        .padding(.horizontal, 8)
     }
     
     private func backSide(card: LearnCard, isSentenceExist: Bool) -> some View {
@@ -128,7 +129,7 @@ private extension View {
     func cardStyle(height: CGFloat) -> some View {
         self
             .padding(4)
-            .frame(maxWidth: .init(), maxHeight: .infinity)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(.white)
             .frame(
                 width: responsiveSize(300, 500),
