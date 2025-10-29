@@ -104,10 +104,7 @@ final class LearnFourChoicesViewViewModel: ViewModel {
     
     private func syncState(with current: LearnState) async {
         do {
-            switch current {
-            case .idle:
-                break
-                
+            switch current {                
             case .answering(let card, let option):
                 state.currentCard = card
                 state.currentOption = option
