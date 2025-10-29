@@ -80,12 +80,10 @@ class LearnStateMachine {
             revertShuffle()
         
         case .backToPrevious:
-            try transition(to: .idle)
             try backToPrevious()
             try transitionToAnswering()
             
         case .backToStart:
-            try transition(to: .idle)
             try backToStart()
             try transitionToAnswering()
         }
