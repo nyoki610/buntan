@@ -74,10 +74,12 @@ class LearnStateMachine {
         case .shuffleCards:
             resetLearning()
             shuffleCards()
+            try transitionToAnswering()
             
         case .revertShuffle:
             resetLearning()
             revertShuffle()
+            try transitionToAnswering()
         
         case .backToPrevious:
             try backToPrevious()

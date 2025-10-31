@@ -83,7 +83,11 @@ final class LearnFourChoicesViewViewModel: ViewModel {
                 try await stateMachine.dispatch(.interruptLearning)
                 
             case .didShuffleButtonTapped:
-                confirmShuffle()
+                guard stateMachine.currentIndex == 0 else {
+                    confirmShuffle()
+                    return
+                }
+                await shuffleCards()
                 
             case .didBackButtonTapped:
                 try await stateMachine.dispatch(.backToPrevious)
