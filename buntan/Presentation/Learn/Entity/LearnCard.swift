@@ -18,7 +18,7 @@ struct LearnCard: Hashable {
     let translation: String
     let startPosition: Int
     let endPosition: Int
-    
+
     init(from card: Card, index: Int) {
         id = card.id
         word = card.word

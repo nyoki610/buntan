@@ -10,7 +10,7 @@ import SwiftUI
 class LearnStateMachine {
     typealias ResultType = LearnState.ResultType
     typealias LearnResult = LearnState.LearnResult
-    
+
     enum Action {
         case submitAnswer(ResultType)
         case completeAnimation(ResultType)
@@ -21,7 +21,7 @@ class LearnStateMachine {
         case backToPrevious
         case backToStart
     }
-    
+
     private(set) var current: LearnState
     private(set) var currentIndex: Int = 0
     private var result = LearnResult()
@@ -40,7 +40,7 @@ class LearnStateMachine {
         return options[currentIndex]
     }
     var onStateChanged: ((LearnState) async -> Void)?
-    
+
     init(
         cards: [LearnCard],
         options: [FourChoiceOptions],
@@ -50,7 +50,7 @@ class LearnStateMachine {
         self.options = options
         current = initialState
     }
-    
+
     func dispatch(_ action: Action) async throws {
         switch action {
         case let .submitAnswer(resultType):
@@ -59,10 +59,10 @@ class LearnStateMachine {
             }
             saveResult(cardId: currentCard.id, resultType: resultType)
             try transition(to: .showingFeedbackAnimation(resultType))
-            
+
         case let .completeAnimation(result):
             try transition(to: .reviewing(result))
-            
+
         case .finishReview:
             if currentIndex + 1 < cards.count {
                 currentIndex += 1
@@ -70,46 +70,46 @@ class LearnStateMachine {
             } else {
                 try transition(to: .complete(cards, result))
             }
-            
+
         case .interruptLearning:
             let cards = Array(cards[0..<currentIndex])
             try transition(to: .interrupted(cards, result))
-            
+
         case .shuffleCards:
             resetLearning()
             shuffleCards()
             try transitionToAnswering()
-            
+
         case .revertShuffle:
             resetLearning()
             revertShuffle()
             try transitionToAnswering()
-        
+
         case .backToPrevious:
             try backToPrevious()
             try transitionToAnswering()
-            
+
         case .backToStart:
             try backToStart()
             try transitionToAnswering()
         }
         await onStateChanged?(current)
     }
-    
+
     private func transition(to newState: LearnState) throws {
         guard current.canTransition(to: newState) else {
             throw Error.invalidTransitionTarget(from: current, to: newState)
         }
         current = newState
     }
-    
+
     private func transitionToAnswering() throws {
         guard let nextCard = currentCard, let nextOption = currentOption else {
             return
         }
         try transition(to: .answering(nextCard, nextOption))
     }
-    
+
     private func saveResult(cardId: String, resultType: ResultType) {
         let keyPath: WritableKeyPath<LearnResult, Set<String>> = {
             switch resultType {
@@ -119,24 +119,24 @@ class LearnStateMachine {
         }()
         result[keyPath: keyPath].insert(cardId)
     }
-    
+
     private func resetLearning() {
         currentIndex = 0
         result.correctCardsIds.removeAll()
         result.incorrectCardsIds.removeAll()
     }
-    
+
     private func shuffleCards() {
         let shuffledArrays = CardsShuffler.getShuffledArrays(cards: cards, options: options)
         cards = shuffledArrays.shuffledCards
         options = shuffledArrays.shuffledOptions
     }
-    
+
     private func revertShuffle() {
         cards = cards.sorted { $0.index < $1.index }
         options = options.sorted { $0.index < $1.index }
     }
-    
+
     private func backToPrevious() throws {
         guard currentIndex > 0 else { return }
         let previousCardIndex = currentIndex - 1
@@ -154,7 +154,7 @@ class LearnStateMachine {
             try backToPrevious()
         }
     }
-    
+
     private enum Error: Swift.Error {
         case invalidCurrentCardIndex
         case invalidTransitionTarget(from: LearnState, to: LearnState)

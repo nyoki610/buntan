@@ -13,11 +13,11 @@ struct LearnHeader: View {
     let incorrectRatio: Double
     let width: CGFloat
     let xmarkButtonAction: () -> Void
-    
+
     enum Const {
         static let progressRectangleHeight: CGFloat = 8.0
     }
-    
+
     var body: some View {
         HStack(spacing: 0) {
             Button {
@@ -28,16 +28,16 @@ struct LearnHeader: View {
                     .foregroundColor(.black)
                     .fontWeight(.bold)
             }
-            
+
             Spacer()
-            
+
             Text(headerLabel)
                 .fontSize(responsiveSize(20, 28))
                 .foregroundColor(.black.opacity(0.8))
                 .bold()
-            
+
             Spacer()
-            
+
         }
         .padding(.vertical, responsiveSize(20, 40))
         .padding(.horizontal, 30)
@@ -47,13 +47,13 @@ struct LearnHeader: View {
             alignment: .bottom
         )
     }
-    
+
     private func learnProgressView() -> some View {
         ZStack {
             Rectangle()
                 .frame(height: 2.0)
                 .foregroundColor(CustomColor.headerGray)
-            
+
             HStack(spacing: 0) {
                 Rectangle()
                     .frame(
@@ -64,7 +64,7 @@ struct LearnHeader: View {
                     .foregroundColor(RoyalBlue.defaultRoyal)
 
                 Spacer()
-                
+
                 Rectangle()
                     .frame(
                         width: width * incorrectRatio,

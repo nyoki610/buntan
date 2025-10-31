@@ -45,7 +45,7 @@ struct FlickSentenceCardView: View {
             .onTapGesture {
                 onTapGesture()
             }
-            
+
         case .fourChoices:
             VStack(spacing: 0) {
                 frontSide(
@@ -56,7 +56,7 @@ struct FlickSentenceCardView: View {
             .cardStyle(height: responsiveSize(100, 180))
         }
     }
-    
+
     private func frontSide(card: LearnCard, isSentenceExist: Bool) -> some View {
         let fontSize = {
             let iPhoneFontSize: CGFloat = {
@@ -91,7 +91,7 @@ struct FlickSentenceCardView: View {
         }
         .padding(.horizontal, 8)
     }
-    
+
     private func backSide(card: LearnCard, isSentenceExist: Bool) -> some View {
         VStack(spacing: 12) {
             if isSentenceExist {

@@ -10,7 +10,7 @@ import SwiftUI
 struct LearnSettingButtons: View {
     let buttonTypes: [LearnSettingButtonType]
     @Binding var showSetting: Bool
-    
+
     var body: some View {
         if showSetting {
             HStack(spacing: 0) {
@@ -41,7 +41,7 @@ struct LearnSettingButtons: View {
             .padding(.horizontal, responsiveSize(20, 40))
         }
     }
-    
+
     private func settingButton(for type: LearnSettingButtonType) -> some View {
         HStack(spacing: 12) {
             VStack(spacing: 0) {
@@ -59,7 +59,7 @@ struct LearnSettingButtons: View {
             .foregroundStyle(.black)
             .fontWeight(.bold)
             .padding(.trailing, 4)
-            
+
             CustomToggle(
                 isOn: type.config.isOn,
                 color: Orange.egg,

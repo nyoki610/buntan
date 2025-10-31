@@ -10,7 +10,7 @@ import SwiftUI
 struct LearnBottomButtons: View {
     let leftButtonTypes: [LearnBottomButtonType]
     let rightButtonTypes: [LearnBottomButtonType]
-    
+
     var body: some View {
         HStack(spacing: 0) {
             HStack(spacing: 28) {
@@ -27,7 +27,7 @@ struct LearnBottomButtons: View {
         }
         .padding(.horizontal, responsiveSize(50, 140))
     }
-    
+
     private func bottomButton(for config: LearnBottomButtonConfig) -> some View {
         Button {
             config.didTapped()

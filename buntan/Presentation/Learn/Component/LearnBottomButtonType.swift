@@ -26,7 +26,7 @@ struct LearnBottomButtonConfig {
     let color: Color
     let isDisabled: Bool
     let didTapped: (() -> Void)
-    
+
     init(
         label: String,
         subLabel: String?,
@@ -54,7 +54,7 @@ extension LearnBottomButtonType {
                 systemName: "arrowshape.turn.up.left",
                 didTapped: didTapped
             )
-            
+
         case let .backToStart(didTapped):
             return .init(
                 label: "最初に",
@@ -62,7 +62,7 @@ extension LearnBottomButtonType {
                 systemName: "arrowshape.turn.up.backward.2",
                 didTapped: didTapped
             )
-            
+
         case let .readOut(isDisabled, didTapped):
             return .init(
                 label: "音声を",
@@ -72,7 +72,7 @@ extension LearnBottomButtonType {
                 isDisabled: isDisabled,
                 didTapped: didTapped
             )
-            
+
         case let .pass(didTapped):
             return .init(
                 label: "パス",
@@ -80,7 +80,7 @@ extension LearnBottomButtonType {
                 systemName: "arrowshape.turn.up.right",
                 didTapped: didTapped
             )
-            
+
         case let .next(didTapped):
             return .init(
                 label: "次へ",
