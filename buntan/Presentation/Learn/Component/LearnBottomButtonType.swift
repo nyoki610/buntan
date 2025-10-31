@@ -8,10 +8,10 @@
 import SwiftUI
 
 enum LearnBottomButtonType {
-    case back(didTapped: () -> Void)
-    case backToStart(didTapped: () -> Void)
+    case back(isDisabled: Bool, didTapped: () -> Void)
+    case backToStart(isDisabled: Bool, didTapped: () -> Void)
     case readOut(isDisabled: Bool, didTapped: () -> Void)
-    case pass(didTapped: () -> Void)
+    case pass(isDisabled: Bool, didTapped: () -> Void)
     case next(didTapped: () -> Void)
 }
 
@@ -47,19 +47,23 @@ struct LearnBottomButtonConfig {
 extension LearnBottomButtonType {
     var config: LearnBottomButtonConfig {
         switch self {
-        case let .back(didTapped):
+        case let .back(isDisabled, didTapped):
             return .init(
                 label: "ひとつ",
                 subLabel: "戻る",
                 systemName: "arrowshape.turn.up.left",
+                color: isDisabled ? .gray : .black,
+                isDisabled: isDisabled,
                 didTapped: didTapped
             )
 
-        case let .backToStart(didTapped):
+        case let .backToStart(isDisabled, didTapped):
             return .init(
                 label: "最初に",
                 subLabel: "戻る",
                 systemName: "arrowshape.turn.up.backward.2",
+                color: isDisabled ? .gray : .black,
+                isDisabled: isDisabled,
                 didTapped: didTapped
             )
 
@@ -73,11 +77,12 @@ extension LearnBottomButtonType {
                 didTapped: didTapped
             )
 
-        case let .pass(didTapped):
+        case let .pass(isDisabled, didTapped):
             return .init(
                 label: "パス",
                 subLabel: nil,
                 systemName: "arrowshape.turn.up.right",
+                color: isDisabled ? .gray : .black,
                 didTapped: didTapped
             )
 
