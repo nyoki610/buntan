@@ -57,7 +57,7 @@ struct LearnHeader: View {
             HStack(spacing: 0) {
                 Rectangle()
                     .frame(
-                        width: width * correctRatio,
+                        width: width * incorrectRatio,
                         height: Const.progressRectangleHeight
                     )
                     .cornerRadius(3)
@@ -67,7 +67,7 @@ struct LearnHeader: View {
 
                 Rectangle()
                     .frame(
-                        width: width * incorrectRatio,
+                        width: width * correctRatio,
                         height: Const.progressRectangleHeight
                     )
                     .cornerRadius(3)
