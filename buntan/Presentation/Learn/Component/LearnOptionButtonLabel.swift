@@ -29,7 +29,7 @@ struct LearnOptionButtonLabel: View {
                         .font(.system(size: responsiveSize(30, 40)))
                         .foregroundStyle(isAnswerOption ? Orange.defaultOrange : RoyalBlue.defaultRoyal)
                         .fontWeight(.bold)
-                        .padding(.leading, responsiveSize(6, 12))
+                        .padding(.leading, responsiveSize(18, 24))
                     Spacer()
                 }
             }
