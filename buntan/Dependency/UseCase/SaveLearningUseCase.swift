@@ -80,13 +80,13 @@ struct SaveLearningUseCase: SaveLearningUseCaseProtocol {
     ) throws {
         let cards: [Card] = try dependency.realmRepository.fetchAll()
         let cardIdToIndex = Dictionary(
-            uniqueKeysWithValues: cards.map { ($0.id, $0.index) }
+            uniqueKeysWithValues: cards.map { ($0.id, $0) }
         )
         let savedCards: [Card] = try learnCards.map { learnCard in
-            guard let index = cardIdToIndex[learnCard.id], index < cards.count else {
+            guard let card = cardIdToIndex[learnCard.id] else {
                 throw Error.failedToConvertLearnCardToCard
             }
-            return cards[index]
+            return card
         }
         var completedIndices = Set<Int>()
         var learningIndices = Set<Int>()
