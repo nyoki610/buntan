@@ -38,6 +38,7 @@ final class LearnFourChoicesViewViewModel: ViewModel {
     }
     
     enum Action {
+        case task
         case toggleShowSetting
         case selectOption(optionId: String)
         case didXmarkButtonTapped
@@ -73,6 +74,12 @@ final class LearnFourChoicesViewViewModel: ViewModel {
     func send(_ action: Action) async{
         do {
             switch action {
+            case .task:
+                try? await Task.sleep(nanoseconds: 0_200_000_000)
+                if userDefaultHandler.shouldReadOut {
+                    await readOutCurrentCard()
+                }
+
             case .toggleShowSetting:
                 state.showSetting.toggle()
                 
@@ -113,6 +120,9 @@ final class LearnFourChoicesViewViewModel: ViewModel {
                 state.currentCard = card
                 state.currentOption = option
                 state.optionStatus = .answering
+                if userDefaultHandler.shouldReadOut {
+                    await readOutCurrentCard()
+                }
                 
             case .showingFeedbackAnimation(let result):
                 await showFeedBackAnimation(for: result)
