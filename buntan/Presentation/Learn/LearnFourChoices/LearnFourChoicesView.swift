@@ -81,6 +81,7 @@ struct LearnFourChoicesView: View {
             }
             .background(CustomColor.background)
             .navigationBarBackButtonHidden(true)
+            .task { Task { await viewModel.send(.task) } }
         }
     }
     
