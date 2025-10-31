@@ -24,7 +24,7 @@ struct LearnSettingButtonConfig {
     let systemName: String
     let isOn: Binding<Bool>
     let didTapped: (() -> Void)?
-    
+
     init(
         label: String,
         subLabel: String?,
@@ -51,7 +51,7 @@ extension LearnSettingButtonType {
                 isOn: isOn,
                 didTapped: didTapped
             )
-        
+
         case let .readOut(isOn):
             return .init(
                 label: "音声を",
@@ -59,7 +59,7 @@ extension LearnSettingButtonType {
                 systemName: "speaker.wave.2.fill",
                 isOn: isOn
             )
-            
+
         case let .showSentence(isOn):
             return .init(
                 label: "例文を",
@@ -67,7 +67,7 @@ extension LearnSettingButtonType {
                 systemName: "textformat.abc",
                 isOn: isOn
             )
-            
+
         case let .showInitial(isOn):
             return .init(
                 label: "イニシャルを",

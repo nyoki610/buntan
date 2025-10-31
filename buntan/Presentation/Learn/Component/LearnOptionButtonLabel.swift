@@ -14,7 +14,7 @@ struct LearnOptionButtonLabel: View {
     }
     let option: Option
     let status: Status
-    
+
     var body: some View {
         ZStack {
             Text(option.meaning)
@@ -22,7 +22,7 @@ struct LearnOptionButtonLabel: View {
                 .font(.system(size: responsiveSize(20, 28)))
                 .lineLimit(1)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-            
+
             if case .showingFeedBack(let isAnswerOption, let isSelected) = status, isSelected {
                 HStack(spacing: 0) {
                     Image(systemName: isAnswerOption ? "circle" : "xmark")
@@ -40,7 +40,7 @@ struct LearnOptionButtonLabel: View {
         .shadow(radius: 2)
         .overlay(overlayContent())
     }
-    
+
     @ViewBuilder
     private func overlayContent() -> some View {
         if case let .showingFeedBack(isAnswerOption, isSelected) = status {
@@ -49,7 +49,7 @@ struct LearnOptionButtonLabel: View {
             EmptyView()
         }
     }
-    
+
     private func feedBackOverlay(isAnswerOption: Bool, isSelected: Bool) -> some View {
         let backgroundColor = isAnswerOption ? Orange.semiClear : isSelected ? RoyalBlue.semiClear : .clear
         let borderColor = isAnswerOption ? Orange.translucent : isSelected ? RoyalBlue.translucent : .clear

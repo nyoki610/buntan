@@ -13,7 +13,7 @@ enum LearnState: Hashable {
     case reviewing(ResultType)
     case complete([LearnCard], LearnResult)
     case interrupted([LearnCard], LearnResult)
-    
+
     struct LearnResult: Hashable {
         var correctCardsIds: Set<String> = []
         var incorrectCardsIds: Set<String> = []
@@ -23,7 +23,7 @@ enum LearnState: Hashable {
         case correct
         case incorrect
     }
-    
+
     func canTransition(to nextState: LearnState) -> Bool {
         switch self {
         case .answering:
@@ -33,7 +33,7 @@ enum LearnState: Hashable {
             default:
                 return false
             }
-            
+
         case let .showingFeedbackAnimation(resultType):
             switch nextState {
             case .reviewing(resultType), .interrupted:
@@ -41,7 +41,7 @@ enum LearnState: Hashable {
             default:
                 return false
             }
-            
+
         case .reviewing:
             switch nextState {
             case .answering, .complete, .interrupted:
@@ -49,7 +49,7 @@ enum LearnState: Hashable {
             default:
                 return false
             }
-            
+
         case .complete:
             return false
 

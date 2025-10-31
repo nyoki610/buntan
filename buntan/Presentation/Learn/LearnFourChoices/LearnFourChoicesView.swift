@@ -9,13 +9,13 @@ import SwiftUI
 
 struct LearnFourChoicesView: View {
     typealias ViewModel = LearnFourChoicesViewViewModel
-    
+
     @State private var viewModel: ViewModel
-    
+
     init(viewModel: ViewModel) {
         self.viewModel = viewModel
     }
-    
+
     var body: some View {
         GeometryReader { geometry in
             VStack(spacing: 0) {
@@ -30,7 +30,7 @@ struct LearnFourChoicesView: View {
                 )
 
                 Spacer().frame(height: 16)
-                
+
                 LearnSettingButtons(
                     buttonTypes: [
                         .shuffle(
@@ -47,9 +47,9 @@ struct LearnFourChoicesView: View {
                         set: { _ in Task { await viewModel.send(.toggleShowSetting) }}
                     )
                 )
-                
+
                 Spacer()
-                
+
                 if viewModel.userDefaultHandler.showSentence {
                     FlickSentenceCardView(
                         card: viewModel.state.currentCard,
@@ -61,9 +61,9 @@ struct LearnFourChoicesView: View {
                         config: .fourChoices
                     )
                 }
-                
+
                 Spacer()
-                
+
                 LearnOptionView(
                     status: viewModel.state.optionStatus,
                     fourChoiceOptions: viewModel.state.currentOption,
@@ -71,9 +71,9 @@ struct LearnFourChoicesView: View {
                         Task { await viewModel.send(.selectOption(optionId: selectedOptionId)) }
                     }
                 )
-                
+
                 Spacer()
-                
+
                 LearnBottomButtons(
                     leftButtonTypes: leftBottomButtonType,
                     rightButtonTypes: rightBottomButtonType
@@ -84,7 +84,7 @@ struct LearnFourChoicesView: View {
             .task { Task { await viewModel.send(.task) } }
         }
     }
-    
+
     private var leftBottomButtonType: [LearnBottomButtonType] {
         guard !viewModel.uiOutput.isInitialState else {
             return []
@@ -102,7 +102,7 @@ struct LearnFourChoicesView: View {
             )
         ]
     }
-    
+
     private var rightBottomButtonType: [LearnBottomButtonType] {
         [
             .readOut(

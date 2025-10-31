@@ -15,7 +15,7 @@ struct LearnOptionView: View {
     let status: Status
     let fourChoiceOptions: FourChoiceOptions
     let didTapOption: ((String) -> Void)
-    
+
     var body: some View {
         VStack(spacing: 20) {
             ForEach(fourChoiceOptions.options) { option in
@@ -31,7 +31,7 @@ struct LearnOptionView: View {
             }
         }
     }
-    
+
     private func optionStatus(for option: Option) -> LearnOptionButtonLabel.Status {
         switch status {
         case .answering:

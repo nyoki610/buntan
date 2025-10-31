@@ -34,13 +34,13 @@ struct FlickWordCardView: View {
             .onTapGesture {
                 onTapGesture()
             }
-            
+
         case .fourChoices:
             frontSide(card: card, showPhrase: true)
                 .cardStyle()
         }
     }
-    
+
     private func frontSide(card: LearnCard, showPhrase: Bool) -> some View {
         VStack(spacing: 4) {
             Text(card.word)
@@ -56,7 +56,7 @@ struct FlickWordCardView: View {
             }
         }
     }
-    
+
     private func backSide(card: LearnCard) -> some View {
         VStack(spacing: 8) {
             Text("【\(card.pos.jaLabel)】 \(card.meaning)")
