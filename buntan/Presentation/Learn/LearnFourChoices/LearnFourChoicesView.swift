@@ -91,11 +91,13 @@ struct LearnFourChoicesView: View {
         }
         return [
             .back(
+                isDisabled: !viewModel.uiOutput.isAnswering,
                 didTapped: {
                     Task { await viewModel.send(.didBackButtonTapped) }
                 }
             ),
             .backToStart(
+                isDisabled: !viewModel.uiOutput.isAnswering,
                 didTapped: {
                     Task { await viewModel.send(.didBackToStartButtonTapped) }
                 }
@@ -112,6 +114,7 @@ struct LearnFourChoicesView: View {
                 }
             ),
             .pass(
+                isDisabled: !viewModel.uiOutput.isAnswering,
                 didTapped: {
                     Task { await viewModel.send(.didPassButtonTapped) }
                 }
