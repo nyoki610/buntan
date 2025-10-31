@@ -51,13 +51,8 @@ enum LearnState: Hashable {
             }
             
         case .complete:
-            switch nextState {
-            case .interrupted:
-                return true
-            default:
-                return false
-            }
-        
+            return false
+
         case .interrupted:
             return false
         }

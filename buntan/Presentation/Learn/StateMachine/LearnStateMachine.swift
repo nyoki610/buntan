@@ -64,8 +64,12 @@ class LearnStateMachine {
             try transition(to: .reviewing(result))
             
         case .finishReview:
-            currentIndex += 1
-            try transitionToAnswering()
+            if currentIndex + 1 < cards.count {
+                currentIndex += 1
+                try transitionToAnswering()
+            } else {
+                try transition(to: .complete(cards, result))
+            }
             
         case .interruptLearning:
             let cards = Array(cards[0..<currentIndex])
