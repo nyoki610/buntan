@@ -62,8 +62,9 @@ struct LearnHeader: View {
                     )
                     .cornerRadius(3)
                     .foregroundColor(RoyalBlue.defaultRoyal)
+                    .animation(.easeOut, value: incorrectRatio)
 
-                Spacer()
+                Spacer(minLength: 0)
 
                 Rectangle()
                     .frame(
@@ -72,6 +73,7 @@ struct LearnHeader: View {
                     )
                     .cornerRadius(3)
                     .foregroundColor(Orange.defaultOrange)
+                    .animation(.easeOut, value: correctRatio)
             }
         }
     }
