@@ -5,3 +5,5 @@
 GoogleService-Info.plist
 
 Env.xcconfig
+
+.env
