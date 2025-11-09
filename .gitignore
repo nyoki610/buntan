@@ -5,3 +5,15 @@
 GoogleService-Info.plist
 
 Env.xcconfig
+
+.env
+
+# fastlane
+fastlane/6322FU89DN.json
+fastlane/AuthKey_6322FU89DN.p8
+fastlane/Preview.html
+fastlane/README.md
+fastlane/buntan.ipa
+fastlane/report.xml
+buntan.app.dSYM.zip
+buntan.ipa
