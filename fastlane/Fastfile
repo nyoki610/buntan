@@ -28,7 +28,7 @@ platform :ios do
 
   lane :prepare_release do |options|
     # https://docs.fastlane.tools/actions/increment_version_number/
-    version = increment_version_number(
+    version = increment_version_number_in_xcodeproj(
       bump_type: options[:bump_type]
     )
     release_branch = "release/v#{version}"
