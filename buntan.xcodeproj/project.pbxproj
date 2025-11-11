@@ -79,11 +79,15 @@
 		};
 		B3C803932D04CA3600BFC383 /* buntanTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = buntanTests;
 			sourceTree = "<group>";
 		};
 		B3C8039D2D04CA3600BFC383 /* buntanUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = buntanUITests;
 			sourceTree = "<group>";
 		};
@@ -193,8 +197,6 @@
 				B3C803932D04CA3600BFC383 /* buntanTests */,
 			);
 			name = buntanTests;
-			packageProductDependencies = (
-			);
 			productName = buntanTests;
 			productReference = B3BE0E6C2D0BE618003C6F8E /* buntanTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -216,8 +218,6 @@
 				B3C8039D2D04CA3600BFC383 /* buntanUITests */,
 			);
 			name = buntanUITests;
-			packageProductDependencies = (
-			);
 			productName = buntanUITests;
 			productReference = B3BE0E6D2D0BE618003C6F8E /* buntanUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
@@ -389,7 +389,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 2.0.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -450,7 +450,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 2.0.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
