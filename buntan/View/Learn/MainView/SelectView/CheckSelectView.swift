@@ -7,12 +7,12 @@ struct CheckSelectView: SelectViewProtocol, CheckLearnViewProtocol {
     typealias UserInputType = CheckUserInput
     
     @EnvironmentObject var loadingManager: LoadingManager
-    @EnvironmentObject var alertSharedData: AlertSharedData
+    @EnvironmentObject var alertManager: AlertManager
     
     @StateObject var viewModel: CheckSelectViewViewModel
     @StateObject var userDefaultHandler: LearnUserDefaultHandler
     @ObservedObject var userInput: CheckUserInput
-    @ObservedObject var navigator: CheckNavigator
+    let navigator: CheckNavigator
     
     init(
         navigator: CheckNavigator,
@@ -21,7 +21,7 @@ struct CheckSelectView: SelectViewProtocol, CheckLearnViewProtocol {
         options: [[Option]]
     ) {
 
-        self._navigator = ObservedObject(wrappedValue: navigator)
+        self.navigator = navigator
         self._userInput = ObservedObject(wrappedValue: checkUserInput)
 
         let handler = LearnUserDefaultHandler()

@@ -1,6 +1,6 @@
 import Foundation
 
-struct Option: Hashable {
+struct Option: Hashable, Identifiable {
     let id: String
     let word: String
     let meaning: String

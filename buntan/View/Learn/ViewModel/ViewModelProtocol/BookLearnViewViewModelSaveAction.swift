@@ -25,10 +25,14 @@ extension BookLearnViewViewModelProtocol {
         /// ensure loading screen rendering by delaying the next process
         let delay: UInt64 = 100_000_000
         try? await Task.sleep(nanoseconds: delay)
-
-        guard self.updateCardsStatus(userInput: bookUserInput) else { return }
-
-        guard self.uploadLearnRecord() else { return }
+        guard let selectedBookCategory = bookUserInput.selectedBookCategory else { return }
+        let saveLearningUseCase = SaveLearningUseCase()
+        try? saveLearningUseCase.execute(
+            cards: cards,
+            learningIndices: Set(leftCardsIndexList),
+            completedIndices: Set(rightCardsIndexList),
+            category: selectedBookCategory
+        )
 
         /// loading を終了して画面遷移
         await loadingManager.finishLoading()
@@ -43,35 +47,7 @@ extension BookLearnViewViewModelProtocol {
         }
     }
 
-    private func updateCardsStatus(userInput: BookUserInput) -> Bool {
-
-        guard let selectedGrade = userInput.selectedGrade,
-              let selectedBookCategory = userInput.selectedBookCategory else { return false }
-        
-        /// 学習内容を realm に保存
-        guard SheetRealmAPI.updateCardsStatus(
-            viewModel: self,
-            eikenGrade: selectedGrade,
-            bookCategory: selectedBookCategory
-        ) else { return false }
-        
-        return true
-    }
-    
-    private func uploadLearnRecord() -> Bool {
-        
-        /// 学習量の記録を保存
-        let learnRecord = LearnRecord(
-            id: UUID().uuidString,
-            date: Date(),
-            learnedCardCount: learnedCardsCount
-        )
-        
-        guard LearnRecordRealmAPI.uploadLearnRecord(learnRecord: learnRecord) else { return false }
-        
-        return true
-    }
-    
+    @MainActor
     private func tnrasitionScreen(
         userInput: BookUserInput,
         navigator: BookNavigator,
@@ -86,7 +62,7 @@ extension BookLearnViewViewModelProtocol {
         if isFinished {
             navigator.push(.learnResult(cardsContainer, learnedCardCount))
         } else {
-            navigator.pop(to: .sectionList(EmptyModel.book))
+            navigator.pop(to: .sectionList)
             navigator.push(.learnSelect(cardsContainer))
         }
         

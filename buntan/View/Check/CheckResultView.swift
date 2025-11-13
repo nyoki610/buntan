@@ -5,7 +5,7 @@ struct CheckResultView: View {
 
     @EnvironmentObject var loadingManager: LoadingManager
     
-    @ObservedObject private var navigator: CheckNavigator
+    private let navigator: CheckNavigator
     @ObservedObject private var userInput: CheckUserInput
     
     private let cards: [Card]

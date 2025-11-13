@@ -7,9 +7,8 @@ class RealmLearnRecord: Object, ObjectKeyIdentifiable {
     @Persisted var learnedCardCount: Int
 }
 
-extension RealmLearnRecord: ConveretableRealmObject {
-    
-    func convertToNonRealm() -> LearnRecord {
+extension RealmLearnRecord: NonRealmConvertible {
+    func toNonRealm() -> LearnRecord {
         return LearnRecord(
             id: id.stringValue,
             date: date,

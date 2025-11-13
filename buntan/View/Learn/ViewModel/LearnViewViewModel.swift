@@ -3,10 +3,11 @@ import Foundation
 
 final class BookSelectViewViewModel: BaseSelectViewViewModel, BookLearnViewViewModelProtocol {
     
+    internal let learnRecordService: any LearnRecordServiceProtocol
     internal let nonShuffledCards: [Card]
     internal let nonShuffledOptions: [[Option]]
     
-    convenience init(cards: [Card], options: [[Option]], shouldShuffle: Bool) {
+    convenience init(cards: [Card], options: [[Option]], shouldShuffle: Bool, learnRecordService: any LearnRecordServiceProtocol = LearnRecordService()) {
         
         let shuffledArrays = CardsShuffler.getShuffledArrays(cards: cards, options: options)
         
@@ -14,7 +15,8 @@ final class BookSelectViewViewModel: BaseSelectViewViewModel, BookLearnViewViewM
             cards: shouldShuffle ? shuffledArrays.shuffledCards : cards,
             options: shouldShuffle ? shuffledArrays.shuffledOptions : options,
             nonShuffledCards: cards,
-            nonShuffledOptions: options
+            nonShuffledOptions: options,
+            learnRecordService: learnRecordService
         )
     }
     
@@ -22,10 +24,12 @@ final class BookSelectViewViewModel: BaseSelectViewViewModel, BookLearnViewViewM
         cards: [Card],
         options: [[Option]],
         nonShuffledCards: [Card],
-        nonShuffledOptions: [[Option]]
+        nonShuffledOptions: [[Option]],
+        learnRecordService: any LearnRecordServiceProtocol
     ) {
         self.nonShuffledCards = nonShuffledCards
         self.nonShuffledOptions = nonShuffledOptions
+        self.learnRecordService = learnRecordService
         super.init(cards: cards, options: options)
     }
 }
@@ -33,10 +37,11 @@ final class BookSelectViewViewModel: BaseSelectViewViewModel, BookLearnViewViewM
 
 final class BookSwipeViewViewModel: BaseSwipeViewViewModel, BookLearnViewViewModelProtocol {
 
+    internal let learnRecordService: any LearnRecordServiceProtocol
     internal let nonShuffledCards: [Card]
     internal let nonShuffledOptions: [[Option]]
     
-    convenience init(cards: [Card], options: [[Option]], shouldShuffle: Bool) {
+    convenience init(cards: [Card], options: [[Option]], shouldShuffle: Bool, learnRecordService: any LearnRecordServiceProtocol = LearnRecordService()) {
         
         let shuffledArrays = CardsShuffler.getShuffledArrays(cards: cards, options: options)
         
@@ -44,7 +49,8 @@ final class BookSwipeViewViewModel: BaseSwipeViewViewModel, BookLearnViewViewMod
             cards: shouldShuffle ? shuffledArrays.shuffledCards : cards,
             options: shouldShuffle ? shuffledArrays.shuffledOptions : options,
             nonShuffledCards: cards,
-            nonShuffledOptions: options
+            nonShuffledOptions: options,
+            learnRecordService: learnRecordService
         )
     }
     
@@ -52,10 +58,12 @@ final class BookSwipeViewViewModel: BaseSwipeViewViewModel, BookLearnViewViewMod
         cards: [Card],
         options: [[Option]],
         nonShuffledCards: [Card],
-        nonShuffledOptions: [[Option]]
+        nonShuffledOptions: [[Option]],
+        learnRecordService: any LearnRecordServiceProtocol
     ) {
         self.nonShuffledCards = nonShuffledCards
         self.nonShuffledOptions = nonShuffledOptions
+        self.learnRecordService = learnRecordService
         super.init(cards: cards, options: options)
     }
 }
@@ -63,10 +71,11 @@ final class BookSwipeViewViewModel: BaseSwipeViewViewModel, BookLearnViewViewMod
 
 final class BookTypeViewViewModel: BaseTypeViewViewModel, BookLearnViewViewModelProtocol {
 
+    internal let learnRecordService: any LearnRecordServiceProtocol
     internal let nonShuffledCards: [Card]
     internal let nonShuffledOptions: [[Option]]
     
-    convenience init(cards: [Card], options: [[Option]], shouldShuffle: Bool) {
+    convenience init(cards: [Card], options: [[Option]], shouldShuffle: Bool, learnRecordService: any LearnRecordServiceProtocol = LearnRecordService()) {
         
         let shuffledArrays = CardsShuffler.getShuffledArrays(cards: cards, options: options)
         
@@ -74,7 +83,8 @@ final class BookTypeViewViewModel: BaseTypeViewViewModel, BookLearnViewViewModel
             cards: shouldShuffle ? shuffledArrays.shuffledCards : cards,
             options: shouldShuffle ? shuffledArrays.shuffledOptions : options,
             nonShuffledCards: cards,
-            nonShuffledOptions: options
+            nonShuffledOptions: options,
+            learnRecordService: learnRecordService
         )
     }
     
@@ -82,12 +92,24 @@ final class BookTypeViewViewModel: BaseTypeViewViewModel, BookLearnViewViewModel
         cards: [Card],
         options: [[Option]],
         nonShuffledCards: [Card],
-        nonShuffledOptions: [[Option]]
+        nonShuffledOptions: [[Option]],
+        learnRecordService: any LearnRecordServiceProtocol
     ) {
         self.nonShuffledCards = nonShuffledCards
         self.nonShuffledOptions = nonShuffledOptions
+        self.learnRecordService = learnRecordService
         super.init(cards: cards, options: options)
     }
 }
 
-final class CheckSelectViewViewModel: BaseSelectViewViewModel, CheckLearnViewViewModelProtocol {}
+final class CheckSelectViewViewModel: BaseSelectViewViewModel, CheckLearnViewViewModelProtocol {
+    internal let checkRecordService: any CheckRecordServiceProtocol
+    init(
+        cards: [Card],
+        options: [[Option]],
+        checkRecordService: any CheckRecordServiceProtocol = CheckRecordService()
+    ) {
+        self.checkRecordService = checkRecordService
+        super.init(cards: cards, options: options)
+    }
+}

@@ -14,3 +14,15 @@ extension RealmInfo: ConveretableRealmObject {
         return Info(id: self.id.stringValue, year: self.year, time: self.time, isAnswer: self.isAnswer)
     }
 }
+
+extension RealmInfo: NonRealmConvertible {
+    
+    func toNonRealm() -> Info {
+        return Info(
+            id: id.stringValue,
+            year: year,
+            time: time,
+            isAnswer: isAnswer
+        )
+    }
+}

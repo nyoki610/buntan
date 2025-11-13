@@ -23,17 +23,15 @@ struct CheckRecord: Identifiable {
     }
 }
 
-extension CheckRecord {
+extension CheckRecord: RealmConvertible {
     
-    func convertToRealm() -> RealmCheckRecord {
-        
+    func toRealm(with idType: RealmIdType) throws -> RealmCheckRecord {
         let realmCheckRecord = RealmCheckRecord()
-
+        try setId(to: realmCheckRecord, idType: idType)
         realmCheckRecord.gradeRawValue = grade.rawValue
         realmCheckRecord.date = date
         realmCheckRecord.correctCount = correctCount
         realmCheckRecord.estimatedCount = estimatedCount
-        
         return realmCheckRecord
     }
 }

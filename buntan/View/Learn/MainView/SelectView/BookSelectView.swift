@@ -11,7 +11,7 @@ struct BookSelectView: SelectViewProtocol, BookLearnViewProtocol {
     @StateObject var viewModel: BookSelectViewViewModel
     @StateObject var userDefaultHandler: LearnUserDefaultHandler
     @ObservedObject var userInput: BookUserInput
-    @ObservedObject var navigator: BookNavigator
+    let navigator: BookNavigator
     
     init(
         navigator: BookNavigator,
@@ -19,7 +19,7 @@ struct BookSelectView: SelectViewProtocol, BookLearnViewProtocol {
         cards: [Card],
         options: [[Option]]
     ) {
-        self._navigator = ObservedObject(wrappedValue: navigator)
+        self.navigator = navigator
         self._userInput = ObservedObject(wrappedValue: bookUserInput)
 
         let handler = LearnUserDefaultHandler()

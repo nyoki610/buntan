@@ -25,7 +25,7 @@ extension _LearnViewProtocol {
     
     func learnHeader(geometry: GeometryProxy) -> some View {
         
-        LearnHeader(
+        _LearnHeader(
             viewModel: viewModel,
             geometry: geometry
         ) {
@@ -34,7 +34,7 @@ extension _LearnViewProtocol {
     }
     
     var learnBottomButtons: some View {
-        LearnBottomButtons(
+        _LearnBottomButtons(
             viewModel: viewModel,
             shouldReadOut: userDefaultHandler.shouldReadOut
         ) {

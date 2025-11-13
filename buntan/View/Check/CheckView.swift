@@ -5,7 +5,7 @@ struct CheckView: View {
 
     @EnvironmentObject var loadingManager: LoadingManager
     
-    @ObservedObject private var navigator: CheckNavigator
+    @Bindable private var navigator: CheckNavigator
     @StateObject private var userInput = CheckUserInput()
     
     init(navigator: CheckNavigator) {
@@ -39,19 +39,25 @@ struct CheckView: View {
             .navigationDestination(for: CheckViewName.self) { viewName in
                 viewName.viewForName(navigator: navigator, userInput: userInput)
             }
+            .onAppear {
+                AnalyticsLogger.logScreenTransition(viewName: MainViewName.root(.check))
+            }
+            .toolbar(navigator.path.isEmpty ? .visible : .hidden, for: .tabBar)
         }
     }
     
     private func setupCheck() async {
         
         await loadingManager.startLoading(.process)
-                
-        guard let cards = SheetRealmAPI.getCaradsForCheck(eikenGrade: userInput.selectedGrade) else { return }
         
-        guard let options = SheetRealmAPI.getOptions(
-            eikenGrade: userInput.selectedGrade,
-            cards: cards,
-            containFifthOption: true
+        let getCheckCardsUseCase = GetCheckCardsUseCase()
+        guard let cards = try? getCheckCardsUseCase.execute(for: userInput.selectedGrade) else { return }
+        
+        let createOptionsUseCase = CreateOptionsUseCase()
+        guard let options = try? createOptionsUseCase.execute(
+            from: cards,
+            for: userInput.selectedGrade,
+            withFifthOption: true
         ) else { return }
 
         await loadingManager.finishLoading()

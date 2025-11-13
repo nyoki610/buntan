@@ -6,13 +6,13 @@ struct BookSwipeView: BookLearnViewProtocol, SwipeViewProtocol {
 
 
     @EnvironmentObject var loadingManager: LoadingManager
-    @EnvironmentObject var alertSharedData: AlertSharedData
+    @EnvironmentObject var alertManager: AlertManager
 
     @StateObject var viewModel: BookSwipeViewViewModel
     @StateObject var userDefaultHandler: LearnUserDefaultHandler
 
     @ObservedObject var userInput: BookUserInput
-    @ObservedObject var navigator: BookNavigator
+    let navigator: BookNavigator
     
     init(
         navigator: BookNavigator,
@@ -20,7 +20,7 @@ struct BookSwipeView: BookLearnViewProtocol, SwipeViewProtocol {
         cards: [Card],
         options: [[Option]]
     ) {
-        self._navigator = ObservedObject(wrappedValue: navigator)
+        self.navigator = navigator
         self._userInput = ObservedObject(wrappedValue: bookUserInput)
 
         let handler = LearnUserDefaultHandler()

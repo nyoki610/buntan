@@ -1,153 +1,100 @@
 import SwiftUI
 import Combine
 
-
+@MainActor
 class LogoViewViewModel: ObservableObject {
-    
-    @Published private(set) var loadingState: DataSyncState = .idle
-    private var cancellables = Set<AnyCancellable>()
-    private var canSkipDataFetching: Bool = false
-    
-    internal enum DataSyncState {
-        case idle
-        case fetchingLatestVersionId
-        case fetchingLatestCards(versionId: String)
-        case completed
-        case error(message: String?)
-    }
+
+    private(set) var appVersionId: String?
     
     private let loadingManager: LoadingManager
-    private let alertSharedData: AlertSharedData
+    private let alertManager: AlertManager
     private var parentStateBinding: Binding<MainViewName>
     
-    init(loadingManager: LoadingManager, alertSharedData: AlertSharedData, parentStateBinding: Binding<MainViewName>) {
-        self.loadingManager = loadingManager
-        self.alertSharedData = alertSharedData
-        self.parentStateBinding = parentStateBinding
-        
-        setupBindings()
+    struct Dependency {
+        let infoPlistRepository: any InfoPlistRepositoryProtocol = InfoPlistRepository()
+        let openURLUseCase: any OpenURLUseCaseProtocol = OpenURLUseCase()
+        let syncCardsUseCase: any SyncCardsUseCaseProtocol = SyncCardsUseCase()
+        let checkForcedUpdateUseCase: any CheckForcedUpdateUseCaseProtocol = CheckForcedUpdateUseCase()
     }
-    
-    private func setupBindings() {
 
-        $loadingState
-            .sink { [weak self] state in
-                switch state {
-                case .idle:
-                    break
-                case .fetchingLatestVersionId:
-                    Task { @MainActor in
-                        await self?.fetchLatestVersionId()
-                    }
-                case .fetchingLatestCards(let versionId):
-                    Task { @MainActor in
-                        await self?.fetchLatestCards(versionId: versionId)
-                    }
-                case .completed:
-                    Task { @MainActor in
-                        await self?.complete()
-                    }
-                case let .error(message):
-                    Task { @MainActor in
-                        await self?.handleError(message: message)
-                    }
-                }
-            }
-            .store(in: &cancellables)
+    private let dependency: Dependency
+    
+    init(
+        loadingManager: LoadingManager,
+        alertManager: AlertManager,
+        parentStateBinding: Binding<MainViewName>,
+        dependency: Dependency = .init()
+    ) {
+        self.loadingManager = loadingManager
+        self.alertManager = alertManager
+        self.parentStateBinding = parentStateBinding
+        self.dependency = dependency
     }
     
     internal func task() async {
-        
         AnalyticsLogger.logScreenTransition(viewName: MainViewName.logo)
-        
+        appVersionId = dependency.infoPlistRepository.value(for: .appVersionId)
         let delay: UInt64 = 1_000_000_000
         try? await Task.sleep(nanoseconds: delay)
         
         await loadingManager.startLoading(.fetch)
-        await send(.fetchingLatestVersionId)
-    }
-    
-    @MainActor
-    private func send(_ state: DataSyncState) {
-        loadingState = state
-    }
-    
-    private func fetchLatestVersionId() async {
         
-        do {
-            let userDBVersionId = VersionUserDefaultHandler.getUsersCardsVersionId()
-            
-            if userDBVersionId != nil {
-                canSkipDataFetching = true
-            }
-            
-            guard let latestDBVersionId = try await RemoteConfigService.shared.string(.latestDBVersionId, shouldActivate: true) else {
-                await send(.error(message: nil))
-                return
-            }
-
-            /// This property is unused in version 1.1.1
-            guard let requiredAppVersionId = try await RemoteConfigService.shared.string(.requiredAppVersionId, shouldActivate: false) else {
-                await send(.error(message: nil))
-                return
-            }
-            
-            let shouldFetchLatestCards = (latestDBVersionId != userDBVersionId)
-            
-            if shouldFetchLatestCards {
-                await loadingManager.startLoading(.custom(message: "更新中..."))
-                await send(.fetchingLatestCards(versionId: latestDBVersionId))
-            } else {
-                let delay: UInt64 = 3_000_000_000
-                try await Task.sleep(nanoseconds: delay)
-                await send(.completed)
-            }
-        } catch {
-            await send(.error(message: error.localizedDescription))
+        let requiredUpdateType = try? await dependency.checkForcedUpdateUseCase.isForcedUpdateRequired()
+        switch requiredUpdateType {
+        case .force:
+            await loadingManager.finishLoading()
+            self.parentStateBinding.wrappedValue = .forcedUpdate
+        
+        case .softForce:
+            let config = AlertManager.SelectiveAlertConfig(
+                title: "更新のお知らせ",
+                message: "新しいバージョンが利用可能です。",
+                secondaryButtonLabel: "アップデート",
+                secondaryButtonType: .defaultButton,
+                secondaryButtonAction: {
+                    self.dependency.openURLUseCase.open(.appStore)
+                    Task { await self.syncCards() }
+                },
+                closeButtonAction: { Task { await self.syncCards() } }
+            )
+            alertManager.showAlert(type: .selective(config: config))
+        
+        case .notRequired, nil:
+            await syncCards()
         }
     }
     
-    private func fetchLatestCards(versionId: String) async {
-        
-        do {
-            let (firstGradeCards, preFirstGradeCards) = try await APIHandler.getLatestCards()
-            let _ = SheetRealmAPI.updateSheetCards(grade: .first, newCards: firstGradeCards)
-            let _ = SheetRealmAPI.updateSheetCards(grade: .preFirst, newCards: preFirstGradeCards)
-            let _ = SheetRealmAPI.deleteUnnecessaryObjects()
-            
-            VersionUserDefaultHandler.saveUsersCardsVersionId(version: versionId)
-            await send(.completed)
-        } catch {
-            await send(.error(message: error.localizedDescription))
+    private func syncCards() async {
+        let result = await dependency.syncCardsUseCase.execute(loadingManager: loadingManager)
+        switch result {
+        case .success(_):
+            await complete()
+        case let .failure(.general(detailedError, canSkip)):
+            await handleError(canSkipDataFetching: canSkip, message: detailedError.localizedDescription)
         }
     }
     
-    @MainActor
     private func complete() async {
         await loadingManager.finishLoading(withDelay: true)
-        withAnimation {
-            parentStateBinding.wrappedValue = .root(.book)
-        }
+        parentStateBinding.wrappedValue = .root(.book)
     }
     
-    private func handleError(message: String?) async {
-        
-        if canSkipDataFetching {
-
-            alertSharedData.showSingleAlert(title: "", message: "最新データの取得に失敗しました") {
-                Task { await self.send(.completed) }
+    private func handleError(canSkipDataFetching: Bool, message: String) async {
+        let config: AlertManager.SingleAlertConfig = {
+            if canSkipDataFetching {
+                return .init(
+                    title: nil,
+                    message: "最新データの取得に失敗しました",
+                    action: { Task { await self.complete() } }
+                )
+            } else {
+                return .init(
+                    title: nil,
+                    message: "データの取得に失敗しました",
+                    action: nil
+                )
             }
-            return
-        }
-
-        #if DEBUG
-        if let message = message {
-            print(message)
-        }
-        #endif
-        
-        alertSharedData.showSingleAlert(title: "", message: "データの取得に失敗しました") {}
-        
-        return
+        }()
+        alertManager.showAlert(type: .single(config: config))
     }
 }

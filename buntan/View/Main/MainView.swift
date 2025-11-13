@@ -2,11 +2,10 @@ import SwiftUI
 
 struct MainView: View {
 
-    /// ObservedObjects
-    @ObservedObject private var loadingManager = LoadingManager()
-    @ObservedObject private var alertSharedData = AlertSharedData()
-    
-    @StateObject var viewModel = MainViewViewModel()
+    @StateObject private var loadingManager = LoadingManager.shared
+    @StateObject private var alertManager = AlertManager.shared
+    @State private var viewModel = MainViewViewModel()
+    private let bookUserInput: BookUserInput = BookUserInput()
     
     var body: some View {
         
@@ -18,22 +17,54 @@ struct MainView: View {
                 LogoView(
                     viewModel: LogoViewViewModel(
                         loadingManager: loadingManager,
-                        alertSharedData: alertSharedData,
+                        alertManager: alertManager,
                         parentStateBinding: $viewModel.selectedViewName
                     )
                 )
-
-            case .root(let rootViewName):
-                ZStack {
-                    rootViewName.viewForName(
-                        bookViewNavigator: viewModel.bookViewNavigator,
-                        checkViewNavigator: viewModel.checkViewNavigator
+            
+            case .forcedUpdate:
+                ForcedUpdateView(
+                    viewModel: ForcedUpdateViewViewModel(
+                        alertManager: alertManager
                     )
+                )
+
+            case .root:
+                
+                TabView {
                     
-                    if viewModel.showTabView {
-                        tabView
+                    BookView(
+                        viewModel: .init(
+                            argument: .init(
+                                navigator: viewModel.bookViewNavigator,
+                                userInput: bookUserInput
+                            )
+                        )
+                    )
+                    .tabItem {
+                        Image(systemName: "book.fill")
+                        Text("単語帳")
                     }
+                    
+                    CheckView(navigator: viewModel.checkViewNavigator)
+                        .tabItem {
+                            Image(systemName: "checklist.checked")
+                            Text("テスト")
+                        }
+                    
+                    RecordView(viewModel: .init())
+                        .tabItem {
+                            Image(systemName: "shoeprints.fill")
+                            Text("記録")
+                        }
+                    
+                    ContactView()
+                        .tabItem {
+                            Image(systemName: "paperplane.fill")
+                            Text("お問い合わせ")
+                        }
                 }
+                .tint(Orange.defaultOrange)
             }
 
             if let loadingStatus = loadingManager.loadingStatus {
@@ -42,19 +73,9 @@ struct MainView: View {
             }
         }
         .environmentObject(loadingManager)
-        .environmentObject(alertSharedData)
-        .alert(item: $alertSharedData.alertType) { _ in
-            alertSharedData.createAlert()
-        }
-        .onReceive(viewModel.bookViewNavigator.$path) { _ in
-            DispatchQueue.main.async {
-                viewModel.updateShowTabView()
-            }
-        }
-        .onReceive(viewModel.checkViewNavigator.$path) { _ in
-            DispatchQueue.main.async {
-                viewModel.updateShowTabView()
-            }
+        .environmentObject(alertManager)
+        .alert(item: $alertManager.alertType) { _ in
+            alertManager.createAlert()
         }
     }
 }

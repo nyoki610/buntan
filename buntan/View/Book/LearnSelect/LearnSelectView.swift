@@ -3,10 +3,10 @@ import SwiftUI
 
 struct LearnSelectView: View {
     
-    @EnvironmentObject var alertSharedData: AlertSharedData
+    @EnvironmentObject var alertManager: AlertManager
     @EnvironmentObject var loadingManager: LoadingManager
     
-    @ObservedObject private var navigator: BookNavigator
+    private var navigator: BookNavigator
     @ObservedObject var userInput: BookUserInput
     
     @StateObject var viewModel: LearnSelectViewViewModel
@@ -68,12 +68,12 @@ struct LearnSelectView: View {
                             learnRange: userInput.selectedRange
                         )
                         
-                        guard let options = SheetRealmAPI
-                            .getOptions(
-                                eikenGrade: selectedGrade,
-                                cards: cards,
-                                containFifthOption: false
-                            ) else { return }
+                        let createOptionsUseCase = CreateOptionsUseCase()
+                        guard let options = try? createOptionsUseCase.execute(
+                            from: cards,
+                            for: selectedGrade,
+                            withFifthOption: false
+                        ) else { return }
                         
                         navigator.push(
                             userInput.selectedMode.bookViewName(
@@ -193,30 +193,34 @@ extension LearnSelectView {
     
     func resetAction() {
         
-        alertSharedData.showSelectiveAlert(title: "現在の進捗を\nリセットしますか？",
-                                           message: "",
-                                           secondaryButtonLabel: "リセット",
-                                           secondaryButtonType: .destructive) {
+        let config = AlertManager.SelectiveAlertConfig(
+            title: "現在の進捗を\nリセットしますか？",
+            message: nil,
+            secondaryButtonLabel: "リセット",
+            secondaryButtonType: .destructive
+        ) {
             Task {
                 await loadingManager.startLoading(.process)
                 
                 /// ensure loading screen rendering by delaying the next process
                 let delay: UInt64 = 100_000_000
                 try? await Task.sleep(nanoseconds: delay)
-
+                
                 guard let selectedBookCategory = userInput.selectedBookCategory else { return }
-
-                guard SheetRealmAPI.resetCardsStatus(
-                    cardIdList: viewModel.cardsContainer.allCards.map { $0.id },
-                    bookCategory: selectedBookCategory
-                ) else { return }
-
+                
+                let resetCardsStatusUseCase = ResetCardsStatusUseCase()
+                try? resetCardsStatusUseCase.execute(
+                    of: viewModel.cardsContainer.allCards,
+                    category: selectedBookCategory
+                )
+                
                 viewModel.updateCardsContainer(userInput: userInput)
                 adjustSelectedRange()
-
+                
                 await loadingManager.finishLoading()
             }
         }
+        alertManager.showAlert(type: .selective(config: config))
     }
 }
 

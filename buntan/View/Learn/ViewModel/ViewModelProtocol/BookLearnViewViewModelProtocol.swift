@@ -4,6 +4,7 @@ import SwiftUI
 protocol BookLearnViewViewModelProtocol: BaseLearnViewViewModel, ObservableObject, AnyObject {
     var nonShuffledCards: [Card] { get }
     var nonShuffledOptions: [[Option]] { get }
+    var learnRecordService: LearnRecordServiceProtocol { get }
 }
 
 
@@ -51,12 +52,13 @@ extension BookLearnViewViewModelProtocol {
         self.animationController -= 1
     }
     
-    internal func backToStart(alertSharedData: AlertSharedData) -> Void {
+    @MainActor
+    internal func backToStart(alertManager: AlertManager) -> Void {
         
         if topCardIndex > 0 {
-            alertSharedData.showSelectiveAlert(
+            let config = AlertManager.SelectiveAlertConfig(
                 title: "最初に戻りますか？",
-                message: "",
+                message: nil,
                 secondaryButtonLabel: "最初から",
                 secondaryButtonType: .defaultButton
             ) {
@@ -64,6 +66,7 @@ extension BookLearnViewViewModelProtocol {
                     self.backButtonAction()
                 }
             }
+            alertManager.showAlert(type: .selective(config: config))
         }
     }
 }

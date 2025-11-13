@@ -25,7 +25,7 @@ extension BookLearnViewProtocol {
     }
     
     var learnBottomButtons: some View {
-        LearnBottomButtons(
+        _LearnBottomButtons(
             viewModel: viewModel,
             shouldReadOut: userDefaultHandler.shouldReadOut
         ) {
@@ -42,12 +42,13 @@ extension BookLearnViewProtocol {
         )
     }
     
+    @MainActor
     func xmarkButtonAction() async {
         
         /// １単語も学習していない場合は save せずに exit
         guard viewModel.learnedCardsCount != 0 else {
             guard let cardsContainer = CardsContainer(userInput: userInput) else { return }
-            navigator.pop(to: .sectionList(EmptyModel.book))
+            navigator.pop(to: .sectionList)
             navigator.push(.learnSelect(cardsContainer))
             return
         }

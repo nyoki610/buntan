@@ -5,7 +5,7 @@ protocol CheckLearnViewProtocol: _LearnViewProtocol where
 ViewModelType: CheckLearnViewViewModelProtocol,
 UserInputType: CheckUserInput,
 NavigatorType: CheckNavigator {
-    var alertSharedData: AlertSharedData { get }
+    var alertManager: AlertManager { get }
 }
 
 
@@ -30,18 +30,20 @@ extension CheckLearnViewProtocol {
         )
     }
     
+    @MainActor
+    // TODO: refactor
     func xmarkButtonAction() async {
         let isFInished = (viewModel.learnedCardsCount == viewModel.cards.count)
         
         guard isFInished else {
-            alertSharedData.showSelectiveAlert(
+            let config = AlertManager.SelectiveAlertConfig(
                 title: "テストを中断しますか？",
-                message: "",
+                message: nil,
                 secondaryButtonLabel: "終了",
-                secondaryButtonType: .defaultButton
-            ) {
-                navigator.pop(count: 1)
-            }
+                secondaryButtonType: .defaultButton) {
+                    navigator.pop(count: 1)
+                }
+            await alertManager.showAlert(type: .selective(config: config))
             return
         }
         await saveAction()

@@ -9,7 +9,7 @@ struct LearnResultView: View {
     /// 「学習中」の単語が存在するかどうかを示す bool 値
     private var reviewAll: Bool { cardsContainer.learningCount == 0 }
     
-    @ObservedObject private var navigator: BookNavigator
+    private let navigator: BookNavigator
     @ObservedObject private var userInput: BookUserInput
     private let cardsContainer: CardsContainer
 
@@ -30,7 +30,7 @@ struct LearnResultView: View {
         VStack {
             
             XmarkHeader() {
-                navigator.pop(to: .sectionList(EmptyModel.book))
+                navigator.pop(to: .sectionList)
                 navigator.push(.learnSelect(cardsContainer))
             }
             
@@ -163,11 +163,11 @@ struct LearnResultView: View {
         let cards = cardsContainer.getCardsByLearnRange(
             learnRange: userInput.selectedRange
         )
-        /// options を初期化
-        guard let options = SheetRealmAPI.getOptions(
-            eikenGrade: selectedGrade,
-            cards: cards,
-            containFifthOption: false
+        let createOptionsUseCase = CreateOptionsUseCase()
+        guard let options = try? createOptionsUseCase.execute(
+            from: cards,
+            for: selectedGrade,
+            withFifthOption: false
         ) else { return }
                 
         navigator.push(
