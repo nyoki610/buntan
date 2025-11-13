@@ -25,7 +25,7 @@ jobs:
       - name: git-flow merge
         uses: yanamura/git-flow-merge-action@v1 # https://github.com/yanamura/git-flow-merge-action
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ steps.find_pr.outputs.branch_name }}
           develop_branch: "develop"
           main_branch: "main"
