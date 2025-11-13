@@ -47,7 +47,8 @@ platform :ios do
       repo: "nyoki610/buntan",
       title: "Release v#{version}",
       head: release_branch,
-      base: "main"
+      base: "main",
+      labels: ["release"]
     )
 
     create_pull_request(
@@ -55,7 +56,8 @@ platform :ios do
       repo: "nyoki610/buntan",
       title: "Release v#{version}",
       head: release_branch,
-      base: "develop"
+      base: "develop",
+      labels: ["release"]
     )
   end
 end
