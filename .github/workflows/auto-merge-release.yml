@@ -10,6 +10,8 @@ permissions:
 jobs:
   auto-merge:
     runs-on: ubuntu-latest
+    outputs:
+      branch_name: ${{ steps.find_pr.outputs.branch_name }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -29,3 +31,43 @@ jobs:
           branch: ${{ steps.find_pr.outputs.branch_name }}
           develop_branch: "develop"
           main_branch: "main"
+        id: merge
+
+  tag_release:
+    needs: auto-merge
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Extract version
+        id: extract_version
+        run: |
+          VERSION=$(python3 -c "import plistlib; print(plistlib.load(open('buntan/Info.plist', 'rb'))['CFBundleShortVersionString'])")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Validate version and branch
+        run: |
+          VERSION="${{ steps.extract_version.outputs.version }}"
+          BRANCH_NAME="${{ needs.auto-merge.outputs.branch_name }}"
+          BRANCH_VERSION="${BRANCH_NAME#release/}"
+
+          if git rev-parse "$VERSION" >/dev/null 2>&1; then
+            echo "Error: Tag $VERSION already exists"
+            exit 1
+          fi
+
+          if [ "$BRANCH_VERSION" != "$VERSION" ]; then
+            echo "Error: Branch version ($BRANCH_VERSION) != Info.plist version ($VERSION)"
+            exit 1
+          fi
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.extract_version.outputs.version }}
+          name: v${{ steps.extract_version.outputs.version }}
+          generate_release_notes: true
+          make_latest: true
