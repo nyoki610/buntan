@@ -1,0 +1,48 @@
+name: Create tag & release
+
+on:
+  pull_request:
+    types: closed
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  tag_release:
+    runs-on: macos-latest
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Extract version
+        id: extract_version
+        run: |
+          VERSION=$(/usr/libexec/PlistBuddy -c 'print ":CFBundleShortVersionString"' buntan/Info.plist)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Validate version and branch
+        run: |
+          VERSION="${{ steps.extract_version.outputs.version }}"
+          BRANCH_VERSION="${{ github.event.pull_request.head.ref }}"
+          BRANCH_VERSION="${BRANCH_VERSION#release/}"
+
+          if git rev-parse "$VERSION" >/dev/null 2>&1; then
+            echo "Error: Tag $VERSION already exists"
+            exit 1
+          fi
+
+          if [ "$BRANCH_VERSION" != "$VERSION" ]; then
+            echo "Warning: Branch version ($BRANCH_VERSION) != Info.plist version ($VERSION)"
+          fi
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.extract_version.outputs.version }}
+          name: v${{ steps.extract_version.outputs.version }}
+          generate_release_notes: true
+          make_latest: true
+
