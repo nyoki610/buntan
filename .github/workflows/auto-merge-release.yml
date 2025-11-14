@@ -52,7 +52,7 @@ jobs:
         run: |
           VERSION="${{ steps.extract_version.outputs.version }}"
           BRANCH_NAME="${{ needs.auto-merge.outputs.branch_name }}"
-          BRANCH_VERSION="${BRANCH_NAME#release/}"
+          BRANCH_VERSION="${BRANCH_NAME#release/v}"
 
           if git rev-parse "$VERSION" >/dev/null 2>&1; then
             echo "Error: Tag $VERSION already exists"
