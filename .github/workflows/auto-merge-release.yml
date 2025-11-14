@@ -45,7 +45,7 @@ jobs:
       - name: Extract version
         id: extract_version
         run: |
-          VERSION=$(python3 -c "import plistlib; print(plistlib.load(open('buntan/Info.plist', 'rb'))['CFBundleShortVersionString'])")
+          VERSION=$(grep -m 1 "MARKETING_VERSION = " buntan.xcodeproj/project.pbxproj | sed 's/.*MARKETING_VERSION = \([^;]*\);/\1/' | tr -d ' ')
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Validate version and branch
