@@ -1,0 +1,49 @@
+name: Create tag & release
+
+on:
+  pull_request:
+    types: closed
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  tag_release:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Extract version
+        id: extract_version
+        run: |
+          VERSION=$(grep -m 1 "MARKETING_VERSION = " buntan.xcodeproj/project.pbxproj | sed 's/.*MARKETING_VERSION = \([^;]*\);/\1/' | tr -d ' ')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Validate version and branch
+        run: |
+          VERSION="${{ steps.extract_version.outputs.version }}"
+          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+          BRANCH_VERSION="${BRANCH_NAME#release/v}"
+
+          if git rev-parse "v$VERSION" >/dev/null 2>&1; then
+            echo "Error: Tag v$VERSION already exists"
+            exit 1
+          fi
+
+          if [ "$BRANCH_VERSION" != "$VERSION" ]; then
+            echo "Error: Branch version ($BRANCH_VERSION) != Info.plist version ($VERSION)"
+            exit 1
+          fi
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.extract_version.outputs.version }}
+          name: v${{ steps.extract_version.outputs.version }}
+          generate_release_notes: true
+          make_latest: true
+
