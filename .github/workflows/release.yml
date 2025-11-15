@@ -1,0 +1,23 @@
+name: Build and submit release app
+
+on:
+  workflow_dispatch:
+
+jobs:
+  submit:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3.0'
+          bundler-cache: true
+
+      - name: Build and submit release app
+        run: |
+          bundle install
+          bundle exec fastlane release
+
