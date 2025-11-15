@@ -21,6 +21,11 @@ jobs:
           bundler-cache: true
 
       - name: Build and submit release app
+        env:
+          APP_IDENTIFIER: ${{ secrets.APP_IDENTIFIER }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          ITC_TEAM_ID: ${{ secrets.ITC_TEAM_ID }}
+          TEAM_ID: ${{ secrets.TEAM_ID }}
         run: |
           bundle install
           bundle exec fastlane release
