@@ -6,8 +6,6 @@ on:
 jobs:
   auto-merge:
     runs-on: ubuntu-latest
-    outputs:
-      branch_name: ${{ steps.find_pr.outputs.branch_name }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -28,3 +26,9 @@ jobs:
           develop_branch: "develop"
           main_branch: "main"
         id: merge
+
+      - name: Delete release branch
+        if: steps.merge.outcome == 'success' && steps.merge.conclusion == 'success'
+        env:
+          GH_TOKEN: ${{ secrets.TOKEN }}
+        run: gh api repos/${{ github.repository }}/git/refs/heads/${{ steps.find_pr.outputs.branch_name }} -X DELETE
