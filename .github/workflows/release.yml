@@ -1,11 +1,15 @@
 name: Build and submit release app
 
 on:
-  workflow_dispatch:
+  pull_request:
+    types: closed
+    branches:
+      - main
 
 jobs:
   submit:
     runs-on: macos-latest
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
