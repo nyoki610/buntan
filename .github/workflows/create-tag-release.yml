@@ -16,6 +16,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-tags: true
 
       - name: Extract version
         id: extract_version
@@ -44,6 +47,7 @@ jobs:
         with:
           tag_name: v${{ steps.extract_version.outputs.version }}
           name: v${{ steps.extract_version.outputs.version }}
+          target_commitish: main
           generate_release_notes: true
           make_latest: true
 
