@@ -21,6 +21,12 @@ jobs:
           ruby-version: '3.3.0'
           bundler-cache: true
 
+      - name: Set up GoogleService-Info.plist
+        run: |
+          RESOURCE_DIR="buntan/Resource"
+          mkdir -p "$RESOURCE_DIR"
+          echo "${{ secrets.GOOGLE_SERVICE_INFO_PLIST_CONTENT }}" | base64 -d > "$RESOURCE_DIR/GoogleService-Info.plist"
+
       - name: Build and submit release app
         env:
           APP_IDENTIFIER: ${{ secrets.APP_IDENTIFIER }}
