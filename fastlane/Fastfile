@@ -18,8 +18,16 @@ default_platform(:ios)
 platform :ios do
   desc "Push a new release build to the App Store"
   lane :release do
-    match(type: "appstore", readonly: true)
-    build_app(scheme: "buntan")
+    match(
+      type: "appstore",
+      readonly: true
+    )
+    build_app(
+      clean: true,
+      scheme: "buntan",
+      project: "buntan.xcodeproj",
+      export_method: "app-store"
+    )
     upload_to_app_store(
       api_key_path: "fastlane/6322FU89DN.json",
       precheck_include_in_app_purchases: false
