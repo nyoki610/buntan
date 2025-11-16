@@ -19,7 +19,7 @@ jobs:
             await script({github, context, core});
 
       - name: git-flow merge
-        uses: yanamura/git-flow-merge-action@v1 # https://github.com/yanamura/git-flow-merge-action
+        uses: yanamura/git-flow-merge-action@v1
         with:
           github_token: ${{ secrets.TOKEN }}
           branch: ${{ steps.find_pr.outputs.branch_name }}
