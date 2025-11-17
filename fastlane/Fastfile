@@ -29,7 +29,8 @@ platform :ios do
       clean: true,
       scheme: "buntan",
       project: "buntan.xcodeproj",
-      export_method: "app-store"
+      export_method: "app-store",
+      silent: true
     )
     upload_to_app_store(
       api_key_path: "fastlane/6322FU89DN.json",

@@ -1,4 +1,4 @@
-name: Auto merge release Pull Request
+name: Merge release PR
 
 on:
   workflow_dispatch:

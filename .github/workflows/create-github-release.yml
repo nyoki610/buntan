@@ -1,4 +1,4 @@
-name: Create tag & release
+name: Create GitHub release
 
 on:
   pull_request:
