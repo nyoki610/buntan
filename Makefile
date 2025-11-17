@@ -1,4 +1,4 @@
-.PHONY: sync-gh-secrets prepare-release
+.PHONY: sync-gh-secrets prepare-release merge-release-pr
 
 IGNORED_FILES := \
 	fastlane/6322FU89DN.json:APP_STORE_API_KEY_CONTENT \
@@ -23,3 +23,6 @@ prepare-release:
 	else \
 		gh workflow run prepare-release.yml -f bump_type=$(bump); \
 	fi
+
+merge-release-pr:
+	gh workflow run merge-release-pr.yml
