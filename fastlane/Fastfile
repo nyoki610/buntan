@@ -34,7 +34,8 @@ platform :ios do
     upload_to_app_store(
       api_key_path: "fastlane/6322FU89DN.json",
       precheck_include_in_app_purchases: false,
-      skip_screenshots: true
+      skip_screenshots: true,
+      force: true
     )
   end
 
