@@ -11,7 +11,6 @@ Create an appropriate commit for the current changes following these steps:
    - `chore: description` - for maintenance tasks
    - `style: description` - for code style/formatting changes
    - `test: description` - for adding or updating tests
-   - `perf: description` - for performance improvements
 5. Add relevant files to staging area with `git add <files>`
 6. Create the commit with a clear, concise message using `git commit -m "type: description"`
 7. Run `git log -1` to verify the commit was created successfully
