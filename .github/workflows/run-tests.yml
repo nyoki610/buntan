@@ -1,0 +1,49 @@
+name: Run Tests
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+  pull_request:
+    branches:
+      - develop
+      - main
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to test'
+        required: true
+        default: 'develop'
+
+jobs:
+  test:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Select Xcode version
+        run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+
+      - name: Set branch
+        run: git checkout ${{ github.event.inputs.branch }}
+
+      - name: Build and Test
+        run: |
+          xcodebuild test \
+            -project buntan.xcodeproj \
+            -scheme buntan \
+            -destination 'platform=macOS' \
+            -enableCodeCoverage YES \
+            | xcpretty && exit ${PIPESTATUS[0]}
+        continue-on-error: false
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: |
+            build/Logs/Test/*.xcresult
