@@ -37,7 +37,7 @@ jobs:
 
       - name: Build and Test
         run: |
-          DESTINATION="platform=iOS Simulator,name=iPhone 16 Pro"
+          DESTINATION="platform=iOS Simulator,name=iPhone 16 Pro,OS=18.4"
           xcodebuild test \
             -project buntan.xcodeproj \
             -scheme buntan \
