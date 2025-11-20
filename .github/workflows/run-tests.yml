@@ -1,0 +1,65 @@
+name: Run Tests
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+  pull_request:
+    branches:
+      - develop
+      - main
+
+jobs:
+  test:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Set up ignored files
+        run: |
+          mkdir -p buntan/Resource
+          echo "${{ secrets.GOOGLE_SERVICE_INFO_PLIST_CONTENT }}" | base64 -d > buntan/Resource/GoogleService-Info.plist
+          echo "${{ secrets.ENV_XCCONFIG_CONTENT }}" | base64 -d > buntan/Env.xcconfig
+
+      - name: Select Xcode version
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - name: Install xcpretty
+        run: gem install xcpretty
+
+      - name: List available simulators
+        run: xcrun simctl list devices available
+
+      - name: Run Tests
+        run: |
+          set -o pipefail
+
+          # Get the first available iPhone simulator and trim whitespace
+          SIMULATOR=$(xcrun simctl list devices available | grep -m 1 "iPhone" | sed -E 's/^[[:space:]]+([^(]+).*/\1/' | sed 's/[[:space:]]*$//')
+          echo "Selected simulator: '${SIMULATOR}'"
+
+          if [ -z "$SIMULATOR" ]; then
+            echo "Error: No iPhone simulator found"
+            exit 1
+          fi
+
+          xcodebuild test \
+            -project buntan.xcodeproj \
+            -scheme buntan \
+            -sdk iphonesimulator \
+            -destination "platform=iOS Simulator,name=${SIMULATOR}" \
+            -enableCodeCoverage YES \
+            | xcpretty --color --simple
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: |
+            build/Logs/Test/*.xcresult
