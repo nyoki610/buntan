@@ -31,11 +31,15 @@ jobs:
 
       - name: Run Tests
         run: |
+          # Get the first available iPhone simulator
+          SIMULATOR=$(xcrun simctl list devices available iPhone | grep "iPhone" | head -1 | sed -E 's/^[[:space:]]+(.+) \([A-Z0-9-]+\) \(.*\)/\1/')
+          echo "Using simulator: $SIMULATOR"
+
           xcodebuild test \
             -project buntan.xcodeproj \
             -scheme buntan \
             -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \
+            -destination "platform=iOS Simulator,name=$SIMULATOR" \
             -enableCodeCoverage YES
 
       - name: Upload test results
