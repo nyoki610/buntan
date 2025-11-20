@@ -29,18 +29,19 @@ jobs:
         with:
           xcode-version: latest-stable
 
+      - name: Install xcpretty
+        run: gem install xcpretty
+
       - name: Run Tests
         run: |
-          # Get the first available iPhone simulator
-          SIMULATOR=$(xcrun simctl list devices available iPhone | grep "iPhone" | head -1 | sed -E 's/^[[:space:]]+(.+) \([A-Z0-9-]+\) \(.*\)/\1/' | xargs)
-          echo "Using simulator: '$SIMULATOR'"
-
+          set -o pipefail
           xcodebuild test \
             -project buntan.xcodeproj \
             -scheme buntan \
             -sdk iphonesimulator \
-            -destination "platform=iOS Simulator,name=$SIMULATOR" \
-            -enableCodeCoverage YES
+            -destination 'platform=iOS Simulator,name=iPhone 15 Pro' \
+            -enableCodeCoverage YES \
+            | xcpretty --color --simple
 
       - name: Upload test results
         if: always()
