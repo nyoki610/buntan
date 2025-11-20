@@ -35,13 +35,22 @@ jobs:
       - name: List available simulators
         run: xcrun simctl list devices available
 
+      - name: Show available destinations
+        run: |
+          xcodebuild -project buntan.xcodeproj \
+            -scheme buntan \
+            -showdestinations
+
       - name: Build and Test
         run: |
-          DESTINATION="platform=iOS Simulator,name=iPhone 16 Pro,OS=18.4"
+          # Get the first available iPhone simulator
+          SIMULATOR_ID=$(xcrun simctl list devices available iPhone | grep "iPhone" | head -1 | grep -o '([A-F0-9-]*)' | tr -d '()')
+          echo "Using simulator: $SIMULATOR_ID"
+
           xcodebuild test \
             -project buntan.xcodeproj \
             -scheme buntan \
-            -destination "$DESTINATION" \
+            -destination "platform=iOS Simulator,id=$SIMULATOR_ID" \
             -enableCodeCoverage YES \
             -derivedDataPath build \
             | xcpretty && exit ${PIPESTATUS[0]}
