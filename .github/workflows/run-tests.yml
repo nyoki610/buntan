@@ -32,9 +32,12 @@ jobs:
       - name: Install xcpretty
         run: gem install xcpretty
 
+      - name: List available simulators
+        run: xcrun simctl list devices available
+
       - name: Build and Test
         run: |
-          DESTINATION="platform=iOS Simulator,name=iPhone 16"
+          DESTINATION="platform=iOS Simulator,name=iPhone 16 Pro,OS=latest"
           xcodebuild test \
             -project buntan.xcodeproj \
             -scheme buntan \
