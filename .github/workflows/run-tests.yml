@@ -36,7 +36,7 @@ jobs:
         run: xcrun simctl list devices available
 
       - name: UnitTests
-        run: xcodebuild test -project buntan.xcodeproj -scheme buntan -sdk iphonesimulator -destination platform='iOS Simulator,name=iPhone 16 Pro,OS=18.3.1'
+        run: xcodebuild test -project buntan.xcodeproj -scheme buntan -sdk iphonesimulator -destination platform='iOS Simulator,name=iPhone 16 Pro,OS=18.6'
 
       - name: Upload test results
         if: always()
