@@ -35,32 +35,8 @@ jobs:
       - name: List available simulators
         run: xcrun simctl list devices available
 
-      - name: Run Tests
-        run: |
-          set -o pipefail
-
-          # Find a matching iPhone simulator and extract its OS version
-          SIMULATOR_LINE=$(xcrun simctl list devices available | grep -m 1 "iPhone 16 Pro")
-          if [ -z "$SIMULATOR_LINE" ]; then
-            SIMULATOR_LINE=$(xcrun simctl list devices available | grep -m 1 "iPhone")
-          fi
-
-          SIMULATOR_NAME=$(echo "$SIMULATOR_LINE" | sed -E 's/^[[:space:]]*([^()]+).*/\1/' | sed 's/[[:space:]]*$//')
-          SIMULATOR_OS=$(echo "$SIMULATOR_LINE" | sed -nE 's/.*\(([0-9.]+)\).*/\1/p' | head -n 1)
-          echo "Selected simulator: '${SIMULATOR_NAME}' (OS ${SIMULATOR_OS})"
-
-          if [ -z "$SIMULATOR_NAME" ] || [ -z "$SIMULATOR_OS" ]; then
-            echo "Error: No suitable iPhone simulator found"
-            exit 1
-          fi
-
-          xcodebuild test \
-            -project buntan.xcodeproj \
-            -scheme buntan \
-            -sdk iphonesimulator \
-            -destination "platform=iOS Simulator,name=${SIMULATOR_NAME},OS=${SIMULATOR_OS}" \
-            -enableCodeCoverage YES \
-            | xcpretty --color --simple
+      - name: UnitTests
+        run: xcodebuild test -project buntan.xcodeproj -scheme buntan -sdk iphonesimulator -destination platform='iOS Simulator,name=iPhone 16 Pro,OS=18.3.1'
 
       - name: Upload test results
         if: always()
