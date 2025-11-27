@@ -39,12 +39,18 @@ jobs:
         run: |
           set -o pipefail
 
-          # Get the first available iPhone simulator and trim whitespace
-          SIMULATOR=$(xcrun simctl list devices available | grep -m 1 "iPhone" | sed -E 's/^[[:space:]]+([^(]+).*/\1/' | sed 's/[[:space:]]*$//')
-          echo "Selected simulator: '${SIMULATOR}'"
+          # Find a matching iPhone simulator and extract its OS version
+          SIMULATOR_LINE=$(xcrun simctl list devices available | grep -m 1 "iPhone 16 Pro")
+          if [ -z "$SIMULATOR_LINE" ]; then
+            SIMULATOR_LINE=$(xcrun simctl list devices available | grep -m 1 "iPhone")
+          fi
 
-          if [ -z "$SIMULATOR" ]; then
-            echo "Error: No iPhone simulator found"
+          SIMULATOR_NAME=$(echo "$SIMULATOR_LINE" | sed -E 's/^[[:space:]]*([^()]+).*/\1/' | sed 's/[[:space:]]*$//')
+          SIMULATOR_OS=$(echo "$SIMULATOR_LINE" | sed -nE 's/.*\(([0-9.]+)\).*/\1/p' | head -n 1)
+          echo "Selected simulator: '${SIMULATOR_NAME}' (OS ${SIMULATOR_OS})"
+
+          if [ -z "$SIMULATOR_NAME" ] || [ -z "$SIMULATOR_OS" ]; then
+            echo "Error: No suitable iPhone simulator found"
             exit 1
           fi
 
@@ -52,7 +58,7 @@ jobs:
             -project buntan.xcodeproj \
             -scheme buntan \
             -sdk iphonesimulator \
-            -destination "platform=iOS Simulator,name=iPhone 16 Pro,OS=18.3.1" \
+            -destination "platform=iOS Simulator,name=${SIMULATOR_NAME},OS=${SIMULATOR_OS}" \
             -enableCodeCoverage YES \
             | xcpretty --color --simple
 
