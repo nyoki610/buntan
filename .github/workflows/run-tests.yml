@@ -1,0 +1,29 @@
+name: Run Tests
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+  pull_request:
+    branches:
+      - develop
+      - main
+
+jobs:
+  unit-tests:
+    name: Run Test On PR
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Set up Xcode
+      run: sudo xcode-select --switch /Applications/Xcode_16.2.app
+
+    - name: List available simulators
+      run: xcrun simctl list devices available
+
+    - name: Build and Test
+      run: xcodebuild test -scheme buntan -destination 'generic/platform=iOS Simulator'
