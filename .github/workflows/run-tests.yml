@@ -52,7 +52,7 @@ jobs:
             -project buntan.xcodeproj \
             -scheme buntan \
             -sdk iphonesimulator \
-            -destination "platform=iOS Simulator,name=${SIMULATOR}" \
+            -destination "platform=iOS Simulator,name=iPhone 16 Pro,OS=18.3.1" \
             -enableCodeCoverage YES \
             | xcpretty --color --simple
 
