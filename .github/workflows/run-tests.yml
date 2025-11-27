@@ -22,8 +22,8 @@ jobs:
     - name: Set up Xcode
       run: sudo xcode-select --switch /Applications/Xcode_16.2.app
 
-    - name: Build
-      run: xcodebuild -scheme buntan -destination 'platform=iOS Simulator,name=iPhone 16 Pro'
+    - name: List available simulators
+      run: xcrun simctl list devices available
 
-    - name: Run Tests
-      run: xcodebuild -scheme buntan -destination 'platform=iOS Simulator,name=iPhone 16 Pro' test
+    - name: Build and Test
+      run: xcodebuild test -scheme buntan -destination 'generic/platform=iOS Simulator'
